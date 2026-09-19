@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,8 +7,6 @@
 <title>Central do RPG</title>
 
 <style>
-
-/* FOTO DO LESTER */
 
 .aba-lester{
     background-image: url("./lester.jpg") !important;
@@ -23,8 +20,6 @@
     padding: 10px 15px;
     border-radius: 8px;
 }
-
-/* GERAL */
 
 *{
     box-sizing:border-box;
@@ -45,8 +40,6 @@ body{
 .escondido{
     display:none !important;
 }
-
-/* CENTRAL */
 
 #inicio{
     min-height:100vh;
@@ -95,8 +88,6 @@ body{
     background:#292929;
     border-color:white;
 }
-
-/* LOGIN */
 
 #login{
     min-height:100vh;
@@ -160,8 +151,6 @@ button:hover{
     margin-top:15px;
 }
 
-/* SISTEMA */
-
 .topo{
     background:#181818;
     padding:20px;
@@ -197,18 +186,13 @@ button:hover{
     font-weight:bold;
 }
 
-/* MISSÕES */
-
 .missao{
     position:relative;
-
     background:#151515;
     border:1px solid #333;
     border-radius:10px;
-
     padding:20px;
     padding-top:55px;
-
     margin-bottom:15px;
 }
 
@@ -220,22 +204,16 @@ button:hover{
     color:#ccc;
 }
 
-/* CRONÔMETRO */
-
 .cronometro{
     position:absolute;
     top:15px;
     right:15px;
-
     background:#252525;
     border:1px solid #555;
-
     padding:7px 12px;
     border-radius:7px;
-
     font-size:16px;
     font-weight:bold;
-
     color:#fff;
 }
 
@@ -243,10 +221,6 @@ button:hover{
     background:#521b1b;
     border-color:#8b3030;
     color:#ff7777;
-}
-
-.missao-expirada{
-    opacity:.65;
 }
 
 .confirmacao{
@@ -399,10 +373,7 @@ button:hover{
             VOLTAR
         </button>
 
-        <div
-            id="erroLogin"
-            class="erro"
-        ></div>
+        <div id="erroLogin" class="erro"></div>
 
     </div>
 
@@ -431,7 +402,6 @@ button:hover{
 
     <div class="container">
 
-
         <!-- SALDO -->
 
         <div class="card">
@@ -458,10 +428,7 @@ button:hover{
 
         <!-- PAINEL DO MESTRE -->
 
-        <div
-            id="painelMestre"
-            class="card escondido"
-        >
+        <div id="painelMestre" class="card escondido">
 
             <h2>👑 PAINEL DE ADMINISTRAÇÃO</h2>
 
@@ -469,21 +436,13 @@ button:hover{
                 Área exclusiva do Ítalo.
             </p>
 
-
             <hr class="linha">
-
-
-            <!-- SALDOS -->
 
             <h3>💰 SALDO DOS JOGADORES</h3>
 
             <div id="listaJogadores"></div>
 
-
             <hr class="linha">
-
-
-            <!-- CRIAR MISSÃO -->
 
             <h3>➕ CRIAR MISSÃO</h3>
 
@@ -517,9 +476,6 @@ button:hover{
                 placeholder="Prazo para realizar a missão"
             >
 
-
-            <!-- TEMPO DA MISSÃO -->
-
             <h4>
                 ⏱ TEMPO QUE A MISSÃO FICARÁ ATIVA
             </h4>
@@ -547,7 +503,6 @@ button:hover{
 
             </select>
 
-
             <button
                 class="btn-mestre"
                 onclick="criarMissao()"
@@ -555,11 +510,7 @@ button:hover{
                 CRIAR MISSÃO
             </button>
 
-
             <hr class="linha">
-
-
-            <!-- MISSÕES DO MESTRE -->
 
             <h3>📋 MISSÕES CRIADAS</h3>
 
@@ -572,7 +523,46 @@ button:hover{
 </div>
 
 
+<!-- ============================= -->
+<!-- FIREBASE -->
+<!-- ============================= -->
+
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+
+
 <script>
+
+/* =========================
+   FIREBASE
+========================= */
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyBwAUhihZQ3kwDU9eDqasUurXXLbPBdJqg",
+
+    authDomain: "gta-rpg.firebaseapp.com",
+
+    databaseURL: "https://gta-rpg-default-rtdb.firebaseio.com",
+
+    projectId: "gta-rpg",
+
+    storageBucket: "gta-rpg.firebasestorage.app",
+
+    messagingSenderId: "318963858414",
+
+    appId: "1:318963858414:web:cc7122486ac5a3d267ecff",
+
+    measurementId: "G-K157521F0H"
+
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const banco = firebase.database();
+
 
 /* =========================
    USUÁRIOS
@@ -591,45 +581,99 @@ const usuarios = {
 };
 
 
-/* =========================
-   SALDOS
-========================= */
-
-let saldos =
-    JSON.parse(
-        localStorage.getItem("saldos")
-    ) || {
-
-        Kaius: 0,
-
-        Gaby: 0,
-
-        Duda: 0
-
-    };
-
-
-/* =========================
-   MISSÕES
-========================= */
-
-let missoes =
-    JSON.parse(
-        localStorage.getItem("missoesRPG")
-    ) || [];
-
-
-/* =========================
-   MISSÕES ACEITAS
-========================= */
-
-let missoesAceitas =
-    JSON.parse(
-        localStorage.getItem("missoesAceitas")
-    ) || {};
-
-
 let usuarioAtual = null;
+
+
+/* =========================
+   DADOS
+========================= */
+
+let saldos = {
+
+    Kaius: 0,
+
+    Gaby: 0,
+
+    Duda: 0
+
+};
+
+
+let missoes = [];
+
+let missoesAceitas = {};
+
+
+/* =========================
+   CARREGAR SALDOS
+========================= */
+
+banco.ref("saldos").on("value", function(snapshot){
+
+    const dados = snapshot.val();
+
+    if(dados){
+
+        saldos = dados;
+
+    }
+
+    else{
+
+        banco.ref("saldos").set({
+
+            Kaius: 0,
+
+            Gaby: 0,
+
+            Duda: 0
+
+        });
+
+    }
+
+    atualizarTudo();
+
+});
+
+
+/* =========================
+   CARREGAR MISSÕES
+========================= */
+
+banco.ref("missoes").on("value", function(snapshot){
+
+    const dados = snapshot.val();
+
+    if(dados){
+
+        missoes = Object.values(dados);
+
+    }
+
+    else{
+
+        missoes = [];
+
+    }
+
+    atualizarTudo();
+
+});
+
+
+/* =========================
+   CARREGAR ACEITAÇÕES
+========================= */
+
+banco.ref("missoesAceitas").on("value", function(snapshot){
+
+    missoesAceitas =
+        snapshot.val() || {};
+
+    atualizarTudo();
+
+});
 
 
 /* =========================
@@ -638,25 +682,17 @@ let usuarioAtual = null;
 
 function esconderTodas(){
 
-    document
-        .getElementById("inicio")
-        .classList
-        .add("escondido");
+    document.getElementById("inicio")
+        .classList.add("escondido");
 
-    document
-        .getElementById("imoveis")
-        .classList
-        .add("escondido");
+    document.getElementById("imoveis")
+        .classList.add("escondido");
 
-    document
-        .getElementById("login")
-        .classList
-        .add("escondido");
+    document.getElementById("login")
+        .classList.add("escondido");
 
-    document
-        .getElementById("sistema")
-        .classList
-        .add("escondido");
+    document.getElementById("sistema")
+        .classList.add("escondido");
 
 }
 
@@ -665,10 +701,8 @@ function voltarInicio(){
 
     esconderTodas();
 
-    document
-        .getElementById("inicio")
-        .classList
-        .remove("escondido");
+    document.getElementById("inicio")
+        .classList.remove("escondido");
 
 }
 
@@ -677,10 +711,8 @@ function abrirImoveis(){
 
     esconderTodas();
 
-    document
-        .getElementById("imoveis")
-        .classList
-        .remove("escondido");
+    document.getElementById("imoveis")
+        .classList.remove("escondido");
 
 }
 
@@ -689,10 +721,8 @@ function abrirLogin(){
 
     esconderTodas();
 
-    document
-        .getElementById("login")
-        .classList
-        .remove("escondido");
+    document.getElementById("login")
+        .classList.remove("escondido");
 
 }
 
@@ -704,17 +734,13 @@ function abrirLogin(){
 function fazerLogin(){
 
     let usuario =
-        document
-        .getElementById("loginUsuario")
-        .value
-        .trim();
+        document.getElementById("loginUsuario")
+        .value.trim();
 
 
     let senha =
-        document
-        .getElementById("loginSenha")
-        .value
-        .trim();
+        document.getElementById("loginSenha")
+        .value.trim();
 
 
     if(
@@ -724,21 +750,14 @@ function fazerLogin(){
 
         usuarioAtual = usuario;
 
+        document.getElementById("loginUsuario")
+            .value = "";
 
-        document
-        .getElementById("loginUsuario")
-        .value = "";
+        document.getElementById("loginSenha")
+            .value = "";
 
-
-        document
-        .getElementById("loginSenha")
-        .value = "";
-
-
-        document
-        .getElementById("erroLogin")
-        .innerText = "";
-
+        document.getElementById("erroLogin")
+            .innerText = "";
 
         abrirSistema();
 
@@ -746,9 +765,8 @@ function fazerLogin(){
 
     else{
 
-        document
-        .getElementById("erroLogin")
-        .innerText =
+        document.getElementById("erroLogin")
+            .innerText =
             "Usuário ou senha incorretos.";
 
     }
@@ -764,34 +782,25 @@ function abrirSistema(){
 
     esconderTodas();
 
-
-    document
-        .getElementById("sistema")
-        .classList
-        .remove("escondido");
+    document.getElementById("sistema")
+        .classList.remove("escondido");
 
 
-    document
-        .getElementById("nomeUsuario")
-        .innerText =
-        usuarioAtual;
+    document.getElementById("nomeUsuario")
+        .innerText = usuarioAtual;
 
 
     if(usuarioAtual === "Italo"){
 
-        document
-            .getElementById("painelMestre")
-            .classList
-            .remove("escondido");
+        document.getElementById("painelMestre")
+            .classList.remove("escondido");
 
     }
 
     else{
 
-        document
-            .getElementById("painelMestre")
-            .classList
-            .add("escondido");
+        document.getElementById("painelMestre")
+            .classList.add("escondido");
 
     }
 
@@ -820,9 +829,17 @@ function sair(){
 
 function atualizarTudo(){
 
+    if(!usuarioAtual){
+
+        return;
+
+    }
+
+
     atualizarSaldo();
 
     mostrarMissoes();
+
 
     if(usuarioAtual === "Italo"){
 
@@ -843,8 +860,7 @@ function atualizarSaldo(){
 
     if(usuarioAtual === "Italo"){
 
-        document
-            .getElementById("meuSaldo")
+        document.getElementById("meuSaldo")
             .innerText = "MESTRE";
 
         return;
@@ -852,17 +868,14 @@ function atualizarSaldo(){
     }
 
 
-    if(
-        saldos[usuarioAtual] === undefined
-    ){
+    if(saldos[usuarioAtual] === undefined){
 
         saldos[usuarioAtual] = 0;
 
     }
 
 
-    document
-        .getElementById("meuSaldo")
+    document.getElementById("meuSaldo")
         .innerText =
         saldos[usuarioAtual];
 
@@ -876,15 +889,12 @@ function atualizarSaldo(){
 function mostrarJogadores(){
 
     let lista =
-        document
-        .getElementById("listaJogadores");
-
+        document.getElementById("listaJogadores");
 
     lista.innerHTML = "";
 
 
-    Object.keys(saldos)
-    .forEach(function(nome){
+    Object.keys(saldos).forEach(function(nome){
 
         let div =
             document.createElement("div");
@@ -942,28 +952,37 @@ function mostrarJogadores(){
 
 function adicionarValor(nome){
 
+    if(usuarioAtual !== "Italo"){
+
+        return;
+
+    }
+
+
     let campo =
-        document
-        .getElementById("valor-" + nome);
+        document.getElementById("valor-" + nome);
 
 
     let valor =
         Number(campo.value);
 
 
-    if(valor <= 0) return;
+    if(valor <= 0){
+
+        return;
+
+    }
 
 
-    saldos[nome] += valor;
+    let novoSaldo =
+        Number(saldos[nome] || 0) + valor;
 
 
-    localStorage.setItem(
-        "saldos",
-        JSON.stringify(saldos)
-    );
+    banco.ref("saldos/" + nome)
+        .set(novoSaldo);
 
 
-    atualizarTudo();
+    campo.value = "";
 
 }
 
@@ -974,35 +993,44 @@ function adicionarValor(nome){
 
 function retirarValor(nome){
 
+    if(usuarioAtual !== "Italo"){
+
+        return;
+
+    }
+
+
     let campo =
-        document
-        .getElementById("valor-" + nome);
+        document.getElementById("valor-" + nome);
 
 
     let valor =
         Number(campo.value);
 
 
-    if(valor <= 0) return;
+    if(valor <= 0){
 
-
-    saldos[nome] -= valor;
-
-
-    if(saldos[nome] < 0){
-
-        saldos[nome] = 0;
+        return;
 
     }
 
 
-    localStorage.setItem(
-        "saldos",
-        JSON.stringify(saldos)
-    );
+    let novoSaldo =
+        Number(saldos[nome] || 0) - valor;
 
 
-    atualizarTudo();
+    if(novoSaldo < 0){
+
+        novoSaldo = 0;
+
+    }
+
+
+    banco.ref("saldos/" + nome)
+        .set(novoSaldo);
+
+
+    campo.value = "";
 
 }
 
@@ -1013,53 +1041,49 @@ function retirarValor(nome){
 
 function criarMissao(){
 
+    if(usuarioAtual !== "Italo"){
+
+        return;
+
+    }
+
+
     let nome =
-        document
-        .getElementById("nomeMissao")
-        .value
-        .trim();
+        document.getElementById("nomeMissao")
+        .value.trim();
 
 
     let descricao =
-        document
-        .getElementById("descricaoMissao")
-        .value
-        .trim();
+        document.getElementById("descricaoMissao")
+        .value.trim();
 
 
     let objetivo =
-        document
-        .getElementById("objetivoMissao")
-        .value
-        .trim();
+        document.getElementById("objetivoMissao")
+        .value.trim();
 
 
     let recompensa =
         Number(
-            document
-            .getElementById("recompensaMissao")
+            document.getElementById("recompensaMissao")
             .value
         );
 
 
     let prazo =
-        document
-        .getElementById("prazoMissao")
-        .value
-        .trim();
+        document.getElementById("prazoMissao")
+        .value.trim();
 
 
     let duracao =
         Number(
-            document
-            .getElementById("duracaoMissao")
+            document.getElementById("duracaoMissao")
             .value
         );
 
 
     let unidade =
-        document
-        .getElementById("unidadeTempo")
+        document.getElementById("unidadeTempo")
         .value;
 
 
@@ -1081,8 +1105,6 @@ function criarMissao(){
     }
 
 
-    /* CONVERTE O TEMPO PARA MILISSEGUNDOS */
-
     let multiplicador = 60000;
 
 
@@ -1102,24 +1124,20 @@ function criarMissao(){
     }
 
 
-    let duracaoMs =
+    let criadoEm = Date.now();
+
+
+    let terminaEm =
+        criadoEm +
         duracao * multiplicador;
 
 
-    /*
-       O FINAL DA MISSÃO É
-       CALCULADO NO MOMENTO DA CRIAÇÃO
-    */
-
-    let criadoEm = Date.now();
-
-    let terminaEm =
-        criadoEm + duracaoMs;
+    let id = Date.now();
 
 
     let novaMissao = {
 
-        id: Date.now(),
+        id: id,
 
         nome: nome,
 
@@ -1142,65 +1160,45 @@ function criarMissao(){
     };
 
 
-    missoes.push(novaMissao);
+    banco.ref("missoes/" + id)
+        .set(novaMissao);
 
 
-    localStorage.setItem(
-        "missoesRPG",
-        JSON.stringify(missoes)
-    );
-
-
-    /* LIMPAR CAMPOS */
-
-    document
-        .getElementById("nomeMissao")
+    document.getElementById("nomeMissao")
         .value = "";
 
-
-    document
-        .getElementById("descricaoMissao")
+    document.getElementById("descricaoMissao")
         .value = "";
 
-
-    document
-        .getElementById("objetivoMissao")
+    document.getElementById("objetivoMissao")
         .value = "";
 
-
-    document
-        .getElementById("recompensaMissao")
+    document.getElementById("recompensaMissao")
         .value = "";
 
-
-    document
-        .getElementById("prazoMissao")
+    document.getElementById("prazoMissao")
         .value = "";
 
-
-    document
-        .getElementById("duracaoMissao")
+    document.getElementById("duracaoMissao")
         .value = "";
-
-
-    atualizarTudo();
 
 }
 
 
 /* =========================
-   VERIFICAR SE EXPIROU
+   EXPIRAÇÃO
 ========================= */
 
 function missaoExpirou(missao){
 
-    return Date.now() >= missao.terminaEm;
+    return Date.now() >=
+        Number(missao.terminaEm);
 
 }
 
 
 /* =========================
-   FORMATAR CRONÔMETRO
+   FORMATAR TEMPO
 ========================= */
 
 function formatarTempo(tempo){
@@ -1217,27 +1215,21 @@ function formatarTempo(tempo){
 
 
     let dias =
-        Math.floor(
-            segundos / 86400
-        );
+        Math.floor(segundos / 86400);
 
 
     segundos %= 86400;
 
 
     let horas =
-        Math.floor(
-            segundos / 3600
-        );
+        Math.floor(segundos / 3600);
 
 
     segundos %= 3600;
 
 
     let minutos =
-        Math.floor(
-            segundos / 60
-        );
+        Math.floor(segundos / 60);
 
 
     segundos %= 60;
@@ -1285,36 +1277,46 @@ function formatarTempo(tempo){
 function mostrarMissoes(){
 
     let lista =
-        document
-        .getElementById("listaMissoes");
+        document.getElementById("listaMissoes");
 
 
-    lista.innerHTML = "";
-
-
-    if(missoes.length === 0){
-
-        lista.innerHTML =
-            "<p style='color:#777;'>Nenhuma missão disponível.</p>";
+    if(!lista){
 
         return;
 
     }
 
 
-    /*
-       PRIMEIRO MOSTRA AS MISSÕES
-       ATIVAS
-    */
+    lista.innerHTML = "";
 
-    missoes.forEach(function(missao){
 
-        if(missaoExpirou(missao)){
+    let ativas =
+        missoes.filter(function(missao){
 
-            return;
+            return !missaoExpirou(missao);
 
-        }
+        });
 
+
+    if(ativas.length === 0){
+
+        lista.innerHTML =
+            "<p style='color:#777;'>Nenhuma missão disponível no momento.</p>";
+
+        return;
+
+    }
+
+
+    ativas.sort(function(a,b){
+
+        return Number(a.criadoEm) -
+               Number(b.criadoEm);
+
+    });
+
+
+    ativas.forEach(function(missao){
 
         let div =
             document.createElement("div");
@@ -1326,11 +1328,12 @@ function mostrarMissoes(){
         let aceita = false;
 
 
-        if(missoesAceitas[missao.id]){
+        if(
+            missoesAceitas[missao.id] &&
+            missoesAceitas[missao.id][usuarioAtual]
+        ){
 
-            aceita =
-                missoesAceitas[missao.id]
-                .includes(usuarioAtual);
+            aceita = true;
 
         }
 
@@ -1413,26 +1416,6 @@ function mostrarMissoes(){
 
     });
 
-
-    /*
-       VERIFICA SE SOBROU ALGUMA MISSÃO
-    */
-
-    let ativas =
-        missoes.filter(function(missao){
-
-            return !missaoExpirou(missao);
-
-        });
-
-
-    if(ativas.length === 0){
-
-        lista.innerHTML =
-            "<p style='color:#777;'>Nenhuma missão disponível no momento.</p>";
-
-    }
-
 }
 
 
@@ -1445,12 +1428,16 @@ function aceitarMissao(id){
     let missao =
         missoes.find(function(m){
 
-            return m.id === id;
+            return Number(m.id) === Number(id);
 
         });
 
 
-    if(!missao) return;
+    if(!missao){
+
+        return;
+
+    }
 
 
     if(missaoExpirou(missao)){
@@ -1459,38 +1446,17 @@ function aceitarMissao(id){
             "Essa missão já expirou."
         );
 
-        mostrarMissoes();
-
         return;
 
     }
 
 
-    if(!missoesAceitas[id]){
-
-        missoesAceitas[id] = [];
-
-    }
-
-
-    if(
-        !missoesAceitas[id]
-        .includes(usuarioAtual)
-    ){
-
-        missoesAceitas[id]
-        .push(usuarioAtual);
-
-    }
-
-
-    localStorage.setItem(
-        "missoesAceitas",
-        JSON.stringify(missoesAceitas)
-    );
-
-
-    atualizarTudo();
+    banco.ref(
+        "missoesAceitas/" +
+        id +
+        "/" +
+        usuarioAtual
+    ).set(true);
 
 }
 
@@ -1501,25 +1467,12 @@ function aceitarMissao(id){
 
 function cancelarMissao(id){
 
-    if(!missoesAceitas[id]) return;
-
-
-    missoesAceitas[id] =
-        missoesAceitas[id]
-        .filter(function(nome){
-
-            return nome !== usuarioAtual;
-
-        });
-
-
-    localStorage.setItem(
-        "missoesAceitas",
-        JSON.stringify(missoesAceitas)
-    );
-
-
-    atualizarTudo();
+    banco.ref(
+        "missoesAceitas/" +
+        id +
+        "/" +
+        usuarioAtual
+    ).remove();
 
 }
 
@@ -1531,8 +1484,14 @@ function cancelarMissao(id){
 function mostrarMissoesMestre(){
 
     let lista =
-        document
-        .getElementById("missoesMestre");
+        document.getElementById("missoesMestre");
+
+
+    if(!lista){
+
+        return;
+
+    }
 
 
     lista.innerHTML = "";
@@ -1548,24 +1507,34 @@ function mostrarMissoesMestre(){
     }
 
 
+    missoes.sort(function(a,b){
+
+        return Number(a.criadoEm) -
+               Number(b.criadoEm);
+
+    });
+
+
     missoes.forEach(function(missao){
 
         let div =
             document.createElement("div");
 
 
-        div.className =
-            "jogador";
+        div.className = "jogador";
 
 
         let aceitos =
-            missoesAceitas[missao.id]
-            || [];
+            missoesAceitas[missao.id] || {};
 
 
         let nomes =
-            aceitos.length > 0
-            ? aceitos.join(", ")
+            Object.keys(aceitos);
+
+
+        let textoAceitos =
+            nomes.length > 0
+            ? nomes.join(", ")
             : "Ninguém aceitou ainda.";
 
 
@@ -1593,7 +1562,7 @@ function mostrarMissoesMestre(){
             </p>
 
             <p class="aceitos">
-                ${nomes}
+                ${textoAceitos}
             </p>
 
             <button
@@ -1619,44 +1588,28 @@ function mostrarMissoesMestre(){
 
 function removerMissao(id){
 
-    missoes =
-        missoes.filter(function(missao){
+    if(usuarioAtual !== "Italo"){
 
-            return missao.id !== id;
+        return;
 
-        });
-
-
-    delete missoesAceitas[id];
+    }
 
 
-    localStorage.setItem(
-        "missoesRPG",
-        JSON.stringify(missoes)
-    );
+    banco.ref("missoes/" + id)
+        .remove();
 
 
-    localStorage.setItem(
-        "missoesAceitas",
-        JSON.stringify(missoesAceitas)
-    );
-
-
-    atualizarTudo();
+    banco.ref("missoesAceitas/" + id)
+        .remove();
 
 }
 
 
 /* =========================
-   ATUALIZAR CRONÔMETROS
+   CRONÔMETROS
 ========================= */
 
 function atualizarCronometros(){
-
-    /*
-       Se não estiver logado,
-       não precisa atualizar.
-    */
 
     if(!usuarioAtual){
 
@@ -1671,17 +1624,21 @@ function atualizarCronometros(){
     missoes.forEach(function(missao){
 
         let elemento =
-            document
-            .getElementById(
+            document.getElementById(
                 "timer-" + missao.id
             );
 
 
-        if(!elemento) return;
+        if(!elemento){
+
+            return;
+
+        }
 
 
         let restante =
-            missao.terminaEm - Date.now();
+            Number(missao.terminaEm) -
+            Date.now();
 
 
         if(restante <= 0){
@@ -1709,14 +1666,10 @@ function atualizarCronometros(){
     });
 
 
-    /*
-       Se uma missão acabou,
-       atualiza a lista.
-    */
-
     if(algumaExpirou){
 
         mostrarMissoes();
+
 
         if(usuarioAtual === "Italo"){
 
@@ -1729,10 +1682,6 @@ function atualizarCronometros(){
 }
 
 
-/* =========================
-   CRONÔMETRO GLOBAL
-========================= */
-
 setInterval(
     atualizarCronometros,
     1000
@@ -1742,4 +1691,3 @@ setInterval(
 
 </body>
 </html>
-```
