@@ -8,19 +8,6 @@
 
 <style>
 
-.aba-lester{
-    background-image: url("./lester.jpg") !important;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.aba-lester h2{
-    background: rgba(0,0,0,0.65);
-    padding: 10px 15px;
-    border-radius: 8px;
-}
-
 *{
     box-sizing:border-box;
 }
@@ -32,168 +19,260 @@ body{
     color:white;
 }
 
-.tela{
-    min-height:100vh;
-    padding:30px;
-}
-
 .escondido{
     display:none !important;
 }
 
-#inicio{
+/* =========================
+   CENTRAL
+========================= */
+
+#central{
     min-height:100vh;
     display:flex;
+    flex-direction:column;
     align-items:center;
     justify-content:center;
+    padding:30px;
+}
+
+.titulo{
     text-align:center;
+    margin-bottom:40px;
 }
 
-.central{
+.titulo h1{
+    margin:0;
+    font-size:42px;
+    letter-spacing:2px;
+}
+
+.titulo p{
+    color:#aaa;
+    margin-top:10px;
+}
+
+.abas-central{
     width:100%;
-    max-width:750px;
-}
-
-.central h1{
-    font-size:40px;
-}
-
-.central p{
-    color:#999;
-}
-
-.abas{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-top:40px;
+    max-width:900px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
 }
 
 .aba{
-    width:300px;
-    height:180px;
-    background:#1b1b1b;
-    border:2px solid #333;
+    min-height:220px;
     border-radius:15px;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     cursor:pointer;
+    transition:.2s;
+    background:#1c1c1c;
+    border:1px solid #333;
+    overflow:hidden;
+    position:relative;
 }
 
 .aba:hover{
-    background:#292929;
-    border-color:white;
+    transform:scale(1.02);
+    border-color:#777;
 }
+
+.aba h2{
+    position:relative;
+    z-index:2;
+    font-size:25px;
+    text-align:center;
+}
+
+.aba-imoveis{
+    background:
+        linear-gradient(
+            rgba(0,0,0,.45),
+            rgba(0,0,0,.65)
+        );
+}
+
+.aba-lester{
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.65)
+        ),
+        url("./lester.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+/* =========================
+   LOGIN LESTER
+========================= */
 
 #login{
     min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
 }
 
-.login{
+.login-box{
     width:100%;
-    max-width:420px;
-    margin:70px auto;
-    padding:30px;
-    background:#1b1b1b;
+    max-width:400px;
+    background:#181818;
     border:1px solid #333;
     border-radius:15px;
+    padding:30px;
+    box-shadow:0 10px 40px rgba(0,0,0,.5);
 }
 
-.login h1{
+.login-box h1{
     text-align:center;
+    margin-top:0;
+}
+
+.login-box p{
+    text-align:center;
+    color:#999;
 }
 
 input,
 textarea,
 select{
     width:100%;
-    padding:12px;
-    margin:7px 0 12px;
-    background:#111;
-    color:white;
-    border:1px solid #444;
+    padding:13px;
+    margin:7px 0 15px;
     border-radius:7px;
+    border:1px solid #444;
+    background:#222;
+    color:white;
+    font-size:15px;
 }
 
 textarea{
-    min-height:90px;
+    min-height:100px;
 }
 
 button{
-    padding:11px 15px;
     border:0;
     border-radius:7px;
+    padding:12px 16px;
     cursor:pointer;
     font-weight:bold;
 }
 
-button:hover{
-    opacity:.85;
+.btn-vermelho{
+    width:100%;
+    background:#c40000;
+    color:white;
 }
 
-.btn-login{
-    width:100%;
+.btn-vermelho:hover{
+    background:#a00000;
 }
 
 .btn-voltar{
-    margin-top:15px;
+    width:100%;
+    margin-top:10px;
     background:#333;
     color:white;
 }
 
 .erro{
-    color:#ff5555;
+    color:#ff4444;
     text-align:center;
     margin-top:15px;
 }
 
-.topo{
-    background:#181818;
-    padding:20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:15px;
-    border-bottom:1px solid #333;
+/* =========================
+   LESTER
+========================= */
+
+#lester{
+    min-height:100vh;
 }
 
-.topo h1{
+header{
+    background:#181818;
+    border-bottom:1px solid #333;
+    padding:18px 30px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+header h1{
     margin:0;
+}
+
+.usuario{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.saldo{
+    color:#42d66b;
+    font-weight:bold;
+}
+
+.btn-sair{
+    background:#333;
+    color:white;
 }
 
 .container{
     width:100%;
-    max-width:1000px;
+    max-width:1200px;
     margin:auto;
-    padding:25px;
+    padding:30px 20px;
 }
 
-.card{
+/* =========================
+   ABAS LESTER
+========================= */
+
+.abas{
+    display:flex;
+    gap:10px;
+    border-bottom:1px solid #333;
+    margin-bottom:30px;
+}
+
+.aba-lester-menu{
+    padding:13px 18px;
+    cursor:pointer;
+    color:#888;
+    font-weight:bold;
+}
+
+.aba-lester-menu.ativa{
+    color:#fff;
+    border-bottom:3px solid #c40000;
+}
+
+/* =========================
+   MISSÕES
+========================= */
+
+.grade{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.missao{
     background:#1b1b1b;
     border:1px solid #333;
     border-radius:12px;
     padding:20px;
-    margin-bottom:20px;
-}
-
-.saldo{
-    font-size:30px;
-    font-weight:bold;
-}
-
-.missao{
     position:relative;
-    background:#151515;
-    border:1px solid #333;
-    border-radius:10px;
-    padding:20px;
-    padding-top:55px;
-    margin-bottom:15px;
 }
 
 .missao h3{
@@ -201,83 +280,125 @@ button:hover{
 }
 
 .missao p{
-    color:#ccc;
+    color:#bbb;
+    line-height:1.5;
+}
+
+.recompensa{
+    color:#42d66b !important;
+    font-weight:bold;
+}
+
+.prazo{
+    color:#ffb000 !important;
 }
 
 .cronometro{
     position:absolute;
     top:15px;
     right:15px;
-    background:#252525;
-    border:1px solid #555;
-    padding:7px 12px;
-    border-radius:7px;
-    font-size:16px;
-    font-weight:bold;
-    color:#fff;
-}
-
-.cronometro.expirado{
-    background:#521b1b;
-    border-color:#8b3030;
-    color:#ff7777;
-}
-
-.confirmacao{
-    background:#183c24;
-    color:#72e39a;
-    padding:10px;
-    border-radius:7px;
-    margin:12px 0;
+    color:#ff4444;
     font-weight:bold;
 }
 
-.expirada{
-    background:#3a1818;
-    color:#ff7777;
-    padding:10px;
-    border-radius:7px;
-    margin:12px 0;
-    font-weight:bold;
-}
-
-.btn-cancelar{
-    background:#8b2020;
+.btn-missao{
+    width:100%;
+    margin-top:10px;
+    background:#c40000;
     color:white;
 }
 
-.btn-mestre{
-    background:#d4af37;
-    color:black;
+.btn-cancelar{
+    background:#444;
 }
 
-.jogador{
-    background:#151515;
+.vazio{
+    text-align:center;
+    color:#777;
+    padding:50px;
+}
+
+/* =========================
+   ADMIN
+========================= */
+
+.admin{
+    background:#1b1b1b;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:25px;
+    margin-bottom:30px;
+}
+
+.admin h2{
+    color:#ff4444;
+}
+
+.admin-jogador{
+    background:#222;
     border:1px solid #333;
     border-radius:10px;
     padding:15px;
-    margin-bottom:15px;
+    margin-bottom:10px;
 }
 
-.botoes{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
+.admin-jogador strong{
+    display:block;
+    margin-bottom:10px;
 }
 
-.linha{
-    border:0;
-    border-top:1px solid #333;
-    margin:30px 0;
+.btn-pequeno{
+    background:#333;
+    color:white;
+    margin:3px;
 }
 
-.aceitos{
-    color:#aaa;
+.btn-pequeno:hover{
+    background:#c40000;
 }
 
-.tempo-criacao{
-    color:#777;
-    font-size:13px;
+.mensagem{
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+    background:#222;
+}
+
+.sucesso{
+    color:#42d66b;
+}
+
+.aviso{
+    color:#ff4444;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:700px){
+
+    .abas-central{
+        grid-template-columns:1fr;
+    }
+
+    .aba{
+        min-height:170px;
+    }
+
+    .titulo h1{
+        font-size:30px;
+    }
+
+    header{
+        padding:15px;
+    }
+
+    .usuario{
+        width:100%;
+        justify-content:space-between;
+    }
+
 }
 
 </style>
@@ -285,51 +406,44 @@ button:hover{
 
 <body>
 
-<!-- CENTRAL -->
 
-<div id="inicio">
+<!-- =========================
+     CENTRAL
+========================= -->
 
-    <div class="central">
+<div id="central">
+
+    <div class="titulo">
 
         <h1>CENTRAL DO RPG</h1>
 
-        <p>Selecione uma área para continuar</p>
-
-        <div class="abas">
-
-            <div class="aba" onclick="abrirImoveis()">
-                <h2>IMÓVEIS</h2>
-            </div>
-
-            <div class="aba aba-lester" onclick="abrirLogin()">
-                <h2>MISSÕES DO LESTER</h2>
-            </div>
-
-        </div>
+        <p>Selecione uma área</p>
 
     </div>
 
-</div>
 
-<!-- IMÓVEIS -->
+    <div class="abas-central">
 
-<div id="imoveis" class="tela escondido">
+        <!-- IMÓVEIS -->
 
-    <div class="container">
+        <div
+            class="aba aba-imoveis"
+            onclick="abrirImoveis()"
+        >
 
-        <div class="card">
+            <h2>IMÓVEIS</h2>
 
-            <h1>IMÓVEIS</h1>
+        </div>
 
-            <p>Área de imóveis do RPG.</p>
 
-            <p style="color:#777;">
-                Sistema em desenvolvimento.
-            </p>
+        <!-- LESTER -->
 
-            <button class="btn-voltar" onclick="voltarInicio()">
-                VOLTAR
-            </button>
+        <div
+            class="aba aba-lester"
+            onclick="abrirLogin()"
+        >
+
+            <h2>MISSÕES DO LESTER</h2>
 
         </div>
 
@@ -338,112 +452,147 @@ button:hover{
 </div>
 
 
-<!-- LOGIN -->
+<!-- =========================
+     LOGIN
+========================= -->
 
-<div id="login" class="tela escondido">
+<div
+    id="login"
+    class="escondido"
+>
 
-    <div class="login">
+    <div class="login-box">
 
         <h1>MISSÕES DO LESTER</h1>
 
+        <p>Acesso restrito</p>
+
+
         <input
-            id="loginUsuario"
+            id="usuarioLogin"
             type="text"
             placeholder="Usuário"
         >
 
+
         <input
-            id="loginSenha"
+            id="senhaLogin"
             type="password"
             placeholder="Senha"
         >
 
+
         <button
-            class="btn-login"
+            class="btn-vermelho"
             onclick="fazerLogin()"
         >
             ENTRAR
         </button>
 
+
         <button
             class="btn-voltar"
-            onclick="voltarInicio()"
+            onclick="voltarCentral()"
         >
             VOLTAR
         </button>
 
-        <div id="erroLogin" class="erro"></div>
+
+        <div
+            id="erroLogin"
+            class="erro"
+        ></div>
 
     </div>
 
 </div>
 
 
-<!-- SISTEMA -->
+<!-- =========================
+     LESTER
+========================= -->
 
-<div id="sistema" class="escondido">
+<div
+    id="lester"
+    class="escondido"
+>
 
-    <div class="topo">
+<header>
 
-        <h1>MISSÕES DO LESTER</h1>
+    <h1>MISSÕES DO LESTER</h1>
 
-        <div>
-            Jogador:
-            <strong id="nomeUsuario"></strong>
-        </div>
 
-        <button onclick="sair()">
+    <div class="usuario">
+
+        <strong id="nomeUsuario"></strong>
+
+        <span class="saldo">
+            $<span id="saldoUsuario">0</span>
+        </span>
+
+        <button
+            class="btn-sair"
+            onclick="sairLester()"
+        >
             SAIR
         </button>
 
     </div>
 
+</header>
 
-    <div class="container">
 
-        <!-- SALDO -->
+<div class="container">
 
-        <div class="card">
+    <div class="abas">
 
-            <h2>💰 SEU SALDO</h2>
-
-            <div class="saldo">
-                $<span id="meuSaldo">0</span>
-            </div>
-
+        <div
+            id="abaMissoes"
+            class="aba-lester-menu ativa"
+            onclick="mostrarAbaLester('missoes')"
+        >
+            MISSÕES
         </div>
 
 
-        <!-- MISSÕES -->
-
-        <div class="card">
-
-            <h2>🎯 MISSÕES DISPONÍVEIS</h2>
-
-            <div id="listaMissoes"></div>
-
+        <div
+            id="abaAdmin"
+            class="aba-lester-menu escondido"
+            onclick="mostrarAbaLester('admin')"
+        >
+            ADMINISTRADOR
         </div>
 
+    </div>
 
-        <!-- PAINEL DO MESTRE -->
 
-        <div id="painelMestre" class="card escondido">
+    <div id="mensagem"></div>
 
-            <h2>👑 PAINEL DE ADMINISTRAÇÃO</h2>
 
-            <p style="color:#aaa;">
-                Área exclusiva do Ítalo.
-            </p>
+    <!-- MISSÕES -->
 
-            <hr class="linha">
+    <div id="areaMissoes">
 
-            <h3>💰 SALDO DOS JOGADORES</h3>
+        <h2>Missões disponíveis</h2>
 
-            <div id="listaJogadores"></div>
+        <div
+            id="listaMissoes"
+            class="grade"
+        ></div>
 
-            <hr class="linha">
+    </div>
 
-            <h3>➕ CRIAR MISSÃO</h3>
+
+    <!-- ADMIN -->
+
+    <div
+        id="areaAdmin"
+        class="escondido"
+    >
+
+        <div class="admin">
+
+            <h2>CRIAR MISSÃO</h2>
 
             <input
                 id="nomeMissao"
@@ -451,16 +600,19 @@ button:hover{
                 placeholder="Nome da missão"
             >
 
+
             <textarea
                 id="descricaoMissao"
                 placeholder="Descrição da missão"
             ></textarea>
+
 
             <input
                 id="objetivoMissao"
                 type="text"
                 placeholder="Objetivo"
             >
+
 
             <input
                 id="recompensaMissao"
@@ -469,24 +621,23 @@ button:hover{
                 min="0"
             >
 
+
             <input
                 id="prazoMissao"
                 type="text"
-                placeholder="Prazo para realizar a missão"
+                placeholder="Prazo / local"
             >
 
-            <h4>
-                ⏱ TEMPO QUE A MISSÃO FICARÁ ATIVA
-            </h4>
 
             <input
                 id="duracaoMissao"
                 type="number"
-                placeholder="Ex.: 30"
+                placeholder="Duração"
                 min="1"
             >
 
-            <select id="unidadeTempo">
+
+            <select id="unidadeMissao">
 
                 <option value="minutos">
                     Minutos
@@ -502,29 +653,38 @@ button:hover{
 
             </select>
 
+
             <button
-                class="btn-mestre"
+                class="btn-vermelho"
                 onclick="criarMissao()"
             >
                 CRIAR MISSÃO
             </button>
 
-            <hr class="linha">
-
-            <h3>📋 MISSÕES CRIADAS</h3>
-
-            <div id="missoesMestre"></div>
-
         </div>
+
+
+        <h2>Jogadores e dinheiro</h2>
+
+        <div id="listaJogadores"></div>
+
+
+        <h2>Missões cadastradas</h2>
+
+        <div
+            id="listaAdminMissoes"
+        ></div>
 
     </div>
 
 </div>
 
+</div>
 
-<!-- ============================= -->
-<!-- FIREBASE -->
-<!-- ============================= -->
+
+<!-- =========================
+     FIREBASE
+========================= -->
 
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
 
@@ -539,21 +699,29 @@ button:hover{
 
 const firebaseConfig = {
 
-    apiKey: "AIzaSyBwAUhihZQ3kwDU9eDqasUurXXLbPBdJqg",
+    apiKey:
+        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBdJqg",
 
-    authDomain: "gta-rpg.firebaseapp.com",
+    authDomain:
+        "gta-rpg.firebaseapp.com",
 
-    databaseURL: "https://gta-rpg-default-rtdb.firebaseio.com",
+    databaseURL:
+        "https://gta-rpg-default-rtdb.firebaseio.com",
 
-    projectId: "gta-rpg",
+    projectId:
+        "gta-rpg",
 
-    storageBucket: "gta-rpg.firebasestorage.app",
+    storageBucket:
+        "gta-rpg.firebasestorage.app",
 
-    messagingSenderId: "318963858414",
+    messagingSenderId:
+        "318963858414",
 
-    appId: "1:318963858414:web:cc7122486ac5a3d267ecff",
+    appId:
+        "1:318963858414:web:cc7122486ac5a3d267ecff",
 
-    measurementId: "G-K157521F0H"
+    measurementId:
+        "G-K157521F0H"
 
 };
 
@@ -582,164 +750,55 @@ const usuarios = {
 
 let usuarioAtual = null;
 
+let saldos = {};
 
-/* =========================
-   DADOS
-========================= */
-
-let saldos = {
-
-    Kaius: 0,
-
-    Gaby: 0,
-
-    Duda: 0
-
-};
-
-
-let missoes = [];
+let missoes = {};
 
 let missoesAceitas = {};
 
 
 /* =========================
-   CARREGAR SALDOS
+   ABRIR IMÓVEIS
 ========================= */
-
-banco.ref("saldos").on("value", function(snapshot){
-
-    const dados = snapshot.val();
-
-    if(dados){
-
-        saldos = dados;
-
-    }
-
-    else{
-
-        banco.ref("saldos").set({
-
-            Kaius: 0,
-
-            Gaby: 0,
-
-            Duda: 0
-
-        });
-
-    }
-
-    atualizarTudo();
-
-});
-
-
-/* =========================
-   CARREGAR MISSÕES
-========================= */
-
-banco.ref("missoes").on("value", function(snapshot){
-
-    const dados = snapshot.val();
-
-    if(dados){
-
-        missoes = Object.values(dados);
-
-    }
-
-    else{
-
-        missoes = [];
-
-    }
-
-    atualizarTudo();
-
-});
-
-
-/* =========================
-   CARREGAR ACEITAÇÕES
-========================= */
-
-banco.ref("missoesAceitas").on("value", function(snapshot){
-
-    missoesAceitas =
-        snapshot.val() || {};
-
-    atualizarTudo();
-
-});
-
-
-/* =========================
-   NAVEGAÇÃO
-========================= */
-
-function esconderTodas(){
-
-    document.getElementById("inicio")
-        .classList.add("escondido");
-
-    document.getElementById("imoveis")
-        .classList.add("escondido");
-
-    document.getElementById("login")
-        .classList.add("escondido");
-
-    document.getElementById("sistema")
-        .classList.add("escondido");
-
-}
-
-
-function voltarInicio(){
-
-    esconderTodas();
-
-    document.getElementById("inicio")
-        .classList.remove("escondido");
-
-}
-
 
 function abrirImoveis(){
 
-    esconderTodas();
-
-    document.getElementById("imoveis")
-        .classList.remove("escondido");
-
-}
-
-
-function abrirLogin(){
-
-    esconderTodas();
-
-    document.getElementById("login")
-        .classList.remove("escondido");
+    window.location.href = "./imoveis.html";
 
 }
 
 
 /* =========================
-   LOGIN
+   LOGIN LESTER
 ========================= */
+
+function abrirLogin(){
+
+    document
+        .getElementById("central")
+        .classList.add("escondido");
+
+    document
+        .getElementById("login")
+        .classList.remove("escondido");
+
+}
+
 
 function fazerLogin(){
 
-    let usuario =
-        document.getElementById("loginUsuario")
-        .value.trim();
+    const usuario =
+        document
+        .getElementById("usuarioLogin")
+        .value
+        .trim();
 
 
-    let senha =
-        document.getElementById("loginSenha")
-        .value.trim();
+    const senha =
+        document
+        .getElementById("senhaLogin")
+        .value
+        .trim();
 
 
     if(
@@ -749,22 +808,21 @@ function fazerLogin(){
 
         usuarioAtual = usuario;
 
-        document.getElementById("loginUsuario")
-            .value = "";
 
-        document.getElementById("loginSenha")
-            .value = "";
+        sessionStorage.setItem(
+            "usuarioAtual",
+            usuario
+        );
 
-        document.getElementById("erroLogin")
-            .innerText = "";
 
-        abrirSistema();
+        abrirLester();
 
     }
 
     else{
 
-        document.getElementById("erroLogin")
+        document
+            .getElementById("erroLogin")
             .innerText =
             "Usuário ou senha incorretos.";
 
@@ -774,166 +832,307 @@ function fazerLogin(){
 
 
 /* =========================
-   ABRIR SISTEMA
+   ABRIR LESTER
 ========================= */
 
-function abrirSistema(){
+function abrirLester(){
 
-    esconderTodas();
+    document
+        .getElementById("central")
+        .classList.add("escondido");
 
-    document.getElementById("sistema")
+    document
+        .getElementById("login")
+        .classList.add("escondido");
+
+    document
+        .getElementById("lester")
         .classList.remove("escondido");
 
 
-    document.getElementById("nomeUsuario")
+    document
+        .getElementById("nomeUsuario")
         .innerText = usuarioAtual;
 
 
     if(usuarioAtual === "Italo"){
 
-        document.getElementById("painelMestre")
+        document
+            .getElementById("abaAdmin")
             .classList.remove("escondido");
 
     }
 
-    else{
 
-        document.getElementById("painelMestre")
-            .classList.add("escondido");
+    carregarDados();
+
+}
+
+
+/* =========================
+   LOGIN SALVO
+========================= */
+
+const usuarioSalvo =
+    sessionStorage.getItem("usuarioAtual");
+
+
+if(
+    usuarioSalvo &&
+    usuarios[usuarioSalvo]
+){
+
+    usuarioAtual = usuarioSalvo;
+
+    abrirLester();
+
+}
+
+
+/* =========================
+   CARREGAR DADOS
+========================= */
+
+function carregarDados(){
+
+
+    /* SALDOS */
+
+    banco
+        .ref("saldos")
+        .on("value",function(snapshot){
+
+            saldos =
+                snapshot.val() || {};
+
+
+            document
+                .getElementById("saldoUsuario")
+                .innerText =
+                Number(
+                    saldos[usuarioAtual] || 0
+                ).toLocaleString("pt-BR");
+
+
+            mostrarJogadores();
+
+        });
+
+
+    /* MISSÕES */
+
+    banco
+        .ref("missoes")
+        .on("value",function(snapshot){
+
+            missoes =
+                snapshot.val() || {};
+
+
+            mostrarMissoes();
+
+            mostrarAdminMissoes();
+
+        });
+
+
+    /* ACEITAS */
+
+    banco
+        .ref("missoesAceitas")
+        .on("value",function(snapshot){
+
+            missoesAceitas =
+                snapshot.val() || {};
+
+
+            mostrarMissoes();
+
+            mostrarAdminMissoes();
+
+        });
+
+}
+
+
+/* =========================
+   ABAS
+========================= */
+
+function mostrarAbaLester(aba){
+
+    document
+        .getElementById("areaMissoes")
+        .classList.add("escondido");
+
+    document
+        .getElementById("areaAdmin")
+        .classList.add("escondido");
+
+
+    document
+        .getElementById("abaMissoes")
+        .classList.remove("ativa");
+
+    document
+        .getElementById("abaAdmin")
+        .classList.remove("ativa");
+
+
+    if(aba === "missoes"){
+
+        document
+            .getElementById("areaMissoes")
+            .classList.remove("escondido");
+
+        document
+            .getElementById("abaMissoes")
+            .classList.add("ativa");
 
     }
 
 
-    atualizarTudo();
+    if(
+        aba === "admin" &&
+        usuarioAtual === "Italo"
+    ){
+
+        document
+            .getElementById("areaAdmin")
+            .classList.remove("escondido");
+
+        document
+            .getElementById("abaAdmin")
+            .classList.add("ativa");
+
+    }
 
 }
 
 
 /* =========================
-   SAIR
+   MOSTRAR MISSÕES
 ========================= */
 
-function sair(){
+function mostrarMissoes(){
 
-    usuarioAtual = null;
-
-    voltarInicio();
-
-}
+    const lista =
+        document.getElementById("listaMissoes");
 
 
-/* =========================
-   ATUALIZAR TUDO
-========================= */
-
-function atualizarTudo(){
-
-    if(!usuarioAtual){
+    if(!lista){
 
         return;
 
     }
 
-
-    atualizarSaldo();
-
-    mostrarMissoes();
-
-
-    if(usuarioAtual === "Italo"){
-
-        mostrarJogadores();
-
-        mostrarMissoesMestre();
-
-    }
-
-}
-
-
-/* =========================
-   SALDO
-========================= */
-
-function atualizarSaldo(){
-
-    if(usuarioAtual === "Italo"){
-
-        document.getElementById("meuSaldo")
-            .innerText = "MESTRE";
-
-        return;
-
-    }
-
-
-    if(saldos[usuarioAtual] === undefined){
-
-        saldos[usuarioAtual] = 0;
-
-    }
-
-
-    document.getElementById("meuSaldo")
-        .innerText =
-        saldos[usuarioAtual];
-
-}
-
-
-/* =========================
-   JOGADORES
-========================= */
-
-function mostrarJogadores(){
-
-    let lista =
-        document.getElementById("listaJogadores");
 
     lista.innerHTML = "";
 
 
-    Object.keys(saldos).forEach(function(nome){
+    const agora = Date.now();
 
-        let div =
+
+    const disponiveis =
+        Object.values(missoes)
+        .filter(function(missao){
+
+            return (
+                !missao.terminaEm ||
+                missao.terminaEm > agora
+            );
+
+        });
+
+
+    if(disponiveis.length === 0){
+
+        lista.innerHTML = `
+            <div class="vazio">
+                Nenhuma missão disponível.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    disponiveis.forEach(function(missao){
+
+        const div =
             document.createElement("div");
 
 
-        div.className = "jogador";
+        div.className = "missao";
+
+
+        const aceita =
+            missoesAceitas[missao.id] &&
+            missoesAceitas[missao.id][usuarioAtual];
 
 
         div.innerHTML = `
 
-            <strong>${nome}</strong>
+            <span
+                class="cronometro"
+                data-termina="${missao.terminaEm || 0}"
+            >
+                ${formatarTempo(
+                    (missao.terminaEm || 0) - Date.now()
+                )}
+            </span>
+
+            <h3>
+                ${missao.nome}
+            </h3>
 
             <p>
-                Saldo atual:
-                <strong>$${saldos[nome]}</strong>
+                ${missao.descricao}
             </p>
 
-            <input
-                type="number"
-                id="valor-${nome}"
-                placeholder="Digite o valor"
-                min="0"
-            >
+            <p>
+                <strong>Objetivo:</strong>
+                ${missao.objetivo}
+            </p>
 
-            <div class="botoes">
+            <p class="recompensa">
+                RECOMPENSA:
+                $${Number(missao.recompensa || 0)
+                    .toLocaleString("pt-BR")}
+            </p>
 
+            <p class="prazo">
+                PRAZO:
+                ${missao.prazo || "Não informado"}
+            </p>
+
+            ${
+                aceita
+
+                ?
+
+                `
                 <button
-                    onclick="adicionarValor('${nome}')"
+                    class="btn-missao btn-cancelar"
+                    onclick="cancelarMissao('${missao.id}')"
                 >
-                    ADICIONAR DINHEIRO
+                    AH, MUDEI DE IDEIA, NÃO QUERO MAIS
                 </button>
+                `
 
+                :
+
+                `
                 <button
-                    class="btn-cancelar"
-                    onclick="retirarValor('${nome}')"
+                    class="btn-missao"
+                    onclick="aceitarMissao('${missao.id}')"
                 >
-                    RETIRAR DINHEIRO
+                    ACEITAR MISSÃO
                 </button>
+                `
 
-            </div>
+            }
 
         `;
 
@@ -946,90 +1145,53 @@ function mostrarJogadores(){
 
 
 /* =========================
-   ADICIONAR DINHEIRO
+   ACEITAR
 ========================= */
 
-function adicionarValor(nome){
+function aceitarMissao(id){
 
-    if(usuarioAtual !== "Italo"){
+    banco
+        .ref(
+            "missoesAceitas/" +
+            id +
+            "/" +
+            usuarioAtual
+        )
+        .set(true)
+        .then(function(){
 
-        return;
+            mostrarMensagem(
+                "VOCÊ ACEITOU A MISSÃO!",
+                "sucesso"
+            );
 
-    }
-
-
-    let campo =
-        document.getElementById("valor-" + nome);
-
-
-    let valor =
-        Number(campo.value);
-
-
-    if(valor <= 0){
-
-        return;
-
-    }
-
-
-    let novoSaldo =
-        Number(saldos[nome] || 0) + valor;
-
-
-    banco.ref("saldos/" + nome)
-        .set(novoSaldo);
-
-
-    campo.value = "";
+        });
 
 }
 
 
 /* =========================
-   RETIRAR DINHEIRO
+   CANCELAR
 ========================= */
 
-function retirarValor(nome){
+function cancelarMissao(id){
 
-    if(usuarioAtual !== "Italo"){
+    banco
+        .ref(
+            "missoesAceitas/" +
+            id +
+            "/" +
+            usuarioAtual
+        )
+        .remove()
+        .then(function(){
 
-        return;
+            mostrarMensagem(
+                "Você cancelou a missão.",
+                "aviso"
+            );
 
-    }
-
-
-    let campo =
-        document.getElementById("valor-" + nome);
-
-
-    let valor =
-        Number(campo.value);
-
-
-    if(valor <= 0){
-
-        return;
-
-    }
-
-
-    let novoSaldo =
-        Number(saldos[nome] || 0) - valor;
-
-
-    if(novoSaldo < 0){
-
-        novoSaldo = 0;
-
-    }
-
-
-    banco.ref("saldos/" + nome)
-        .set(novoSaldo);
-
-
-    campo.value = "";
+        });
 
 }
 
@@ -1047,42 +1209,53 @@ function criarMissao(){
     }
 
 
-    let nome =
-        document.getElementById("nomeMissao")
-        .value.trim();
+    const nome =
+        document
+        .getElementById("nomeMissao")
+        .value
+        .trim();
 
 
-    let descricao =
-        document.getElementById("descricaoMissao")
-        .value.trim();
+    const descricao =
+        document
+        .getElementById("descricaoMissao")
+        .value
+        .trim();
 
 
-    let objetivo =
-        document.getElementById("objetivoMissao")
-        .value.trim();
+    const objetivo =
+        document
+        .getElementById("objetivoMissao")
+        .value
+        .trim();
 
 
-    let recompensa =
+    const recompensa =
         Number(
-            document.getElementById("recompensaMissao")
+            document
+            .getElementById("recompensaMissao")
             .value
         );
 
 
-    let prazo =
-        document.getElementById("prazoMissao")
-        .value.trim();
+    const prazo =
+        document
+        .getElementById("prazoMissao")
+        .value
+        .trim();
 
 
-    let duracao =
+    const duracao =
         Number(
-            document.getElementById("duracaoMissao")
+            document
+            .getElementById("duracaoMissao")
             .value
         );
 
 
-    let unidade =
-        document.getElementById("unidadeTempo")
+    const unidade =
+        document
+        .getElementById("unidadeMissao")
         .value;
 
 
@@ -1090,13 +1263,12 @@ function criarMissao(){
         !nome ||
         !descricao ||
         !objetivo ||
-        !prazo ||
-        !duracao ||
-        duracao <= 0
+        recompensa < 0 ||
+        !duracao
     ){
 
         alert(
-            "Preencha todos os campos, incluindo o tempo da missão."
+            "Preencha todos os campos da missão."
         );
 
         return;
@@ -1104,471 +1276,197 @@ function criarMissao(){
     }
 
 
-    let multiplicador = 60000;
+    let duracaoMs = 0;
+
+
+    if(unidade === "minutos"){
+
+        duracaoMs =
+            duracao *
+            60 *
+            1000;
+
+    }
 
 
     if(unidade === "horas"){
 
-        multiplicador =
-            60 * 60 * 1000;
+        duracaoMs =
+            duracao *
+            60 *
+            60 *
+            1000;
 
     }
 
 
     if(unidade === "dias"){
 
-        multiplicador =
-            24 * 60 * 60 * 1000;
+        duracaoMs =
+            duracao *
+            24 *
+            60 *
+            60 *
+            1000;
 
     }
 
 
-    let criadoEm = Date.now();
+    const id =
+        String(Date.now());
 
 
-    let terminaEm =
-        criadoEm +
-        duracao * multiplicador;
+    const agora =
+        Date.now();
 
 
-    let id = Date.now();
+    const novaMissao = {
 
+        id:id,
 
-    let novaMissao = {
+        nome:nome,
 
-        id: id,
+        descricao:descricao,
 
-        nome: nome,
+        objetivo:objetivo,
 
-        descricao: descricao,
+        recompensa:recompensa,
 
-        objetivo: objetivo,
+        prazo:prazo,
 
-        recompensa: recompensa || 0,
+        duracao:duracao,
 
-        prazo: prazo,
+        unidade:unidade,
 
-        duracao: duracao,
+        criadoEm:agora,
 
-        unidade: unidade,
-
-        criadoEm: criadoEm,
-
-        terminaEm: terminaEm
+        terminaEm:
+            agora +
+            duracaoMs
 
     };
 
 
-    banco.ref("missoes/" + id)
-        .set(novaMissao);
-
-
-    document.getElementById("nomeMissao")
-        .value = "";
-
-    document.getElementById("descricaoMissao")
-        .value = "";
-
-    document.getElementById("objetivoMissao")
-        .value = "";
-
-    document.getElementById("recompensaMissao")
-        .value = "";
-
-    document.getElementById("prazoMissao")
-        .value = "";
-
-    document.getElementById("duracaoMissao")
-        .value = "";
-
-}
-
-
-/* =========================
-   EXPIRAÇÃO
-========================= */
-
-function missaoExpirou(missao){
-
-    return Date.now() >=
-        Number(missao.terminaEm);
-
-}
-
-
-/* =========================
-   FORMATAR TEMPO
-========================= */
-
-function formatarTempo(tempo){
-
-    if(tempo <= 0){
-
-        return "00:00";
-
-    }
-
-
-    let segundos =
-        Math.floor(tempo / 1000);
-
-
-    let dias =
-        Math.floor(segundos / 86400);
-
-
-    segundos %= 86400;
-
-
-    let horas =
-        Math.floor(segundos / 3600);
-
-
-    segundos %= 3600;
-
-
-    let minutos =
-        Math.floor(segundos / 60);
-
-
-    segundos %= 60;
-
-
-    let resultado = "";
-
-
-    if(dias > 0){
-
-        resultado +=
-            String(dias).padStart(2,"0")
-            + ":";
-
-    }
-
-
-    if(horas > 0 || dias > 0){
-
-        resultado +=
-            String(horas).padStart(2,"0")
-            + ":";
-
-    }
-
-
-    resultado +=
-        String(minutos).padStart(2,"0")
-        + ":";
-
-
-    resultado +=
-        String(segundos).padStart(2,"0");
-
-
-    return resultado;
-
-}
-
-
-/* =========================
-   MOSTRAR MISSÕES
-========================= */
-
-function mostrarMissoes(){
-
-    let lista =
-        document.getElementById("listaMissoes");
-
-
-    if(!lista){
-
-        return;
-
-    }
-
-
-    lista.innerHTML = "";
-
-
-    let ativas =
-        missoes.filter(function(missao){
-
-            return !missaoExpirou(missao);
-
-        });
-
-
-    if(ativas.length === 0){
-
-        lista.innerHTML =
-            "<p style='color:#777;'>Nenhuma missão disponível no momento.</p>";
-
-        return;
-
-    }
-
-
-    ativas.sort(function(a,b){
-
-        return Number(a.criadoEm) -
-               Number(b.criadoEm);
-
-    });
-
-
-    ativas.forEach(function(missao){
-
-        let div =
-            document.createElement("div");
-
-
-        div.className = "missao";
-
-
-        let aceita = false;
-
-
-        if(
-            missoesAceitas[missao.id] &&
-            missoesAceitas[missao.id][usuarioAtual]
-        ){
-
-            aceita = true;
-
-        }
-
-
-        let html = `
-
-            <div
-                class="cronometro"
-                id="timer-${missao.id}"
-            >
-                ${formatarTempo(
-                    missao.terminaEm - Date.now()
-                )}
-            </div>
-
-
-            <h3>${missao.nome}</h3>
-
-            <p>
-                <strong>Descrição:</strong><br>
-                ${missao.descricao}
-            </p>
-
-            <p>
-                <strong>Objetivo:</strong><br>
-                ${missao.objetivo}
-            </p>
-
-            <p>
-                <strong>Recompensa:</strong>
-                $${missao.recompensa}
-            </p>
-
-            <p>
-                <strong>Prazo:</strong>
-                ${missao.prazo}
-            </p>
-
-        `;
-
-
-        if(aceita){
-
-            html += `
-
-                <div class="confirmacao">
-                    VOCÊ ACEITOU A MISSÃO!
-                </div>
-
-                <button
-                    class="btn-cancelar"
-                    onclick="cancelarMissao(${missao.id})"
-                >
-                    AH, MUDEI DE IDEIA, NÃO QUERO MAIS
-                </button>
-
-            `;
-
-        }
-
-        else{
-
-            html += `
-
-                <button
-                    onclick="aceitarMissao(${missao.id})"
-                >
-                    ACEITAR MISSÃO
-                </button>
-
-            `;
-
-        }
-
-
-        div.innerHTML = html;
-
-
-        lista.appendChild(div);
-
-    });
-
-}
-
-
-/* =========================
-   ACEITAR MISSÃO
-========================= */
-
-function aceitarMissao(id){
-
-    let missao =
-        missoes.find(function(m){
-
-            return Number(m.id) === Number(id);
-
-        });
-
-
-    if(!missao){
-
-        return;
-
-    }
-
-
-    if(missaoExpirou(missao)){
-
-        alert(
-            "Essa missão já expirou."
-        );
-
-        return;
-
-    }
-
-
-    banco.ref(
-        "missoesAceitas/" +
-        id +
-        "/" +
-        usuarioAtual
-    ).set(true);
-
-}
-
-
-/* =========================
-   CANCELAR MISSÃO
-========================= */
-
-function cancelarMissao(id){
-
-    banco.ref(
-        "missoesAceitas/" +
-        id +
-        "/" +
-        usuarioAtual
-    ).remove();
-
-}
-
-
-/* =========================
-   PAINEL DO MESTRE
-========================= */
-
-function mostrarMissoesMestre(){
-
-    let lista =
-        document.getElementById("missoesMestre");
-
-
-    if(!lista){
-
-        return;
-
-    }
-
-
-    lista.innerHTML = "";
-
-
-    if(missoes.length === 0){
-
-        lista.innerHTML =
-            "<p style='color:#777;'>Nenhuma missão criada.</p>";
-
-        return;
-
-    }
-
-
-    missoes.sort(function(a,b){
-
-        return Number(a.criadoEm) -
-               Number(b.criadoEm);
-
-    });
-
-
-    missoes.forEach(function(missao){
-
-        let div =
-            document.createElement("div");
-
-
-        div.className = "jogador";
-
-
-        let aceitos =
-            missoesAceitas[missao.id] || {};
-
-
-        let nomes =
-            Object.keys(aceitos);
-
-
-        let textoAceitos =
-            nomes.length > 0
-            ? nomes.join(", ")
-            : "Ninguém aceitou ainda.";
-
-
-        let status =
-            missaoExpirou(missao)
-            ? "EXPIRADA"
-            : formatarTempo(
-                missao.terminaEm - Date.now()
+    banco
+        .ref(
+            "missoes/" + id
+        )
+        .set(novaMissao)
+        .then(function(){
+
+            document
+                .getElementById("nomeMissao")
+                .value = "";
+
+            document
+                .getElementById("descricaoMissao")
+                .value = "";
+
+            document
+                .getElementById("objetivoMissao")
+                .value = "";
+
+            document
+                .getElementById("recompensaMissao")
+                .value = "";
+
+            document
+                .getElementById("prazoMissao")
+                .value = "";
+
+            document
+                .getElementById("duracaoMissao")
+                .value = "";
+
+
+            mostrarMensagem(
+                "Missão criada com sucesso!",
+                "sucesso"
             );
+
+        });
+
+}
+
+
+/* =========================
+   JOGADORES
+========================= */
+
+function mostrarJogadores(){
+
+    if(usuarioAtual !== "Italo"){
+
+        return;
+
+    }
+
+
+    const lista =
+        document
+        .getElementById("listaJogadores");
+
+
+    lista.innerHTML = "";
+
+
+    Object.keys(usuarios)
+    .filter(function(nome){
+
+        return nome !== "Italo";
+
+    })
+    .forEach(function(nome){
+
+        const div =
+            document.createElement("div");
+
+
+        div.className =
+            "admin-jogador";
 
 
         div.innerHTML = `
 
             <strong>
-                ${missao.nome}
+                ${nome}
             </strong>
 
-            <p>
-                Tempo restante:
-                <strong>${status}</strong>
-            </p>
+            <div>
+                Saldo:
+                $${Number(
+                    saldos[nome] || 0
+                ).toLocaleString("pt-BR")}
+            </div>
 
-            <p>
-                Jogadores que aceitaram:
-            </p>
-
-            <p class="aceitos">
-                ${textoAceitos}
-            </p>
+            <br>
 
             <button
-                class="btn-cancelar"
-                onclick="removerMissao(${missao.id})"
+                class="btn-pequeno"
+                onclick="alterarSaldo('${nome}',100)"
             >
-                REMOVER MISSÃO
+                +$100
+            </button>
+
+            <button
+                class="btn-pequeno"
+                onclick="alterarSaldo('${nome}',1000)"
+            >
+                +$1.000
+            </button>
+
+            <button
+                class="btn-pequeno"
+                onclick="alterarSaldo('${nome}',-100)"
+            >
+                -$100
+            </button>
+
+            <button
+                class="btn-pequeno"
+                onclick="alterarSaldo('${nome}',-1000)"
+            >
+                -$1.000
             </button>
 
         `;
@@ -1582,10 +1480,10 @@ function mostrarMissoesMestre(){
 
 
 /* =========================
-   REMOVER MISSÃO
+   ALTERAR SALDO
 ========================= */
 
-function removerMissao(id){
+function alterarSaldo(nome,valor){
 
     if(usuarioAtual !== "Italo"){
 
@@ -1594,89 +1492,270 @@ function removerMissao(id){
     }
 
 
-    banco.ref("missoes/" + id)
-        .remove();
+    const saldo =
+        Number(saldos[nome] || 0);
 
 
-    banco.ref("missoesAceitas/" + id)
-        .remove();
+    const novoSaldo =
+        Math.max(
+            0,
+            saldo + valor
+        );
+
+
+    banco
+        .ref(
+            "saldos/" + nome
+        )
+        .set(novoSaldo);
 
 }
 
 
 /* =========================
-   CRONÔMETROS
+   ADMIN MISSÕES
 ========================= */
 
-function atualizarCronometros(){
+function mostrarAdminMissoes(){
 
-    if(!usuarioAtual){
+    if(usuarioAtual !== "Italo"){
 
         return;
 
     }
 
 
-    let algumaExpirou = false;
+    const lista =
+        document
+        .getElementById(
+            "listaAdminMissoes"
+        );
 
 
-    missoes.forEach(function(missao){
+    if(!lista){
 
-        let elemento =
-            document.getElementById(
-                "timer-" + missao.id
-            );
+        return;
+
+    }
 
 
-        if(!elemento){
+    lista.innerHTML = "";
 
-            return;
+
+    Object.values(missoes)
+    .forEach(function(missao){
+
+        const div =
+            document.createElement("div");
+
+
+        div.className =
+            "admin-jogador";
+
+
+        let aceitos = [];
+
+
+        if(
+            missoesAceitas[missao.id]
+        ){
+
+            aceitos =
+                Object.keys(
+                    missoesAceitas[
+                        missao.id
+                    ]
+                );
 
         }
 
 
-        let restante =
-            Number(missao.terminaEm) -
-            Date.now();
+        div.innerHTML = `
+
+            <strong>
+                ${missao.nome}
+            </strong>
+
+            <p>
+                Recompensa:
+                $${Number(
+                    missao.recompensa || 0
+                ).toLocaleString("pt-BR")}
+            </p>
+
+            <p>
+                Aceitaram:
+                ${
+                    aceitos.length
+                    ?
+                    aceitos.join(", ")
+                    :
+                    "Ninguém"
+                }
+            </p>
+
+            <button
+                class="btn-pequeno"
+                onclick="excluirMissao('${missao.id}')"
+            >
+                EXCLUIR MISSÃO
+            </button>
+
+        `;
 
 
-        if(restante <= 0){
-
-            elemento.innerText =
-                "00:00";
-
-
-            elemento.classList.add(
-                "expirado"
-            );
-
-
-            algumaExpirou = true;
-
-        }
-
-        else{
-
-            elemento.innerText =
-                formatarTempo(restante);
-
-        }
+        lista.appendChild(div);
 
     });
 
-
-    if(algumaExpirou){
-
-        mostrarMissoes();
+}
 
 
-        if(usuarioAtual === "Italo"){
+/* =========================
+   EXCLUIR MISSÃO
+========================= */
 
-            mostrarMissoesMestre();
+function excluirMissao(id){
 
-        }
+    if(usuarioAtual !== "Italo"){
+
+        return;
 
     }
+
+
+    if(
+        !confirm(
+            "Deseja excluir esta missão?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const atualizacoes = {};
+
+
+    atualizacoes[
+        "missoes/" + id
+    ] = null;
+
+
+    atualizacoes[
+        "missoesAceitas/" + id
+    ] = null;
+
+
+    banco
+        .ref()
+        .update(atualizacoes);
+
+}
+
+
+/* =========================
+   CRONÔMETRO
+========================= */
+
+function formatarTempo(ms){
+
+    if(ms <= 0){
+
+        return "EXPIRADA";
+
+    }
+
+
+    let segundos =
+        Math.floor(ms / 1000);
+
+
+    const dias =
+        Math.floor(
+            segundos / 86400
+        );
+
+
+    segundos %= 86400;
+
+
+    const horas =
+        Math.floor(
+            segundos / 3600
+        );
+
+
+    segundos %= 3600;
+
+
+    const minutos =
+        Math.floor(
+            segundos / 60
+        );
+
+
+    segundos %= 60;
+
+
+    if(dias > 0){
+
+        return (
+            dias + "d " +
+            horas + "h " +
+            minutos + "m"
+        );
+
+    }
+
+
+    if(horas > 0){
+
+        return (
+            horas + "h " +
+            minutos + "m " +
+            segundos + "s"
+        );
+
+    }
+
+
+    return (
+        minutos + "m " +
+        segundos + "s"
+    );
+
+}
+
+
+function atualizarCronometros(){
+
+    document
+        .querySelectorAll(
+            ".cronometro"
+        )
+        .forEach(function(elemento){
+
+            const termina =
+                Number(
+                    elemento
+                    .dataset
+                    .termina
+                );
+
+
+            const restante =
+                termina -
+                Date.now();
+
+
+            elemento.innerText =
+                formatarTempo(
+                    restante
+                );
+
+        });
 
 }
 
@@ -1685,6 +1764,83 @@ setInterval(
     atualizarCronometros,
     1000
 );
+
+
+/* =========================
+   MENSAGEM
+========================= */
+
+function mostrarMensagem(
+    texto,
+    tipo
+){
+
+    const elemento =
+        document
+        .getElementById(
+            "mensagem"
+        );
+
+
+    elemento.innerHTML =
+        `
+        <div class="mensagem ${tipo}">
+            ${texto}
+        </div>
+        `;
+
+
+    setTimeout(function(){
+
+        elemento.innerHTML = "";
+
+    },5000);
+
+}
+
+
+/* =========================
+   SAIR
+========================= */
+
+function sairLester(){
+
+    sessionStorage.removeItem(
+        "usuarioAtual"
+    );
+
+
+    usuarioAtual = null;
+
+
+    document
+        .getElementById("lester")
+        .classList.add("escondido");
+
+
+    document
+        .getElementById("central")
+        .classList.remove("escondido");
+
+}
+
+
+/* =========================
+   VOLTAR
+========================= */
+
+function voltarCentral(){
+
+    document
+        .getElementById("login")
+        .classList.add("escondido");
+
+
+    document
+        .getElementById("central")
+        .classList.remove("escondido");
+
+}
 
 </script>
 
