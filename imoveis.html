@@ -1,0 +1,2545 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Los Santos Imóveis</title>
+
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+
+<style>
+
+/* ==================================================
+   GERAL
+================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f7f7;
+    color: #222;
+}
+
+
+/* ==================================================
+   LOGIN
+================================================== */
+
+#telaLogin {
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #f3f3f3
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 9999;
+
+}
+
+
+.login-container {
+
+    width: 90%;
+
+    max-width: 400px;
+
+    background: white;
+
+    padding: 40px 35px;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.12);
+
+    text-align: center;
+
+    border-top: 5px solid #c90000;
+
+}
+
+
+.login-logo {
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+    color: #c90000;
+
+    margin-bottom: 5px;
+
+}
+
+
+.login-logo span {
+
+    color: #222;
+
+}
+
+
+.login-subtitulo {
+
+    color: #777;
+
+    margin-bottom: 30px;
+
+}
+
+
+.login-campo {
+
+    text-align: left;
+
+    margin-bottom: 18px;
+
+}
+
+
+.login-campo label {
+
+    display: block;
+
+    font-weight: bold;
+
+    margin-bottom: 7px;
+
+}
+
+
+.login-campo input {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+
+    outline: none;
+
+}
+
+
+.login-campo input:focus {
+
+    border-color: #c90000;
+
+    box-shadow:
+        0 0 0 2px rgba(201,0,0,0.08);
+
+}
+
+
+.btn-login {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #c90000;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.btn-login:hover {
+
+    background: #a80000;
+
+}
+
+
+.erro-login {
+
+    color: #c90000;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    margin-top: 15px;
+
+    display: none;
+
+}
+
+
+/* ==================================================
+   SITE
+================================================== */
+
+#site {
+
+    display: none;
+
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+header {
+
+    background: white;
+
+    border-bottom: 3px solid #c90000;
+
+    padding: 18px 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+}
+
+
+.logo {
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #c90000;
+
+}
+
+
+.logo span {
+
+    color: #222;
+
+}
+
+
+.usuario-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+
+.saldo {
+
+    font-weight: bold;
+
+    background: #f3f3f3;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+}
+
+
+.usuario {
+
+    font-weight: bold;
+
+}
+
+
+.btn-sair {
+
+    border: none;
+
+    background: #222;
+
+    color: white;
+
+    padding: 9px 13px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+}
+
+
+.btn-sair:hover {
+
+    background: #444;
+
+}
+
+
+/* ==================================================
+   MENU
+================================================== */
+
+nav {
+
+    background: white;
+
+    padding: 12px 35px;
+
+    border-bottom: 1px solid #ddd;
+
+}
+
+
+nav button {
+
+    border: none;
+
+    background: transparent;
+
+    color: #555;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-right: 20px;
+
+    padding: 8px 0;
+
+}
+
+
+nav button:hover {
+
+    color: #c90000;
+
+}
+
+
+nav button.ativo {
+
+    color: #c90000;
+
+    border-bottom: 2px solid #c90000;
+
+}
+
+
+/* ==================================================
+   CONTEÚDO
+================================================== */
+
+.container {
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 35px 20px;
+
+}
+
+
+.titulo {
+
+    margin-bottom: 25px;
+
+}
+
+
+.titulo h1 {
+
+    margin: 0;
+
+    font-size: 30px;
+
+}
+
+
+.titulo p {
+
+    color: #777;
+
+}
+
+
+/* ==================================================
+   IMÓVEIS
+================================================== */
+
+.imoveis {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(280px, 1fr)
+        );
+
+    gap: 25px;
+
+}
+
+
+.imovel {
+
+    background: white;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.08);
+
+    transition: 0.2s;
+
+}
+
+
+.imovel:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.12);
+
+}
+
+
+.imovel img {
+
+    width: 100%;
+
+    height: 200px;
+
+    object-fit: cover;
+
+    background: #ddd;
+
+}
+
+
+.imovel-conteudo {
+
+    padding: 20px;
+
+}
+
+
+.imovel h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 8px;
+
+}
+
+
+.localizacao {
+
+    color: #777;
+
+    font-size: 14px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.descricao {
+
+    color: #555;
+
+    line-height: 1.5;
+
+    min-height: 70px;
+
+}
+
+
+.preco {
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    color: #c90000;
+
+    margin: 18px 0;
+
+}
+
+
+.comprar {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #c90000;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+}
+
+
+.comprar:hover {
+
+    background: #a80000;
+
+}
+
+
+/* ==================================================
+   ADMIN
+================================================== */
+
+.admin-box {
+
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.08);
+
+    margin-bottom: 30px;
+
+}
+
+
+.admin-box h2 {
+
+    margin-top: 0;
+
+    color: #c90000;
+
+}
+
+
+.campo {
+
+    margin-bottom: 15px;
+
+}
+
+
+.campo label {
+
+    display: block;
+
+    font-weight: bold;
+
+    margin-bottom: 6px;
+
+}
+
+
+.campo input,
+.campo textarea {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 7px;
+
+    font-family: Arial;
+
+}
+
+
+.campo textarea {
+
+    min-height: 100px;
+
+    resize: vertical;
+
+}
+
+
+.btn-adicionar {
+
+    background: #c90000;
+
+    color: white;
+
+    border: none;
+
+    padding: 13px 20px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+}
+
+
+.btn-adicionar:hover {
+
+    background: #a80000;
+
+}
+
+
+.btn-excluir {
+
+    width: 100%;
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #222;
+
+    color: white;
+
+    cursor: pointer;
+
+    margin-top: 8px;
+
+}
+
+
+/* ==================================================
+   PROPRIETÁRIO
+================================================== */
+
+.proprietario {
+
+    background: #f3f3f3;
+
+    padding: 10px;
+
+    border-radius: 7px;
+
+    margin-top: 10px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+}
+
+
+/* ==================================================
+   MENSAGEM
+================================================== */
+
+.mensagem {
+
+    position: fixed;
+
+    top: 90px;
+
+    right: 20px;
+
+    padding: 15px 20px;
+
+    border-radius: 8px;
+
+    color: white;
+
+    font-weight: bold;
+
+    display: none;
+
+    z-index: 999;
+
+}
+
+
+.sucesso {
+
+    background: #168a32;
+
+}
+
+
+.erro {
+
+    background: #c90000;
+
+}
+
+
+/* ==================================================
+   VAZIO
+================================================== */
+
+.vazio {
+
+    background: white;
+
+    padding: 50px 20px;
+
+    text-align: center;
+
+    border-radius: 12px;
+
+    color: #777;
+
+}
+
+
+/* ==================================================
+   RESPONSIVO
+================================================== */
+
+@media (max-width: 600px) {
+
+    header {
+
+        padding: 15px;
+
+        flex-direction: column;
+
+        gap: 12px;
+
+        align-items: flex-start;
+
+    }
+
+    .usuario-area {
+
+        width: 100%;
+
+        justify-content: space-between;
+
+    }
+
+    .logo {
+
+        font-size: 20px;
+
+    }
+
+    nav {
+
+        padding: 10px 15px;
+
+        overflow-x: auto;
+
+        white-space: nowrap;
+
+    }
+
+    .container {
+
+        padding: 25px 15px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     LOGIN
+================================================== -->
+
+<div id="telaLogin">
+
+
+    <div class="login-container">
+
+
+        <div class="login-logo">
+
+            LOS SANTOS
+            <span>IMÓVEIS</span>
+
+        </div>
+
+
+        <div class="login-subtitulo">
+
+            Acesso ao mercado imobiliário
+
+        </div>
+
+
+        <div class="login-campo">
+
+            <label>
+                Usuário
+            </label>
+
+            <input
+                type="text"
+                id="loginUsuario"
+                placeholder="Digite seu usuário"
+                autocomplete="off">
+
+        </div>
+
+
+        <div class="login-campo">
+
+            <label>
+                Senha
+            </label>
+
+            <input
+                type="password"
+                id="loginSenha"
+                placeholder="Digite sua senha">
+
+        </div>
+
+
+        <button
+            class="btn-login"
+            onclick="fazerLogin()">
+
+            ENTRAR
+
+        </button>
+
+
+        <div
+            id="erroLogin"
+            class="erro-login">
+
+            Usuário ou senha incorretos.
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     SITE
+================================================== -->
+
+<div id="site">
+
+
+<header>
+
+
+    <div class="logo">
+
+        LOS SANTOS
+        <span>IMÓVEIS</span>
+
+    </div>
+
+
+    <div class="usuario-area">
+
+
+        <div class="usuario">
+
+            <span id="nomeUsuario">
+                Jogador
+            </span>
+
+        </div>
+
+
+        <div class="saldo">
+
+            Saldo:
+
+            <span id="saldo">
+                Carregando...
+            </span>
+
+        </div>
+
+
+        <button
+            class="btn-sair"
+            onclick="sair()">
+
+            SAIR
+
+        </button>
+
+
+    </div>
+
+</header>
+
+
+<nav>
+
+
+    <button
+        id="btnDisponiveis"
+        class="ativo"
+        onclick="mostrarAba('disponiveis')">
+
+        Imóveis à venda
+
+    </button>
+
+
+    <button
+        id="btnAdquiridos"
+        onclick="mostrarAba('adquiridos')">
+
+        Imóveis adquiridos
+
+    </button>
+
+
+    <button
+        id="btnAdmin"
+        onclick="mostrarAba('admin')"
+        style="display:none;">
+
+        Administrador
+
+    </button>
+
+
+</nav>
+
+
+<div
+    id="mensagem"
+    class="mensagem">
+</div>
+
+
+<main class="container">
+
+
+<!-- ==================================================
+     DISPONÍVEIS
+================================================== -->
+
+<section id="disponiveis">
+
+
+    <div class="titulo">
+
+        <h1>
+            Imóveis disponíveis
+        </h1>
+
+        <p>
+            Encontre seu próximo imóvel em Los Santos.
+        </p>
+
+    </div>
+
+
+    <div
+        id="listaImoveis"
+        class="imoveis">
+
+    </div>
+
+
+</section>
+
+
+<!-- ==================================================
+     ADQUIRIDOS
+================================================== -->
+
+<section
+    id="adquiridos"
+    style="display:none;">
+
+
+    <div class="titulo">
+
+        <h1>
+            Imóveis adquiridos
+        </h1>
+
+        <p>
+            Aqui estão os imóveis que você possui.
+        </p>
+
+    </div>
+
+
+    <div
+        id="listaAdquiridos"
+        class="imoveis">
+
+    </div>
+
+
+</section>
+
+
+<!-- ==================================================
+     ADMIN
+================================================== -->
+
+<section
+    id="admin"
+    style="display:none;">
+
+
+    <div class="titulo">
+
+        <h1>
+            Painel do administrador
+        </h1>
+
+        <p>
+            Gerencie os imóveis de Los Santos.
+        </p>
+
+    </div>
+
+
+    <div class="admin-box">
+
+
+        <h2>
+            Adicionar imóvel
+        </h2>
+
+
+        <div class="campo">
+
+            <label>
+                Nome do imóvel
+            </label>
+
+            <input
+                type="text"
+                id="nomeImovel"
+                placeholder="Ex: Casa em Vinewood">
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Localização
+            </label>
+
+            <input
+                type="text"
+                id="localizacaoImovel"
+                placeholder="Ex: Vinewood Hills">
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Descrição
+            </label>
+
+            <textarea
+                id="descricaoImovel"
+                placeholder="Descrição do imóvel..."></textarea>
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Preço
+            </label>
+
+            <input
+                type="number"
+                id="precoImovel"
+                placeholder="Ex: 250000">
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                URL da foto
+            </label>
+
+            <input
+                type="text"
+                id="fotoImovel"
+                placeholder="https://...">
+
+        </div>
+
+
+        <button
+            class="btn-adicionar"
+            onclick="adicionarImovel()">
+
+            ADICIONAR IMÓVEL
+
+        </button>
+
+
+    </div>
+
+
+    <h2>
+        Imóveis cadastrados
+    </h2>
+
+
+    <div
+        id="listaAdmin"
+        class="imoveis">
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<script>
+
+
+/* ==================================================
+   FIREBASE
+================================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBdJqg",
+
+    authDomain:
+        "gta-rpg.firebaseapp.com",
+
+    databaseURL:
+        "https://gta-rpg-default-rtdb.firebaseio.com",
+
+    projectId:
+        "gta-rpg",
+
+    storageBucket:
+        "gta-rpg.firebasestorage.app",
+
+    messagingSenderId:
+        "318963858414",
+
+    appId:
+        "1:318963858414:web:cc7122486ac5a3d267ecff",
+
+    measurementId:
+        "G-K157521F0H"
+
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const banco =
+    firebase.database();
+
+
+
+/* ==================================================
+   USUÁRIOS
+================================================== */
+
+const usuarios = {
+
+    Kaius: "28/09",
+
+    Gaby: "22/09",
+
+    Duda: "13/09",
+
+    Italo: "1822"
+
+};
+
+
+let usuarioAtual = null;
+
+
+
+/* ==================================================
+   LOGIN
+================================================== */
+
+function fazerLogin() {
+
+
+    const usuario =
+        document.getElementById(
+            "loginUsuario"
+        ).value.trim();
+
+
+    const senha =
+        document.getElementById(
+            "loginSenha"
+        ).value;
+
+
+    const erro =
+        document.getElementById(
+            "erroLogin"
+        );
+
+
+    if (
+        usuarios[usuario] &&
+        usuarios[usuario] === senha
+    ) {
+
+
+        usuarioAtual =
+            usuario;
+
+
+        sessionStorage.setItem(
+            "usuarioAtual",
+            usuario
+        );
+
+
+        erro.style.display =
+            "none";
+
+
+        entrarNoSite();
+
+
+    } else {
+
+
+        erro.style.display =
+            "block";
+
+    }
+
+}
+
+
+
+/* ==================================================
+   ENTER NO LOGIN
+================================================== */
+
+document.getElementById(
+    "loginSenha"
+).addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            fazerLogin();
+
+        }
+
+    }
+);
+
+
+
+/* ==================================================
+   ENTRAR NO SITE
+================================================== */
+
+function entrarNoSite() {
+
+
+    document.getElementById(
+        "telaLogin"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "site"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "nomeUsuario"
+    ).innerText =
+        usuarioAtual;
+
+
+    if (
+        usuarioAtual === "Italo"
+    ) {
+
+        document.getElementById(
+            "btnAdmin"
+        ).style.display =
+            "inline-block";
+
+    }
+
+
+    iniciarSistema();
+
+}
+
+
+
+/* ==================================================
+   VERIFICAR SESSÃO
+================================================== */
+
+const sessao =
+    sessionStorage.getItem(
+        "usuarioAtual"
+    );
+
+
+if (
+    sessao &&
+    usuarios[sessao]
+) {
+
+    usuarioAtual =
+        sessao;
+
+    entrarNoSite();
+
+}
+
+
+
+/* ==================================================
+   SAIR
+================================================== */
+
+function sair() {
+
+
+    sessionStorage.removeItem(
+        "usuarioAtual"
+    );
+
+
+    location.reload();
+
+}
+
+
+
+/* ==================================================
+   SALDO
+================================================== */
+
+let saldoAtual = 0;
+
+let imoveis = {};
+
+let compras = {};
+
+
+function iniciarSistema() {
+
+
+    /* ==============================
+       SALDO DO MISSÕES DO LESTER
+    ============================== */
+
+    banco.ref(
+        "saldos/" + usuarioAtual
+    ).on(
+        "value",
+        function(snapshot) {
+
+
+            saldoAtual =
+                Number(
+                    snapshot.val()
+                ) || 0;
+
+
+            atualizarSaldo();
+
+        }
+    );
+
+
+    /* ==============================
+       IMÓVEIS
+    ============================== */
+
+    banco.ref(
+        "imoveis"
+    ).on(
+        "value",
+        function(snapshot) {
+
+
+            imoveis =
+                snapshot.val() || {};
+
+
+            carregarImoveis();
+
+            carregarAdmin();
+
+        }
+    );
+
+
+    /* ==============================
+       COMPRAS
+    ============================== */
+
+    banco.ref(
+        "comprasImoveis"
+    ).on(
+        "value",
+        function(snapshot) {
+
+
+            compras =
+                snapshot.val() || {};
+
+
+            carregarAdquiridos();
+
+            carregarAdmin();
+
+        }
+    );
+
+
+    atualizarSaldo();
+
+    carregarImoveis();
+
+    carregarAdquiridos();
+
+}
+
+
+
+/* ==================================================
+   SALDO
+================================================== */
+
+function atualizarSaldo() {
+
+
+    document.getElementById(
+        "saldo"
+    ).innerText =
+        formatarDinheiro(
+            saldoAtual
+        );
+
+}
+
+
+function formatarDinheiro(valor) {
+
+
+    return "$ " +
+        Number(valor).toLocaleString(
+            "pt-BR"
+        );
+
+}
+
+
+
+/* ==================================================
+   ABAS
+================================================== */
+
+function mostrarAba(aba) {
+
+
+    document.getElementById(
+        "disponiveis"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "adquiridos"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "admin"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "btnDisponiveis"
+    ).classList.remove(
+        "ativo"
+    );
+
+
+    document.getElementById(
+        "btnAdquiridos"
+    ).classList.remove(
+        "ativo"
+    );
+
+
+    document.getElementById(
+        "btnAdmin"
+    ).classList.remove(
+        "ativo"
+    );
+
+
+    if (
+        aba === "disponiveis"
+    ) {
+
+
+        document.getElementById(
+            "disponiveis"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "btnDisponiveis"
+        ).classList.add(
+            "ativo"
+        );
+
+
+        carregarImoveis();
+
+    }
+
+
+    if (
+        aba === "adquiridos"
+    ) {
+
+
+        document.getElementById(
+            "adquiridos"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "btnAdquiridos"
+        ).classList.add(
+            "ativo"
+        );
+
+
+        carregarAdquiridos();
+
+    }
+
+
+    if (
+        aba === "admin"
+    ) {
+
+
+        if (
+            usuarioAtual !== "Italo"
+        ) {
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "admin"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "btnAdmin"
+        ).classList.add(
+            "ativo"
+        );
+
+
+        carregarAdmin();
+
+    }
+
+}
+
+
+
+/* ==================================================
+   IMÓVEIS À VENDA
+================================================== */
+
+function carregarImoveis() {
+
+
+    const lista =
+        document.getElementById(
+            "listaImoveis"
+        );
+
+
+    if (!lista) {
+
+        return;
+
+    }
+
+
+    lista.innerHTML = "";
+
+
+    const disponiveis =
+        Object.values(imoveis)
+        .filter(
+            function(imovel) {
+
+                return !imovel.proprietario;
+
+            }
+        );
+
+
+    if (
+        disponiveis.length === 0
+    ) {
+
+
+        lista.innerHTML = `
+
+            <div class="vazio">
+
+                Nenhum imóvel disponível
+                no momento.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    disponiveis.forEach(
+        function(imovel) {
+
+
+            lista.innerHTML += `
+
+                <div class="imovel">
+
+                    <img
+                        src="${imovel.foto}"
+                        alt="${imovel.nome}"
+
+                        onerror="
+                            this.src='https://via.placeholder.com/900x500?text=Imovel';
+                        "
+                    >
+
+
+                    <div class="imovel-conteudo">
+
+
+                        <h2>
+                            ${imovel.nome}
+                        </h2>
+
+
+                        <div class="localizacao">
+
+                            📍 ${imovel.localizacao}
+
+                        </div>
+
+
+                        <div class="descricao">
+
+                            ${imovel.descricao}
+
+                        </div>
+
+
+                        <div class="preco">
+
+                            ${formatarDinheiro(
+                                imovel.preco
+                            )}
+
+                        </div>
+
+
+                        <button
+                            class="comprar"
+                            onclick="
+                                comprarImovel('${imovel.id}')
+                            ">
+
+                            COMPRAR
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   COMPRAR
+================================================== */
+
+function comprarImovel(id) {
+
+
+    const imovel =
+        imoveis[id];
+
+
+    if (!imovel) {
+
+        return;
+
+    }
+
+
+    banco.ref(
+        "saldos/" + usuarioAtual
+    ).once(
+        "value",
+        function(snapshot) {
+
+
+            const saldo =
+                Number(
+                    snapshot.val()
+                ) || 0;
+
+
+            if (
+                imovel.proprietario
+            ) {
+
+
+                mostrarMensagem(
+                    "Este imóvel já foi vendido.",
+                    "erro"
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                saldo <
+                Number(imovel.preco)
+            ) {
+
+
+                mostrarMensagem(
+                    "Você não possui dinheiro suficiente na conta.",
+                    "erro"
+                );
+
+
+                return;
+
+            }
+
+
+            const confirmar =
+                confirm(
+
+                    "Deseja comprar " +
+                    imovel.nome +
+                    " por " +
+                    formatarDinheiro(
+                        imovel.preco
+                    ) +
+                    "?"
+
+                );
+
+
+            if (!confirmar) {
+
+                return;
+
+            }
+
+
+            const novoSaldo =
+                saldo -
+                Number(imovel.preco);
+
+
+            const compra = {
+
+                idImovel:
+                    imovel.id,
+
+                nome:
+                    imovel.nome,
+
+                preco:
+                    Number(imovel.preco),
+
+                comprador:
+                    usuarioAtual,
+
+                compradoEm:
+                    Date.now()
+
+            };
+
+
+            const atualizacoes = {};
+
+
+            /*
+               MESMO SALDO DO
+               MISSÕES DO LESTER
+            */
+
+            atualizacoes[
+                "saldos/" +
+                usuarioAtual
+            ] =
+                novoSaldo;
+
+
+            /*
+               REGISTRA COMPRA
+            */
+
+            atualizacoes[
+                "comprasImoveis/" +
+                usuarioAtual +
+                "/" +
+                id
+            ] =
+                compra;
+
+
+            /*
+               DEFINE PROPRIETÁRIO
+            */
+
+            atualizacoes[
+                "imoveis/" +
+                id +
+                "/proprietario"
+            ] =
+                usuarioAtual;
+
+
+            atualizacoes[
+                "imoveis/" +
+                id +
+                "/vendidoEm"
+            ] =
+                Date.now();
+
+
+            banco.ref().update(
+                atualizacoes,
+                function(error) {
+
+
+                    if (error) {
+
+
+                        console.error(
+                            error
+                        );
+
+
+                        mostrarMensagem(
+                            "Erro ao efetuar a compra.",
+                            "erro"
+                        );
+
+
+                        return;
+
+                    }
+
+
+                    mostrarMensagem(
+                        "Compra efetuada com sucesso!",
+                        "sucesso"
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   ADQUIRIDOS
+================================================== */
+
+function carregarAdquiridos() {
+
+
+    const lista =
+        document.getElementById(
+            "listaAdquiridos"
+        );
+
+
+    if (!lista) {
+
+        return;
+
+    }
+
+
+    lista.innerHTML = "";
+
+
+    const meusImoveis =
+        compras[
+            usuarioAtual
+        ] || {};
+
+
+    const listaCompras =
+        Object.values(
+            meusImoveis
+        );
+
+
+    if (
+        listaCompras.length === 0
+    ) {
+
+
+        lista.innerHTML = `
+
+            <div class="vazio">
+
+                Você ainda não possui
+                nenhum imóvel.
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    listaCompras.forEach(
+        function(compra) {
+
+
+            const imovel =
+                imoveis[
+                    compra.idImovel
+                ];
+
+
+            if (!imovel) {
+
+                return;
+
+            }
+
+
+            lista.innerHTML += `
+
+                <div class="imovel">
+
+
+                    <img
+                        src="${imovel.foto}"
+                        alt="${imovel.nome}"
+
+                        onerror="
+                            this.src='https://via.placeholder.com/900x500?text=Imovel';
+                        "
+                    >
+
+
+                    <div class="imovel-conteudo">
+
+
+                        <h2>
+                            ${imovel.nome}
+                        </h2>
+
+
+                        <div class="localizacao">
+
+                            📍 ${imovel.localizacao}
+
+                        </div>
+
+
+                        <div class="descricao">
+
+                            ${imovel.descricao}
+
+                        </div>
+
+
+                        <div class="preco">
+
+                            IMÓVEL ADQUIRIDO
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   ADMIN - ADICIONAR
+================================================== */
+
+function adicionarImovel() {
+
+
+    if (
+        usuarioAtual !== "Italo"
+    ) {
+
+        return;
+
+    }
+
+
+    const nome =
+        document.getElementById(
+            "nomeImovel"
+        ).value.trim();
+
+
+    const localizacao =
+        document.getElementById(
+            "localizacaoImovel"
+        ).value.trim();
+
+
+    const descricao =
+        document.getElementById(
+            "descricaoImovel"
+        ).value.trim();
+
+
+    const preco =
+        Number(
+            document.getElementById(
+                "precoImovel"
+            ).value
+        );
+
+
+    const foto =
+        document.getElementById(
+            "fotoImovel"
+        ).value.trim();
+
+
+    if (
+        !nome ||
+        !localizacao ||
+        !descricao ||
+        !preco ||
+        !foto
+    ) {
+
+
+        mostrarMensagem(
+            "Preencha todos os campos.",
+            "erro"
+        );
+
+
+        return;
+
+    }
+
+
+    const id =
+        banco.ref(
+            "imoveis"
+        ).push().key;
+
+
+    const novoImovel = {
+
+        id:
+            id,
+
+        nome:
+            nome,
+
+        localizacao:
+            localizacao,
+
+        descricao:
+            descricao,
+
+        preco:
+            preco,
+
+        foto:
+            foto,
+
+        proprietario:
+            null,
+
+        criadoEm:
+            Date.now()
+
+    };
+
+
+    banco.ref(
+        "imoveis/" + id
+    ).set(
+        novoImovel,
+        function(error) {
+
+
+            if (error) {
+
+
+                console.error(
+                    error
+                );
+
+
+                mostrarMensagem(
+                    "Erro ao adicionar imóvel.",
+                    "erro"
+                );
+
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "nomeImovel"
+            ).value = "";
+
+
+            document.getElementById(
+                "localizacaoImovel"
+            ).value = "";
+
+
+            document.getElementById(
+                "descricaoImovel"
+            ).value = "";
+
+
+            document.getElementById(
+                "precoImovel"
+            ).value = "";
+
+
+            document.getElementById(
+                "fotoImovel"
+            ).value = "";
+
+
+            mostrarMensagem(
+                "Imóvel adicionado com sucesso!",
+                "sucesso"
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   ADMIN - LISTA
+================================================== */
+
+function carregarAdmin() {
+
+
+    if (
+        usuarioAtual !== "Italo"
+    ) {
+
+        return;
+
+    }
+
+
+    const lista =
+        document.getElementById(
+            "listaAdmin"
+        );
+
+
+    if (!lista) {
+
+        return;
+
+    }
+
+
+    lista.innerHTML = "";
+
+
+    Object.values(imoveis)
+    .forEach(
+        function(imovel) {
+
+
+            const proprietario =
+                imovel.proprietario ||
+                "Disponível";
+
+
+            lista.innerHTML += `
+
+                <div class="imovel">
+
+
+                    <img
+                        src="${imovel.foto}"
+                        alt="${imovel.nome}"
+
+                        onerror="
+                            this.src='https://via.placeholder.com/900x500?text=Imovel';
+                        "
+                    >
+
+
+                    <div class="imovel-conteudo">
+
+
+                        <h2>
+                            ${imovel.nome}
+                        </h2>
+
+
+                        <div class="localizacao">
+
+                            📍 ${imovel.localizacao}
+
+                        </div>
+
+
+                        <div class="descricao">
+
+                            ${imovel.descricao}
+
+                        </div>
+
+
+                        <div class="preco">
+
+                            ${formatarDinheiro(
+                                imovel.preco
+                            )}
+
+                        </div>
+
+
+                        <div class="proprietario">
+
+                            Proprietário:
+                            ${proprietario}
+
+                        </div>
+
+
+                        ${
+                            !imovel.proprietario
+                            ?
+
+                            `
+
+                            <button
+                                class="btn-excluir"
+                                onclick="
+                                    excluirImovel('${imovel.id}')
+                                ">
+
+                                EXCLUIR IMÓVEL
+
+                            </button>
+
+                            `
+
+                            :
+
+                            ""
+
+                        }
+
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   ADMIN - EXCLUIR
+================================================== */
+
+function excluirImovel(id) {
+
+
+    if (
+        usuarioAtual !== "Italo"
+    ) {
+
+        return;
+
+    }
+
+
+    const imovel =
+        imoveis[id];
+
+
+    if (!imovel) {
+
+        return;
+
+    }
+
+
+    if (
+        imovel.proprietario
+    ) {
+
+
+        mostrarMensagem(
+            "Este imóvel já possui um proprietário e não pode ser excluído.",
+            "erro"
+        );
+
+
+        return;
+
+    }
+
+
+    if (
+        !confirm(
+            "Tem certeza que deseja excluir este imóvel?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    banco.ref(
+        "imoveis/" + id
+    ).remove(
+        function(error) {
+
+
+            if (error) {
+
+
+                console.error(
+                    error
+                );
+
+
+                mostrarMensagem(
+                    "Erro ao excluir imóvel.",
+                    "erro"
+                );
+
+
+                return;
+
+            }
+
+
+            mostrarMensagem(
+                "Imóvel excluído.",
+                "sucesso"
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   MENSAGEM
+================================================== */
+
+function mostrarMensagem(
+    texto,
+    tipo
+) {
+
+
+    const mensagem =
+        document.getElementById(
+            "mensagem"
+        );
+
+
+    mensagem.innerText =
+        texto;
+
+
+    mensagem.className =
+        "mensagem " + tipo;
+
+
+    mensagem.style.display =
+        "block";
+
+
+    setTimeout(
+        function() {
+
+            mensagem.style.display =
+                "none";
+
+        },
+        3500
+    );
+
+}
+
+
+</script>
+
+</body>
+
+</html>
+```
