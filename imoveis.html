@@ -1,1219 +1,601 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Los Santos Imóveis</title>
 
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
-
 <style>
 
-/* ==================================================
-   GERAL
-================================================== */
-
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f7f7f7;
-    color: #222;
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    color:#222;
 }
 
+/* LOGIN */
 
-/* ==================================================
-   LOGIN
-================================================== */
-
-#telaLogin {
-
-    position: fixed;
-
-    inset: 0;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffffff,
-            #f3f3f3
-        );
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    z-index: 9999;
-
+#login{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:#fff;
 }
 
-
-.login-container {
-
-    width: 90%;
-
-    max-width: 400px;
-
-    background: white;
-
-    padding: 40px 35px;
-
-    border-radius: 14px;
-
-    box-shadow:
-        0 10px 40px rgba(0,0,0,0.12);
-
-    text-align: center;
-
-    border-top: 5px solid #c90000;
-
+.login-box{
+    width:100%;
+    max-width:420px;
+    padding:35px;
+    border-radius:15px;
+    background:white;
+    border:1px solid #ddd;
+    box-shadow:0 10px 35px rgba(0,0,0,.12);
 }
 
-
-.login-logo {
-
-    font-size: 28px;
-
-    font-weight: bold;
-
-    color: #c90000;
-
-    margin-bottom: 5px;
-
+.logo{
+    text-align:center;
+    margin-bottom:30px;
 }
 
-
-.login-logo span {
-
-    color: #222;
-
+.logo h1{
+    margin:0;
+    color:#c40000;
+    font-size:30px;
 }
 
-
-.login-subtitulo {
-
-    color: #777;
-
-    margin-bottom: 30px;
-
+.logo p{
+    margin-top:8px;
+    color:#777;
 }
 
-
-.login-campo {
-
-    text-align: left;
-
-    margin-bottom: 18px;
-
+input,
+textarea{
+    width:100%;
+    padding:13px;
+    margin:7px 0 15px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    font-size:15px;
 }
 
-
-.login-campo label {
-
-    display: block;
-
-    font-weight: bold;
-
-    margin-bottom: 7px;
-
+textarea{
+    min-height:100px;
 }
 
-
-.login-campo input {
-
-    width: 100%;
-
-    padding: 13px;
-
-    border: 1px solid #ccc;
-
-    border-radius: 7px;
-
-    font-size: 15px;
-
-    outline: none;
-
+button{
+    padding:12px 16px;
+    border:0;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-
-.login-campo input:focus {
-
-    border-color: #c90000;
-
-    box-shadow:
-        0 0 0 2px rgba(201,0,0,0.08);
-
+.btn-vermelho{
+    width:100%;
+    background:#c40000;
+    color:white;
 }
 
-
-.btn-login {
-
-    width: 100%;
-
-    padding: 14px;
-
-    border: none;
-
-    border-radius: 7px;
-
-    background: #c90000;
-
-    color: white;
-
-    font-size: 15px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-
+.btn-vermelho:hover{
+    background:#a00000;
 }
 
-
-.btn-login:hover {
-
-    background: #a80000;
-
+.btn-voltar{
+    width:100%;
+    margin-top:10px;
+    background:#eee;
+    color:#333;
 }
 
-
-.erro-login {
-
-    color: #c90000;
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    margin-top: 15px;
-
-    display: none;
-
+.erro{
+    text-align:center;
+    color:#c40000;
+    margin-top:15px;
 }
 
+/* SITE */
 
-/* ==================================================
-   SITE
-================================================== */
-
-#site {
-
-    display: none;
-
+.escondido{
+    display:none !important;
 }
 
+header{
+    background:white;
+    border-bottom:1px solid #ddd;
+    padding:18px 30px;
 
-/* ==================================================
-   HEADER
-================================================== */
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
-header {
-
-    background: white;
-
-    border-bottom: 3px solid #c90000;
-
-    padding: 18px 35px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 100;
-
+    flex-wrap:wrap;
+    gap:15px;
 }
 
-
-.logo {
-
-    font-size: 25px;
-
-    font-weight: bold;
-
-    color: #c90000;
-
+header h1{
+    margin:0;
+    color:#c40000;
 }
 
-
-.logo span {
-
-    color: #222;
-
+.usuario{
+    display:flex;
+    align-items:center;
+    gap:15px;
 }
 
-
-.usuario-area {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
+.saldo{
+    font-weight:bold;
+    color:#c40000;
 }
 
-
-.saldo {
-
-    font-weight: bold;
-
-    background: #f3f3f3;
-
-    padding: 10px 16px;
-
-    border-radius: 8px;
-
+.btn-sair{
+    background:#222;
+    color:white;
 }
 
-
-.usuario {
-
-    font-weight: bold;
-
+.container{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    padding:30px 20px;
 }
 
+/* ABAS */
 
-.btn-sair {
-
-    border: none;
-
-    background: #222;
-
-    color: white;
-
-    padding: 9px 13px;
-
-    border-radius: 6px;
-
-    cursor: pointer;
-
+.abas{
+    display:flex;
+    gap:10px;
+    margin-bottom:30px;
+    border-bottom:1px solid #ddd;
 }
 
-
-.btn-sair:hover {
-
-    background: #444;
-
+.aba{
+    padding:13px 18px;
+    cursor:pointer;
+    font-weight:bold;
+    color:#777;
 }
 
-
-/* ==================================================
-   MENU
-================================================== */
-
-nav {
-
-    background: white;
-
-    padding: 12px 35px;
-
-    border-bottom: 1px solid #ddd;
-
+.aba.ativa{
+    color:#c40000;
+    border-bottom:3px solid #c40000;
 }
 
+/* IMÓVEIS */
 
-nav button {
-
-    border: none;
-
-    background: transparent;
-
-    color: #555;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    margin-right: 20px;
-
-    padding: 8px 0;
-
+.grade{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
 }
 
-
-nav button:hover {
-
-    color: #c90000;
-
+.imovel{
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid #ddd;
+    box-shadow:0 5px 15px rgba(0,0,0,.07);
 }
 
-
-nav button.ativo {
-
-    color: #c90000;
-
-    border-bottom: 2px solid #c90000;
-
+.imovel img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    display:block;
 }
 
-
-/* ==================================================
-   CONTEÚDO
-================================================== */
-
-.container {
-
-    max-width: 1200px;
-
-    margin: auto;
-
-    padding: 35px 20px;
-
+.imovel-info{
+    padding:20px;
 }
 
-
-.titulo {
-
-    margin-bottom: 25px;
-
+.imovel h3{
+    margin-top:0;
 }
 
-
-.titulo h1 {
-
-    margin: 0;
-
-    font-size: 30px;
-
+.local{
+    color:#777;
 }
 
-
-.titulo p {
-
-    color: #777;
-
+.descricao{
+    color:#555;
+    line-height:1.5;
 }
 
-
-/* ==================================================
-   IMÓVEIS
-================================================== */
-
-.imoveis {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(280px, 1fr)
-        );
-
-    gap: 25px;
-
+.preco{
+    font-size:24px;
+    font-weight:bold;
+    color:#c40000;
+    margin:15px 0;
 }
 
-
-.imovel {
-
-    background: white;
-
-    border-radius: 12px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 4px 15px rgba(0,0,0,0.08);
-
-    transition: 0.2s;
-
+.btn-comprar{
+    width:100%;
+    background:#c40000;
+    color:white;
 }
 
-
-.imovel:hover {
-
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 8px 20px rgba(0,0,0,0.12);
-
+.btn-comprar:hover{
+    background:#a00000;
 }
 
-
-.imovel img {
-
-    width: 100%;
-
-    height: 200px;
-
-    object-fit: cover;
-
-    background: #ddd;
-
+.vazio{
+    text-align:center;
+    color:#888;
+    padding:50px 20px;
 }
 
+/* ADMIN */
 
-.imovel-conteudo {
-
-    padding: 20px;
-
+.admin{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:25px;
+    margin-bottom:30px;
 }
 
-
-.imovel h2 {
-
-    margin-top: 0;
-
-    margin-bottom: 8px;
-
+.admin h2{
+    color:#c40000;
 }
 
-
-.localizacao {
-
-    color: #777;
-
-    font-size: 14px;
-
-    margin-bottom: 12px;
-
+.imovel-admin{
+    background:#fafafa;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:18px;
+    margin-bottom:15px;
 }
 
-
-.descricao {
-
-    color: #555;
-
-    line-height: 1.5;
-
-    min-height: 70px;
-
+.btn-excluir{
+    background:#222;
+    color:white;
 }
 
-
-.preco {
-
-    font-size: 22px;
-
-    font-weight: bold;
-
-    color: #c90000;
-
-    margin: 18px 0;
-
+.btn-excluir:hover{
+    background:#c40000;
 }
 
-
-.comprar {
-
-    width: 100%;
-
-    padding: 13px;
-
-    border: none;
-
-    border-radius: 7px;
-
-    background: #c90000;
-
-    color: white;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    font-size: 15px;
-
+.proprietario{
+    color:#198754;
+    font-weight:bold;
 }
 
-
-.comprar:hover {
-
-    background: #a80000;
-
+.disponivel{
+    color:#c40000;
+    font-weight:bold;
 }
 
-
-/* ==================================================
-   ADMIN
-================================================== */
-
-.admin-box {
-
-    background: white;
-
-    padding: 25px;
-
-    border-radius: 12px;
-
-    box-shadow:
-        0 4px 15px rgba(0,0,0,0.08);
-
-    margin-bottom: 30px;
-
+.mensagem{
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+    background:#eee;
 }
 
-
-.admin-box h2 {
-
-    margin-top: 0;
-
-    color: #c90000;
-
+.sucesso{
+    background:#e5f6eb;
+    color:#147333;
 }
 
-
-.campo {
-
-    margin-bottom: 15px;
-
+.aviso{
+    background:#fff1f1;
+    color:#a00000;
 }
 
+@media(max-width:600px){
 
-.campo label {
-
-    display: block;
-
-    font-weight: bold;
-
-    margin-bottom: 6px;
-
-}
-
-
-.campo input,
-.campo textarea {
-
-    width: 100%;
-
-    padding: 12px;
-
-    border: 1px solid #ccc;
-
-    border-radius: 7px;
-
-    font-family: Arial;
-
-}
-
-
-.campo textarea {
-
-    min-height: 100px;
-
-    resize: vertical;
-
-}
-
-
-.btn-adicionar {
-
-    background: #c90000;
-
-    color: white;
-
-    border: none;
-
-    padding: 13px 20px;
-
-    border-radius: 7px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-
-}
-
-
-.btn-adicionar:hover {
-
-    background: #a80000;
-
-}
-
-
-.btn-excluir {
-
-    width: 100%;
-
-    padding: 10px;
-
-    border: none;
-
-    border-radius: 7px;
-
-    background: #222;
-
-    color: white;
-
-    cursor: pointer;
-
-    margin-top: 8px;
-
-}
-
-
-/* ==================================================
-   PROPRIETÁRIO
-================================================== */
-
-.proprietario {
-
-    background: #f3f3f3;
-
-    padding: 10px;
-
-    border-radius: 7px;
-
-    margin-top: 10px;
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-}
-
-
-/* ==================================================
-   MENSAGEM
-================================================== */
-
-.mensagem {
-
-    position: fixed;
-
-    top: 90px;
-
-    right: 20px;
-
-    padding: 15px 20px;
-
-    border-radius: 8px;
-
-    color: white;
-
-    font-weight: bold;
-
-    display: none;
-
-    z-index: 999;
-
-}
-
-
-.sucesso {
-
-    background: #168a32;
-
-}
-
-
-.erro {
-
-    background: #c90000;
-
-}
-
-
-/* ==================================================
-   VAZIO
-================================================== */
-
-.vazio {
-
-    background: white;
-
-    padding: 50px 20px;
-
-    text-align: center;
-
-    border-radius: 12px;
-
-    color: #777;
-
-}
-
-
-/* ==================================================
-   RESPONSIVO
-================================================== */
-
-@media (max-width: 600px) {
-
-    header {
-
-        padding: 15px;
-
-        flex-direction: column;
-
-        gap: 12px;
-
-        align-items: flex-start;
-
+    header{
+        padding:15px;
     }
 
-    .usuario-area {
-
-        width: 100%;
-
-        justify-content: space-between;
-
+    header h1{
+        font-size:22px;
     }
 
-    .logo {
-
-        font-size: 20px;
-
-    }
-
-    nav {
-
-        padding: 10px 15px;
-
-        overflow-x: auto;
-
-        white-space: nowrap;
-
-    }
-
-    .container {
-
-        padding: 25px 15px;
-
+    .usuario{
+        width:100%;
+        justify-content:space-between;
     }
 
 }
 
 </style>
-
 </head>
-
 
 <body>
 
 
-<!-- ==================================================
-     LOGIN
-================================================== -->
+<!-- ========================= -->
+<!-- LOGIN -->
+<!-- ========================= -->
 
-<div id="telaLogin">
+<div id="login">
 
+    <div class="login-box">
 
-    <div class="login-container">
+        <div class="logo">
 
+            <h1>LOS SANTOS IMÓVEIS</h1>
 
-        <div class="login-logo">
-
-            LOS SANTOS
-            <span>IMÓVEIS</span>
-
-        </div>
-
-
-        <div class="login-subtitulo">
-
-            Acesso ao mercado imobiliário
+            <p>Encontre seu novo endereço.</p>
 
         </div>
 
 
-        <div class="login-campo">
-
-            <label>
-                Usuário
-            </label>
-
-            <input
-                type="text"
-                id="loginUsuario"
-                placeholder="Digite seu usuário"
-                autocomplete="off">
-
-        </div>
+        <input
+            id="usuario"
+            type="text"
+            placeholder="Usuário"
+        >
 
 
-        <div class="login-campo">
-
-            <label>
-                Senha
-            </label>
-
-            <input
-                type="password"
-                id="loginSenha"
-                placeholder="Digite sua senha">
-
-        </div>
+        <input
+            id="senha"
+            type="password"
+            placeholder="Senha"
+        >
 
 
         <button
-            class="btn-login"
-            onclick="fazerLogin()">
-
+            class="btn-vermelho"
+            onclick="fazerLogin()"
+        >
             ENTRAR
+        </button>
 
+
+        <button
+            class="btn-voltar"
+            onclick="voltarCentral()"
+        >
+            VOLTAR
         </button>
 
 
         <div
-            id="erroLogin"
-            class="erro-login">
-
-            Usuário ou senha incorretos.
-
-        </div>
-
+            id="erro"
+            class="erro"
+        ></div>
 
     </div>
 
 </div>
 
 
-<!-- ==================================================
-     SITE
-================================================== -->
+<!-- ========================= -->
+<!-- SITE -->
+<!-- ========================= -->
 
-<div id="site">
+<div
+    id="site"
+    class="escondido"
+>
 
 
 <header>
 
+    <h1>LOS SANTOS IMÓVEIS</h1>
 
-    <div class="logo">
+    <div class="usuario">
 
-        LOS SANTOS
-        <span>IMÓVEIS</span>
+        <span>
+            <strong id="nomeUsuario"></strong>
+        </span>
 
-    </div>
-
-
-    <div class="usuario-area">
-
-
-        <div class="usuario">
-
-            <span id="nomeUsuario">
-                Jogador
-            </span>
-
-        </div>
-
-
-        <div class="saldo">
-
-            Saldo:
-
-            <span id="saldo">
-                Carregando...
-            </span>
-
-        </div>
-
+        <span class="saldo">
+            $<span id="saldoUsuario">0</span>
+        </span>
 
         <button
             class="btn-sair"
-            onclick="sair()">
-
+            onclick="sair()"
+        >
             SAIR
-
         </button>
-
 
     </div>
 
 </header>
 
 
-<nav>
+<div class="container">
 
 
-    <button
-        id="btnDisponiveis"
-        class="ativo"
-        onclick="mostrarAba('disponiveis')">
+    <!-- ABAS -->
 
-        Imóveis à venda
+    <div class="abas">
 
-    </button>
-
-
-    <button
-        id="btnAdquiridos"
-        onclick="mostrarAba('adquiridos')">
-
-        Imóveis adquiridos
-
-    </button>
+        <div
+            id="abaVenda"
+            class="aba ativa"
+            onclick="mostrarAba('venda')"
+        >
+            IMÓVEIS À VENDA
+        </div>
 
 
-    <button
-        id="btnAdmin"
-        onclick="mostrarAba('admin')"
-        style="display:none;">
-
-        Administrador
-
-    </button>
-
-
-</nav>
+        <div
+            id="abaComprados"
+            class="aba"
+            onclick="mostrarAba('comprados')"
+        >
+            IMÓVEIS ADQUIRIDOS
+        </div>
 
 
-<div
-    id="mensagem"
-    class="mensagem">
-</div>
-
-
-<main class="container">
-
-
-<!-- ==================================================
-     DISPONÍVEIS
-================================================== -->
-
-<section id="disponiveis">
-
-
-    <div class="titulo">
-
-        <h1>
-            Imóveis disponíveis
-        </h1>
-
-        <p>
-            Encontre seu próximo imóvel em Los Santos.
-        </p>
+        <div
+            id="abaAdmin"
+            class="aba escondido"
+            onclick="mostrarAba('admin')"
+        >
+            ADMINISTRADOR
+        </div>
 
     </div>
 
+
+    <div id="mensagem"></div>
+
+
+    <!-- ========================= -->
+    <!-- IMÓVEIS À VENDA -->
+    <!-- ========================= -->
+
+    <div id="venda">
+
+        <h2>Imóveis disponíveis</h2>
+
+        <div
+            id="listaVenda"
+            class="grade"
+        ></div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- IMÓVEIS ADQUIRIDOS -->
+    <!-- ========================= -->
 
     <div
-        id="listaImoveis"
-        class="imoveis">
+        id="comprados"
+        class="escondido"
+    >
+
+        <h2>Meus imóveis</h2>
+
+        <div
+            id="listaComprados"
+            class="grade"
+        ></div>
 
     </div>
 
 
-</section>
-
-
-<!-- ==================================================
-     ADQUIRIDOS
-================================================== -->
-
-<section
-    id="adquiridos"
-    style="display:none;">
-
-
-    <div class="titulo">
-
-        <h1>
-            Imóveis adquiridos
-        </h1>
-
-        <p>
-            Aqui estão os imóveis que você possui.
-        </p>
-
-    </div>
-
+    <!-- ========================= -->
+    <!-- ADMIN -->
+    <!-- ========================= -->
 
     <div
-        id="listaAdquiridos"
-        class="imoveis">
+        id="admin"
+        class="escondido"
+    >
 
-    </div>
+        <div class="admin">
 
+            <h2>ADMINISTRAÇÃO DE IMÓVEIS</h2>
 
-</section>
+            <p>
+                Área exclusiva do administrador.
+            </p>
 
-
-<!-- ==================================================
-     ADMIN
-================================================== -->
-
-<section
-    id="admin"
-    style="display:none;">
-
-
-    <div class="titulo">
-
-        <h1>
-            Painel do administrador
-        </h1>
-
-        <p>
-            Gerencie os imóveis de Los Santos.
-        </p>
-
-    </div>
-
-
-    <div class="admin-box">
-
-
-        <h2>
-            Adicionar imóvel
-        </h2>
-
-
-        <div class="campo">
-
-            <label>
-                Nome do imóvel
-            </label>
 
             <input
-                type="text"
                 id="nomeImovel"
-                placeholder="Ex: Casa em Vinewood">
+                type="text"
+                placeholder="Nome do imóvel"
+            >
 
-        </div>
-
-
-        <div class="campo">
-
-            <label>
-                Localização
-            </label>
 
             <input
-                type="text"
                 id="localizacaoImovel"
-                placeholder="Ex: Vinewood Hills">
+                type="text"
+                placeholder="Localização"
+            >
 
-        </div>
-
-
-        <div class="campo">
-
-            <label>
-                Descrição
-            </label>
 
             <textarea
                 id="descricaoImovel"
-                placeholder="Descrição do imóvel..."></textarea>
+                placeholder="Descrição do imóvel"
+            ></textarea>
 
-        </div>
-
-
-        <div class="campo">
-
-            <label>
-                Preço
-            </label>
 
             <input
-                type="number"
                 id="precoImovel"
-                placeholder="Ex: 250000">
+                type="number"
+                placeholder="Preço"
+                min="0"
+            >
 
-        </div>
-
-
-        <div class="campo">
-
-            <label>
-                URL da foto
-            </label>
 
             <input
-                type="text"
                 id="fotoImovel"
-                placeholder="https://...">
+                type="text"
+                placeholder="URL da foto"
+            >
+
+
+            <button
+                class="btn-vermelho"
+                onclick="adicionarImovel()"
+            >
+                ADICIONAR IMÓVEL
+            </button>
 
         </div>
 
 
-        <button
-            class="btn-adicionar"
-            onclick="adicionarImovel()">
+        <h2>Imóveis cadastrados</h2>
 
-            ADICIONAR IMÓVEL
-
-        </button>
-
+        <div id="listaAdmin"></div>
 
     </div>
-
-
-    <h2>
-        Imóveis cadastrados
-    </h2>
-
-
-    <div
-        id="listaAdmin"
-        class="imoveis">
-
-    </div>
-
-
-</section>
-
-
-</main>
 
 </div>
+
+</div>
+
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 
 
 <script>
 
-
-/* ==================================================
+/* =========================
    FIREBASE
-================================================== */
+========================= */
 
 const firebaseConfig = {
 
-    apiKey:
-        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBdJqg",
+    apiKey: "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBdJqg",
 
-    authDomain:
-        "gta-rpg.firebaseapp.com",
+    authDomain: "gta-rpg.firebaseapp.com",
 
-    databaseURL:
-        "https://gta-rpg-default-rtdb.firebaseio.com",
+    databaseURL: "https://gta-rpg-default-rtdb.firebaseio.com",
 
-    projectId:
-        "gta-rpg",
+    projectId: "gta-rpg",
 
-    storageBucket:
-        "gta-rpg.firebasestorage.app",
+    storageBucket: "gta-rpg.firebasestorage.app",
 
-    messagingSenderId:
-        "318963858414",
+    messagingSenderId: "318963858414",
 
-    appId:
-        "1:318963858414:web:cc7122486ac5a3d267ecff",
+    appId: "1:318963858414:web:cc7122486ac5a3d267ecff",
 
-    measurementId:
-        "G-K157521F0H"
+    measurementId: "G-K157521F0H"
 
 };
 
 
 firebase.initializeApp(firebaseConfig);
 
-const banco =
-    firebase.database();
+const banco = firebase.database();
 
 
-
-/* ==================================================
+/* =========================
    USUÁRIOS
-================================================== */
+========================= */
 
 const usuarios = {
 
@@ -1230,41 +612,34 @@ const usuarios = {
 
 let usuarioAtual = null;
 
+let imoveis = {};
+
+let saldoAtual = 0;
 
 
-/* ==================================================
+/* =========================
    LOGIN
-================================================== */
+========================= */
 
-function fazerLogin() {
-
+function fazerLogin(){
 
     const usuario =
-        document.getElementById(
-            "loginUsuario"
-        ).value.trim();
-
+        document.getElementById("usuario")
+        .value
+        .trim();
 
     const senha =
-        document.getElementById(
-            "loginSenha"
-        ).value;
+        document.getElementById("senha")
+        .value
+        .trim();
 
 
-    const erro =
-        document.getElementById(
-            "erroLogin"
-        );
-
-
-    if (
+    if(
         usuarios[usuario] &&
         usuarios[usuario] === senha
-    ) {
+    ){
 
-
-        usuarioAtual =
-            usuario;
+        usuarioAtual = usuario;
 
 
         sessionStorage.setItem(
@@ -1273,430 +648,211 @@ function fazerLogin() {
         );
 
 
-        erro.style.display =
-            "none";
+        document.getElementById("login")
+            .classList.add("escondido");
 
 
-        entrarNoSite();
+        document.getElementById("site")
+            .classList.remove("escondido");
 
 
-    } else {
+        document.getElementById("nomeUsuario")
+            .innerText = usuario;
 
 
-        erro.style.display =
-            "block";
+        if(usuario === "Italo"){
 
-    }
-
-}
-
-
-
-/* ==================================================
-   ENTER NO LOGIN
-================================================== */
-
-document.getElementById(
-    "loginSenha"
-).addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            fazerLogin();
+            document.getElementById("abaAdmin")
+                .classList.remove("escondido");
 
         }
 
-    }
-);
 
-
-
-/* ==================================================
-   ENTRAR NO SITE
-================================================== */
-
-function entrarNoSite() {
-
-
-    document.getElementById(
-        "telaLogin"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "site"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "nomeUsuario"
-    ).innerText =
-        usuarioAtual;
-
-
-    if (
-        usuarioAtual === "Italo"
-    ) {
-
-        document.getElementById(
-            "btnAdmin"
-        ).style.display =
-            "inline-block";
+        carregarDados();
 
     }
 
+    else{
 
-    iniciarSistema();
+        document.getElementById("erro")
+            .innerText =
+            "Usuário ou senha incorretos.";
 
-}
-
-
-
-/* ==================================================
-   VERIFICAR SESSÃO
-================================================== */
-
-const sessao =
-    sessionStorage.getItem(
-        "usuarioAtual"
-    );
-
-
-if (
-    sessao &&
-    usuarios[sessao]
-) {
-
-    usuarioAtual =
-        sessao;
-
-    entrarNoSite();
+    }
 
 }
 
 
+/* =========================
+   VERIFICAR LOGIN SALVO
+========================= */
 
-/* ==================================================
-   SAIR
-================================================== */
-
-function sair() {
-
-
-    sessionStorage.removeItem(
-        "usuarioAtual"
-    );
+const usuarioSalvo =
+    sessionStorage.getItem("usuarioAtual");
 
 
-    location.reload();
+if(usuarioSalvo && usuarios[usuarioSalvo]){
+
+    usuarioAtual = usuarioSalvo;
+
+    document.getElementById("login")
+        .classList.add("escondido");
+
+    document.getElementById("site")
+        .classList.remove("escondido");
+
+    document.getElementById("nomeUsuario")
+        .innerText = usuarioAtual;
+
+
+    if(usuarioAtual === "Italo"){
+
+        document.getElementById("abaAdmin")
+            .classList.remove("escondido");
+
+    }
+
+
+    carregarDados();
 
 }
 
 
+/* =========================
+   CARREGAR DADOS
+========================= */
 
-/* ==================================================
-   SALDO
-================================================== */
+function carregarDados(){
 
-let saldoAtual = 0;
-
-let imoveis = {};
-
-let compras = {};
-
-
-function iniciarSistema() {
-
-
-    /* ==============================
-       SALDO DO MISSÕES DO LESTER
-    ============================== */
+    /* SALDO */
 
     banco.ref(
         "saldos/" + usuarioAtual
-    ).on(
+    ).on("value", function(snapshot){
+
+        saldoAtual =
+            Number(snapshot.val() || 0);
+
+        document.getElementById("saldoUsuario")
+            .innerText = saldoAtual;
+
+    });
+
+
+    /* IMÓVEIS */
+
+    banco.ref("imoveis").on(
         "value",
-        function(snapshot) {
-
-
-            saldoAtual =
-                Number(
-                    snapshot.val()
-                ) || 0;
-
-
-            atualizarSaldo();
-
-        }
-    );
-
-
-    /* ==============================
-       IMÓVEIS
-    ============================== */
-
-    banco.ref(
-        "imoveis"
-    ).on(
-        "value",
-        function(snapshot) {
-
+        function(snapshot){
 
             imoveis =
                 snapshot.val() || {};
 
+            mostrarImoveis();
 
-            carregarImoveis();
+            mostrarComprados();
 
-            carregarAdmin();
-
-        }
-    );
-
-
-    /* ==============================
-       COMPRAS
-    ============================== */
-
-    banco.ref(
-        "comprasImoveis"
-    ).on(
-        "value",
-        function(snapshot) {
-
-
-            compras =
-                snapshot.val() || {};
-
-
-            carregarAdquiridos();
-
-            carregarAdmin();
+            mostrarAdmin();
 
         }
     );
 
-
-    atualizarSaldo();
-
-    carregarImoveis();
-
-    carregarAdquiridos();
-
 }
 
 
-
-/* ==================================================
-   SALDO
-================================================== */
-
-function atualizarSaldo() {
-
-
-    document.getElementById(
-        "saldo"
-    ).innerText =
-        formatarDinheiro(
-            saldoAtual
-        );
-
-}
-
-
-function formatarDinheiro(valor) {
-
-
-    return "$ " +
-        Number(valor).toLocaleString(
-            "pt-BR"
-        );
-
-}
-
-
-
-/* ==================================================
+/* =========================
    ABAS
-================================================== */
+========================= */
 
-function mostrarAba(aba) {
+function mostrarAba(aba){
 
+    document.getElementById("venda")
+        .classList.add("escondido");
 
-    document.getElementById(
-        "disponiveis"
-    ).style.display =
-        "none";
+    document.getElementById("comprados")
+        .classList.add("escondido");
 
-
-    document.getElementById(
-        "adquiridos"
-    ).style.display =
-        "none";
+    document.getElementById("admin")
+        .classList.add("escondido");
 
 
-    document.getElementById(
-        "admin"
-    ).style.display =
-        "none";
+    document.getElementById("abaVenda")
+        .classList.remove("ativa");
+
+    document.getElementById("abaComprados")
+        .classList.remove("ativa");
 
 
-    document.getElementById(
-        "btnDisponiveis"
-    ).classList.remove(
-        "ativo"
-    );
+    if(usuarioAtual === "Italo"){
 
-
-    document.getElementById(
-        "btnAdquiridos"
-    ).classList.remove(
-        "ativo"
-    );
-
-
-    document.getElementById(
-        "btnAdmin"
-    ).classList.remove(
-        "ativo"
-    );
-
-
-    if (
-        aba === "disponiveis"
-    ) {
-
-
-        document.getElementById(
-            "disponiveis"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "btnDisponiveis"
-        ).classList.add(
-            "ativo"
-        );
-
-
-        carregarImoveis();
+        document.getElementById("abaAdmin")
+            .classList.remove("ativa");
 
     }
 
 
-    if (
-        aba === "adquiridos"
-    ) {
+    if(aba === "venda"){
 
+        document.getElementById("venda")
+            .classList.remove("escondido");
 
-        document.getElementById(
-            "adquiridos"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "btnAdquiridos"
-        ).classList.add(
-            "ativo"
-        );
-
-
-        carregarAdquiridos();
+        document.getElementById("abaVenda")
+            .classList.add("ativa");
 
     }
 
 
-    if (
-        aba === "admin"
-    ) {
+    if(aba === "comprados"){
+
+        document.getElementById("comprados")
+            .classList.remove("escondido");
+
+        document.getElementById("abaComprados")
+            .classList.add("ativa");
+
+    }
 
 
-        if (
-            usuarioAtual !== "Italo"
-        ) {
+    if(aba === "admin" && usuarioAtual === "Italo"){
 
-            return;
+        document.getElementById("admin")
+            .classList.remove("escondido");
 
-        }
-
-
-        document.getElementById(
-            "admin"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "btnAdmin"
-        ).classList.add(
-            "ativo"
-        );
-
-
-        carregarAdmin();
+        document.getElementById("abaAdmin")
+            .classList.add("ativa");
 
     }
 
 }
 
 
+/* =========================
+   MOSTRAR IMÓVEIS
+========================= */
 
-/* ==================================================
-   IMÓVEIS À VENDA
-================================================== */
-
-function carregarImoveis() {
-
+function mostrarImoveis(){
 
     const lista =
-        document.getElementById(
-            "listaImoveis"
-        );
-
-
-    if (!lista) {
-
-        return;
-
-    }
-
+        document.getElementById("listaVenda");
 
     lista.innerHTML = "";
 
 
     const disponiveis =
         Object.values(imoveis)
-        .filter(
-            function(imovel) {
+        .filter(function(imovel){
 
-                return !imovel.proprietario;
+            return !imovel.proprietario;
 
-            }
-        );
+        });
 
 
-    if (
-        disponiveis.length === 0
-    ) {
-
+    if(disponiveis.length === 0){
 
         lista.innerHTML = `
-
             <div class="vazio">
-
-                Nenhum imóvel disponível
-                no momento.
-
+                Nenhum imóvel disponível no momento.
             </div>
-
         `;
 
         return;
@@ -1704,417 +860,310 @@ function carregarImoveis() {
     }
 
 
-    disponiveis.forEach(
-        function(imovel) {
+    disponiveis.forEach(function(imovel){
+
+        const div =
+            document.createElement("div");
+
+        div.className = "imovel";
 
 
-            lista.innerHTML += `
+        div.innerHTML = `
 
-                <div class="imovel">
+            <img
+                src="${imovel.foto}"
+                alt="${imovel.nome}"
+                onerror="this.src='https://via.placeholder.com/600x400?text=Imóvel'"
+            >
 
-                    <img
-                        src="${imovel.foto}"
-                        alt="${imovel.nome}"
+            <div class="imovel-info">
 
-                        onerror="
-                            this.src='https://via.placeholder.com/900x500?text=Imovel';
-                        "
-                    >
+                <h3>
+                    ${imovel.nome}
+                </h3>
 
+                <p class="local">
+                    📍 ${imovel.localizacao}
+                </p>
 
-                    <div class="imovel-conteudo">
+                <p class="descricao">
+                    ${imovel.descricao}
+                </p>
 
-
-                        <h2>
-                            ${imovel.nome}
-                        </h2>
-
-
-                        <div class="localizacao">
-
-                            📍 ${imovel.localizacao}
-
-                        </div>
-
-
-                        <div class="descricao">
-
-                            ${imovel.descricao}
-
-                        </div>
-
-
-                        <div class="preco">
-
-                            ${formatarDinheiro(
-                                imovel.preco
-                            )}
-
-                        </div>
-
-
-                        <button
-                            class="comprar"
-                            onclick="
-                                comprarImovel('${imovel.id}')
-                            ">
-
-                            COMPRAR
-
-                        </button>
-
-
-                    </div>
-
+                <div class="preco">
+                    $${Number(imovel.preco).toLocaleString("pt-BR")}
                 </div>
 
-            `;
+                <button
+                    class="btn-comprar"
+                    onclick="comprarImovel('${imovel.id}')"
+                >
+                    COMPRAR IMÓVEL
+                </button>
 
-        }
-    );
+            </div>
+
+        `;
+
+
+        lista.appendChild(div);
+
+    });
 
 }
 
 
+/* =========================
+   COMPRAR IMÓVEL
+========================= */
 
-/* ==================================================
-   COMPRAR
-================================================== */
+function comprarImovel(id){
 
-function comprarImovel(id) {
+    if(usuarioAtual === "Italo"){
+
+        alert(
+            "O administrador não pode comprar imóveis."
+        );
+
+        return;
+
+    }
 
 
     const imovel =
         imoveis[id];
 
 
-    if (!imovel) {
+    if(!imovel){
 
         return;
 
     }
 
 
-    banco.ref(
+    if(imovel.proprietario){
+
+        mostrarMensagem(
+            "Este imóvel já foi vendido.",
+            "aviso"
+        );
+
+        return;
+
+    }
+
+
+    const preco =
+        Number(imovel.preco);
+
+
+    const saldo =
+        Number(saldoAtual);
+
+
+    if(saldo < preco){
+
+        mostrarMensagem(
+            "Você não possui dinheiro suficiente na conta.",
+            "aviso"
+        );
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "Deseja comprar este imóvel por $" +
+            preco.toLocaleString("pt-BR") +
+            "?"
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    const novoSaldo =
+        saldo - preco;
+
+
+    const atualizacoes = {};
+
+
+    atualizacoes[
         "saldos/" + usuarioAtual
-    ).once(
-        "value",
-        function(snapshot) {
+    ] = novoSaldo;
 
 
-            const saldo =
-                Number(
-                    snapshot.val()
-                ) || 0;
+    atualizacoes[
+        "imoveis/" +
+        id +
+        "/proprietario"
+    ] = usuarioAtual;
 
 
-            if (
-                imovel.proprietario
-            ) {
+    atualizacoes[
+        "imoveis/" +
+        id +
+        "/vendidoEm"
+    ] = Date.now();
 
 
-                mostrarMensagem(
-                    "Este imóvel já foi vendido.",
-                    "erro"
-                );
+    atualizacoes[
+        "comprasImoveis/" +
+        usuarioAtual +
+        "/" +
+        id
+    ] = {
+
+        id: id,
+
+        nome: imovel.nome,
+
+        localizacao: imovel.localizacao,
+
+        descricao: imovel.descricao,
+
+        preco: preco,
+
+        foto: imovel.foto,
+
+        compradoEm: Date.now()
+
+    };
 
 
-                return;
+    banco.ref()
+        .update(atualizacoes)
+        .then(function(){
 
-            }
-
-
-            if (
-                saldo <
-                Number(imovel.preco)
-            ) {
-
-
-                mostrarMensagem(
-                    "Você não possui dinheiro suficiente na conta.",
-                    "erro"
-                );
-
-
-                return;
-
-            }
-
-
-            const confirmar =
-                confirm(
-
-                    "Deseja comprar " +
-                    imovel.nome +
-                    " por " +
-                    formatarDinheiro(
-                        imovel.preco
-                    ) +
-                    "?"
-
-                );
-
-
-            if (!confirmar) {
-
-                return;
-
-            }
-
-
-            const novoSaldo =
-                saldo -
-                Number(imovel.preco);
-
-
-            const compra = {
-
-                idImovel:
-                    imovel.id,
-
-                nome:
-                    imovel.nome,
-
-                preco:
-                    Number(imovel.preco),
-
-                comprador:
-                    usuarioAtual,
-
-                compradoEm:
-                    Date.now()
-
-            };
-
-
-            const atualizacoes = {};
-
-
-            /*
-               MESMO SALDO DO
-               MISSÕES DO LESTER
-            */
-
-            atualizacoes[
-                "saldos/" +
-                usuarioAtual
-            ] =
-                novoSaldo;
-
-
-            /*
-               REGISTRA COMPRA
-            */
-
-            atualizacoes[
-                "comprasImoveis/" +
-                usuarioAtual +
-                "/" +
-                id
-            ] =
-                compra;
-
-
-            /*
-               DEFINE PROPRIETÁRIO
-            */
-
-            atualizacoes[
-                "imoveis/" +
-                id +
-                "/proprietario"
-            ] =
-                usuarioAtual;
-
-
-            atualizacoes[
-                "imoveis/" +
-                id +
-                "/vendidoEm"
-            ] =
-                Date.now();
-
-
-            banco.ref().update(
-                atualizacoes,
-                function(error) {
-
-
-                    if (error) {
-
-
-                        console.error(
-                            error
-                        );
-
-
-                        mostrarMensagem(
-                            "Erro ao efetuar a compra.",
-                            "erro"
-                        );
-
-
-                        return;
-
-                    }
-
-
-                    mostrarMensagem(
-                        "Compra efetuada com sucesso!",
-                        "sucesso"
-                    );
-
-                }
+            mostrarMensagem(
+                "Imóvel comprado com sucesso!",
+                "sucesso"
             );
 
-        }
-    );
+            mostrarAba("comprados");
+
+        })
+        .catch(function(erro){
+
+            console.error(erro);
+
+            mostrarMensagem(
+                "Não foi possível concluir a compra.",
+                "aviso"
+            );
+
+        });
 
 }
 
 
+/* =========================
+   IMÓVEIS COMPRADOS
+========================= */
 
-/* ==================================================
-   ADQUIRIDOS
-================================================== */
-
-function carregarAdquiridos() {
-
+function mostrarComprados(){
 
     const lista =
-        document.getElementById(
-            "listaAdquiridos"
-        );
+        document.getElementById("listaComprados");
+
+    lista.innerHTML = "";
 
 
-    if (!lista) {
+    if(usuarioAtual === "Italo"){
+
+        lista.innerHTML = `
+            <div class="vazio">
+                O administrador não possui imóveis adquiridos.
+            </div>
+        `;
 
         return;
 
     }
 
 
-    lista.innerHTML = "";
+    const comprados =
+        Object.values(imoveis)
+        .filter(function(imovel){
+
+            return imovel.proprietario === usuarioAtual;
+
+        });
 
 
-    const meusImoveis =
-        compras[
-            usuarioAtual
-        ] || {};
-
-
-    const listaCompras =
-        Object.values(
-            meusImoveis
-        );
-
-
-    if (
-        listaCompras.length === 0
-    ) {
-
+    if(comprados.length === 0){
 
         lista.innerHTML = `
-
             <div class="vazio">
+                Você ainda não possui imóveis.
+            </div>
+        `;
 
-                Você ainda não possui
-                nenhum imóvel.
+        return;
+
+    }
+
+
+    comprados.forEach(function(imovel){
+
+        const div =
+            document.createElement("div");
+
+        div.className = "imovel";
+
+
+        div.innerHTML = `
+
+            <img
+                src="${imovel.foto}"
+                alt="${imovel.nome}"
+                onerror="this.src='https://via.placeholder.com/600x400?text=Imóvel'"
+            >
+
+            <div class="imovel-info">
+
+                <h3>
+                    ${imovel.nome}
+                </h3>
+
+                <p class="local">
+                    📍 ${imovel.localizacao}
+                </p>
+
+                <p class="descricao">
+                    ${imovel.descricao}
+                </p>
+
+                <p class="proprietario">
+                    PROPRIETÁRIO: ${usuarioAtual}
+                </p>
 
             </div>
 
         `;
 
 
-        return;
+        lista.appendChild(div);
 
-    }
-
-
-    listaCompras.forEach(
-        function(compra) {
-
-
-            const imovel =
-                imoveis[
-                    compra.idImovel
-                ];
-
-
-            if (!imovel) {
-
-                return;
-
-            }
-
-
-            lista.innerHTML += `
-
-                <div class="imovel">
-
-
-                    <img
-                        src="${imovel.foto}"
-                        alt="${imovel.nome}"
-
-                        onerror="
-                            this.src='https://via.placeholder.com/900x500?text=Imovel';
-                        "
-                    >
-
-
-                    <div class="imovel-conteudo">
-
-
-                        <h2>
-                            ${imovel.nome}
-                        </h2>
-
-
-                        <div class="localizacao">
-
-                            📍 ${imovel.localizacao}
-
-                        </div>
-
-
-                        <div class="descricao">
-
-                            ${imovel.descricao}
-
-                        </div>
-
-
-                        <div class="preco">
-
-                            IMÓVEL ADQUIRIDO
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }
-    );
+    });
 
 }
 
 
+/* =========================
+   ADMIN
+========================= */
 
-/* ==================================================
-   ADMIN - ADICIONAR
-================================================== */
+function adicionarImovel(){
 
-function adicionarImovel() {
-
-
-    if (
-        usuarioAtual !== "Italo"
-    ) {
+    if(usuarioAtual !== "Italo"){
 
         return;
 
@@ -2122,51 +1171,43 @@ function adicionarImovel() {
 
 
     const nome =
-        document.getElementById(
-            "nomeImovel"
-        ).value.trim();
+        document.getElementById("nomeImovel")
+        .value.trim();
 
 
     const localizacao =
-        document.getElementById(
-            "localizacaoImovel"
-        ).value.trim();
+        document.getElementById("localizacaoImovel")
+        .value.trim();
 
 
     const descricao =
-        document.getElementById(
-            "descricaoImovel"
-        ).value.trim();
+        document.getElementById("descricaoImovel")
+        .value.trim();
 
 
     const preco =
         Number(
-            document.getElementById(
-                "precoImovel"
-            ).value
+            document.getElementById("precoImovel")
+            .value
         );
 
 
     const foto =
-        document.getElementById(
-            "fotoImovel"
-        ).value.trim();
+        document.getElementById("fotoImovel")
+        .value.trim();
 
 
-    if (
+    if(
         !nome ||
         !localizacao ||
         !descricao ||
         !preco ||
-        !foto
-    ) {
+        preco <= 0
+    ){
 
-
-        mostrarMensagem(
-            "Preencha todos os campos.",
-            "erro"
+        alert(
+            "Preencha nome, localização, descrição e preço."
         );
-
 
         return;
 
@@ -2174,126 +1215,71 @@ function adicionarImovel() {
 
 
     const id =
-        banco.ref(
-            "imoveis"
-        ).push().key;
+        String(Date.now());
 
 
     const novoImovel = {
 
-        id:
-            id,
+        id: id,
 
-        nome:
-            nome,
+        nome: nome,
 
-        localizacao:
-            localizacao,
+        localizacao: localizacao,
 
-        descricao:
-            descricao,
+        descricao: descricao,
 
-        preco:
-            preco,
+        preco: preco,
 
-        foto:
-            foto,
+        foto: foto ||
+            "https://via.placeholder.com/600x400?text=Imóvel",
 
-        proprietario:
-            null,
+        proprietario: null,
 
-        criadoEm:
-            Date.now()
+        criadoEm: Date.now()
 
     };
 
 
     banco.ref(
         "imoveis/" + id
-    ).set(
-        novoImovel,
-        function(error) {
+    ).set(novoImovel);
 
 
-            if (error) {
+    document.getElementById("nomeImovel")
+        .value = "";
+
+    document.getElementById("localizacaoImovel")
+        .value = "";
+
+    document.getElementById("descricaoImovel")
+        .value = "";
+
+    document.getElementById("precoImovel")
+        .value = "";
+
+    document.getElementById("fotoImovel")
+        .value = "";
 
 
-                console.error(
-                    error
-                );
-
-
-                mostrarMensagem(
-                    "Erro ao adicionar imóvel.",
-                    "erro"
-                );
-
-
-                return;
-
-            }
-
-
-            document.getElementById(
-                "nomeImovel"
-            ).value = "";
-
-
-            document.getElementById(
-                "localizacaoImovel"
-            ).value = "";
-
-
-            document.getElementById(
-                "descricaoImovel"
-            ).value = "";
-
-
-            document.getElementById(
-                "precoImovel"
-            ).value = "";
-
-
-            document.getElementById(
-                "fotoImovel"
-            ).value = "";
-
-
-            mostrarMensagem(
-                "Imóvel adicionado com sucesso!",
-                "sucesso"
-            );
-
-        }
+    mostrarMensagem(
+        "Imóvel cadastrado com sucesso!",
+        "sucesso"
     );
 
 }
 
 
+/* =========================
+   LISTA ADMIN
+========================= */
 
-/* ==================================================
-   ADMIN - LISTA
-================================================== */
-
-function carregarAdmin() {
-
-
-    if (
-        usuarioAtual !== "Italo"
-    ) {
-
-        return;
-
-    }
-
+function mostrarAdmin(){
 
     const lista =
-        document.getElementById(
-            "listaAdmin"
-        );
+        document.getElementById("listaAdmin");
 
 
-    if (!lista) {
+    if(usuarioAtual !== "Italo"){
 
         return;
 
@@ -2304,155 +1290,100 @@ function carregarAdmin() {
 
 
     Object.values(imoveis)
-    .forEach(
-        function(imovel) {
+    .forEach(function(imovel){
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "imovel-admin";
 
 
-            const proprietario =
-                imovel.proprietario ||
-                "Disponível";
+        let status;
 
 
-            lista.innerHTML += `
+        if(imovel.proprietario){
 
-                <div class="imovel">
-
-
-                    <img
-                        src="${imovel.foto}"
-                        alt="${imovel.nome}"
-
-                        onerror="
-                            this.src='https://via.placeholder.com/900x500?text=Imovel';
-                        "
-                    >
-
-
-                    <div class="imovel-conteudo">
-
-
-                        <h2>
-                            ${imovel.nome}
-                        </h2>
-
-
-                        <div class="localizacao">
-
-                            📍 ${imovel.localizacao}
-
-                        </div>
-
-
-                        <div class="descricao">
-
-                            ${imovel.descricao}
-
-                        </div>
-
-
-                        <div class="preco">
-
-                            ${formatarDinheiro(
-                                imovel.preco
-                            )}
-
-                        </div>
-
-
-                        <div class="proprietario">
-
-                            Proprietário:
-                            ${proprietario}
-
-                        </div>
-
-
-                        ${
-                            !imovel.proprietario
-                            ?
-
-                            `
-
-                            <button
-                                class="btn-excluir"
-                                onclick="
-                                    excluirImovel('${imovel.id}')
-                                ">
-
-                                EXCLUIR IMÓVEL
-
-                            </button>
-
-                            `
-
-                            :
-
-                            ""
-
-                        }
-
-
-                    </div>
-
-                </div>
-
+            status = `
+                <p class="proprietario">
+                    Vendido para: ${imovel.proprietario}
+                </p>
             `;
 
         }
-    );
+
+        else{
+
+            status = `
+                <p class="disponivel">
+                    Disponível para venda
+                </p>
+            `;
+
+        }
+
+
+        div.innerHTML = `
+
+            <strong>
+                ${imovel.nome}
+            </strong>
+
+            <p>
+                📍 ${imovel.localizacao}
+            </p>
+
+            <p>
+                Preço:
+                <strong>
+                    $${Number(imovel.preco)
+                        .toLocaleString("pt-BR")}
+                </strong>
+            </p>
+
+            ${status}
+
+            ${
+                !imovel.proprietario
+                ? `
+                    <button
+                        class="btn-excluir"
+                        onclick="excluirImovel('${imovel.id}')"
+                    >
+                        EXCLUIR
+                    </button>
+                `
+                : ""
+            }
+
+        `;
+
+
+        lista.appendChild(div);
+
+    });
 
 }
 
 
+/* =========================
+   EXCLUIR
+========================= */
 
-/* ==================================================
-   ADMIN - EXCLUIR
-================================================== */
+function excluirImovel(id){
 
-function excluirImovel(id) {
-
-
-    if (
-        usuarioAtual !== "Italo"
-    ) {
+    if(usuarioAtual !== "Italo"){
 
         return;
 
     }
 
 
-    const imovel =
-        imoveis[id];
-
-
-    if (!imovel) {
-
-        return;
-
-    }
-
-
-    if (
-        imovel.proprietario
-    ) {
-
-
-        mostrarMensagem(
-            "Este imóvel já possui um proprietário e não pode ser excluído.",
-            "erro"
-        );
-
-
-        return;
-
-    }
-
-
-    if (
+    if(
         !confirm(
-            "Tem certeza que deseja excluir este imóvel?"
+            "Deseja realmente excluir este imóvel?"
         )
-    ) {
+    ){
 
         return;
 
@@ -2461,85 +1392,72 @@ function excluirImovel(id) {
 
     banco.ref(
         "imoveis/" + id
-    ).remove(
-        function(error) {
-
-
-            if (error) {
-
-
-                console.error(
-                    error
-                );
-
-
-                mostrarMensagem(
-                    "Erro ao excluir imóvel.",
-                    "erro"
-                );
-
-
-                return;
-
-            }
-
-
-            mostrarMensagem(
-                "Imóvel excluído.",
-                "sucesso"
-            );
-
-        }
-    );
+    ).remove();
 
 }
 
 
-
-/* ==================================================
+/* =========================
    MENSAGEM
-================================================== */
+========================= */
 
-function mostrarMensagem(
-    texto,
-    tipo
-) {
+function mostrarMensagem(texto,tipo){
 
-
-    const mensagem =
-        document.getElementById(
-            "mensagem"
-        );
+    const elemento =
+        document.getElementById("mensagem");
 
 
-    mensagem.innerText =
-        texto;
+    elemento.innerHTML =
+        `<div class="mensagem ${tipo}">
+            ${texto}
+        </div>`;
 
 
-    mensagem.className =
-        "mensagem " + tipo;
+    setTimeout(function(){
 
+        elemento.innerHTML = "";
 
-    mensagem.style.display =
-        "block";
-
-
-    setTimeout(
-        function() {
-
-            mensagem.style.display =
-                "none";
-
-        },
-        3500
-    );
+    },5000);
 
 }
 
+
+/* =========================
+   SAIR
+========================= */
+
+function sair(){
+
+    sessionStorage.removeItem(
+        "usuarioAtual"
+    );
+
+
+    usuarioAtual = null;
+
+
+    document.getElementById("site")
+        .classList.add("escondido");
+
+
+    document.getElementById("login")
+        .classList.remove("escondido");
+
+}
+
+
+/* =========================
+   VOLTAR PARA CENTRAL
+========================= */
+
+function voltarCentral(){
+
+    window.location.href =
+        "index.html";
+
+}
 
 </script>
 
 </body>
-
 </html>
-```
