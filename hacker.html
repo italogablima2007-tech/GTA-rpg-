@@ -4,17 +4,132 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>HACKER // GTA RPG</title>
+<title>HACKER // TERMINAL</title>
 
+<!-- =========================================================
+     FIREBASE
+========================================================= -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<script>
+
+const usuarios = {
+    Kaius: "28/09",
+    Gaby: "22/09",
+    Duda: "13/09",
+    Italo: "1822"
+};
+
+let usuarioAtual = null;
+
+function entrar(){
+
+    const usuarioInput = document.getElementById("usuario").value.trim();
+    const senhaInput = document.getElementById("senha").value.trim();
+
+    if(!usuarios[usuarioInput]){
+
+        document.getElementById("erroLogin").innerText =
+            "USUÁRIO NÃO ENCONTRADO.";
+
+        return;
+    }
+
+    if(usuarios[usuarioInput] !== senhaInput){
+
+        document.getElementById("erroLogin").innerText =
+            "CÓDIGO DE ACESSO INCORRETO.";
+
+        return;
+    }
+
+    usuarioAtual = usuarioInput;
+
+    localStorage.setItem(
+        "hacker_usuario",
+        usuarioAtual
+    );
+
+    document.getElementById("erroLogin").innerText = "";
+
+    document.getElementById("loginTela").style.display = "none";
+
+    document.getElementById("sistema").style.display = "block";
+
+    document.getElementById("usuarioLogado").innerText =
+        usuarioAtual.toUpperCase();
+
+    /* ADMIN */
+
+    if(usuarioAtual === "Italo"){
+
+        document.getElementById("adminPanel").style.display =
+            "block";
+
+        carregarAcessosAdmin();
+
+    }else{
+
+        document.getElementById("adminPanel").style.display =
+            "none";
+    }
+
+    iniciarFirebase();
+
+    ouvirAcessoJogador();
+}
+
+
+function voltar(){
+
+    window.location.href = "./index.html";
+
+}
+
+
+window.addEventListener("DOMContentLoaded", function(){
+
+    document
+        .getElementById("btnEntrar")
+        .addEventListener("click", entrar);
+
+
+    document
+        .getElementById("btnVoltar")
+        .addEventListener("click", voltar);
+
+
+    document
+        .getElementById("senha")
+        .addEventListener("keydown", function(event){
+
+            if(event.key === "Enter"){
+
+                entrar();
+
+            }
+
+        });
+
+});
+
+</script>
+
+
+<!-- =========================================================
+     ESTILO
+========================================================= -->
 
 <style>
-
-/* ==================================================
-   GERAL
-================================================== */
 
 *{
     box-sizing:border-box;
@@ -24,15 +139,7 @@ body{
 
     margin:0;
 
-    min-height:100vh;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #07140d 0%,
-            #030706 45%,
-            #000 100%
-        );
+    background:#020403;
 
     color:#00ff88;
 
@@ -40,41 +147,14 @@ body{
         "Courier New",
         monospace;
 
-}
-
-
-/* ==================================================
-   EFEITO TERMINAL
-================================================== */
-
-body::before{
-
-    content:"";
-
-    position:fixed;
-
-    inset:0;
-
-    pointer-events:none;
-
-    opacity:.06;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            #00ff88 3px
-        );
-
-    z-index:999;
+    min-height:100vh;
 
 }
 
 
-/* ==================================================
+/* =========================================================
    LOGIN
-================================================== */
+========================================================= */
 
 #loginTela{
 
@@ -88,245 +168,132 @@ body::before{
 
     padding:20px;
 
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(0,255,120,.08),
+            transparent 45%
+        ),
+
+        #020403;
+
 }
 
 
-.login-container{
+.loginBox{
 
     width:100%;
 
-    max-width:460px;
-
-    border:1px solid #00ff88;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(0,255,136,.06),
-            rgba(0,0,0,.95)
-        );
-
-    box-shadow:
-        0 0 15px rgba(0,255,136,.15),
-        inset 0 0 30px rgba(0,255,136,.03);
+    max-width:420px;
 
     padding:35px;
 
-    position:relative;
+    border:1px solid #00ff88;
 
-}
-
-
-.login-container::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:-1px;
-
-    left:20px;
-
-    width:90px;
-
-    height:2px;
-
-    background:#00ff88;
+    background:#050807;
 
     box-shadow:
-        0 0 10px #00ff88;
+
+        0 0 10px rgba(0,255,136,.25),
+
+        inset 0 0 25px rgba(0,255,136,.03);
 
 }
 
 
-.login-container::after{
-
-    content:"";
-
-    position:absolute;
-
-    bottom:-1px;
-
-    right:20px;
-
-    width:90px;
-
-    height:2px;
-
-    background:#00ff88;
-
-    box-shadow:
-        0 0 10px #00ff88;
-
-}
-
-
-.login-logo{
+.loginTitulo{
 
     text-align:center;
+
+    margin-bottom:10px;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    text-shadow:
+        0 0 8px #00ff88;
+
+}
+
+
+.loginSubtitulo{
+
+    text-align:center;
+
+    color:#4d9f77;
+
+    font-size:12px;
 
     margin-bottom:30px;
 
 }
 
 
-.simbolo{
-
-    font-size:50px;
-
-    margin-bottom:10px;
-
-    text-shadow:
-        0 0 10px #00ff88,
-        0 0 25px rgba(0,255,136,.5);
-
-}
-
-
-.login-logo h1{
-
-    margin:0;
-
-    font-size:30px;
-
-    letter-spacing:8px;
-
-    text-shadow:
-        0 0 10px #00ff88;
-
-}
-
-
-.login-logo p{
-
-    color:#477d61;
-
-    margin-top:10px;
-
-    font-size:12px;
-
-    letter-spacing:2px;
-
-}
-
-
-.terminal-linha{
-
-    color:#477d61;
-
-    font-size:12px;
-
-    margin-bottom:25px;
-
-    border-bottom:1px solid #123d27;
-
-    padding-bottom:10px;
-
-}
-
-
-.campo{
-
-    margin-bottom:20px;
-
-}
-
-
-.campo label{
+.loginBox label{
 
     display:block;
 
-    color:#00aa5b;
+    margin-top:15px;
 
-    font-size:12px;
+    margin-bottom:7px;
 
-    margin-bottom:8px;
+    color:#70ffb1;
 
-    letter-spacing:2px;
-
-}
-
-
-.campo label::before{
-
-    content:"> ";
-
-    color:#00ff88;
+    font-size:13px;
 
 }
 
 
-.campo input{
+.loginBox input{
 
     width:100%;
 
-    padding:14px;
+    padding:13px;
 
-    background:#010401;
+    background:#000;
+
+    border:1px solid #145f3d;
 
     color:#00ff88;
 
-    border:1px solid #164d31;
-
     outline:none;
 
-    font-family:
-        "Courier New",
-        monospace;
-
-    font-size:15px;
+    font-family:inherit;
 
 }
 
 
-.campo input:focus{
+.loginBox input:focus{
 
     border-color:#00ff88;
 
     box-shadow:
-        0 0 10px rgba(0,255,136,.15);
+        0 0 8px rgba(0,255,136,.2);
 
 }
 
-
-.campo input::placeholder{
-
-    color:#28543b;
-
-}
-
-
-/* ==================================================
-   BOTÕES
-================================================== */
 
 .btn{
 
-    display:block;
-
     width:100%;
 
-    padding:14px;
+    padding:13px;
+
+    margin-top:20px;
+
+    background:#03140b;
 
     border:1px solid #00ff88;
 
-    background:#001b0d;
-
     color:#00ff88;
-
-    font-family:
-        "Courier New",
-        monospace;
-
-    font-weight:bold;
-
-    letter-spacing:2px;
 
     cursor:pointer;
 
-    text-align:center;
+    font-family:inherit;
 
-    text-decoration:none;
+    font-weight:bold;
 
     transition:.2s;
 
@@ -340,59 +307,50 @@ body::before{
     color:#000;
 
     box-shadow:
-        0 0 15px rgba(0,255,136,.4);
+        0 0 15px rgba(0,255,136,.5);
 
 }
 
 
 .btn-voltar{
 
-    margin-top:10px;
-
-    border-color:#28543b;
-
-    color:#477d61;
-
-    background:#020602;
-
-}
-
-
-.btn-voltar:hover{
-
-    background:#477d61;
-
-    color:#000;
-
-}
-
-
-.erro{
-
-    min-height:20px;
-
-    margin-top:18px;
-
-    color:#ff3333;
+    display:block;
 
     text-align:center;
 
-    font-size:13px;
+    text-decoration:none;
 
 }
 
 
-/* ==================================================
+#erroLogin{
+
+    color:#ff4444;
+
+    text-align:center;
+
+    font-size:12px;
+
+    margin-top:15px;
+
+    min-height:15px;
+
+}
+
+
+/* =========================================================
    SISTEMA
-================================================== */
+========================================================= */
 
 #sistema{
 
     display:none;
 
+    width:100%;
+
     min-height:100vh;
 
-    padding:25px;
+    padding:20px;
 
 }
 
@@ -408,93 +366,51 @@ body::before{
 }
 
 
-/* ==================================================
-   TOPO
-================================================== */
+.header{
 
-.topo{
+    border-bottom:1px solid #00ff88;
 
-    display:flex;
+    padding-bottom:15px;
 
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:20px;
-
-    padding:20px;
-
-    margin-bottom:20px;
-
-    border:1px solid #123d27;
-
-    background:
-        rgba(0,15,8,.8);
+    margin-bottom:25px;
 
 }
 
 
-.topo h1{
+.header h1{
 
     margin:0;
 
-    color:#00ff88;
-
-    letter-spacing:5px;
+    font-size:25px;
 
     text-shadow:
-        0 0 10px #00ff88;
+        0 0 8px #00ff88;
 
 }
 
 
-.status-online{
+.header p{
 
-    color:#00ff88;
+    margin:7px 0 0;
+
+    color:#559b78;
 
     font-size:12px;
 
-    margin-top:8px;
-
 }
 
 
-.btn-sair{
-
-    width:auto;
-
-    padding:10px 18px;
-
-    color:#ff4444;
-
-    border-color:#7d2222;
-
-    background:#160303;
-
-}
-
-
-.btn-sair:hover{
-
-    background:#ff3333;
-
-    color:#000;
-
-}
-
-
-/* ==================================================
-   PAINEL
-================================================== */
+/* =========================================================
+   PAINÉIS
+========================================================= */
 
 .painel{
 
-    background:
-        rgba(0,10,5,.88);
+    border:1px solid #145f3d;
 
-    border:1px solid #123d27;
+    background:#050807;
 
-    padding:22px;
+    padding:20px;
 
     margin-bottom:20px;
 
@@ -507,269 +423,446 @@ body::before{
 
     color:#00ff88;
 
-    letter-spacing:2px;
+    font-size:18px;
 
 }
 
 
-/* ==================================================
-   SEM ACESSO
-================================================== */
+/* =========================================================
+   ADMIN
+========================================================= */
 
-#semAcesso{
-
-    text-align:center;
-
-    padding:70px 20px;
-
-}
-
-
-.cadeado{
-
-    font-size:55px;
-
-    opacity:.5;
-
-}
-
-
-#semAcesso h2{
-
-    color:#777;
-
-}
-
-
-#semAcesso p{
-
-    color:#477d61;
-
-}
-
-
-/* ==================================================
-   ACESSO
-================================================== */
-
-#acessoLiberado{
+#adminPanel{
 
     display:none;
 
-}
-
-
-.alerta-acesso{
-
-    border:1px solid #00ff88;
-
-    padding:15px;
-
-    margin-bottom:20px;
-
-    background:
-        rgba(0,255,136,.04);
+    border-color:#00ff88;
 
 }
 
 
-.info-acesso{
+.adminGrid{
 
     display:grid;
 
     grid-template-columns:
-        repeat(4,1fr);
+        repeat(2,1fr);
 
-    gap:10px;
-
-    margin-bottom:20px;
+    gap:15px;
 
 }
 
 
-.info{
+.adminCampo{
 
-    border:1px solid #123d27;
+    display:flex;
 
-    padding:15px;
-
-    background:#020803;
+    flex-direction:column;
 
 }
 
 
-.info small{
+.adminCampo label{
 
-    display:block;
+    font-size:12px;
 
-    color:#477d61;
+    margin-bottom:6px;
 
-    margin-bottom:7px;
+    color:#70ffb1;
 
 }
 
 
-.info strong{
+.adminCampo input,
+.adminCampo select{
+
+    padding:11px;
+
+    background:#000;
+
+    border:1px solid #145f3d;
+
+    color:#00ff88;
+
+    font-family:inherit;
+
+}
+
+
+.adminCampo input:focus,
+.adminCampo select:focus{
+
+    outline:none;
+
+    border-color:#00ff88;
+
+}
+
+
+.btnAdmin{
+
+    margin-top:20px;
+
+    padding:12px;
+
+    width:100%;
+
+    background:#00ff88;
+
+    border:none;
+
+    color:#000;
+
+    font-family:inherit;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+.btnAdmin:hover{
+
+    box-shadow:
+        0 0 15px rgba(0,255,136,.5);
+
+}
+
+
+/* =========================================================
+   ACESSOS
+========================================================= */
+
+.acessoItem{
+
+    border:1px solid #145f3d;
+
+    padding:14px;
+
+    margin-top:10px;
+
+    background:#020503;
+
+}
+
+
+.acessoItem strong{
 
     color:#00ff88;
 
 }
 
 
-/* ==================================================
-   MINIGAME
-================================================== */
+.acessoItem small{
 
-#minigame{
+    display:block;
+
+    color:#629d7d;
+
+    margin-top:5px;
+
+}
+
+
+.btnRevogar{
+
+    margin-top:10px;
+
+    padding:8px 12px;
+
+    background:#190404;
+
+    border:1px solid #ff4444;
+
+    color:#ff5555;
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+}
+
+
+.btnRevogar:hover{
+
+    background:#ff4444;
+
+    color:#000;
+
+}
+
+
+/* =========================================================
+   ACESSO DO JOGADOR
+========================================================= */
+
+#statusAcesso{
+
+    border:1px solid #145f3d;
+
+    padding:20px;
+
+    text-align:center;
+
+}
+
+
+#statusAcesso.ativo{
+
+    border-color:#00ff88;
+
+    box-shadow:
+        0 0 15px rgba(0,255,136,.1);
+
+}
+
+
+.statusTitulo{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+}
+
+
+.statusInfo{
+
+    color:#66aa85;
+
+    font-size:13px;
+
+    line-height:1.7;
+
+}
+
+
+#btnIniciar{
+
+    display:none;
+
+    margin-top:20px;
+
+    width:100%;
+
+    padding:15px;
+
+    background:#00ff88;
+
+    border:none;
+
+    color:#000;
+
+    font-family:inherit;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+#btnIniciar:hover{
+
+    box-shadow:
+        0 0 20px rgba(0,255,136,.6);
+
+}
+
+
+/* =========================================================
+   INVASÃO
+========================================================= */
+
+#invasao{
 
     display:none;
 
 }
 
 
-.minigame-titulo{
-
-    text-align:center;
-
-    font-size:27px;
-
-    letter-spacing:5px;
-
-    color:#00ff88;
-
-    text-shadow:
-        0 0 10px #00ff88;
-
-}
-
-
-.minigame-subtitulo{
-
-    text-align:center;
-
-    color:#477d61;
-
-    margin-bottom:25px;
-
-}
-
-
-/* ==================================================
-   PROGRESSO
-================================================== */
-
-.progresso{
-
-    margin:20px 0;
-
-}
-
-
-.progresso-texto{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    color:#477d61;
-
-    font-size:12px;
-
-    margin-bottom:7px;
-
-}
-
-
-.barra{
+#barraTempo{
 
     width:100%;
 
-    height:8px;
+    height:10px;
 
-    background:#061109;
+    background:#111;
 
-    border:1px solid #123d27;
+    border:1px solid #145f3d;
+
+    margin-top:15px;
 
 }
 
 
-.barra-interna{
-
-    width:0%;
+#barraTempoInterna{
 
     height:100%;
 
+    width:100%;
+
     background:#00ff88;
+
+    transition:width .2s linear;
 
 }
 
 
-/* ==================================================
-   CRACK
-================================================== */
+#tempoRestante{
 
-.codigo{
+    text-align:right;
+
+    margin-top:6px;
+
+    color:#70ffb1;
+
+}
+
+
+#etapas{
+
+    margin-top:20px;
+
+}
+
+
+.etapa{
+
+    display:inline-block;
+
+    border:1px solid #145f3d;
+
+    padding:8px 12px;
+
+    margin:4px;
+
+    font-size:11px;
+
+}
+
+
+.etapa.atual{
+
+    border-color:#00ff88;
+
+    box-shadow:
+        0 0 8px rgba(0,255,136,.3);
+
+}
+
+
+.etapa.ok{
+
+    background:#06351e;
+
+    border-color:#00ff88;
+
+}
+
+
+.etapa.erro{
+
+    background:#350606;
+
+    border-color:#ff4444;
+
+}
+
+
+/* =========================================================
+   MINIGAME
+========================================================= */
+
+#minigame{
+
+    margin-top:20px;
+
+    border:1px solid #00ff88;
+
+    padding:25px;
+
+    min-height:300px;
+
+}
+
+
+#minigame h2{
+
+    margin-top:0;
+
+}
+
+
+/* =========================================================
+   CRACK
+========================================================= */
+
+.crackNumero{
+
+    font-size:34px;
+
+    letter-spacing:10px;
 
     text-align:center;
-
-    font-size:35px;
-
-    letter-spacing:8px;
-
-    color:#00ff88;
 
     margin:30px 0;
 
 }
 
 
-.input-codigo{
+.crackInput{
 
     width:100%;
 
-    max-width:400px;
+    max-width:300px;
 
     display:block;
 
-    margin:0 auto 15px;
+    margin:auto;
+
+    padding:14px;
 
     text-align:center;
 
-    font-size:22px;
+    background:#000;
 
-    letter-spacing:5px;
-
-    background:#010401;
+    border:1px solid #00ff88;
 
     color:#00ff88;
 
-    border:1px solid #164d31;
+    font-family:inherit;
 
-    padding:13px;
+    font-size:20px;
 
 }
 
 
-/* ==================================================
+/* =========================================================
    MEMÓRIA
-================================================== */
+========================================================= */
 
-.memoria-sequencia{
-
-    text-align:center;
-
-    font-size:45px;
-
-    letter-spacing:12px;
+.memoriaSequencia{
 
     min-height:70px;
 
-    margin:25px 0;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:35px;
+
+    letter-spacing:12px;
 
 }
 
 
-.memoria-botoes{
+.memoriaBotoes{
 
     display:flex;
 
@@ -779,50 +872,46 @@ body::before{
 
     gap:10px;
 
+    margin-top:25px;
+
 }
 
 
-.memoria-botoes button{
+.memoriaBotoes button{
 
-    width:65px;
+    width:55px;
 
-    height:65px;
+    height:55px;
 
-    font-size:23px;
+    background:#020403;
 
-    background:#020803;
+    border:1px solid #00ff88;
 
     color:#00ff88;
 
-    border:1px solid #164d31;
+    font-size:20px;
 
     cursor:pointer;
 
 }
 
 
-/* ==================================================
-   TERMINAL
-================================================== */
+.memoriaBotoes button:hover{
 
-.terminal{
+    background:#00ff88;
 
-    background:#010401;
-
-    border:1px solid #00ff88;
-
-    padding:20px;
-
-    color:#00ff88;
-
-    line-height:1.8;
-
-    margin-bottom:20px;
+    color:#000;
 
 }
 
 
-.terminal-opcoes{
+/* =========================================================
+   TERMINAL
+========================================================= */
+
+.codigoTerminal{
+
+    margin-top:20px;
 
     display:grid;
 
@@ -834,30 +923,35 @@ body::before{
 }
 
 
-.terminal-opcoes button{
+.codigoTerminal button{
 
     padding:15px;
 
-    background:#020803;
+    background:#020403;
+
+    border:1px solid #145f3d;
 
     color:#00ff88;
 
-    border:1px solid #164d31;
+    font-family:inherit;
 
     cursor:pointer;
-
-    font-family:
-        "Courier New",
-        monospace;
 
 }
 
 
-/* ==================================================
-   FIREWALL
-================================================== */
+.codigoTerminal button:hover{
 
-.firewall-grade{
+    border-color:#00ff88;
+
+}
+
+
+/* =========================================================
+   FIREWALL
+========================================================= */
+
+.firewallGrid{
 
     display:grid;
 
@@ -866,46 +960,43 @@ body::before{
 
     gap:10px;
 
-    max-width:500px;
-
-    margin:25px auto;
+    margin-top:25px;
 
 }
 
 
-.firewall-grade button{
+.firewallGrid button{
 
-    height:60px;
+    height:70px;
 
-    background:#020803;
+    background:#020403;
+
+    border:1px solid #145f3d;
 
     color:#00ff88;
 
-    border:1px solid #164d31;
+    font-family:inherit;
 
     cursor:pointer;
-
-    font-family:
-        "Courier New",
-        monospace;
 
     font-size:18px;
 
 }
 
 
-.firewall-grade button.selecionado{
+.firewallGrid button:hover{
 
-    background:#00ff88;
+    border-color:#00ff88;
 
-    color:#000;
+    box-shadow:
+        0 0 8px rgba(0,255,136,.3);
 
 }
 
 
-/* ==================================================
+/* =========================================================
    RESULTADO
-================================================== */
+========================================================= */
 
 #resultado{
 
@@ -913,32 +1004,546 @@ body::before{
 
     text-align:center;
 
-    padding:50px 20px;
+    padding:30px;
+
+    border:1px solid #00ff88;
 
 }
 
 
-#resultado.falha h2{
+#resultado.sucesso{
 
-    color:#ff3333;
-
-}
-
-
-/* ==================================================
-   ADMIN
-================================================== */
-
-#admin{
-
-    display:none;
+    border-color:#00ff88;
 
 }
 
 
-.admin-campo{
+#resultado.falha{
 
-    margin-bottom:15px;
+    border-color:#ff4444;
+
+    color:#ff5555;
+
+}
+
+
+#resultado h2{
+
+    font-size:25px;
+
+}
+
+
+/* =========================================================
+   HISTÓRICO
+========================================================= */
+
+.historicoItem{
+
+    border-bottom:1px solid #123c29;
+
+    padding:12px 0;
+
+    font-size:12px;
+
+}
+
+
+.historicoItem:last-child{
+
+    border-bottom:none;
+
+}
+
+
+.historicoSucesso{
+
+    color:#00ff88;
+
+}
+
+
+.historicoFalha{
+
+    color:#ff5555;
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media(max-width:700px){
+
+    #sistema{
+
+        padding:12px;
+
+    }
+
+
+    .adminGrid{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .codigoTerminal{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .firewallGrid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+
+    .loginBox{
+
+        padding:25px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     TELA DE LOGIN
+========================================================= -->
+
+<div id="loginTela">
+
+    <div class="loginBox">
+
+        <div class="loginTitulo">
+            HACKER
+        </div>
+
+        <div class="loginSubtitulo">
+            // SECURE TERMINAL ACCESS
+        </div>
+
+
+        <label>
+            USUÁRIO
+        </label>
+
+        <input
+            type="text"
+            id="usuario"
+            autocomplete="off"
+        >
+
+
+        <label>
+            CÓDIGO DE ACESSO
+        </label>
+
+        <input
+            type="password"
+            id="senha"
+            autocomplete="off"
+        >
+
+
+        <button
+            class="btn"
+            id="btnEntrar"
+        >
+            [ CONTINUAR ]
+        </button>
+
+
+        <a
+            href="./index.html"
+            class="btn btn-voltar"
+            id="btnVoltar"
+        >
+            [ VOLTAR ]
+        </a>
+
+
+        <div id="erroLogin"></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     SISTEMA
+========================================================= -->
+
+<div id="sistema">
+
+<div class="container">
+
+
+    <div class="header">
+
+        <h1>
+            HACKER // TERMINAL
+        </h1>
+
+        <p>
+            USUÁRIO AUTENTICADO:
+            <strong id="usuarioLogado"></strong>
+        </p>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ADMIN
+    ====================================================== -->
+
+    <div
+        id="adminPanel"
+        class="painel"
+    >
+
+        <h2>
+            [ ADMIN // LIBERAR ACESSO ]
+        </h2>
+
+
+        <div class="adminGrid">
+
+
+            <div class="adminCampo">
+
+                <label>
+                    JOGADOR
+                </label>
+
+                <select id="adminJogador">
+
+                    <option value="Kaius">
+                        Kaius
+                    </option>
+
+                    <option value="Gaby">
+                        Gaby
+                    </option>
+
+                    <option value="Duda">
+                        Duda
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="adminCampo">
+
+                <label>
+                    TEMPO (SEGUNDOS)
+                </label>
+
+                <input
+                    type="number"
+                    id="adminTempo"
+                    value="60"
+                    min="10"
+                >
+
+            </div>
+
+
+
+            <div class="adminCampo">
+
+                <label>
+                    DIFICULDADE
+                </label>
+
+                <select id="adminDificuldade">
+
+                    <option value="Fácil">
+                        Fácil
+                    </option>
+
+                    <option value="Normal">
+                        Normal
+                    </option>
+
+                    <option value="Difícil">
+                        Difícil
+                    </option>
+
+                    <option value="Extremo">
+                        Extremo
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="adminCampo">
+
+                <label>
+                    RECURSO DESBLOQUEADO
+                </label>
+
+                <input
+                    type="text"
+                    id="adminRecurso"
+                    placeholder="Ex: Cofre, Sistema, Arquivo..."
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            class="btnAdmin"
+            onclick="liberarAcesso()"
+        >
+            [ LIBERAR ACESSO ]
+        </button>
+
+
+        <div
+            id="listaAcessosAdmin"
+            style="margin-top:20px;"
+        ></div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         STATUS DO ACESSO
+    ====================================================== -->
+
+    <div
+        class="painel"
+        id="painelAcesso"
+    >
+
+        <h2>
+            [ STATUS DO ACESSO ]
+        </h2>
+
+
+        <div id="statusAcesso">
+
+            <div class="statusTitulo">
+                AGUARDANDO AUTORIZAÇÃO
+            </div>
+
+            <div class="statusInfo">
+                Nenhuma invasão foi autorizada para este usuário.
+            </div>
+
+        </div>
+
+
+        <button
+            id="btnIniciar"
+            onclick="iniciarInvasao()"
+        >
+            [ INICIAR INVASÃO ]
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         INVASÃO
+    ====================================================== -->
+
+    <div
+        id="invasao"
+        class="painel"
+    >
+
+        <h2>
+            [ INVASÃO EM ANDAMENTO ]
+        </h2>
+
+
+        <div id="etapas"></div>
+
+
+        <div id="barraTempo">
+
+            <div id="barraTempoInterna"></div>
+
+        </div>
+
+
+        <div id="tempoRestante">
+            0s
+        </div>
+
+
+        <div id="minigame"></div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         RESULTADO
+    ====================================================== -->
+
+    <div
+        id="resultado"
+        class="painel"
+    >
+
+        <h2 id="resultadoTitulo"></h2>
+
+        <p id="resultadoTexto"></p>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         HISTÓRICO
+    ====================================================== -->
+
+    <div
+        class="painel"
+        id="painelHistorico"
+    >
+
+        <h2>
+            [ HISTÓRICO ]
+        </h2>
+
+        <div id="historico">
+
+            Nenhuma invasão registrada.
+
+        </div>
+
+    </div>
+
+
+
+    <a
+        href="./index.html"
+        class="btn btn-voltar"
+    >
+        [ SAIR DO TERMINAL ]
+    </a>
+
+
+</div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
+
+let db = null;
+
+let acessoAtual = null;
+
+let sequenciaMinigames = [];
+
+let indiceMinigame = 0;
+
+let tempoInicioInvasao = 0;
+
+let tempoTotalInvasao = 0;
+
+let intervaloTempo = null;
+
+let tempoRestante = 0;
+
+let memoriaSequencia = [];
+
+let memoriaResposta = [];
+
+let codigoTerminalCorreto = "";
+
+let firewallCorreto = "";
+
+
+
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBjJqg",
+
+    authDomain:
+        "gta-rpg.firebaseapp.com",
+
+    databaseURL:
+        "https://gta-rpg-default-rtdb.firebaseio.com",
+
+    projectId:
+        "gta-rpg",
+
+    storageBucket:
+        "gta-rpg.firebasestorage.app",
+
+    messagingSenderId:
+        "318963858414",
+
+    appId:
+        "1:318963858414:web:cc7122486ac5a3d267ecff",
+
+    measurementId:
+        "G-K157521F0H"
+
+};
+
+
+
+function iniciarFirebase(){
+
+    try{
+
+        if(!firebase.apps.length){
+
+            firebase.initializeApp(firebaseConfig);
+
+        }
+
+        db = firebase.database();
+
+    }catch(error){
+
+        console.error(
+            "Erro ao iniciar Firebase:",
+            error   margin-bottom:15px;
 
 }
 
