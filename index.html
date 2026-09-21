@@ -54,9 +54,9 @@ body{
 
 .abas-central{
     width:100%;
-    max-width:900px;
+    max-width:1200px;
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:repeat(3,1fr);
     gap:25px;
 }
 
@@ -105,6 +105,20 @@ body{
     background-size:cover;
     background-position:center;
 }
+
+
+/* =========================
+   ALVOS
+========================= */
+
+.aba-alvos{
+    background:
+        linear-gradient(
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.65)
+        );
+}
+
 
 /* =========================
    LOGIN LESTER
@@ -186,6 +200,7 @@ button{
     margin-top:15px;
 }
 
+
 /* =========================
    LESTER
 ========================= */
@@ -233,6 +248,7 @@ header h1{
     padding:30px 20px;
 }
 
+
 /* =========================
    ABAS LESTER
 ========================= */
@@ -255,6 +271,7 @@ header h1{
     color:#fff;
     border-bottom:3px solid #c40000;
 }
+
 
 /* =========================
    MISSÕES
@@ -318,6 +335,7 @@ header h1{
     padding:50px;
 }
 
+
 /* =========================
    ADMIN
 ========================= */
@@ -371,6 +389,7 @@ header h1{
 .aviso{
     color:#ff4444;
 }
+
 
 /* =========================
    RESPONSIVO
@@ -447,20 +466,22 @@ header h1{
 
         </div>
 
+
+        <!-- ALVOS -->
+
+        <div
+            class="aba aba-alvos"
+            onclick="abrirAlvos()"
+        >
+
+            <h2>ALVOS</h2>
+
+        </div>
+
     </div>
 
 </div>
 
-    <!-- ALVOS -->
-
-<div
-    class="aba aba-alvos"
-    onclick="abrirAlvos()"
->
-
-    <h2>ALVOS</h2>
-
-</div>
 
 <!-- =========================
      LOGIN
@@ -774,6 +795,17 @@ let missoesAceitas = {};
 function abrirImoveis(){
 
     window.location.href = "./imoveis.html";
+
+}
+
+
+/* =========================
+   ABRIR ALVOS
+========================= */
+
+function abrirAlvos(){
+
+    window.location.href = "./alvos.html";
 
 }
 
