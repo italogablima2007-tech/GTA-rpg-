@@ -3,751 +3,598 @@
 
 <head>
 
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>Central do RPG</title>
-
-
-<style>
-
-/* ==========================================
-   CONFIGURAÇÃO GERAL
-========================================== */
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-
-    margin:0;
-
-    font-family:Arial,sans-serif;
-
-    background:#101010;
-
-    color:white;
-
-}
-
-.escondido{
-
-    display:none !important;
-
-}
-
-
-/* ==========================================
-   CENTRAL
-========================================== */
-
-#central{
-
-    min-height:100vh;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:30px;
-
-}
-
-.titulo{
-
-    text-align:center;
-
-    margin-bottom:40px;
-
-}
-
-.titulo h1{
-
-    margin:0;
-
-    font-size:42px;
-
-    letter-spacing:2px;
-
-}
-
-.titulo p{
-
-    color:#aaa;
-
-    margin-top:10px;
-
-}
-
-
-/* ==========================================
-   CARDS DA CENTRAL
-========================================== */
-
-.abas-central{
-
-    width:100%;
-
-    max-width:1200px;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:25px;
-
-}
-
-.aba{
-
-    min-height:220px;
-
-    border-radius:15px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-    background:#1c1c1c;
-
-    border:1px solid #333;
-
-    overflow:hidden;
-
-    position:relative;
-
-}
-
-.aba:hover{
-
-    transform:scale(1.02);
-
-    border-color:#777;
-
-}
-
-.aba h2{
-
-    position:relative;
-
-    z-index:2;
-
-    font-size:25px;
-
-    text-align:center;
-
-}
-
-
-/* ==========================================
-   IMÓVEIS
-========================================== */
-
-.aba-imoveis{
-
-    background:
-
-        linear-gradient(
-            rgba(0,0,0,.45),
-            rgba(0,0,0,.65)
-        );
-
-}
-
-
-/* ==========================================
-   LESTER
-========================================== */
-
-.aba-lester{
-
-    background-image:
-
-        linear-gradient(
-            rgba(0,0,0,.35),
-            rgba(0,0,0,.65)
-        ),
-
-        url("./lester.jpg");
-
-    background-size:cover;
-
-    background-position:center;
-
-}
-
-
-/* ==========================================
-   ALVOS
-========================================== */
-
-.aba-alvos{
-
-    background:
-
-        linear-gradient(
-            rgba(0,0,0,.35),
-            rgba(0,0,0,.65)
-        ),
-
-        url("./alvos.jpg");
-
-    background-size:cover;
-
-    background-position:center;
-
-}
-
-
-/* ==========================================
-   HACKER
-========================================== */
-
-.aba-hacker{
-
-    background:
-
-        linear-gradient(
-            rgba(0,0,0,.35),
-            rgba(0,0,0,.70)
-        ),
-
-        url("./hacker.jpg");
-
-    background-size:cover;
-
-    background-position:center;
-
-}
-
-.aba-hacker:hover{
-
-    border-color:#00ff88;
-
-}
-
-
-/* ==========================================
-   LOGIN
-========================================== */
-
-#login{
-
-    min-height:100vh;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:20px;
-
-}
-
-.login-box{
-
-    width:100%;
-
-    max-width:400px;
-
-    background:#181818;
-
-    border:1px solid #333;
-
-    border-radius:15px;
-
-    padding:30px;
-
-    box-shadow:
-        0 10px 40px
-        rgba(0,0,0,.5);
-
-}
-
-.login-box h1{
-
-    text-align:center;
-
-    margin-top:0;
-
-}
-
-.login-box p{
-
-    text-align:center;
-
-    color:#999;
-
-}
-
-
-/* ==========================================
-   INPUTS
-========================================== */
-
-input,
-textarea,
-select{
-
-    width:100%;
-
-    padding:13px;
-
-    margin:7px 0 15px;
-
-    border-radius:7px;
-
-    border:1px solid #444;
-
-    background:#222;
-
-    color:white;
-
-    font-size:15px;
-
-}
-
-textarea{
-
-    min-height:100px;
-
-}
-
-
-/* ==========================================
-   BOTÕES
-========================================== */
-
-button{
-
-    border:0;
-
-    border-radius:7px;
-
-    padding:12px 16px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-
-}
-
-.btn-vermelho{
-
-    width:100%;
-
-    background:#c40000;
-
-    color:white;
-
-}
-
-.btn-vermelho:hover{
-
-    background:#a00000;
-
-}
-
-.btn-voltar{
-
-    width:100%;
-
-    margin-top:10px;
-
-    background:#333;
-
-    color:white;
-
-}
-
-.btn-sair{
-
-    background:#333;
-
-    color:white;
-
-}
-
-.btn-pequeno{
-
-    background:#333;
-
-    color:white;
-
-    margin:3px;
-
-}
-
-.btn-pequeno:hover{
-
-    background:#c40000;
-
-}
-
-
-/* ==========================================
-   ERRO
-========================================== */
-
-.erro{
-
-    color:#ff4444;
-
-    text-align:center;
-
-    margin-top:15px;
-
-}
-
-
-/* ==========================================
-   LESTER
-========================================== */
-
-#lester{
-
-    min-height:100vh;
-
-}
-
-header{
-
-    background:#181818;
-
-    border-bottom:1px solid #333;
-
-    padding:18px 30px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    flex-wrap:wrap;
-
-    gap:15px;
-
-}
-
-header h1{
-
-    margin:0;
-
-}
-
-.usuario{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:20px;
-
-}
-
-.saldo{
-
-    color:#42d66b;
-
-    font-weight:bold;
-
-}
-
-.container{
-
-    width:100%;
-
-    max-width:1200px;
-
-    margin:auto;
-
-    padding:30px 20px;
-
-}
-
-
-/* ==========================================
-   ABAS LESTER
-========================================== */
-
-.abas{
-
-    display:flex;
-
-    gap:10px;
-
-    border-bottom:1px solid #333;
-
-    margin-bottom:30px;
-
-}
-
-.aba-lester-menu{
-
-    padding:13px 18px;
-
-    cursor:pointer;
-
-    color:#888;
-
-    font-weight:bold;
-
-}
-
-.aba-lester-menu.ativa{
-
-    color:#fff;
-
-    border-bottom:
-        3px solid #c40000;
-
-}
-
-
-/* ==========================================
-   MISSÕES
-========================================== */
-
-.grade{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(280px,1fr)
-        );
-
-    gap:20px;
-
-}
-
-.missao{
-
-    background:#1b1b1b;
-
-    border:1px solid #333;
-
-    border-radius:12px;
-
-    padding:20px;
-
-    position:relative;
-
-}
-
-.missao h3{
-
-    margin-top:0;
-
-}
-
-.missao p{
-
-    color:#bbb;
-
-    line-height:1.5;
-
-}
-
-.recompensa{
-
-    color:#42d66b !important;
-
-    font-weight:bold;
-
-}
-
-.prazo{
-
-    color:#ffb000 !important;
-
-}
-
-.cronometro{
-
-    position:absolute;
-
-    top:15px;
-
-    right:15px;
-
-    color:#ff4444;
-
-    font-weight:bold;
-
-}
-
-.btn-missao{
-
-    width:100%;
-
-    margin-top:10px;
-
-    background:#c40000;
-
-    color:white;
-
-}
-
-.btn-cancelar{
-
-    background:#444;
-
-}
-
-
-/* ==========================================
-   ADMIN
-========================================== */
-
-.admin{
-
-    background:#1b1b1b;
-
-    border:1px solid #333;
-
-    border-radius:12px;
-
-    padding:25px;
-
-    margin-bottom:30px;
-
-}
-
-.admin h2{
-
-    color:#ff4444;
-
-}
-
-.admin-jogador{
-
-    background:#222;
-
-    border:1px solid #333;
-
-    border-radius:10px;
-
-    padding:15px;
-
-    margin-bottom:10px;
-
-}
-
-.admin-jogador strong{
-
-    display:block;
-
-    margin-bottom:10px;
-
-}
-
-.mensagem{
-
-    padding:15px;
-
-    border-radius:8px;
-
-    margin-bottom:20px;
-
-    background:#222;
-
-}
-
-.sucesso{
-
-    color:#42d66b;
-
-}
-
-.aviso{
-
-    color:#ff4444;
-
-}
-
-.vazio{
-
-    text-align:center;
-
-    color:#777;
-
-    padding:50px;
-
-}
-
-
-/* ==========================================
-   RESPONSIVO
-========================================== */
-
-@media(max-width:900px){
-
-    .abas-central{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-}
-
-@media(max-width:700px){
-
-    .abas-central{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .aba{
-
-        min-height:170px;
-
-    }
-
-    .titulo h1{
-
-        font-size:30px;
-
-    }
-
-    header{
-
-        padding:15px;
-
-    }
-
-    .usuario{
-
-        width:100%;
-
-        justify-content:space-between;
-
-    }
-
-}
-
-</style>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Central do RPG</title>
+
+    <!-- ==========================================
+         FIREBASE
+    =========================================== -->
+
+    <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+
+
+    <!-- ==========================================
+         ESTILO
+    =========================================== -->
+
+    <style>
+
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            font-family:Arial, Helvetica, sans-serif;
+            background:#101010;
+            color:white;
+            min-height:100vh;
+        }
+
+        button,
+        input,
+        textarea,
+        select{
+            font-family:inherit;
+        }
+
+
+        /* ==========================================
+           CENTRAL
+        =========================================== */
+
+        #central{
+            min-height:100vh;
+            padding:50px 25px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+        }
+
+        .titulo{
+            font-size:42px;
+            font-weight:bold;
+            letter-spacing:4px;
+            margin-bottom:10px;
+            text-align:center;
+        }
+
+        .subtitulo{
+            color:#999;
+            margin-bottom:45px;
+            text-align:center;
+        }
+
+
+        /* ==========================================
+           ABAS
+        =========================================== */
+
+        .abas-central{
+            width:100%;
+            max-width:1200px;
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:25px;
+        }
+
+        .aba{
+            height:220px;
+            border:2px solid #333;
+            border-radius:12px;
+            overflow:hidden;
+            display:flex;
+            align-items:flex-end;
+            justify-content:center;
+            cursor:pointer;
+            transition:.25s;
+            position:relative;
+            background-size:cover;
+            background-position:center;
+        }
+
+        .aba:hover{
+            transform:translateY(-5px);
+            border-color:#fff;
+        }
+
+        .aba h2{
+            width:100%;
+            margin:0;
+            padding:25px 10px;
+            text-align:center;
+            font-size:24px;
+            letter-spacing:2px;
+            background:linear-gradient(
+                transparent,
+                rgba(0,0,0,.95)
+            );
+        }
+
+
+        /* ==========================================
+           IMÓVEIS
+        =========================================== */
+
+        .aba-imoveis{
+            background:
+                linear-gradient(
+                    rgba(0,0,0,.30),
+                    rgba(0,0,0,.75)
+                ),
+                url("./imoveis.jpg");
+
+            background-size:cover;
+            background-position:center;
+        }
+
+
+        /* ==========================================
+           LESTER
+        =========================================== */
+
+        .aba-lester{
+            background:
+                linear-gradient(
+                    rgba(0,0,0,.30),
+                    rgba(0,0,0,.75)
+                ),
+                url("./lester.jpg");
+
+            background-size:cover;
+            background-position:center;
+        }
+
+
+        /* ==========================================
+           ALVOS
+        =========================================== */
+
+        .aba-alvos{
+            background:
+                linear-gradient(
+                    rgba(0,0,0,.30),
+                    rgba(0,0,0,.75)
+                ),
+                url("./alvos.jpg");
+
+            background-size:cover;
+            background-position:center;
+        }
+
+
+        /* ==========================================
+           HACKER
+           
+           IMPORTANTE:
+           A ABA FICA SEMPRE VISÍVEL.
+           NÃO EXISTE VERIFICAÇÃO DE ACESSO AQUI.
+        =========================================== */
+
+        .aba-hacker{
+            background:
+                linear-gradient(
+                    rgba(0,0,0,.30),
+                    rgba(0,0,0,.70)
+                ),
+                url("./hacker.jpg");
+
+            background-size:cover;
+            background-position:center;
+        }
+
+        .aba-hacker:hover{
+            border-color:#00ff88;
+        }
+
+
+        /* ==========================================
+           LOGIN LESTER
+        =========================================== */
+
+        #login{
+            display:none;
+            min-height:100vh;
+            align-items:center;
+            justify-content:center;
+            padding:25px;
+        }
+
+        .login-box{
+            width:100%;
+            max-width:400px;
+            background:#181818;
+            border:1px solid #333;
+            border-radius:12px;
+            padding:30px;
+            box-shadow:0 10px 40px rgba(0,0,0,.5);
+        }
+
+        .login-box h2{
+            text-align:center;
+            margin-top:0;
+            margin-bottom:25px;
+        }
+
+        .campo{
+            margin-bottom:15px;
+        }
+
+        .campo label{
+            display:block;
+            margin-bottom:7px;
+            color:#aaa;
+            font-size:14px;
+        }
+
+        .campo input,
+        .campo textarea,
+        .campo select{
+            width:100%;
+            padding:12px;
+            background:#101010;
+            color:white;
+            border:1px solid #444;
+            border-radius:6px;
+            outline:none;
+        }
+
+        .campo textarea{
+            min-height:100px;
+            resize:vertical;
+        }
+
+        .campo input:focus,
+        .campo textarea:focus,
+        .campo select:focus{
+            border-color:#777;
+        }
+
+        .btn{
+            width:100%;
+            padding:12px;
+            border:0;
+            border-radius:6px;
+            cursor:pointer;
+            font-weight:bold;
+            background:#fff;
+            color:#000;
+            transition:.2s;
+        }
+
+        .btn:hover{
+            opacity:.85;
+        }
+
+        .btn-voltar{
+            margin-top:10px;
+            background:#292929;
+            color:white;
+        }
+
+        .erro{
+            color:#ff4444;
+            text-align:center;
+            margin-top:15px;
+            min-height:20px;
+        }
+
+
+        /* ==========================================
+           ÁREA LESTER
+        =========================================== */
+
+        #lester{
+            display:none;
+            min-height:100vh;
+            padding:25px;
+        }
+
+        .lester-container{
+            width:100%;
+            max-width:1200px;
+            margin:auto;
+        }
+
+        .lester-topo{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+            padding:20px;
+            background:#181818;
+            border:1px solid #333;
+            border-radius:10px;
+            margin-bottom:25px;
+        }
+
+        .lester-info h2{
+            margin:0 0 5px;
+        }
+
+        .saldo{
+            color:#00ff88;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .btn-sair{
+            width:auto;
+            padding:10px 20px;
+            background:#8b0000;
+            color:white;
+        }
+
+
+        /* ==========================================
+           ABAS DO LESTER
+        =========================================== */
+
+        .lester-tabs{
+            display:flex;
+            gap:10px;
+            margin-bottom:25px;
+            flex-wrap:wrap;
+        }
+
+        .lester-tab{
+            padding:12px 20px;
+            background:#222;
+            border:1px solid #444;
+            color:white;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        .lester-tab.ativo{
+            background:#fff;
+            color:#000;
+        }
+
+        .lester-painel{
+            display:none;
+        }
+
+        .lester-painel.ativo{
+            display:block;
+        }
+
+
+        /* ==========================================
+           MISSÕES
+        =========================================== */
+
+        .missao{
+            background:#181818;
+            border:1px solid #333;
+            border-radius:10px;
+            padding:20px;
+            margin-bottom:15px;
+        }
+
+        .missao h3{
+            margin-top:0;
+            margin-bottom:10px;
+        }
+
+        .missao p{
+            color:#bbb;
+            line-height:1.5;
+        }
+
+        .missao-info{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:10px;
+            margin:15px 0;
+        }
+
+        .info-box{
+            background:#101010;
+            padding:12px;
+            border-radius:6px;
+            border:1px solid #292929;
+        }
+
+        .info-box small{
+            display:block;
+            color:#777;
+            margin-bottom:5px;
+        }
+
+        .recompensa{
+            color:#00ff88;
+            font-weight:bold;
+        }
+
+        .tempo{
+            color:#ffd000;
+            font-weight:bold;
+        }
+
+        .acoes{
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+        }
+
+        .acoes button{
+            width:auto;
+            padding:10px 18px;
+        }
+
+        .btn-aceitar{
+            background:#00a86b;
+            color:white;
+        }
+
+        .btn-cancelar{
+            background:#8b0000;
+            color:white;
+        }
+
+
+        /* ==========================================
+           ADMIN
+        =========================================== */
+
+        .admin-box{
+            background:#181818;
+            border:1px solid #333;
+            border-radius:10px;
+            padding:20px;
+            margin-bottom:25px;
+        }
+
+        .admin-box h3{
+            margin-top:0;
+        }
+
+        .form-grid{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:15px;
+        }
+
+        .form-grid .campo-full{
+            grid-column:1 / -1;
+        }
+
+        .admin-missao{
+            border:1px solid #333;
+            padding:15px;
+            border-radius:8px;
+            margin-top:10px;
+            background:#111;
+        }
+
+        .admin-missao-header{
+            display:flex;
+            justify-content:space-between;
+            gap:10px;
+            align-items:center;
+        }
+
+        .btn-excluir{
+            width:auto;
+            background:#8b0000;
+            color:white;
+            padding:8px 14px;
+        }
+
+
+        /* ==========================================
+           SALDOS
+        =========================================== */
+
+        .saldo-jogador{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:15px;
+            padding:15px;
+            background:#111;
+            border:1px solid #333;
+            border-radius:8px;
+            margin-bottom:10px;
+        }
+
+        .saldo-acoes{
+            display:flex;
+            gap:5px;
+            flex-wrap:wrap;
+        }
+
+        .saldo-acoes button{
+            width:auto;
+            padding:7px 10px;
+        }
+
+        .mais{
+            background:#006b45;
+            color:white;
+        }
+
+        .menos{
+            background:#8b0000;
+            color:white;
+        }
+
+
+        /* ==========================================
+           MENSAGEM
+        =========================================== */
+
+        #mensagem{
+            position:fixed;
+            bottom:25px;
+            right:25px;
+            background:#222;
+            color:white;
+            padding:15px 20px;
+            border-radius:8px;
+            border:1px solid #444;
+            display:none;
+            z-index:9999;
+            box-shadow:0 5px 20px rgba(0,0,0,.5);
+        }
+
+
+        /* ==========================================
+           RESPONSIVO
+        =========================================== */
+
+        @media(max-width:900px){
+
+            .abas-central{
+                grid-template-columns:repeat(2,1fr);
+            }
+
+            .missao-info{
+                grid-template-columns:1fr;
+            }
+
+        }
+
+        @media(max-width:700px){
+
+            .abas-central{
+                grid-template-columns:1fr;
+            }
+
+            .aba{
+                height:180px;
+            }
+
+            .titulo{
+                font-size:30px;
+            }
+
+            .lester-topo{
+                flex-direction:column;
+                align-items:flex-start;
+            }
+
+            .form-grid{
+                grid-template-columns:1fr;
+            }
+
+            .form-grid .campo-full{
+                grid-column:auto;
+            }
+
+            .saldo-jogador{
+                flex-direction:column;
+                align-items:flex-start;
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -755,142 +602,331 @@ header h1{
 <body>
 
 
-<!-- ==========================================
-     CENTRAL
-========================================== -->
+    <!-- ==========================================
+         CENTRAL
+    =========================================== -->
 
-<div id="central">
+    <section id="central">
 
-    <div class="titulo">
+        <div class="titulo">
+            CENTRAL DO RPG
+        </div>
 
-        <h1>CENTRAL DO RPG</h1>
-
-        <p>Selecione uma área</p>
-
-    </div>
-
-
-    <div class="abas-central">
-
-
-        <!-- ==================================
-             IMÓVEIS
-        ================================== -->
-
-        <div
-            class="aba aba-imoveis"
-            onclick="abrirImoveis()"
-        >
-
-            <h2>IMÓVEIS</h2>
-
+        <div class="subtitulo">
+            Sistema principal
         </div>
 
 
-        <!-- ==================================
-             MISSÕES DO LESTER
-        ================================== -->
+        <div class="abas-central">
 
-        <div
-            class="aba aba-lester"
-            onclick="abrirLogin()"
-        >
 
-            <h2>MISSÕES DO LESTER</h2>
+            <!-- IMÓVEIS -->
+
+            <div
+                class="aba aba-imoveis"
+                onclick="abrirImoveis()"
+            >
+
+                <h2>
+                    IMÓVEIS
+                </h2>
+
+            </div>
+
+
+            <!-- MISSÕES DO LESTER -->
+
+            <div
+                class="aba aba-lester"
+                onclick="abrirLogin()"
+            >
+
+                <h2>
+                    MISSÕES DO LESTER
+                </h2>
+
+            </div>
+
+
+            <!-- ALVOS -->
+
+            <div
+                class="aba aba-alvos"
+                onclick="abrirAlvos()"
+            >
+
+                <h2>
+                    ALVOS
+                </h2>
+
+            </div>
+
+
+            <!-- HACKER -->
+
+            <!--
+                IMPORTANTE:
+
+                ESTA ABA FICA DISPONÍVEL PARA TODOS.
+
+                NÃO EXISTE:
+                - verificarAcessoHacker()
+                - esconder aba
+                - liberar aba por jogador
+
+                O controle de autorização fica no hacker.html.
+            -->
+
+            <div
+                id="abaHacker"
+                class="aba aba-hacker"
+                onclick="abrirHacker()"
+            >
+
+                <h2>
+                    HACKER
+                </h2>
+
+            </div>
+
 
         </div>
 
+    </section>
 
-        <!-- ==================================
-             ALVOS
-        ================================== -->
 
-        <div
-            class="aba aba-alvos"
-            onclick="abrirAlvos()"
-        >
 
-            <h2>ALVOS</h2>
+    <!-- ==========================================
+         LOGIN LESTER
+    =========================================== -->
+
+    <section id="login">
+
+        <div class="login-box">
+
+            <h2>
+                LOGIN
+            </h2>
+
+            <div class="campo">
+
+                <label>
+                    Usuário
+                </label>
+
+                <input
+                    type="text"
+                    id="loginUsuario"
+                    placeholder="Digite seu nome"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="loginSenha"
+                    placeholder="Digite sua senha"
+                >
+
+            </div>
+
+
+            <button
+                class="btn"
+                onclick="fazerLogin()"
+            >
+                ENTRAR
+            </button>
+
+
+            <button
+                class="btn btn-voltar"
+                onclick="voltarCentral()"
+            >
+                VOLTAR
+            </button>
+
+
+            <div
+                id="erroLogin"
+                class="erro"
+            ></div>
 
         </div>
 
-
-        <!-- ==================================
-             HACKER
-        ================================== -->
-
-        <div
-            id="abaHacker"
-            class="aba aba-hacker"
-            onclick="abrirHacker()"
-            style="display:none;"
-        >
-
-            <h2>HACKER</h2>
-
-        </div>
-
-
-    </div>
-
-</div>
+    </section>
 
 
 
-<!-- ==========================================
-     LOGIN
-========================================== -->
+    <!-- ==========================================
+         ÁREA DO LESTER
+    =========================================== -->
 
-<div
-    id="login"
-    class="escondido"
->
+    <section id="lester">
 
-    <div class="login-box">
-
-        <h1>MISSÕES DO LESTER</h1>
-
-        <p>Acesso restrito</p>
+        <div class="lester-container">
 
 
-        <input
-            id="usuarioLogin"
-            type="text"
-            placeholder="Usuário"
-        >
+            <!-- CABEÇALHO -->
+
+            <div class="lester-topo">
+
+                <div class="lester-info">
+
+                    <h2>
+                        MISSÕES DO LESTER
+                    </h2>
+
+                    <div>
+                        Jogador:
+                        <strong id="nomeUsuario">
+                            -
+                        </strong>
+                    </div>
+
+                    <div class="saldo">
+                        $
+                        <span id="saldoUsuario">
+                            0
+                        </span>
+                    </div>
+
+                </div>
 
 
-        <input
-            id="senhaLogin"
-            type="password"
-            placeholder="Senha"
-        >
+                <button
+                    class="btn btn-sair"
+                    onclick="sairLester()"
+                >
+                    SAIR
+                </button>
+
+            </div>
 
 
-        <button
-            class="btn-vermelho"
-            onclick="fazerLogin()"
-        >
 
-            ENTRAR
+            <!-- ABAS -->
 
-        </button>
+            <div class="lester-tabs">
 
-
-        <button
-            class="btn-voltar"
-            onclick="voltarCentral()"
-        >
-
-            VOLTAR
-
-        </button>
+                <button
+                    class="lester-tab ativo"
+                    onclick="abrirPainel('missoes', this)"
+                >
+                    MISSÕES
+                </button>
 
 
-        <div
-            id="erroLogin"
-            class="erro"
-        ></div>
+                <button
+                    id="botaoAdmin"
+                    class="lester-tab"
+                    onclick="abrirPainel('admin', this)"
+                    style="display:none;"
+                >
+                    ADMINISTRADOR
+                </button>
+
+            </div>
+
+
+
+            <!-- ==========================================
+                 PAINEL MISSÕES
+            =========================================== -->
+
+            <div
+                id="painelMissoes"
+                class="lester-painel ativo"
+            >
+
+                <div id="listaMissoes">
+
+                    <p>
+                        Carregando missões...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==========================================
+                 PAINEL ADMIN
+            =========================================== -->
+
+            <div
+                id="painelAdmin"
+                class="lester-painel"
+            >
+
+
+                <!-- CRIAR MISSÃO -->
+
+                <div class="admin-box">
+
+                    <h3>
+                        CRIAR NOVA MISSÃO
+                    </h3>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="campo">
+
+                            <label>
+                                Nome da missão
+                            </label>
+
+                            <input
+                                id="missaoNome"
+                                type="text"
+                                placeholder="Ex: Roubo ao Banco"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label>
+                                Objetivo
+                            </label>
+
+                            <input
+                                id="missaoObjetivo"
+                                type="text"
+                                placeholder="Ex: Roubar o banco"
+                            >
+
+                        </div>
+
+
+                        <div class="campo campo-full">
+
+                            <label>
+                                Descrição
+                            </label>
+
+                            <textarea
+                                id="missaoDescricao"
+                                placeholder="Descrição da missão..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="campo">
+
+                          v>
 
     </div>
 
