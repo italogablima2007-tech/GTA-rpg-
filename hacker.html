@@ -1,185 +1,5 @@
-function liberarAcesso(){
-
-    /* =====================================================
-       VERIFICAR SE É O ADMIN
-    ===================================================== */
-
-    if(usuarioAtual !== "Italo"){
-
-        alert("ACESSO NEGADO.");
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       VERIFICAR FIREBASE
-    ===================================================== */
-
-    if(!db){
-
-        alert(
-            "O sistema ainda não conseguiu conectar ao Firebase."
-        );
-
-        console.error(
-            "Firebase DB não inicializado."
-        );
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       PEGAR DADOS DO FORMULÁRIO
-    ===================================================== */
-
-    const jogador =
-        document.getElementById(
-            "adminJogador"
-        ).value;
-
-
-    let tempo =
-        Number(
-            document.getElementById(
-                "adminTempo"
-            ).value
-        );
-
-
-    const dificuldade =
-        document.getElementById(
-            "adminDificuldade"
-        ).value;
-
-
-    const recurso =
-        document.getElementById(
-            "adminRecurso"
-        ).value.trim();
-
-
-    /* =====================================================
-       VALIDAÇÕES
-    ===================================================== */
-
-    if(!jogador){
-
-        alert(
-            "Selecione um jogador."
-        );
-
-        return;
-
-    }
-
-
-    if(!tempo || tempo < 10){
-
-        alert(
-            "O tempo mínimo é de 10 segundos."
-        );
-
-        return;
-
-    }
-
-
-    if(!recurso){
-
-        alert(
-            "Digite o recurso que será desbloqueado."
-        );
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       CRIAR ACESSO
-    ===================================================== */
-
-    const acesso = {
-
-        ativo: true,
-
-        jogador: jogador,
-
-        tempo: tempo,
-
-        dificuldade: dificuldade,
-
-        recurso: recurso,
-
-        criadoEm: Date.now(),
-
-        criadoPor: "Italo"
-
-    };
-
-
-    console.log(
-        "Tentando liberar acesso:",
-        acesso
-    );
-
-
-    /* =====================================================
-       SALVAR NO FIREBASE
-    ===================================================== */
-
-    db.ref(
-        "hackerAcessos/" + jogador
-    )
-    .set(acesso)
-
-    .then(function(){
-
-        console.log(
-            "Acesso salvo com sucesso:",
-            jogador
-        );
-
-
-        alert(
-            "✓ ACESSO LIBERADO PARA " +
-            jogador.toUpperCase()
-        );
-
-
-        /* Limpar recurso */
-
-        document.getElementById(
-            "adminRecurso"
-        ).value = "";
-
-
-        /* Atualizar lista */
-
-        carregarAcessosAdmin();
-
-    })
-
-    .catch(function(error){
-
-        console.error(
-            "ERRO AO LIBERAR ACESSO:",
-            error
-        );
-
-
-        alert(
-            "ERRO AO LIBERAR ACESSO:\n\n" +
-            error.message
-        );
-
-    });
-
-         }<!DOCTYPE html>
+```html
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -189,7 +9,6 @@ function liberarAcesso(){
 
 <title>HACKER // TERMINAL</title>
 
-
 <!-- =========================================================
      FIREBASE
 ========================================================= -->
@@ -198,182 +17,15 @@ function liberarAcesso(){
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 
-<!-- =========================================================
-     LOGIN
-========================================================= -->
-
-<script>
-
-const usuarios = {
-    Kaius: "28/09",
-    Gaby: "22/09",
-    Duda: "13/09",
-    Italo: "1822"
-};
-
-let usuarioAtual = null;
-
-
-/* =========================================================
-   ENTRAR
-========================================================= */
-
-function entrar(){
-
-    const usuarioInput =
-        document.getElementById("usuario").value.trim();
-
-    const senhaInput =
-        document.getElementById("senha").value.trim();
-
-
-    if(!usuarios[usuarioInput]){
-
-        document.getElementById("erroLogin").innerText =
-            "USUÁRIO NÃO ENCONTRADO.";
-
-        return;
-
-    }
-
-
-    if(usuarios[usuarioInput] !== senhaInput){
-
-        document.getElementById("erroLogin").innerText =
-            "CÓDIGO DE ACESSO INCORRETO.";
-
-        return;
-
-    }
-
-
-    usuarioAtual = usuarioInput;
-
-
-    localStorage.setItem(
-        "hacker_usuario",
-        usuarioAtual
-    );
-
-
-    document.getElementById("erroLogin").innerText = "";
-
-
-    document.getElementById("loginTela").style.display =
-        "none";
-
-
-    document.getElementById("sistema").style.display =
-        "block";
-
-
-    document.getElementById("usuarioLogado").innerText =
-        usuarioAtual.toUpperCase();
-
-
-    /* =====================================================
-       ADMIN
-    ===================================================== */
-
-    if(usuarioAtual === "Italo"){
-
-        document.getElementById("adminPanel").style.display =
-            "block";
-
-    }else{
-
-        document.getElementById("adminPanel").style.display =
-            "none";
-
-    }
-
-
-    /* =====================================================
-       INICIAR SISTEMA
-    ===================================================== */
-
-    iniciarSistema();
-
-}
-
-
-
-/* =========================================================
-   VOLTAR
-========================================================= */
-
-function voltar(){
-
-    window.location.href = "./index.html";
-
-}
-
-
-
-/* =========================================================
-   EVENTOS DO LOGIN
-========================================================= */
-
-window.addEventListener(
-    "DOMContentLoaded",
-    function(){
-
-        const btnEntrar =
-            document.getElementById("btnEntrar");
-
-
-        const btnVoltar =
-            document.getElementById("btnVoltar");
-
-
-        btnEntrar.addEventListener(
-            "click",
-            entrar
-        );
-
-
-        btnVoltar.addEventListener(
-            "click",
-            function(){
-
-                window.location.href =
-                    "./index.html";
-
-            }
-        );
-
-
-        document
-            .getElementById("senha")
-            .addEventListener(
-                "keydown",
-                function(event){
-
-                    if(event.key === "Enter"){
-
-                        entrar();
-
-                    }
-
-                }
-            );
-
-    }
-);
-
-</script>
-
-
-<!-- =========================================================
-     ESTILO
-========================================================= -->
-
 <style>
+
+/* =========================================================
+   GERAL
+========================================================= */
 
 *{
     box-sizing:border-box;
 }
-
 
 body{
 
@@ -381,7 +33,13 @@ body{
 
     min-height:100vh;
 
-    background:#020403;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(0,255,136,.06),
+            transparent 50%
+        ),
+        #020403;
 
     color:#00ff88;
 
@@ -408,95 +66,121 @@ body{
 
     padding:20px;
 
-    background:
-
-        radial-gradient(
-            circle at center,
-            rgba(0,255,120,.08),
-            transparent 45%
-        ),
-
-        #020403;
-
 }
 
 
-.loginBox{
+.login-container{
 
     width:100%;
 
-    max-width:420px;
+    max-width:430px;
 
     padding:35px;
 
-    border:1px solid #00ff88;
-
     background:#050807;
 
+    border:1px solid #00ff88;
+
     box-shadow:
-
-        0 0 10px rgba(0,255,136,.25),
-
-        inset 0 0 25px rgba(0,255,136,.03);
+        0 0 20px rgba(0,255,136,.18),
+        inset 0 0 30px rgba(0,255,136,.03);
 
 }
 
 
-.loginTitulo{
+.login-logo{
 
     text-align:center;
 
-    margin-bottom:10px;
+}
 
-    font-size:28px;
 
-    font-weight:bold;
+.simbolo{
+
+    font-size:42px;
 
     text-shadow:
-        0 0 8px #00ff88;
+        0 0 15px #00ff88;
 
 }
 
 
-.loginSubtitulo{
+.login-logo h1{
 
-    text-align:center;
+    margin:5px 0;
 
-    color:#4d9f77;
+    font-size:32px;
 
-    font-size:12px;
+    letter-spacing:6px;
 
-    margin-bottom:30px;
+    text-shadow:
+        0 0 10px #00ff88;
 
 }
 
 
-.loginBox label{
+.login-logo p{
+
+    margin:0 0 25px;
+
+    color:#477d61;
+
+    font-size:11px;
+
+}
+
+
+.terminal-linha{
+
+    border-top:1px solid #123d27;
+
+    border-bottom:1px solid #123d27;
+
+    padding:15px 0;
+
+    margin-bottom:25px;
+
+    color:#477d61;
+
+    font-size:11px;
+
+    line-height:1.8;
+
+}
+
+
+.campo{
+
+    margin-bottom:18px;
+
+}
+
+
+.campo label{
 
     display:block;
-
-    margin-top:15px;
 
     margin-bottom:7px;
 
     color:#70ffb1;
 
-    font-size:13px;
+    font-size:12px;
 
 }
 
 
-.loginBox input{
+.campo input,
+.campo select{
 
     width:100%;
 
     padding:13px;
 
-    background:#000;
-
-    border:1px solid #145f3d;
+    background:#010401;
 
     color:#00ff88;
+
+    border:1px solid #164d31;
 
     outline:none;
 
@@ -505,12 +189,13 @@ body{
 }
 
 
-.loginBox input:focus{
+.campo input:focus,
+.campo select:focus{
 
     border-color:#00ff88;
 
     box-shadow:
-        0 0 8px rgba(0,255,136,.2);
+        0 0 8px rgba(0,255,136,.25);
 
 }
 
@@ -519,9 +204,9 @@ body{
 
     width:100%;
 
-    padding:13px;
+    padding:14px;
 
-    margin-top:20px;
+    margin-top:10px;
 
     background:#03140b;
 
@@ -534,8 +219,6 @@ body{
     font-family:inherit;
 
     font-weight:bold;
-
-    transition:.2s;
 
 }
 
@@ -563,17 +246,17 @@ body{
 }
 
 
-#erroLogin{
+.erro{
 
-    color:#ff4444;
-
-    text-align:center;
-
-    font-size:12px;
+    min-height:18px;
 
     margin-top:15px;
 
-    min-height:15px;
+    text-align:center;
+
+    color:#ff4444;
+
+    font-size:12px;
 
 }
 
@@ -585,8 +268,6 @@ body{
 #sistema{
 
     display:none;
-
-    width:100%;
 
     min-height:100vh;
 
@@ -606,18 +287,26 @@ body{
 }
 
 
-.header{
+.topo{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
 
     border-bottom:1px solid #00ff88;
 
-    padding-bottom:15px;
+    padding-bottom:18px;
 
     margin-bottom:25px;
 
 }
 
 
-.header h1{
+.topo h1{
 
     margin:0;
 
@@ -629,13 +318,22 @@ body{
 }
 
 
-.header p{
+.status-online{
 
-    margin:7px 0 0;
+    margin-top:7px;
 
-    color:#559b78;
+    color:#477d61;
 
     font-size:12px;
+
+}
+
+
+.btn-sair{
+
+    width:auto;
+
+    margin:0;
 
 }
 
@@ -646,9 +344,9 @@ body{
 
 .painel{
 
-    border:1px solid #145f3d;
-
     background:#050807;
+
+    border:1px solid #164d31;
 
     padding:20px;
 
@@ -661,354 +359,112 @@ body{
 
     margin-top:0;
 
-    color:#00ff88;
-
     font-size:18px;
 
 }
 
 
 /* =========================================================
-   ADMIN
+   SEM ACESSO
 ========================================================= */
 
-#adminPanel{
-
-    display:none;
-
-    border-color:#00ff88;
-
-}
-
-
-.adminGrid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:15px;
-
-}
-
-
-.adminCampo{
-
-    display:flex;
-
-    flex-direction:column;
-
-}
-
-
-.adminCampo label{
-
-    font-size:12px;
-
-    margin-bottom:6px;
-
-    color:#70ffb1;
-
-}
-
-
-.adminCampo input,
-.adminCampo select{
-
-    padding:11px;
-
-    background:#000;
-
-    border:1px solid #145f3d;
-
-    color:#00ff88;
-
-    font-family:inherit;
-
-}
-
-
-.adminCampo input:focus,
-.adminCampo select:focus{
-
-    outline:none;
-
-    border-color:#00ff88;
-
-}
-
-
-.btnAdmin{
-
-    margin-top:20px;
-
-    padding:14px;
-
-    width:100%;
-
-    background:#00ff88;
-
-    border:none;
-
-    color:#000;
-
-    font-family:inherit;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-
-.btnAdmin:hover{
-
-    box-shadow:
-        0 0 15px rgba(0,255,136,.5);
-
-}
-
-
-/* =========================================================
-   ACESSOS
-========================================================= */
-
-.acessoItem{
-
-    border:1px solid #145f3d;
-
-    padding:14px;
-
-    margin-top:10px;
-
-    background:#020503;
-
-}
-
-
-.acessoItem strong{
-
-    color:#00ff88;
-
-}
-
-
-.acessoItem small{
-
-    display:block;
-
-    color:#629d7d;
-
-    margin-top:5px;
-
-}
-
-
-.btnRevogar{
-
-    margin-top:10px;
-
-    padding:8px 12px;
-
-    background:#190404;
-
-    border:1px solid #ff4444;
-
-    color:#ff5555;
-
-    cursor:pointer;
-
-    font-family:inherit;
-
-}
-
-
-.btnRevogar:hover{
-
-    background:#ff4444;
-
-    color:#000;
-
-}
-
-
-/* =========================================================
-   ACESSO DO JOGADOR
-========================================================= */
-
-#statusAcesso{
-
-    border:1px solid #145f3d;
-
-    padding:20px;
+#semAcesso{
 
     text-align:center;
 
 }
 
 
-#statusAcesso.ativo{
+.cadeado{
 
-    border-color:#00ff88;
-
-    box-shadow:
-        0 0 15px rgba(0,255,136,.1);
-
-}
-
-
-.statusTitulo{
-
-    font-size:20px;
-
-    font-weight:bold;
+    font-size:45px;
 
     margin-bottom:10px;
 
 }
 
 
-.statusInfo{
+#semAcesso p{
 
-    color:#66aa85;
+    color:#477d61;
 
-    font-size:13px;
+}
+
+
+/* =========================================================
+   ACESSO LIBERADO
+========================================================= */
+
+#acessoLiberado{
+
+    display:none;
+
+    border-color:#00ff88;
+
+    box-shadow:
+        0 0 15px rgba(0,255,136,.08);
+
+}
+
+
+.alerta-acesso{
+
+    padding:15px;
+
+    margin-bottom:20px;
+
+    border:1px solid #00ff88;
+
+    background:#02140b;
 
     line-height:1.7;
 
 }
 
 
-#btnIniciar{
+.info-acesso{
 
-    display:none;
+    display:grid;
 
-    margin-top:20px;
+    grid-template-columns:
+        repeat(4,1fr);
 
-    width:100%;
+    gap:12px;
+
+    margin:20px 0;
+
+}
+
+
+.info{
 
     padding:15px;
 
-    background:#00ff88;
+    background:#020503;
 
-    border:none;
-
-    color:#000;
-
-    font-family:inherit;
-
-    font-weight:bold;
-
-    cursor:pointer;
+    border:1px solid #123d27;
 
 }
 
 
-#btnIniciar:hover{
+.info small{
 
-    box-shadow:
-        0 0 20px rgba(0,255,136,.6);
+    display:block;
 
-}
+    color:#477d61;
 
+    margin-bottom:8px;
 
-/* =========================================================
-   INVASÃO
-========================================================= */
-
-#invasao{
-
-    display:none;
+    font-size:10px;
 
 }
 
 
-#barraTempo{
+.info strong{
 
-    width:100%;
+    color:#00ff88;
 
-    height:10px;
-
-    background:#111;
-
-    border:1px solid #145f3d;
-
-    margin-top:15px;
-
-}
-
-
-#barraTempoInterna{
-
-    height:100%;
-
-    width:100%;
-
-    background:#00ff88;
-
-    transition:width .2s linear;
-
-}
-
-
-#tempoRestante{
-
-    text-align:right;
-
-    margin-top:6px;
-
-    color:#70ffb1;
-
-}
-
-
-#etapas{
-
-    margin-top:20px;
-
-}
-
-
-.etapa{
-
-    display:inline-block;
-
-    border:1px solid #145f3d;
-
-    padding:8px 12px;
-
-    margin:4px;
-
-    font-size:11px;
-
-}
-
-
-.etapa.atual{
-
-    border-color:#00ff88;
-
-    box-shadow:
-        0 0 8px rgba(0,255,136,.3);
-
-}
-
-
-.etapa.ok{
-
-    background:#06351e;
-
-    border-color:#00ff88;
-
-}
-
-
-.etapa.erro{
-
-    background:#350606;
-
-    border-color:#ff4444;
+    word-break:break-word;
 
 }
 
@@ -1019,139 +475,194 @@ body{
 
 #minigame{
 
-    margin-top:20px;
-
-    border:1px solid #00ff88;
-
-    padding:25px;
-
-    min-height:300px;
+    display:none;
 
 }
 
 
-#minigame h2{
-
-    margin-top:0;
-
-}
-
-
-/* =========================================================
-   CRACK
-========================================================= */
-
-.crackNumero{
-
-    font-size:34px;
-
-    letter-spacing:10px;
+.minigame-titulo{
 
     text-align:center;
 
-    margin:30px 0;
+    font-size:27px;
+
+    letter-spacing:5px;
+
+    text-shadow:
+        0 0 10px #00ff88;
 
 }
 
 
-.crackInput{
-
-    width:100%;
-
-    max-width:300px;
-
-    display:block;
-
-    margin:auto;
-
-    padding:14px;
+.minigame-subtitulo{
 
     text-align:center;
 
-    background:#000;
+    color:#477d61;
 
-    border:1px solid #00ff88;
-
-    color:#00ff88;
-
-    font-family:inherit;
-
-    font-size:20px;
+    margin:10px 0 25px;
 
 }
 
 
-/* =========================================================
-   MEMÓRIA
-========================================================= */
-
-.memoriaSequencia{
-
-    min-height:70px;
+.progresso-texto{
 
     display:flex;
 
-    justify-content:center;
+    justify-content:space-between;
 
-    align-items:center;
+    color:#477d61;
 
-    font-size:35px;
-
-    letter-spacing:12px;
+    font-size:11px;
 
 }
 
 
-.memoriaBotoes{
+.barra{
 
-    display:flex;
+    height:8px;
 
-    flex-wrap:wrap;
+    margin-top:7px;
 
-    justify-content:center;
+    background:#111;
 
-    gap:10px;
+    border:1px solid #164d31;
+
+}
+
+
+.barra-interna{
+
+    width:0%;
+
+    height:100%;
+
+    background:#00ff88;
+
+    transition:.3s;
+
+}
+
+
+#conteudoMinigame{
 
     margin-top:25px;
 
 }
 
 
-.memoriaBotoes button{
+/* =========================================================
+   TERMINAL DOS MINIGAMES
+========================================================= */
 
-    width:55px;
+.terminal{
 
-    height:55px;
-
-    background:#020403;
+    background:#010401;
 
     border:1px solid #00ff88;
 
-    color:#00ff88;
-
-    font-size:20px;
-
-    cursor:pointer;
+    padding:20px;
 
 }
 
 
-.memoriaBotoes button:hover{
+.terminal-top{
 
-    background:#00ff88;
+    display:flex;
 
-    color:#000;
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding-bottom:12px;
+
+    margin-bottom:20px;
+
+    border-bottom:1px solid #123d27;
+
+    color:#477d61;
+
+    font-size:11px;
+
+}
+
+
+.timer{
+
+    color:#00ff88;
+
+}
+
+
+.timer.alerta{
+
+    color:#ffff00;
+
+}
+
+
+.timer.perigo{
+
+    color:#ff3333;
+
+}
+
+
+.game-box{
+
+    text-align:center;
+
+}
+
+
+.codigo{
+
+    margin:30px 0;
+
+    font-size:36px;
+
+    letter-spacing:8px;
+
+    text-shadow:
+        0 0 10px #00ff88;
+
+}
+
+
+.input-codigo{
+
+    display:block;
+
+    width:100%;
+
+    max-width:400px;
+
+    margin:15px auto;
+
+    padding:13px;
+
+    text-align:center;
+
+    font-size:20px;
+
+    letter-spacing:4px;
+
+    background:#010401;
+
+    color:#00ff88;
+
+    border:1px solid #00ff88;
+
+    outline:none;
 
 }
 
 
 /* =========================================================
-   TERMINAL
+   OPÇÕES
 ========================================================= */
 
-.codigoTerminal{
-
-    margin-top:20px;
+.opcoes{
 
     display:grid;
 
@@ -1160,29 +671,70 @@ body{
 
     gap:10px;
 
+    max-width:650px;
+
+    margin:20px auto;
+
 }
 
 
-.codigoTerminal button{
+.opcao{
 
     padding:15px;
 
-    background:#020403;
-
-    border:1px solid #145f3d;
+    background:#020803;
 
     color:#00ff88;
 
-    font-family:inherit;
+    border:1px solid #164d31;
 
     cursor:pointer;
+
+    font-family:inherit;
 
 }
 
 
-.codigoTerminal button:hover{
+.opcao:hover{
 
     border-color:#00ff88;
+
+    background:#041b0c;
+
+}
+
+
+/* =========================================================
+   MEMÓRIA
+========================================================= */
+
+.sequencia{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    min-height:80px;
+
+    margin:25px 0;
+
+}
+
+
+.sequencia .simbolo{
+
+    font-size:42px;
+
+}
+
+
+.memoria-escondida{
+
+    color:#477d61;
+
+    font-size:14px;
 
 }
 
@@ -1191,7 +743,7 @@ body{
    FIREWALL
 ========================================================= */
 
-.firewallGrid{
+.firewall-grade{
 
     display:grid;
 
@@ -1200,36 +752,44 @@ body{
 
     gap:10px;
 
-    margin-top:25px;
+    max-width:500px;
+
+    margin:25px auto;
 
 }
 
 
-.firewallGrid button{
+.firewall-grade button{
 
-    height:70px;
+    height:65px;
 
-    background:#020403;
-
-    border:1px solid #145f3d;
+    background:#020803;
 
     color:#00ff88;
 
-    font-family:inherit;
+    border:1px solid #164d31;
 
     cursor:pointer;
+
+    font-family:inherit;
 
     font-size:18px;
 
 }
 
 
-.firewallGrid button:hover{
+.firewall-grade button:hover{
 
     border-color:#00ff88;
 
-    box-shadow:
-        0 0 8px rgba(0,255,136,.3);
+}
+
+
+.firewall-grade button.selecionado{
+
+    background:#00ff88;
+
+    color:#000;
 
 }
 
@@ -1244,9 +804,7 @@ body{
 
     text-align:center;
 
-    padding:30px;
-
-    border:1px solid #00ff88;
+    padding:35px;
 
 }
 
@@ -1260,52 +818,159 @@ body{
 
 #resultado.falha{
 
-    border-color:#ff4444;
-
-    color:#ff5555;
+    border-color:#ff3333;
 
 }
 
 
-#resultado h2{
+#resultado.falha h2{
 
-    font-size:25px;
-
-}
-
-
-/* =========================================================
-   HISTÓRICO
-========================================================= */
-
-.historicoItem{
-
-    border-bottom:1px solid #123c29;
-
-    padding:12px 0;
-
-    font-size:12px;
+    color:#ff3333;
 
 }
 
 
-.historicoItem:last-child{
-
-    border-bottom:none;
-
-}
-
-
-.historicoSucesso{
+#resultado.sucesso h2{
 
     color:#00ff88;
 
 }
 
 
-.historicoFalha{
+#resultadoTexto{
 
-    color:#ff5555;
+    color:#477d61;
+
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+#admin{
+
+    display:none;
+
+    border-color:#00ff88;
+
+}
+
+
+.admin-separador{
+
+    border-top:1px solid #123d27;
+
+    margin:25px 0;
+
+}
+
+
+.admin-titulo{
+
+    color:#00ff88;
+
+}
+
+
+.admin-campo{
+
+    margin-bottom:15px;
+
+}
+
+
+.admin-campo label{
+
+    display:block;
+
+    color:#70ffb1;
+
+    margin-bottom:7px;
+
+    font-size:12px;
+
+}
+
+
+.admin-campo input,
+.admin-campo select{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#010401;
+
+    color:#00ff88;
+
+    border:1px solid #164d31;
+
+    outline:none;
+
+    font-family:inherit;
+
+}
+
+
+.admin-lista{
+
+    margin-top:20px;
+
+}
+
+
+.acesso-admin{
+
+    border:1px solid #123d27;
+
+    background:#020803;
+
+    padding:15px;
+
+    margin-bottom:10px;
+
+}
+
+
+.acesso-admin strong{
+
+    color:#00ff88;
+
+}
+
+
+.acesso-admin p{
+
+    color:#477d61;
+
+    font-size:12px;
+
+}
+
+
+.btn-revogar{
+
+    width:auto;
+
+    padding:8px 12px;
+
+    margin-top:5px;
+
+    color:#ff4444;
+
+    background:#160303;
+
+    border:1px solid #7d2222;
+
+}
+
+
+.btn-revogar:hover{
+
+    background:#ff3333;
+
+    color:#000;
 
 }
 
@@ -1314,7 +979,19 @@ body{
    RESPONSIVO
 ========================================================= */
 
-@media(max-width:700px){
+@media(max-width:800px){
+
+    .info-acesso{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:600px){
 
     #sistema{
 
@@ -1323,21 +1000,30 @@ body{
     }
 
 
-    .adminGrid{
+    .topo{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+
+    .info-acesso{
 
         grid-template-columns:1fr;
 
     }
 
 
-    .codigoTerminal{
+    .opcoes{
 
         grid-template-columns:1fr;
 
     }
 
 
-    .firewallGrid{
+    .firewall-grade{
 
         grid-template-columns:
             repeat(2,1fr);
@@ -1345,7 +1031,7 @@ body{
     }
 
 
-    .loginBox{
+    .login-container{
 
         padding:25px;
 
@@ -1365,63 +1051,93 @@ body{
      LOGIN
 ========================================================= -->
 
-<div id="loginTela">
+<section id="loginTela">
 
-    <div class="loginBox">
+    <div class="login-container">
 
-        <div class="loginTitulo">
-            HACKER
+        <div class="login-logo">
+
+            <div class="simbolo">
+                ◉
+            </div>
+
+            <h1>
+                HACKER
+            </h1>
+
+            <p>
+                // SECURE TERMINAL ACCESS //
+            </p>
+
         </div>
 
-        <div class="loginSubtitulo">
-            // SECURE TERMINAL ACCESS
+
+        <div class="terminal-linha">
+
+            SYSTEM://GTA-RPG<br>
+            CONNECTION://ENCRYPTED<br>
+            STATUS://WAITING FOR AUTHENTICATION
+
         </div>
 
 
-        <label>
-            USUÁRIO
-        </label>
+        <div class="campo">
 
-        <input
-            type="text"
-            id="usuario"
-            autocomplete="off"
-        >
+            <label>
+                USUÁRIO
+            </label>
+
+            <input
+                id="usuario"
+                type="text"
+                autocomplete="off"
+                placeholder="Digite seu usuário"
+            >
+
+        </div>
 
 
-        <label>
-            CÓDIGO DE ACESSO
-        </label>
+        <div class="campo">
 
-        <input
-            type="password"
-            id="senha"
-            autocomplete="off"
-        >
+            <label>
+                CÓDIGO DE ACESSO
+            </label>
+
+            <input
+                id="senha"
+                type="password"
+                autocomplete="off"
+                placeholder="Digite seu código"
+            >
+
+        </div>
 
 
         <button
+            type="button"
             class="btn"
             id="btnEntrar"
         >
-            [ CONTINUAR ]
+            [ CONECTAR ]
         </button>
 
 
         <a
             href="./index.html"
             class="btn btn-voltar"
-            id="btnVoltar"
         >
             [ VOLTAR ]
         </a>
 
 
-        <div id="erroLogin"></div>
+        <div
+            id="erro"
+            class="erro"
+        ></div>
 
     </div>
 
-</div>
+</section>
 
 
 
@@ -1429,1238 +1145,14 @@ body{
      SISTEMA
 ========================================================= -->
 
-<div id="sistema">
-
-<div class="container">
-
-
-    <!-- =====================================================
-         CABEÇALHO
-    ====================================================== -->
-
-    <div class="header">
-
-        <h1>
-            HACKER // TERMINAL
-        </h1>
-
-        <p>
-            USUÁRIO AUTENTICADO:
-            <strong id="usuarioLogado"></strong>
-        </p>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         ADMIN
-    ====================================================== -->
-
-    <div
-        id="adminPanel"
-        class="painel"
-    >
-
-        <h2>
-            [ ADMIN // LIBERAR ACESSO ]
-        </h2>
-
-
-        <div class="adminGrid">
-
-
-            <div class="adminCampo">
-
-                <label>
-                    JOGADOR
-                </label>
-
-                <select id="adminJogador">
-
-                    <option value="Kaius">
-                        Kaius
-                    </option>
-
-                    <option value="Gaby">
-                        Gaby
-                    </option>
-
-                    <option value="Duda">
-                        Duda
-                    </option>
-
-                </select>
-
-            </div>
-
-
-
-            <div class="adminCampo">
-
-                <label>
-                    TEMPO (SEGUNDOS)
-                </label>
-
-                <input
-                    type="number"
-                    id="adminTempo"
-                    value="60"
-                    min="10"
-                >
-
-            </div>
-
-
-
-            <div class="adminCampo">
-
-                <label>
-                    DIFICULDADE
-                </label>
-
-                <select id="adminDificuldade">
-
-                    <option value="Fácil">
-                        Fácil
-                    </option>
-
-                    <option value="Normal">
-                        Normal
-                    </option>
-
-                    <option value="Difícil">
-                        Difícil
-                    </option>
-
-                    <option value="Extremo">
-                        Extremo
-                    </option>
-
-                </select>
-
-            </div>
-
-
-
-            <div class="adminCampo">
-
-                <label>
-                    RECURSO DESBLOQUEADO
-                </label>
-
-                <input
-                    type="text"
-                    id="adminRecurso"
-                    placeholder="Ex: Sistema de Segurança"
-                >
-
-            </div>
-
-
-        </div>
-
-
-        <button
-            class="btnAdmin"
-            id="btnLiberarAcesso"
-            type="button"
-        >
-            [ LIBERAR ACESSO ]
-        </button>
-
-
-        <div
-            id="listaAcessosAdmin"
-            style="margin-top:20px;"
-        ></div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         STATUS DO ACESSO
-    ====================================================== -->
-
-    <div
-        class="painel"
-        id="painelAcesso"
-    >
-
-        <h2>
-            [ STATUS DO ACESSO ]
-        </h2>
-
-
-        <div id="statusAcesso">
-
-            <div class="statusTitulo">
-                AGUARDANDO AUTORIZAÇÃO
-            </div>
-
-            <div class="statusInfo">
-                Nenhuma invasão foi autorizada
-                para este usuário.
-            </div>
-
-        </div>
-
-
-        <button
-            id="btnIniciar"
-            type="button"
-        >
-            [ INICIAR INVASÃO ]
-        </button>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         INVASÃO
-    ====================================================== -->
-
-    <div
-        id="invasao"
-        class="painel"
-    >
-
-        <h2>
-            [ INVASÃO EM ANDAMENTO ]
-        </h2>
-
-
-        <div id="etapas"></div>
-
-
-        <div id="barraTempo">
-
-            <div id="barraTempoInterna"></div>
-
-        </div>
-
-
-        <div id="tempoRestante">
-            0s
-        </div>
-
-
-        <div id="minigame"></div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         RESULTADO
-    ====================================================== -->
-
-    <div
-        id="resultado"
-        class="painel"
-    >
-
-        <h2 id="resultadoTitulo"></h2>
-
-        <p id="resultadoTexto"></p>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         HISTÓRICO
-    ====================================================== -->
-
-    <div
-        class="painel"
-        id="painelHistorico"
-    >
-
-        <h2>
-            [ HISTÓRICO ]
-        </h2>
-
-        <div id="historico">
-
-            Nenhuma invasão registrada.
-
-        </div>
-
-    </div>
-
-
-
-    <a
-        href="./index.html"
-        class="btn btn-voltar"
-    >
-        [ SAIR DO TERMINAL ]
-    </a>
-
-
-</div>
-
-</div>
-
-
-
-<script>
-
-/* =========================================================
-   VARIÁVEIS
-========================================================= */
-
-let db = null;
-
-let acessoAtual = nul   margin-bottom:15px;
-
-}
-
-
-.admin-campo label{
-
-    display:block;
-
-    color:#477d61;
-
-    margin-bottom:7px;
-
-    font-size:12px;
-
-}
-
-
-.admin-campo input,
-.admin-campo select{
-
-    width:100%;
-
-    padding:12px;
-
-    background:#010401;
-
-    color:#00ff88;
-
-    border:1px solid #164d31;
-
-    outline:none;
-
-}
-
-
-.admin-separador{
-
-    border-top:1px solid #123d27;
-
-    margin:25px 0;
-
-}
-
-
-.acesso-admin{
-
-    border:1px solid #123d27;
-
-    background:#020803;
-
-    padding:15px;
-
-    margin-bottom:10px;
-
-}
-
-
-.acesso-admin button{
-
-    margin-top:10px;
-
-}
-
-
-/* ==================================================
-   RESPONSIVO
-================================================== */
-
-@media(max-width:800px){
-
-    .info-acesso{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-}
-
-
-@media(max-width:600px){
-
-    .topo{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-    }
-
-    .info-acesso{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .terminal-opcoes{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .firewall-grade{
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-    }
-
-}
-
-</style>
-
-
-<!-- ==================================================
-     LOGIN SCRIPT
-     
-     ESTE SCRIPT É INDEPENDENTE DO FIREBASE.
-================================================== -->
-
-<script>
-
-function entrar(){
-
-    const usuario =
-        document
-        .getElementById("usuario")
-        .value
-        .trim();
-
-    const senha =
-        document
-        .getElementById("senha")
-        .value
-        .trim();
-
-    const erro =
-        document
-        .getElementById("erro");
-
-
-    erro.textContent = "";
-
-
-    if(usuario === ""){
-
-        erro.textContent =
-            "ERRO: informe o usuário.";
-
-        return;
-
-    }
-
-
-    if(senha === ""){
-
-        erro.textContent =
-            "ERRO: informe a senha.";
-
-        return;
-
-    }
-
-
-    const usuarios = {
-
-        Kaius:"28/09",
-
-        Gaby:"22/09",
-
-        Duda:"13/09",
-
-        Italo:"1822"
-
-    };
-
-
-    let usuarioReal = null;
-
-
-    for(
-        const nome in usuarios
-    ){
-
-        if(
-            nome.toLowerCase() ===
-            usuario.toLowerCase()
-        ){
-
-            usuarioReal = nome;
-
-            break;
-
-        }
-
-    }
-
-
-    if(usuarioReal === null){
-
-        erro.textContent =
-            "ERRO: usuário não encontrado.";
-
-        return;
-
-    }
-
-
-    if(
-        usuarios[usuarioReal] !==
-        senha
-    ){
-
-        erro.textContent =
-            "ERRO: senha incorreta.";
-
-        return;
-
-    }
-
-
-    /*
-     * LOGIN APROVADO
-     */
-
-    localStorage.setItem(
-        "hacker_usuario",
-        usuarioReal
-    );
-
-
-    /*
-     * Mostra o sistema.
-     */
-
-    document
-        .getElementById("loginTela")
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById("sistema")
-        .style.display =
-        "block";
-
-
-    document
-        .getElementById("usuarioLogado")
-        .textContent =
-        "● CONECTADO: " +
-        usuarioReal;
-
-
-    /*
-     * Guarda a variável global.
-     */
-
-    window.usuarioAtual =
-        usuarioReal;
-
-
-    /*
-     * Só Ítalo vê o painel admin.
-     */
-
-    if(usuarioReal === "Italo"){
-
-        document
-            .getElementById("admin")
-            .style.display =
-            "block";
-
-    }
-
-
-    /*
-     * Depois do login,
-     * carregamos o Firebase.
-     */
-
-    iniciarFirebase();
-
-}
-
-
-function voltar(){
-
-    window.location.href =
-        "./index.html";
-
-}
-
-
-function sair(){
-
-    localStorage.removeItem(
-        "hacker_usuario"
-    );
-
-    window.location.reload();
-
-}
-
-
-window.addEventListener(
-    "DOMContentLoaded",
-    function(){
-
-        const btn =
-            document
-            .getElementById(
-                "btnEntrar"
-            );
-
-        const btnVoltar =
-            document
-            .getElementById(
-                "btnVoltar"
-            );
-
-
-        btn.onclick =
-            entrar;
-
-
-        btnVoltar.onclick =
-            voltar;
-
-
-        document
-        .getElementById("senha")
-        .addEventListener(
-            "keydown",
-            function(event){
-
-                if(
-                    event.key ===
-                    "Enter"
-                ){
-
-                    entrar();
-
-                }
-
-            }
-        );
-
-    }
-);
-
-</script>
-
-</head>
-
-
-<body>
-
-
-<!-- ==================================================
-     LOGIN
-================================================== -->
-
-<section id="loginTela">
-
-<div class="login-container">
-
-
-    <div class="login-logo">
-
-        <div class="simbolo">
-            ◉
-        </div>
-
-        <h1>
-            HACKER
-        </h1>
-
-        <p>
-            // SECURE TERMINAL ACCESS //
-        </p>
-
-    </div>
-
-
-    <div class="terminal-linha">
-
-        SYSTEM://GTA-RPG<br>
-        CONNECTION://ENCRYPTED<br>
-        STATUS://WAITING FOR AUTHENTICATION
-
-    </div>
-
-
-    <div class="campo">
-
-        <label>
-            USUÁRIO
-        </label>
-
-        <input
-            id="usuario"
-            type="text"
-            autocomplete="off"
-            placeholder="Digite seu usuário"
-        >
-
-    </div>
-
-
-    <div class="campo">
-
-        <label>
-            SENHA
-        </label>
-
-        <input
-            id="senha"
-            type="password"
-            autocomplete="off"
-            placeholder="Digite sua senha"
-        >
-
-    </div>
-
-
-    <button
-        type="button"
-        class="btn"
-        id="btnEntrar"
-    >
-
-        [ CONECTAR ]
-
-    </button>
-
-
-    <a
-        href="./index.html"
-        class="btn btn-voltar"
-        id="btnVoltar"
-    >
-
-        [ VOLTAR ]
-
-    </a>
-
-
-    <div
-        id="erro"
-        class="erro"
-    ></div>
-
-
-</div>
-
-</section>
-
-
-
-<!-- ==================================================
-     SISTEMA
-================================================== -->
-
 <section id="sistema">
 
 <div class="container">
 
 
-    <div class="topo">
-
-        <div>
-
-            <h1>
-                HACKER // TERMINAL
-            </h1>
-
-            <div
-                id="usuarioLogado"
-                class="status-online"
-            ></div>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="btn btn-sair"
-            onclick="sair()"
-        >
-
-            DESCONECTAR
-
-        </button>
-
-    </div>
-
-
-
-    <!-- ==================================================
-         SEM ACESSO
-    ================================================== -->
-
-    <div
-        id="semAcesso"
-        class="painel"
-    >
-
-        <div class="cadeado">
-            ▣
-        </div>
-
-        <h2>
-            NENHUM ACESSO DISPONÍVEL
-        </h2>
-
-        <p>
-            Nenhuma operação foi autorizada
-            para este usuário.
-        </p>
-
-        <p>
-            Aguardando autorização...
-        </p>
-
-    </div>
-
-
-
-    <!-- ==================================================
-         ACESSO
-    ================================================== -->
-
-    <div
-        id="acessoLiberado"
-        class="painel"
-    >
-
-        <div class="alerta-acesso">
-
-            >
-            <strong>
-                OPERAÇÃO AUTORIZADA
-            </strong>
-
-            <br>
-
-            >
-            Conexão segura estabelecida.
-
-        </div>
-
-
-        <h2>
-            INVASÃO DISPONÍVEL
-        </h2>
-
-
-        <div class="info-acesso">
-
-
-            <div class="info">
-
-                <small>
-                    JOGADOR
-                </small>
-
-                <strong
-                    id="infoJogador"
-                >
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info">
-
-                <small>
-                    DIFICULDADE
-                </small>
-
-                <strong
-                    id="infoDificuldade"
-                >
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info">
-
-                <small>
-                    RECURSO
-                </small>
-
-                <strong
-                    id="infoRecurso"
-                >
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info">
-
-                <small>
-                    TEMPO
-                </small>
-
-                <strong
-                    id="infoTempo"
-                >
-                    -
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="btn"
-            onclick="iniciarInvasao()"
-        >
-
-            [ INICIAR INVASÃO ]
-
-        </button>
-
-    </div>
-
-
-
-    <!-- ==================================================
-         MINIGAME
-    ================================================== -->
-
-    <div
-        id="minigame"
-        class="painel"
-    >
-
-        <div
-            id="minigameTitulo"
-            class="minigame-titulo"
-        ></div>
-
-
-        <div
-            id="minigameSubtitulo"
-            class="minigame-subtitulo"
-        ></div>
-
-
-        <div class="progresso">
-
-            <div class="progresso-texto">
-
-                <span>
-                    OPERAÇÃO
-                </span>
-
-                <span
-                    id="progressoTexto"
-                >
-                    0/0
-                </span>
-
-            </div>
-
-
-            <div class="barra">
-
-                <div
-                    id="barraInterna"
-                    class="barra-interna"
-                ></div>
-
-            </div>
-
-        </div>
-
-
-        <div
-            id="conteudoMinigame"
-        ></div>
-
-    </div>
-
-
-
-    <!-- ==================================================
-         RESULTADO
-    ================================================== -->
-
-    <div
-        id="resultado"
-        class="painel"
-    >
-
-        <h2
-            id="resultadoTitulo"
-        ></h2>
-
-
-        <p
-            id="resultadoTexto"
-        ></p>
-
-
-        <button
-            type="button"
-            class="btn"
-            onclick="voltarTerminal()"
-        >
-
-            [ VOLTAR A61;
-
-    margin-bottom:7px;
-
-    font-size:12px;
-
-}
-
-
-.admin-campo input,
-.admin-campo select{
-
-    width:100%;
-
-    padding:12px;
-
-    background:#010401;
-
-    color:#00ff88;
-
-    border:1px solid #164d31;
-
-    outline:none;
-
-}
-
-
-.admin-separador{
-
-    border-top:1px solid #123d27;
-
-    margin:25px 0;
-
-}
-
-
-.acesso-admin{
-
-    border:1px solid #123d27;
-
-    background:#020803;
-
-    padding:15px;
-
-    margin-bottom:10px;
-
-}
-
-
-.acesso-admin button{
-
-    margin-top:10px;
-
-    width:auto;
-
-    padding:8px 12px;
-
-    color:#ff4444;
-
-    border-color:#7d2222;
-
-    background:#160303;
-
-}
-
-
-/* ==========================================
-   RESPONSIVO
-========================================== */
-
-@media(max-width:800px){
-
-    .info-acesso{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-}
-
-
-@media(max-width:600px){
-
-    .topo{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-    }
-
-    .info-acesso{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .terminal-opcoes{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .firewall-grade{
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-    }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<!-- ==========================================
-     LOGIN
-========================================== -->
-
-<section id="loginTela">
-
-<div class="login-container">
-
-
-    <div class="login-logo">
-
-        <div class="simbolo">
-            ◉
-        </div>
-
-        <h1>
-            HACKER
-        </h1>
-
-        <p>
-            // SECURE TERMINAL ACCESS //
-        </p>
-
-    </div>
-
-
-    <div class="terminal-linha">
-
-        SYSTEM://GTA-RPG<br>
-        CONNECTION://ENCRYPTED<br>
-        STATUS://WAITING FOR AUTHENTICATION
-
-    </div>
-
-
-    <div class="campo">
-
-        <label>
-            USUÁRIO
-        </label>
-
-        <input
-            id="usuario"
-            type="text"
-            autocomplete="off"
-            placeholder="Digite seu usuário"
-        >
-
-    </div>
-
-
-    <div class="campo">
-
-        <label>
-            SENHA
-        </label>
-
-        <input
-            id="senha"
-            type="password"
-            autocomplete="off"
-            placeholder="Digite sua senha"
-        >
-
-    </div>
-
-
-    <button
-        type="button"
-        class="btn"
-        id="btnEntrar"
-    >
-        [ CONECTAR ]
-    </button>
-
-
-    <button
-        type="button"
-        class="btn btn-voltar"
-        id="btnVoltar"
-    >
-        [ VOLTAR ]
-    </button>
-
-
-    <div
-        id="erro"
-        class="erro"
-    ></div>
-
-</div>
-
-</section>
-
-
-
-<!-- ==========================================
-     SISTEMA
-========================================== -->
-
-<section id="sistema">
-
-<div class="container">
-
+    <!-- =====================================================
+         TOPO
+    ===================================================== -->
 
     <div class="topo">
 
@@ -2690,9 +1182,9 @@ window.addEventListener(
 
 
 
-    <!-- ==========================================
+    <!-- =====================================================
          SEM ACESSO
-    =========================================== -->
+    ===================================================== -->
 
     <div
         id="semAcesso"
@@ -2720,9 +1212,9 @@ window.addEventListener(
 
 
 
-    <!-- ==========================================
-         ACESSO
-    =========================================== -->
+    <!-- =====================================================
+         ACESSO LIBERADO
+    ===================================================== -->
 
     <div
         id="acessoLiberado"
@@ -2750,7 +1242,6 @@ window.addEventListener(
 
 
         <div class="info-acesso">
-
 
             <div class="info">
 
@@ -2818,9 +1309,9 @@ window.addEventListener(
 
 
 
-    <!-- ==========================================
+    <!-- =====================================================
          MINIGAME
-    =========================================== -->
+    ===================================================== -->
 
     <div
         id="minigame"
@@ -2839,29 +1330,25 @@ window.addEventListener(
         ></div>
 
 
-        <div class="progresso">
+        <div class="progresso-texto">
 
-            <div class="progresso-texto">
+            <span>
+                OPERAÇÃO
+            </span>
 
-                <span>
-                    OPERAÇÃO
-                </span>
+            <span id="progressoTexto">
+                0/0
+            </span>
 
-                <span id="progressoTexto">
-                    0/0
-                </span>
-
-            </div>
+        </div>
 
 
-            <div class="barra">
+        <div class="barra">
 
-                <div
-                    id="barraInterna"
-                    class="barra-interna"
-                ></div>
-
-            </div>
+            <div
+                id="barraInterna"
+                class="barra-interna"
+            ></div>
 
         </div>
 
@@ -2872,9 +1359,9 @@ window.addEventListener(
 
 
 
-    <!-- ==========================================
+    <!-- =====================================================
          RESULTADO
-    =========================================== -->
+    ===================================================== -->
 
     <div
         id="resultado"
@@ -2897,22 +1384,21 @@ window.addEventListener(
 
 
 
-    <!-- ==========================================
+    <!-- =====================================================
          ADMIN
-    =========================================== -->
+    ===================================================== -->
 
     <div
         id="admin"
         class="painel"
     >
 
-        <h2>
-            // ADMINISTRADOR
+        <h2 class="admin-titulo">
+            // ADMINISTRADOR — ÍTALO
         </h2>
 
         <p style="color:#477d61;">
-            Acesso administrativo identificado:
-            Ítalo
+            Libere uma autorização Hacker para um jogador.
         </p>
 
 
@@ -3017,12 +1503,15 @@ window.addEventListener(
 
 
         <h3>
-            ACESSOS ATIVOS
+            ACESSOS
         </h3>
 
 
-        <div id="listaAcessos">
-            Nenhum acesso ativo.
+        <div
+            id="listaAcessos"
+            class="admin-lista"
+        >
+            Carregando...
         </div>
 
     </div>
@@ -3036,1385 +1525,14 @@ window.addEventListener(
 
 <script>
 
-/* ==========================================
-   CONFIGURAÇÃO FIREBASE
-========================================== */
+/* =========================================================
+   FIREBASE
+========================================================= */
 
 const firebaseConfig = {
 
     apiKey:
         "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBjJqg",
-
-    authDomain:
-        "gta-rpg.firebaseapp.com",
-
-    databaseURL:
-        "https://gta-rpg-default-rtdb.firebaseio.com",
-
-    projectId:
-        "gta-rpg",
-
-    storageBucket:
-        "gta-rpg.firebasestorage.app",
-
-    messagingSenderId:
-        "318963858414",
-
-    appId:
-        "1:318963858414:web:cc7122486ac5a3d267ecff",
-
-    measurementId:
-        "G-K157521F0H"
-
-};
-
-
-
-/* ==========================================
-   FIREBASE — NÃO BLOQUEIA O LOGIN
-========================================== */
-
-let banco = null;
-
-try {
-
-    if(
-        typeof firebase !== "undefined" &&
-        typeof firebase.database !== "undefined"
-    ){
-
-        firebase.initializeApp(
-            firebaseConfig
-        );
-
-        banco =
-            firebase.database();
-
-    }
-
-} catch(erro){
-
-    console.error(
-        "Firebase:",
-        erro
-    );
-
-}
-
-
-
-/* ===================================== */
-
-        #minigame{
-
-            display:none;
-
-        }
-
-
-        .minigame-titulo{
-
-            text-align:center;
-
-            font-size:27px;
-
-            letter-spacing:5px;
-
-            color:#00ff88;
-
-            text-shadow:
-                0 0 10px #00ff88;
-
-        }
-
-
-        .minigame-subtitulo{
-
-            text-align:center;
-
-            color:#477d61;
-
-            margin-bottom:25px;
-
-        }
-
-
-        /* ==========================================
-           CRACK
-        =========================================== */
-
-        .codigo{
-
-            text-align:center;
-
-            font-size:35px;
-
-            letter-spacing:8px;
-
-            color:#00ff88;
-
-            margin:30px 0;
-
-            text-shadow:
-                0 0 10px #00ff88;
-
-        }
-
-
-        .input-codigo{
-
-            max-width:400px;
-
-            margin:0 auto 15px;
-
-            display:block;
-
-            text-align:center;
-
-            font-size:22px;
-
-            letter-spacing:5px;
-
-            background:#010401;
-
-            color:#00ff88;
-
-            border:1px solid #164d31;
-
-            padding:13px;
-
-        }
-
-
-        /* ==========================================
-           MEMÓRIA
-        =========================================== */
-
-        .memoria-sequencia{
-
-            text-align:center;
-
-            font-size:45px;
-
-            letter-spacing:12px;
-
-            min-height:70px;
-
-            margin:25px 0;
-
-            color:#00ff88;
-
-            text-shadow:
-                0 0 10px #00ff88;
-
-        }
-
-
-        .memoria-botoes{
-
-            display:flex;
-
-            flex-wrap:wrap;
-
-            justify-content:center;
-
-            gap:10px;
-
-            max-width:600px;
-
-            margin:auto;
-
-        }
-
-
-        .memoria-botoes button{
-
-            width:65px;
-
-            height:65px;
-
-            font-size:23px;
-
-            background:#020803;
-
-            color:#00ff88;
-
-            border:1px solid #164d31;
-
-            cursor:pointer;
-
-        }
-
-
-        .memoria-botoes button:hover{
-
-            border-color:#00ff88;
-
-            box-shadow:
-                0 0 10px rgba(0,255,136,.3);
-
-        }
-
-
-        /* ==========================================
-           TERMINAL
-        =========================================== */
-
-        .terminal{
-
-            background:#010401;
-
-            border:1px solid #00ff88;
-
-            padding:20px;
-
-            color:#00ff88;
-
-            line-height:1.8;
-
-            margin-bottom:20px;
-
-        }
-
-
-        .terminal-opcoes{
-
-            display:grid;
-
-            grid-template-columns:
-                repeat(2,1fr);
-
-            gap:10px;
-
-        }
-
-
-        .terminal-opcoes button{
-
-            padding:15px;
-
-            background:#020803;
-
-            color:#00ff88;
-
-            border:1px solid #164d31;
-
-            cursor:pointer;
-
-            font-family:
-                "Courier New",
-                monospace;
-
-        }
-
-
-        .terminal-opcoes button:hover{
-
-            border-color:#00ff88;
-
-            background:#041b0c;
-
-        }
-
-
-        /* ==========================================
-           FIREWALL
-        =========================================== */
-
-        .firewall-grade{
-
-            display:grid;
-
-            grid-template-columns:
-                repeat(4,1fr);
-
-            gap:10px;
-
-            max-width:500px;
-
-            margin:25px auto;
-
-        }
-
-
-        .firewall-grade button{
-
-            height:60px;
-
-            background:#020803;
-
-            color:#00ff88;
-
-            border:1px solid #164d31;
-
-            cursor:pointer;
-
-            font-family:
-                "Courier New",
-                monospace;
-
-            font-size:18px;
-
-        }
-
-
-        .firewall-grade button:hover{
-
-            border-color:#00ff88;
-
-        }
-
-
-        .firewall-grade button.selecionado{
-
-            background:#00ff88;
-
-            color:#000;
-
-            box-shadow:
-                0 0 12px rgba(0,255,136,.5);
-
-        }
-
-
-        /* ==========================================
-           RESULTADO
-        =========================================== */
-
-        #resultado{
-
-            display:none;
-
-            text-align:center;
-
-            padding:50px 20px;
-
-        }
-
-
-        #resultado h2{
-
-            color:#00ff88;
-
-            letter-spacing:3px;
-
-        }
-
-
-        #resultado.falha h2{
-
-            color:#ff3333;
-
-        }
-
-
-        /* ==========================================
-           ADMIN
-        =========================================== */
-
-        #admin{
-
-            display:none;
-
-        }
-
-
-        .admin-separador{
-
-            border-top:1px solid #123d27;
-
-            margin:25px 0;
-
-        }
-
-
-        .admin-campo{
-
-            margin-bottom:15px;
-
-        }
-
-
-        .admin-campo label{
-
-            display:block;
-
-            color:#477d61;
-
-            margin-bottom:7px;
-
-            font-size:12px;
-
-        }
-
-
-        .admin-campo input,
-        .admin-campo select{
-
-            width:100%;
-
-            padding:12px;
-
-            background:#010401;
-
-            color:#00ff88;
-
-            border:1px solid #164d31;
-
-            outline:none;
-
-        }
-
-
-        .admin-lista{
-
-            margin-top:20px;
-
-        }
-
-
-        .acesso-admin{
-
-            border:1px solid #123d27;
-
-            background:#020803;
-
-            padding:15px;
-
-            margin-bottom:10px;
-
-        }
-
-
-        .acesso-admin-header{
-
-            display:flex;
-
-            justify-content:space-between;
-
-            align-items:center;
-
-            gap:10px;
-
-        }
-
-
-        .btn-revogar{
-
-            width:auto;
-
-            padding:8px 12px;
-
-            color:#ff4444;
-
-            background:#160303;
-
-            border-color:#7d2222;
-
-        }
-
-
-        .btn-revogar:hover{
-
-            background:#ff3333;
-
-            color:#000;
-
-        }
-
-
-        /* ==========================================
-           RESPONSIVO
-        =========================================== */
-
-        @media(max-width:800px){
-
-            .info-acesso{
-
-                grid-template-columns:
-                    repeat(2,1fr);
-
-            }
-
-        }
-
-
-        @media(max-width:600px){
-
-            .topo{
-
-                flex-direction:column;
-
-                align-items:flex-start;
-
-            }
-
-
-            .info-acesso{
-
-                grid-template-columns:1fr;
-
-            }
-
-
-            .terminal-opcoes{
-
-                grid-template-columns:1fr;
-
-            }
-
-
-            .firewall-grade{
-
-                grid-template-columns:
-                    repeat(3,1fr);
-
-            }
-
-
-            .login-container{
-
-                padding:25px;
-
-            }
-
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-
-<!-- ==========================================
-     LOGIN
-========================================== -->
-
-<section id="loginTela">
-
-    <div class="login-container">
-
-
-        <div class="login-logo">
-
-            <div class="simbolo">
-                ◉
-            </div>
-
-            <h1>
-                HACKER
-            </h1>
-
-            <p>
-                // SECURE TERMINAL ACCESS //
-            </p>
-
-        </div>
-
-
-        <div class="terminal-linha">
-
-            SYSTEM://GTA-RPG<br>
-            CONNECTION://ENCRYPTED<br>
-            STATUS://WAITING FOR AUTHENTICATION
-
-        </div>
-
-
-        <div class="campo">
-
-            <label>
-                USUÁRIO
-            </label>
-
-            <input
-                id="usuario"
-                type="text"
-                autocomplete="off"
-                placeholder="Digite seu usuário"
-            >
-
-        </div>
-
-
-        <div class="campo">
-
-            <label>
-                SENHA
-            </label>
-
-            <input
-                id="senha"
-                type="password"
-                autocomplete="off"
-                placeholder="Digite sua senha"
-            >
-
-        </div>
-
-
-        <button
-            class="btn"
-            onclick="entrar()"
-        >
-            [ CONECTAR ]
-        </button>
-
-
-        <button
-            class="btn btn-voltar"
-            onclick="voltar()"
-        >
-            [ VOLTAR ]
-        </button>
-
-
-        <div
-            id="erro"
-            class="erro"
-        ></div>
-
-    </div>
-
-</section>
-
-
-
-<!-- ==========================================
-     SISTEMA
-========================================== -->
-
-<section id="sistema">
-
-    <div class="container">
-
-
-        <!-- TOPO -->
-
-        <div class="topo">
-
-            <div>
-
-                <h1>
-                    HACKER // TERMINAL
-                </h1>
-
-                <div
-                    id="usuarioLogado"
-                    class="status-online"
-                >
-                    CONECTADO
-                </div>
-
-            </div>
-
-
-            <button
-                class="btn btn-sair"
-                onclick="sair()"
-            >
-                DESCONECTAR
-            </button>
-
-        </div>
-
-
-
-        <!-- ==========================================
-             SEM ACESSO
-        =========================================== -->
-
-        <div
-            id="semAcesso"
-            class="painel"
-        >
-
-            <div class="cadeado">
-                ▣
-            </div>
-
-            <h2>
-                NENHUM ACESSO DISPONÍVEL
-            </h2>
-
-            <p>
-                Nenhuma operação foi autorizada
-                para este usuário.
-            </p>
-
-            <p>
-                Aguardando autorização...
-            </p>
-
-        </div>
-
-
-
-        <!-- ==========================================
-             ACESSO LIBERADO
-        =========================================== -->
-
-        <div
-            id="acessoLiberado"
-            class="painel"
-        >
-
-            <div class="alerta-acesso">
-
-                >
-                <strong>
-                    OPERAÇÃO AUTORIZADA
-                </strong>
-
-                <br>
-
-                >
-       de">
-                        -
-                    </strong>
-
-                </div>
-
-                <div class="info">
-
-                    <small>
-                        RECURSO
-                    </small>
-
-                    <strong id="infoRecurso">
-                        -
-                    </strong>
-
-                </div>
-
-                <div class="info">
-
-                    <small>
-                        TEMPO
-                    </small>
-
-                    <strong id="infoTempo">
-                        -
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <button
-                id="btnIniciar"
-                class="btn"
-                onclick="iniciarInvasao()"
-            >
-                INICIAR INVASÃO
-            </button>
-
-        </div>
-
-
-
-        <!-- ==========================================
-             MINIGAME
-        =========================================== -->
-
-        <div
-            id="minigame"
-            class="painel"
-        >
-
-            <div
-                id="minigameTitulo"
-                class="minigame-titulo"
-            ></div>
-
-            <div
-                id="minigameSubtitulo"
-                class="minigame-subtitulo"
-            ></div>
-
-
-            <div class="progresso">
-
-                <div class="progresso-texto">
-
-                    <span>
-                        PROGRESSO
-                    </span>
-
-                    <span id="progressoTexto">
-                        0/0
-                    </span>
-
-                </div>
-
-                <div class="barra">
-
-                    <div
-                        id="barraInterna"
-                        class="barra-interna"
-                    ></div>
-
-                </div>
-
-            </div>
-
-
-            <div id="conteudoMinigame"></div>
-
-        </div>
-
-
-
-        <!-- ==========================================
-             RESULTADO
-        =========================================== -->
-
-        <div
-            id="resultado"
-            class="painel"
-        >
-
-            <h2 id="resultadoTitulo"></h2>
-
-            <p id="resultadoTexto"></p>
-
-            <button
-                class="btn"
-                onclick="voltarAcesso()"
-            >
-                VOLTAR
-            </button>
-
-        </div>
-
-
-
-        <!-- ==========================================
-             ADMIN
-        =========================================== -->
-
-        <div
-            id="admin"
-            class="painel"
-        >
-
-            <h2>
-                ADMINISTRADOR — ÍTALO
-            </h2>
-
-            <div class="campo">
-
-                <label>
-                    Jogador
-                </label>
-
-                <select id="adminJogador">
-
-                    <option value="Kaius">
-                        Kaius
-                    </option>
-
-                    <option value="Gaby">
-                        Gaby
-                    </option>
-
-                    <option value="Duda">
-                        Duda
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="campo">
-
-                <label>
-                    Tempo em segundos
-                </label>
-
-                <input
-                    id="adminTempo"
-                    type="number"
-                    value="60"
-                    min="10"
-                >
-
-            </div>
-
-
-            <div class="campo">
-
-                <label>
-                    Dificuldade
-                </label>
-
-                <select id="adminDificuldade">
-
-                    <option value="Fácil">
-                        Fácil
-                    </option>
-
-                    <option value="Normal">
-                        Normal
-                    </option>
-
-                    <option value="Difícil">
-                        Difícil
-                    </option>
-
-                    <option value="Extremo">
-                        Extremo
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="campo">
-
-                <label>
-                    Recurso desbloqueado
-                </label>
-
-                <input
-                    id="adminRecurso"
-                    type="text"
-                    placeholder="Ex: Localização do alvo"
-                >
-
-            </div>
-
-
-            <button
-                class="btn"
-                onclick="liberarAcesso()"
-            >
-                LIBERAR ACESSO
-            </button>
-
-
-            <div class="admin-lista">
-
-                <h3>
-                    ACESSOS ATIVOS
-                </h3>
-
-                <div id="listaAcessos">
-
-                    Nenhum acesso ativo.
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<script>
-
-/* ==========================================
-   FIREBASE
-========================================== */
-
-const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBdJqg",
-
-    authDomain:
-        "gta-rpg.firebaseapp.com",
-
-    databaseURL:
-        "https://gta-rpg-default-rtdb.firebaseio.com",
-
-    projectId:
-        "gta-rpg",
-
-    storageBucket:
-        "gta-rpg.firebasestorage.app",
-
-    messagingSenderId:
-        "318963858414",
-
-    appId:
-        "1:318963858414:web:cc7122486ac5a3d267ecff",
-
-    measurementId:
-        "G-K157521F0H"
-
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const banco =
-    firebase.database();
-
-
-
-/* ==========================================
-   USUÁRIOS
-========================================== */
-
-const usuarios = {
-
-    Kaius:"28/09",
-    Gaby:"22/09",
-    Duda:"13/09",
-    Italo:"1822"
-
-};
-
-
-let usuarioAtual = null;
-
-let acessoAtual = null;
-
-let sequenciaMinigames = [];
-
-let indiceMinigame = 0;
-
-let tempoInicio = 0;
-
-let timer = null;
-
-let memoriaSequencia = [];
-
-let memoriaJogador = [];
-
-let firewallResposta = [];
-
-let firewallJogador = [];
-
-
-
-/* ==========================================
-   ENTRAR
-========================================== */
-
-function entrar(){
-
-    const nome =
-        document.getElementById("usuario")
-        .value
-        .trim();
-
-    const senha =
-        document.getElementById("senha")
-        .value
-        .trim();
-
-
-    if(!usuarios[nome]){
-
-        document.getElementById("erro").textContent =
-            "Usuário não encontrado.";
-
-        return;
-
-    }
-
-
-    if(usuarios[nome] !== senha){
-
-        document.getElementById("erro").textContent =
-            "Senha incorreta.";
-
-        return;
-
-    }
-
-
-    usuarioAtual = nome;
-
-    localStorage.setItem(
-        "hacker_usuario",
-        usuarioAtual
-    );
-
-
-    abrirSistema();
-
-}
-
-
-
-/* ==========================================
-   ABRIR SISTEMA
-========================================== */
-
-function abrirSistema(){
-
-    document.getElementById("login").style.display =
-        "none";
-
-    document.getElementById("sistema").style.display =
-        "block";
-
-
-    if(usuarioAtual === "Italo"){
-
-        document.getElementById("admin").style.display =
-            "block";
-
-    }
-
-
-    ouvirAcesso();
-
-    ouvirAcessosAdmin();
-
-}
-
-
-
-/* ==========================================
-   VOLTAR
-========================================== */
-
-function voltar(){
-
-    window.location.href =
-        "./index.html";
-
-}
-
-
-
-/* ==========================================
-   SAIR
-========================================== */
-
-function sair(){
-
-    localStorage.removeItem(
-        "hacker_usuario"
-    );
-
-    usuarioAtual = null;
-
-    window.location.reload();
-
-}
-
-
-
-/* ==========================================
-   VERIFICAR LOGIN SALVO
-========================================== */
-
-window.addEventListener(
-    "load",
-    function(){
-
-        const salvo =
-            localStorage.getItem(
-                "hacker_usuario"
-            );
-
-
-        if(salvo && usuarios[salvo]){
-
-            usuarioAtual = salvo;
-
-            abrirSistema();
-
-        }
-
-    }
-);
-
-
-
-/* ==========================================
-   OUVIR ACESSO DO JOGADOR
-========================================== */
-
-function ouvirAcesso(){
-
-    if(!usuarioAtual){
-
-        return;
-
-    }
-
-
-    banco
-        .ref(
-            "hackerAcessos/" +
-            usuarioAtual
-        )
-        .on(
-            "value",
-            function(snapshot){
-
-                if(!snapshot.exists()){
-
-                    acessoAtual = null;
-
-                    mostrarSemAcesso();
-
-                    return;
-
-                }
-
-
-                const acesso =
-                    snapshot.val();
-
-
-                if(
-                    acesso.ativo !== true
-                ){
-
-                    acessoAtual = null;
-
-                    mostrarSemAcesso();
-
-                    return;
-
-                }
-
-
-                acessoAtual = acesso;
-
-                mostrarAcesso();
-
-            }
-        );
-
-}
-
-
-
-/* ==========================================
-   MOSTRAR SEM ACESSO
-========================================== */
-
-function mostrarSemAcesso(){
-
-    document.getElementById(
-        "semAcesso"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "acessoLiberado"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "minigame"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "resultado"
-    ).style.display =
-        "none";
-
-}
-
-
-
-/* ==========================================
-   MOSTRAR ACESSO
-========================================== */
-
-function mostrarAcesso(){
-
-    document.getElementById(
-        "semAcesso"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "acessoLiberado"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "minigame"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "resultado"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "infoJogador"
-    ).textContent =
-        acessoAtual.jogador;
-
-
-    document.       </button>
-
-
-            <div
-                id="listaAcessos"
-                style="margin-top:25px;"
-            ></div>
-
-        </div>
-
-
-
-        <!-- ==========================================
-             ÁREA DO JOGADOR
-        ========================================== -->
-
-        <div
-            id="painelJogador"
-            class="painel"
-            style="display:none;"
-        >
-
-            <div
-                id="mensagemAcesso"
-                class="terminal-text"
-            ></div>
-
-
-            <div id="areaJogo"></div>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-
-
-<script>
-
-
-/* ==========================================
-   FIREBASE CONFIG
-========================================== */
-
-const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBdJqg",
 
     authDomain:
         "gta-rpg.firebaseapp.com",
@@ -4450,9 +1568,9 @@ const db =
 
 
 
-/* ==========================================
+/* =========================================================
    USUÁRIOS
-========================================== */
+========================================================= */
 
 const usuarios = {
 
@@ -4467,118 +1585,193 @@ const usuarios = {
 };
 
 
+
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
+
 let usuarioAtual = null;
 
 let acessoAtual = null;
+
+let jogoAtivo = false;
+
+let sequenciaJogos = [];
+
+let indiceJogo = 0;
 
 let tempoRestante = 0;
 
 let intervalo = null;
 
-let jogoAtivo = false;
-
 let jogoAtual = null;
 
+let codigoAtual = "";
+
+let memoriaSequencia = [];
+
+let memoriaResposta = [];
+
+let terminalResposta = "";
+
+let firewallResposta = [];
+
+let firewallJogador = [];
 
 
-/* ==========================================
+
+/* =========================================================
    LOGIN
-========================================== */
+========================================================= */
 
-function login(){
+function entrar(){
 
-    const usuario =
+    const nome =
         document
-        .getElementById(
-            "usuarioLogin"
-        )
+        .getElementById("usuario")
         .value
         .trim();
 
 
     const senha =
         document
-        .getElementById(
-            "senhaLogin"
-        )
+        .getElementById("senha")
         .value
         .trim();
 
 
-    if(
-        usuarios[usuario] &&
-        usuarios[usuario] === senha
-    ){
-
-        usuarioAtual =
-            usuario;
+    const erro =
+        document.getElementById("erro");
 
 
-        localStorage.setItem(
-            "hacker_usuario",
-            usuario
-        );
+    erro.textContent = "";
 
 
-        abrirSistema();
+    let usuarioReal = null;
 
-    }else{
 
-        alert(
-            "Usuário ou senha incorretos."
-        );
+    for(const nomeUsuario in usuarios){
+
+        if(
+            nomeUsuario.toLowerCase() ===
+            nome.toLowerCase()
+        ){
+
+            usuarioReal =
+                nomeUsuario;
+
+            break;
+
+        }
 
     }
+
+
+    if(!usuarioReal){
+
+        erro.textContent =
+            "USUÁRIO NÃO ENCONTRADO.";
+
+        return;
+
+    }
+
+
+    if(
+        usuarios[usuarioReal] !==
+        senha
+    ){
+
+        erro.textContent =
+            "CÓDIGO DE ACESSO INCORRETO.";
+
+        return;
+
+    }
+
+
+    usuarioAtual =
+        usuarioReal;
+
+
+    localStorage.setItem(
+        "hacker_usuario",
+        usuarioAtual
+    );
+
+
+    abrirSistema();
 
 }
 
 
 
-/* ==========================================
+/* =========================================================
    ABRIR SISTEMA
-========================================== */
+========================================================= */
 
 function abrirSistema(){
 
     document
         .getElementById("loginTela")
-        .style.display = "none";
+        .style.display =
+        "none";
 
 
     document
         .getElementById("sistema")
-        .style.display = "block";
+        .style.display =
+        "block";
 
+
+    document
+        .getElementById("usuarioLogado")
+        .textContent =
+        "● CONECTADO: " +
+        usuarioAtual.toUpperCase();
+
+
+    /* ---------------------------------------------
+       ADMIN
+    --------------------------------------------- */
 
     if(
         usuarioAtual === "Italo"
     ){
 
         document
-            .getElementById("painelAdmin")
-            .style.display = "block";
+            .getElementById("admin")
+            .style.display =
+            "block";
 
 
         observarAcessos();
 
-    }else{
+    }
+
+    else{
 
         document
-            .getElementById("painelJogador")
-            .style.display = "block";
-
-
-        verificarAcessoJogador();
+            .getElementById("admin")
+            .style.display =
+            "none";
 
     }
+
+
+    /* ---------------------------------------------
+       OUVIR O ACESSO DO JOGADOR
+    --------------------------------------------- */
+
+    ouvirAcesso();
 
 }
 
 
 
-/* ==========================================
+/* =========================================================
    SAIR
-========================================== */
+========================================================= */
 
 function sair(){
 
@@ -4587,9 +1780,13 @@ function sair(){
     );
 
 
-    clearInterval(
-        intervalo
-    );
+    if(intervalo){
+
+        clearInterval(
+            intervalo
+        );
+
+    }
 
 
     location.reload();
@@ -4598,60 +1795,246 @@ function sair(){
 
 
 
-/* ==========================================
-   LIBERAR ACESSO
-========================================== */
+/* =========================================================
+   OUVIR ACESSO DO JOGADOR
+========================================================= */
 
-async function liberarAcesso(){
+function ouvirAcesso(){
 
-    if(
-        usuarioAtual !== "Italo"
-    ){
+    if(!usuarioAtual){
 
         return;
 
     }
 
 
+    db.ref(
+        "hackerAcessos/" +
+        usuarioAtual
+    )
+    .on(
+        "value",
+        function(snapshot){
+
+            console.log(
+                "ACESSO RECEBIDO:",
+                usuarioAtual,
+                snapshot.val()
+            );
+
+
+            if(
+                !snapshot.exists()
+            ){
+
+                acessoAtual = null;
+
+                mostrarSemAcesso();
+
+                return;
+
+            }
+
+
+            const acesso =
+                snapshot.val();
+
+
+            if(
+                acesso.ativo !== true
+            ){
+
+                acessoAtual = null;
+
+                mostrarSemAcesso();
+
+                return;
+
+            }
+
+
+            acessoAtual =
+                acesso;
+
+
+            mostrarAcesso();
+
+        },
+        function(error){
+
+            console.error(
+                "ERRO AO LER ACESSO:",
+                error
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   MOSTRAR SEM ACESSO
+========================================================= */
+
+function mostrarSemAcesso(){
+
+    document
+        .getElementById("semAcesso")
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById("acessoLiberado")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("minigame")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("resultado")
+        .style.display =
+        "none";
+
+}
+
+
+
+/* =========================================================
+   MOSTRAR ACESSO
+========================================================= */
+
+function mostrarAcesso(){
+
+    document
+        .getElementById("semAcesso")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("acessoLiberado")
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById("minigame")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("resultado")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("infoJogador")
+        .textContent =
+        acessoAtual.jogador;
+
+
+    document
+        .getElementById("infoDificuldade")
+        .textContent =
+        acessoAtual.dificuldade;
+
+
+    document
+        .getElementById("infoRecurso")
+        .textContent =
+        acessoAtual.recurso;
+
+
+    document
+        .getElementById("infoTempo")
+        .textContent =
+        acessoAtual.tempo +
+        " segundos";
+
+
+    jogoAtivo = false;
+
+}
+
+
+
+/* =========================================================
+   ADMIN — LIBERAR ACESSO
+========================================================= */
+
+async function liberarAcesso(){
+
+    console.log(
+        "LIBERAR ACESSO CLICADO"
+    );
+
+
+    /* ---------------------------------------------
+       SEGURANÇA
+    --------------------------------------------- */
+
+    if(
+        usuarioAtual !== "Italo"
+    ){
+
+        alert(
+            "ACESSO NEGADO."
+        );
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+       DADOS
+    --------------------------------------------- */
+
     const jogador =
         document
-        .getElementById(
-            "jogadorSelecionado"
-        )
+        .getElementById("adminJogador")
         .value;
 
 
     const tempo =
         Number(
             document
-            .getElementById(
-                "tempoAcesso"
-            )
+            .getElementById("adminTempo")
             .value
         );
 
 
     const dificuldade =
         document
-        .getElementById(
-            "dificuldade"
-        )
+        .getElementById("adminDificuldade")
         .value;
 
 
     const recurso =
         document
-        .getElementById(
-            "recursoDesbloqueado"
-        )
+        .getElementById("adminRecurso")
         .value
         .trim();
 
 
+    /* ---------------------------------------------
+       VALIDAÇÕES
+    --------------------------------------------- */
+
     if(!jogador){
 
         alert(
-            "Escolha um jogador."
+            "Selecione um jogador."
         );
 
         return;
@@ -4676,7 +2059,7 @@ async function liberarAcesso(){
     if(!recurso){
 
         alert(
-            "Informe o que será desbloqueado."
+            "Digite o recurso que será desbloqueado."
         );
 
         return;
@@ -4684,66 +2067,115 @@ async function liberarAcesso(){
     }
 
 
-    await db
-        .ref(
-            "hackerAcessos/" +
-            jogador
-        )
-        .set({
+    /* ---------------------------------------------
+       OBJETO
+    --------------------------------------------- */
 
-            ativo:true,
+    const acesso = {
 
-            jogador,
+        ativo:true,
 
-            tempo,
+        jogador:jogador,
 
-            dificuldade,
+        tempo:tempo,
 
-            recurso,
+        dificuldade:dificuldade,
 
-            criadoEm:
-                Date.now(),
+        recurso:recurso,
 
-            criadoPor:
-                "Italo"
+        criadoEm:
+            Date.now(),
 
-        });
+        criadoPor:
+            "Italo"
+
+    };
 
 
-    alert(
-        "Acesso liberado para " +
-        jogador +
-        "."
+    console.log(
+        "ENVIANDO PARA FIREBASE:",
+        acesso
     );
 
 
-    document
-        .getElementById(
-            "jogadorSelecionado"
-        )
-        .value = "";
+    /* ---------------------------------------------
+       SALVAR
+    --------------------------------------------- */
+
+    try{
+
+        await db
+            .ref(
+                "hackerAcessos/" +
+                jogador
+            )
+            .set(
+                acesso
+            );
 
 
-    document
-        .getElementById(
-            "recursoDesbloqueado"
-        )
-        .value = "";
+        console.log(
+            "ACESSO SALVO COM SUCESSO"
+        );
+
+
+        alert(
+            "✓ ACESSO LIBERADO PARA " +
+            jogador.toUpperCase()
+        );
+
+
+        document
+            .getElementById(
+                "adminRecurso"
+            )
+            .value = "";
+
+
+        observarAcessos();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "ERRO FIREBASE:",
+            error
+        );
+
+
+        alert(
+            "ERRO AO LIBERAR ACESSO:\n\n" +
+            error.message
+        );
+
+    }
 
 }
 
 
 
-/* ==========================================
-   OBSERVAR ACESSOS
-========================================== */
+/* =========================================================
+   ADMIN — OBSERVAR ACESSOS
+========================================================= */
 
 function observarAcessos(){
 
-    db.ref("hackerAcessos")
+    if(
+        usuarioAtual !== "Italo"
+    ){
+
+        return;
+
+    }
+
+
+    db.ref(
+        "hackerAcessos"
+    )
     .on(
         "value",
-        snapshot => {
+        function(snapshot){
 
             const lista =
                 document
@@ -4755,10 +2187,12 @@ function observarAcessos(){
             lista.innerHTML = "";
 
 
-            if(!snapshot.exists()){
+            if(
+                !snapshot.exists()
+            ){
 
                 lista.innerHTML =
-                    "<p>Nenhum acesso liberado.</p>";
+                    "<p style='color:#477d61;'>Nenhum acesso liberado.</p>";
 
                 return;
 
@@ -4766,7 +2200,7 @@ function observarAcessos(){
 
 
             snapshot.forEach(
-                item => {
+                function(item){
 
                     const acesso =
                         item.val();
@@ -4776,68 +2210,101 @@ function observarAcessos(){
                         item.key;
 
 
-                    lista.innerHTML += `
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
 
-                        <div class="admin-card">
 
-                            <h3>
-                                ${jogador}
-                            </h3>
+                    div.className =
+                        "acesso-admin";
 
-                            <span
-                                class="status"
-                            >
-                                ${
-                                    acesso.ativo
-                                    ? "ACESSO ATIVO"
-                                    : "ACESSO ENCERRADO"
-                                }
-                            </span>
 
-                            <p>
-                                Tempo:
-                                ${acesso.tempo}s
-                            </p>
+                    div.innerHTML = `
 
-                            <p>
-                                Dificuldade:
-                                ${acesso.dificuldade}
-                            </p>
+                        <strong>
+                            ${jogador}
+                        </strong>
 
-                            <p>
-                                Desbloqueio:
-                                ${acesso.recurso}
-                            </p>
-
+                        <p>
+                            STATUS:
                             ${
                                 acesso.ativo
-
-                                ?
-
-                                `
-                                    <button
-                                        class="btn-danger"
-                                        onclick="
-                                            revogarAcesso(
-                                                '${jogador}'
-                                            )
-                                        "
-                                    >
-                                        REVOGAR ACESSO
-                                    </button>
-                                `
-
-                                :
-
-                                ""
-
+                                ? "ACESSO ATIVO"
+                                : "ENCERRADO"
                             }
+                        </p>
 
-                        </div>
+                        <p>
+                            TEMPO:
+                            ${acesso.tempo}s
+                        </p>
+
+                        <p>
+                            DIFICULDADE:
+                            ${acesso.dificuldade}
+                        </p>
+
+                        <p>
+                            RECURSO:
+                            ${acesso.recurso}
+                        </p>
 
                     `;
 
+
+                    if(
+                        acesso.ativo
+                    ){
+
+                        const botao =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        botao.className =
+                            "btn btn-revogar";
+
+
+                        botao.type =
+                            "button";
+
+
+                        botao.textContent =
+                            "[ REVOGAR ACESSO ]";
+
+
+                        botao.onclick =
+                            function(){
+
+                                revogarAcesso(
+                                    jogador
+                                );
+
+                            };
+
+
+                        div.appendChild(
+                            botao
+                        );
+
+                    }
+
+
+                    lista.appendChild(
+                        div
+                    );
+
                 }
+            );
+
+        },
+        function(error){
+
+            console.error(
+                "ERRO AO OBSERVAR ACESSOS:",
+                error
             );
 
         }
@@ -4847,9 +2314,9 @@ function observarAcessos(){
 
 
 
-/* ==========================================
-   REVOGAR ACESSO
-========================================== */
+/* =========================================================
+   ADMIN — REVOGAR
+========================================================= */
 
 async function revogarAcesso(
     jogador
@@ -4864,226 +2331,65 @@ async function revogarAcesso(
     }
 
 
-    const confirmar =
-        confirm(
-
+    if(
+        !confirm(
             "Revogar acesso de " +
             jogador +
             "?"
-
-        );
-
-
-    if(!confirmar){
+        )
+    ){
 
         return;
 
     }
 
 
-    await db
-        .ref(
-            "hackerAcessos/" +
-            jogador
-        )
-        .update({
+    try{
 
-            ativo:false,
+        await db
+            .ref(
+                "hackerAcessos/" +
+                jogador
+            )
+            .update({
 
-            revogadoEm:
-                Date.now()
+                ativo:false,
 
-        });
+                revogadoEm:
+                    Date.now()
 
-
-    alert(
-        "Acesso revogado."
-    );
-
-}
+            });
 
 
+        alert(
+            "Acesso revogado."
+        );
 
-/* ==========================================
-   VERIFICAR ACESSO DO JOGADOR
-========================================== */
+    }
 
-function verificarAcessoJogador(){
+    catch(error){
 
-    db.ref(
-        "hackerAcessos/" +
-        usuarioAtual
-    )
-    .on(
-        "value",
-        snapshot => {
-
-            const mensagem =
-                document
-                .getElementById(
-                    "mensagemAcesso"
-                );
-
-
-            const area =
-                document
-                .getElementById(
-                    "areaJogo"
-                );
-
-
-            if(
-                !snapshot.exists()
-            ){
-
-                mensagem.innerHTML = `
-
-                    <h2>
-                        ACESSO NEGADO
-                    </h2>
-
-                    <p>
-                        Nenhuma autorização Hacker
-                        foi liberada para este usuário.
-                    </p>
-
-                `;
-
-                area.innerHTML = "";
-
-                pararJogo();
-
-                return;
-
-            }
-
-
-            const acesso =
-                snapshot.val();
-
-
-            if(
-                acesso.ativo !== true
-            ){
-
-                mensagem.innerHTML = `
-
-                    <h2>
-                        ACESSO NEGADO
-                    </h2>
-
-                    <p>
-                        Seu acesso foi encerrado
-                        pelo administrador.
-                    </p>
-
-                `;
-
-                area.innerHTML = "";
-
-                pararJogo();
-
-                return;
-
-            }
-
-
-            acessoAtual =
-                acesso;
-
-
-            mensagem.innerHTML = `
-
-                <h2>
-                    ACESSO AUTORIZADO
-                </h2>
-
-                <p>
-                    Sistema:
-                    ${acesso.recurso}
-                </p>
-
-                <p>
-                    Dificuldade:
-                    ${acesso.dificuldade}
-                </p>
-
-            `;
-
-
-            if(!jogoAtivo){
-
-                mostrarInicioJogo();
-
-            }
-
-        }
-    );
-
-}
-
-
-
-/* ==========================================
-   TELA INICIAL DO JOGO
-========================================== */
-
-function mostrarInicioJogo(){
-
-    const area =
-        document
-        .getElementById(
-            "areaJogo"
+        console.error(
+            error
         );
 
 
-    area.innerHTML = `
+        alert(
+            "Erro ao revogar acesso:\n" +
+            error.message
+        );
 
-        <div class="game-box">
-
-            <h2>
-                TERMINAL DE INVASÃO
-            </h2>
-
-            <p>
-                Um protocolo de segurança
-                foi detectado.
-            </p>
-
-            <p>
-                Você possui
-                <strong>
-                    ${acessoAtual.tempo} segundos
-                </strong>
-                para concluir a invasão.
-            </p>
-
-            <p>
-                O sistema selecionará
-                automaticamente um protocolo
-                de invasão.
-            </p>
-
-
-            <button
-                onclick="iniciarJogo()"
-            >
-                INICIAR INVASÃO
-            </button>
-
-        </div>
-
-    `;
+    }
 
 }
 
 
 
-/* ==========================================
-   INICIAR JOGO
-========================================== */
+/* =========================================================
+   INICIAR INVASÃO
+========================================================= */
 
-function iniciarJogo(){
+function iniciarInvasao(){
 
     if(
         !acessoAtual ||
@@ -5097,6 +2403,53 @@ function iniciarJogo(){
 
     jogoAtivo = true;
 
+    indiceJogo = 0;
+
+
+    const quantidade =
+        obterQuantidadeJogos();
+
+
+    const todosJogos = [
+
+        "codigo",
+
+        "memoria",
+
+        "terminal",
+
+        "firewall"
+
+    ];
+
+
+    sequenciaJogos =
+        embaralhar(
+            todosJogos
+        )
+        .slice(
+            0,
+            quantidade
+        );
+
+
+    document
+        .getElementById("acessoLiberado")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("minigame")
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById("resultado")
+        .style.display =
+        "none";
+
 
     tempoRestante =
         Number(
@@ -5104,27 +2457,74 @@ function iniciarJogo(){
         );
 
 
-    const jogos = [
+    iniciarCronometro();
 
-        "codigo",
 
-        "memoria",
+    iniciarProximoMinigame();
 
-        "terminal"
+}
 
-    ];
+
+
+/* =========================================================
+   QUANTIDADE DE MINIGAMES
+========================================================= */
+
+function obterQuantidadeJogos(){
+
+    switch(
+        acessoAtual.dificuldade
+    ){
+
+        case "Fácil":
+            return 1;
+
+        case "Normal":
+            return 2;
+
+        case "Difícil":
+            return 3;
+
+        case "Extremo":
+            return 4;
+
+        default:
+            return 1;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   PRÓXIMO MINIGAME
+========================================================= */
+
+function iniciarProximoMinigame(){
+
+    if(
+        indiceJogo >=
+        sequenciaJogos.length
+    ){
+
+        finalizarInvasao(
+            true,
+            "TODOS OS PROTOCOLOS FORAM SUPERADOS."
+        );
+
+        return;
+
+    }
 
 
     jogoAtual =
-        jogos[
-            Math.floor(
-                Math.random() *
-                jogos.length
-            )
+        sequenciaJogos[
+            indiceJogo
         ];
 
 
-    iniciarCronometro();
+    atualizarProgresso();
 
 
     if(
@@ -5135,8 +2535,7 @@ function iniciarJogo(){
 
     }
 
-
-    if(
+    else if(
         jogoAtual === "memoria"
     ){
 
@@ -5144,8 +2543,7 @@ function iniciarJogo(){
 
     }
 
-
-    if(
+    else if(
         jogoAtual === "terminal"
     ){
 
@@ -5153,13 +2551,53 @@ function iniciarJogo(){
 
     }
 
+    else if(
+        jogoAtual === "firewall"
+    ){
+
+        iniciarFirewall();
+
+    }
+
 }
 
 
 
-/* ==========================================
+/* =========================================================
+   PROGRESSO
+========================================================= */
+
+function atualizarProgresso(){
+
+    const total =
+        sequenciaJogos.length;
+
+
+    document
+        .getElementById("progressoTexto")
+        .textContent =
+        (indiceJogo + 1) +
+        "/" +
+        total;
+
+
+    document
+        .getElementById("barraInterna")
+        .style.width =
+        (
+            indiceJogo /
+            total *
+            100
+        ) +
+        "%";
+
+}
+
+
+
+/* =========================================================
    CRONÔMETRO
-========================================== */
+========================================================= */
 
 function iniciarCronometro(){
 
@@ -5170,12 +2608,12 @@ function iniciarCronometro(){
 
     intervalo =
         setInterval(
-            () => {
+            function(){
 
                 tempoRestante--;
 
 
-                atualizarCronometro();
+                atualizarTimer();
 
 
                 if(
@@ -5187,9 +2625,12 @@ function iniciarCronometro(){
                     );
 
 
-                    finalizarJogo(
+                    jogoAtivo = false;
+
+
+                    finalizarInvasao(
                         false,
-                        "TEMPO ESGOTADO"
+                        "TEMPO ESGOTADO."
                     );
 
                 }
@@ -5199,34 +2640,45 @@ function iniciarCronometro(){
         );
 
 
-    atualizarCronometro();
+    atualizarTimer();
 
 }
 
 
 
-/* ==========================================
-   CRONÔMETRO VISUAL
-========================================== */
+/* =========================================================
+   TIMER
+========================================================= */
 
-function atualizarCronometro(){
+function atualizarTimer(){
 
     const timer =
-        document
-        .getElementById(
+        document.getElementById(
             "timer"
         );
 
 
     if(!timer){
+
         return;
+
     }
 
 
-    timer.innerText =
-        formatarTempo(
-            tempoRestante
+    const minutos =
+        Math.floor(
+            tempoRestante / 60
         );
+
+
+    const segundos =
+        tempoRestante % 60;
+
+
+    timer.textContent =
+        String(minutos).padStart(2,"0") +
+        ":" +
+        String(segundos).padStart(2,"0");
 
 
     timer.className =
@@ -5257,64 +2709,29 @@ function atualizarCronometro(){
 
 
 
-/* ==========================================
-   FORMATAR TEMPO
-========================================== */
-
-function formatarTempo(
-    segundos
-){
-
-    const minutos =
-        Math.floor(
-            segundos / 60
-        );
-
-
-    const segundosRestantes =
-        segundos % 60;
-
-
-    return (
-
-        String(
-            minutos
-        ).padStart(2,"0")
-
-        +
-
-        ":"
-
-        +
-
-        String(
-            segundosRestantes
-        ).padStart(2,"0")
-
-    );
-
-}
-
-
-
-/* ==========================================
-   MINIGAME 1 — CÓDIGO
-========================================== */
+/* =========================================================
+   MINIGAME — CÓDIGO
+========================================================= */
 
 function iniciarCodigo(){
 
-    const area =
-        document
-        .getElementById(
-            "areaJogo"
-        );
+    document
+        .getElementById("minigameTitulo")
+        .textContent =
+        "CRACK";
+
+
+    document
+        .getElementById("minigameSubtitulo")
+        .textContent =
+        "QUEBRE O CÓDIGO DE SEGURANÇA";
 
 
     const tamanho =
         obterTamanhoCodigo();
 
 
-    let codigo = "";
+    codigoAtual = "";
 
 
     for(
@@ -5323,7 +2740,7 @@ function iniciarCodigo(){
         i++
     ){
 
-        codigo +=
+        codigoAtual +=
             Math.floor(
                 Math.random() * 10
             );
@@ -5331,85 +2748,89 @@ function iniciarCodigo(){
     }
 
 
-    area.innerHTML = `
+    document
+        .getElementById("conteudoMinigame")
+        .innerHTML = `
 
-        <div class="terminal">
+            <div class="terminal">
 
-            <div class="terminal-top">
+                <div class="terminal-top">
 
-                <span>
-                    PROTOCOLO: CRACK
-                </span>
+                    <span>
+                        PROTOCOLO: CRACK
+                    </span>
 
-                <span
-                    id="timer"
-                    class="timer"
-                >
-                    --:--
-                </span>
+                    <span
+                        id="timer"
+                        class="timer"
+                    >
+                        --:--
+                    </span>
 
-            </div>
-
-
-            <div class="game-box">
-
-                <p>
-                    CÓDIGO DE SEGURANÇA
-                    DETECTADO.
-                </p>
-
-                <p>
-                    Digite exatamente
-                    a sequência abaixo:
-                </p>
-
-
-                <div
-                    class="codigo"
-                >
-                    ${codigo}
                 </div>
 
 
-                <input
-                    id="respostaCodigo"
-                    type="text"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    placeholder="Digite o código"
-                >
+                <div class="game-box">
+
+                    <p>
+                        CÓDIGO DE SEGURANÇA DETECTADO.
+                    </p>
+
+                    <p>
+                        Digite exatamente:
+                    </p>
 
 
-                <button
-                    onclick="
-                        verificarCodigo(
-                            '${codigo}'
-                        )
-                    "
-                >
-                    CONFIRMAR
-                </button>
+                    <div class="codigo">
+                        ${codigoAtual}
+                    </div>
+
+
+                    <input
+                        id="inputCodigo"
+                        class="input-codigo"
+                        type="text"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        placeholder="DIGITE O CÓDIGO"
+                    >
+
+
+                    <button
+                        class="btn"
+                        id="btnCodigo"
+                    >
+                        CONFIRMAR
+                    </button>
+
+                </div>
 
             </div>
 
-        </div>
-
-    `;
+        `;
 
 
     document
-        .getElementById(
-            "respostaCodigo"
-        )
+        .getElementById("btnCodigo")
+        .onclick =
+        function(){
+
+            verificarCodigo();
+
+        };
+
+
+    document
+        .getElementById("inputCodigo")
         .focus();
 
 }
 
 
 
-/* ==========================================
-   TAMANHO DO CÓDIGO
-========================================== */
+/* =========================================================
+   TAMANHO CÓDIGO
+========================================================= */
 
 function obterTamanhoCodigo(){
 
@@ -5417,20 +2838,20 @@ function obterTamanhoCodigo(){
         acessoAtual.dificuldade
     ){
 
-        case "Facil":
+        case "Fácil":
             return 4;
 
-        case "Medio":
+        case "Normal":
             return 6;
 
-        case "Dificil":
+        case "Difícil":
             return 8;
 
         case "Extremo":
             return 10;
 
         default:
-            return 6;
+            return 4;
 
     }
 
@@ -5438,854 +2859,9 @@ function obterTamanhoCodigo(){
 
 
 
-/* ==========================================
+/* =========================================================
    VERIFICAR CÓDIGO
-========================================== */
+========================================================= */
 
-function verificarCodigo(
-    codigo
-){
-
-    const resposta =
-        document
-        .getElementById(
-            "respostaCodigo"
-        )
-        .value
-        .trim();
-
-
-    if(
-        resposta === codigo
-    ){
-
-        finalizarJogo(
-            true,
-            "CÓDIGO QUEBRADO"
-        );
-
-    }
-
-    else{
-
-        finalizarJogo(
-            false,
-            "CÓDIGO INCORRETO"
-        );
-
-    }
-
-}
-
-
-
-/* ==========================================
-   MINIGAME 2 — MEMÓRIA
-========================================== */
-
-let sequenciaMemoria = [];
-
-let respostaMemoria = [];
-
-
-
-function iniciarMemoria(){
-
-    const area =
-        document
-        .getElementById(
-            "areaJogo"
-        );
-
-
-    const tamanho =
-        obterTamanhoMemoria();
-
-
-    const simbolos = [
-
-        "▲",
-
-        "●",
-
-        "■",
-
-        "◆",
-
-        "★",
-
-        "✦",
-
-        "◼",
-
-        "⬟"
-
-    ];
-
-
-    sequenciaMemoria = [];
-
-
-    for(
-        let i = 0;
-        i < tamanho;
-        i++
-    ){
-
-        sequenciaMemoria.push(
-
-            simbolos[
-                Math.floor(
-                    Math.random() *
-                    simbolos.length
-                )
-            ]
-
-        );
-
-    }
-
-
-    respostaMemoria = [];
-
-
-    area.innerHTML = `
-
-        <div class="terminal">
-
-            <div class="terminal-top">
-
-                <span>
-                    PROTOCOLO: MEMORY
-                </span>
-
-                <span
-                    id="timer"
-                    class="timer"
-                >
-                    --:--
-                </span>
-
-            </div>
-
-
-            <div class="game-box">
-
-                <p>
-                    MEMORIZE A SEQUÊNCIA.
-                </p>
-
-                <p>
-                    Ela desaparecerá em
-                    alguns segundos.
-                </p>
-
-
-                <div
-                    id="sequenciaExibida"
-                    class="sequencia"
-                >
-
-                    ${
-                        sequenciaMemoria
-                        .map(
-                            simbolo => `
-
-                                <div
-                                    class="simbolo"
-                                >
-                                    ${simbolo}
-                                </div>
-
-                            `
-                        )
-                        .join("")
-                    }
-
-                </div>
-
-
-                <div
-                    id="botoesMemoria"
-                    style="display:none;"
-                >
-
-                    <p>
-                        Repita a sequência:
-                    </p>
-
-                    <div
-                        class="opcoes"
-                        id="opcoesMemoria"
-                    ></div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    setTimeout(
-        mostrarBotoesMemoria,
-        2500
-    );
-
-}
-
-
-
-/* ==========================================
-   TAMANHO DA MEMÓRIA
-========================================== */
-
-function obterTamanhoMemoria(){
-
-    switch(
-        acessoAtual.dificuldade
-    ){
-
-        case "Facil":
-            return 3;
-
-        case "Medio":
-            return 4;
-
-        case "Dificil":
-            return 6;
-
-        case "Extremo":
-            return 8;
-
-        default:
-            return 4;
-
-    }
-
-}
-
-
-
-/* ==========================================
-   MOSTRAR BOTÕES DA MEMÓRIA
-========================================== */
-
-function mostrarBotoesMemoria(){
-
-    const exibida =
-        document
-        .getElementById(
-            "sequenciaExibida"
-        );
-
-
-    if(exibida){
-
-        exibida.innerHTML =
-            "<p>SEQUÊNCIA OCULTADA</p>";
-
-    }
-
-
-    const area =
-        document
-        .getElementById(
-            "botoesMemoria"
-        );
-
-
-    if(!area){
-        return;
-    }
-
-
-    area.style.display =
-        "block";
-
-
-    const simbolos = [
-
-        "▲",
-
-        "●",
-
-        "■",
-
-        "◆",
-
-        "★",
-
-        "✦",
-
-        "◼",
-
-        "⬟"
-
-    ];
-
-
-    const opcoes =
-        document
-        .getElementById(
-            "opcoesMemoria"
-        );
-
-
-    opcoes.innerHTML = "";
-
-
-    const misturados =
-        [...simbolos]
-        .sort(
-            () =>
-                Math.random() - .5
-        );
-
-
-    misturados.forEach(
-        simbolo => {
-
-            const botao =
-                document
-                .createElement(
-                    "button"
-                );
-
-
-            botao.className =
-                "opcao";
-
-
-            botao.innerText =
-                simbolo;
-
-
-            botao.onclick =
-                () =>
-                    selecionarMemoria(
-                        simbolo
-                    );
-
-
-            opcoes.appendChild(
-                botao
-            );
-
-        }
-    );
-
-}
-
-
-
-/* ==========================================
-   SELECIONAR MEMÓRIA
-========================================== */
-
-function selecionarMemoria(
-    simbolo
-){
-
-    respostaMemoria.push(
-        simbolo
-    );
-
-
-    const posicao =
-        respostaMemoria.length - 1;
-
-
-    if(
-        simbolo !==
-        sequenciaMemoria[posicao]
-    ){
-
-        finalizarJogo(
-            false,
-            "SEQUÊNCIA INCORRETA"
-        );
-
-        return;
-
-    }
-
-
-    if(
-        respostaMemoria.length ===
-        sequenciaMemoria.length
-    ){
-
-        finalizarJogo(
-            true,
-            "SEQUÊNCIA DECIFRADA"
-        );
-
-    }
-
-}
-
-
-
-/* ==========================================
-   MINIGAME 3 — TERMINAL
-========================================== */
-
-let respostaTerminal = "";
-
-
-
-function iniciarTerminal(){
-
-    const area =
-        document
-        .getElementById(
-            "areaJogo"
-        );
-
-
-    const tamanho =
-        obterTamanhoCodigo();
-
-
-    const caracteres = [
-
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9"
-
-    ];
-
-
-    let senha = "";
-
-
-    for(
-        let i = 0;
-        i < tamanho;
-        i++
-    ){
-
-        senha +=
-            caracteres[
-                Math.floor(
-                    Math.random() *
-                    caracteres.length
-                )
-            ];
-
-    }
-
-
-    respostaTerminal =
-        senha;
-
-
-    const quantidadeOpcoes =
-        acessoAtual.dificuldade === "Extremo"
-        ? 12
-        : acessoAtual.dificuldade === "Dificil"
-        ? 10
-        : 8;
-
-
-    let opcoes = [
-
-        senha
-
-    ];
-
-
-    while(
-        opcoes.length <
-        quantidadeOpcoes
-    ){
-
-        let falsa = "";
-
-
-        for(
-            let i = 0;
-            i < tamanho;
-            i++
-        ){
-
-            falsa +=
-                caracteres[
-                    Math.floor(
-                        Math.random() *
-                        caracteres.length
-                    )
-                ];
-
-        }
-
-
-        if(
-            !opcoes.includes(
-                falsa
-            )
-        ){
-
-            opcoes.push(
-                falsa
-            );
-
-        }
-
-    }
-
-
-    opcoes =
-        opcoes.sort(
-            () =>
-                Math.random() - .5
-        );
-
-
-    area.innerHTML = `
-
-        <div class="terminal">
-
-            <div class="terminal-top">
-
-                <span>
-                    PROTOCOLO: TERMINAL
-                </span>
-
-                <span
-                    id="timer"
-                    class="timer"
-                >
-                    --:--
-                </span>
-
-            </div>
-
-
-            <div class="game-box">
-
-                <p>
-                    TERMINAL PROTEGIDO.
-                </p>
-
-                <p>
-                    Localize a chave correta
-                    entre os códigos.
-                </p>
-
-
-                <div
-                    class="opcoes"
-                >
-
-                    ${
-                        opcoes
-                        .map(
-                            opcao => `
-
-                                <button
-                                    class="opcao"
-                                    onclick="
-                                        verificarTerminal(
-                                            '${opcao}'
-                                        )
-                                    "
-                                >
-                                    ${opcao}
-                                </button>
-
-                            `
-                        )
-                        .join("")
-                    }
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-
-
-/* ==========================================
-   VERIFICAR TERMINAL
-========================================== */
-
-function verificarTerminal(
-    resposta
-){
-
-    if(
-        resposta ===
-        respostaTerminal
-    ){
-
-        finalizarJogo(
-            true,
-            "SISTEMA INVADIDO"
-        );
-
-    }
-
-    else{
-
-        finalizarJogo(
-            false,
-            "CHAVE INCORRETA"
-        );
-
-    }
-
-}
-
-
-
-/* ==========================================
-   FINALIZAR JOGO
-========================================== */
-
-async function finalizarJogo(
-    sucesso,
-    motivo
-){
-
-    if(!jogoAtivo){
-
-        return;
-
-    }
-
-
-    jogoAtivo = false;
-
-
-    clearInterval(
-        intervalo
-    );
-
-
-    const tempoUsado =
-        Number(
-            acessoAtual.tempo
-        ) -
-        Number(
-            tempoRestante
-        );
-
-
-    const resultado =
-        sucesso
-        ? "SUCESSO"
-        : "FALHA";
-
-
-    /*
-     * REGISTRA O RESULTADO
-     */
-
-    try{
-
-        await db
-            .ref(
-                "hackerHistorico"
-            )
-            .push({
-
-                jogador:
-                    usuarioAtual,
-
-                minigame:
-                    jogoAtual,
-
-                dificuldade:
-                    acessoAtual.dificuldade,
-
-                resultado,
-
-                motivo,
-
-                tempoDisponivel:
-                    acessoAtual.tempo,
-
-                tempoUtilizado:
-                    tempoUsado,
-
-                recurso:
-                    acessoAtual.recurso,
-
-                data:
-                    Date.now()
-
-            });
-
-    }
-
-    catch(erro){
-
-        console.error(
-            erro
-        );
-
-    }
-
-
-    const area =
-        document
-        .getElementById(
-            "areaJogo"
-        );
-
-
-    if(sucesso){
-
-        area.innerHTML = `
-
-            <div
-                class="resultado sucesso"
-            >
-
-                <h2>
-                    ✓ ACESSO CONCEDIDO
-                </h2>
-
-                <p>
-                    ${motivo}
-                </p>
-
-                <p>
-                    SISTEMA DESBLOQUEADO:
-                </p>
-
-                <h3>
-                    ${acessoAtual.recurso}
-                </h3>
-
-                <p>
-                    Tempo utilizado:
-                    ${tempoUsado}s
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-    else{
-
-        area.innerHTML = `
-
-            <div
-                class="resultado falha"
-            >
-
-                <h2>
-                    ✕ ACESSO NEGADO
-                </h2>
-
-                <p>
-                    ${motivo}
-                </p>
-
-                <p>
-                    CONEXÃO ENCERRADA.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-}
-
-
-
-/* ==========================================
-   PARAR JOGO
-========================================== */
-
-function pararJogo(){
-
-    jogoAtivo = false;
-
-
-    clearInterval(
-        intervalo
-    );
-
-}
-
-
-
-/* ==========================================
-   ENTER NO LOGIN
-========================================== */
-
-document
-    .getElementById(
-        "senhaLogin"
-    )
-    .addEventListener(
-        "keydown",
-        function(event){
-
-            if(
-                event.key === "Enter"
-            ){
-
-                login();
-
-            }
-
-        }
-    );
-
-
-
-/* ==========================================
-   LOGIN AUTOMÁTICO
-========================================== */
-
-const usuarioSalvo =
-    localStorage.getItem(
-        "hacker_usuario"
-    );
-
-
-if(
-    usuarioSalvo &&
-    usuarios[usuarioSalvo]
-){
-
-    usuarioAtual =
-        usuarioSalvo;
-
-
-    abrirSistema();
-
-}
-
-</script>
-
-</body>
-
-</html>
+functi
+```
