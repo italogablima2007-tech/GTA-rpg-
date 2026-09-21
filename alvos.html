@@ -1,0 +1,2525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Missões do Lester</title>
+
+
+<style>
+
+/* ==================================================
+   CONFIGURAÇÕES GERAIS
+================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #0b0b0b;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+
+/* ==================================================
+   LOGIN
+================================================== */
+
+#telaLogin {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+}
+
+.login {
+
+    width: 100%;
+
+    max-width: 400px;
+
+    background: #161616;
+
+    padding: 35px;
+
+    border: 1px solid #333;
+
+    border-radius: 10px;
+}
+
+.login h1 {
+
+    text-align: center;
+
+    margin: 0;
+
+    letter-spacing: 3px;
+}
+
+.login p {
+
+    text-align: center;
+
+    color: #777;
+
+    margin-bottom: 30px;
+}
+
+
+/* ==================================================
+   CAMPOS
+================================================== */
+
+.campo {
+
+    margin-bottom: 15px;
+}
+
+.campo label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #aaa;
+
+    font-size: 13px;
+}
+
+input,
+textarea {
+
+    width: 100%;
+
+    padding: 13px;
+
+    background: #0d0d0d;
+
+    border: 1px solid #333;
+
+    color: white;
+
+    border-radius: 5px;
+
+    outline: none;
+}
+
+textarea {
+
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+
+/* ==================================================
+   BOTÕES
+================================================== */
+
+button {
+
+    border: none;
+
+    border-radius: 5px;
+
+    padding: 12px 18px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+#btnEntrar {
+
+    width: 100%;
+
+    background: white;
+
+    color: black;
+}
+
+#erroLogin {
+
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 10px;
+
+    background: #351313;
+
+    border: 1px solid #702222;
+
+    color: #ff7777;
+
+    border-radius: 5px;
+}
+
+
+/* ==================================================
+   SISTEMA
+================================================== */
+
+#sistema {
+
+    display: none;
+}
+
+header {
+
+    min-height: 70px;
+
+    background: #111;
+
+    border-bottom: 1px solid #292929;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 15px 25px;
+
+    gap: 15px;
+}
+
+.logo {
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.usuario {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.admin {
+
+    background: white;
+
+    color: black;
+
+    padding: 5px 8px;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+}
+
+#btnSair {
+
+    background: #333;
+
+    color: white;
+}
+
+.conteudo {
+
+    max-width: 1100px;
+
+    margin: auto;
+
+    padding: 30px 20px;
+}
+
+
+/* ==================================================
+   CAIXAS
+================================================== */
+
+.box {
+
+    background: #151515;
+
+    border: 1px solid #303030;
+
+    border-radius: 8px;
+
+    padding: 25px;
+
+    margin-bottom: 25px;
+}
+
+.box h2 {
+
+    margin-top: 0;
+}
+
+
+/* ==================================================
+   PAINEL ADMIN
+================================================== */
+
+#painelAdmin {
+
+    display: none;
+}
+
+.grid {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+}
+
+.full {
+
+    grid-column: 1 / -1;
+}
+
+#btnSalvar {
+
+    background: white;
+
+    color: black;
+
+    margin-top: 15px;
+}
+
+#btnCancelar {
+
+    display: none;
+
+    background: #333;
+
+    color: white;
+
+    margin-left: 5px;
+}
+
+
+/* ==================================================
+   LISTA ADMIN
+================================================== */
+
+.lista-admin {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.item-admin {
+
+    background: #101010;
+
+    border: 1px solid #292929;
+
+    padding: 15px;
+
+    border-radius: 6px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.item-admin small {
+
+    color: #777;
+}
+
+.acoes {
+
+    display: flex;
+
+    gap: 5px;
+}
+
+.acoes button {
+
+    background: #333;
+
+    color: white;
+}
+
+
+/* ==================================================
+   PAINEL PLAYER
+================================================== */
+
+#painelPlayer {
+
+    display: none;
+}
+
+.alvos {
+
+    display: grid;
+
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(270px, 1fr)
+    );
+
+    gap: 20px;
+}
+
+
+/* ==================================================
+   CARTÃO DO ALVO
+================================================== */
+
+.alvo {
+
+    background: #151515;
+
+    border: 1px solid #303030;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+
+/* ==================================================
+   IMAGEM DO ALVO
+   ALTERE object-position PARA AJUSTAR O ROSTO
+================================================== */
+
+.alvo img {
+
+    width: 100%;
+
+    height: 180px;
+
+    object-fit: cover;
+
+    /*
+       25% mostra mais a parte superior
+       da imagem e ajuda a não cortar o rosto.
+    */
+
+    object-position: center 25%;
+}
+
+
+/* ==================================================
+   CONTEÚDO DO ALVO
+================================================== */
+
+.alvo-conteudo {
+
+    padding: 18px;
+}
+
+.alvo-conteudo h3 {
+
+    margin-top: 0;
+}
+
+.alvo-conteudo p {
+
+    color: #999;
+}
+
+.recompensa {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin: 15px 0;
+}
+
+.btnContrato {
+
+    width: 100%;
+
+    background: white;
+
+    color: black;
+}
+
+
+/* ==================================================
+   AVISO VAZIO
+================================================== */
+
+.vazio {
+
+    padding: 40px;
+
+    border: 1px dashed #333;
+
+    text-align: center;
+
+    color: #777;
+}
+
+
+/* ==================================================
+   MODAL DO CONTRATO
+================================================== */
+
+#modal {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.8);
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+}
+
+.modal {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #151515;
+
+    border: 1px solid #333;
+
+    border-radius: 8px;
+
+    padding: 25px;
+}
+
+.modal-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.fechar {
+
+    background: none;
+
+    color: white;
+
+    font-size: 25px;
+
+    padding: 5px 10px;
+}
+
+
+/* ==================================================
+   OPÇÕES DE REVELAÇÃO
+================================================== */
+
+.opcao {
+
+    background: #101010;
+
+    border: 1px solid #333;
+
+    padding: 15px;
+
+    margin: 10px 0;
+
+    border-radius: 6px;
+}
+
+.opcao label {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+.opcao p {
+
+    color: #aaa;
+
+    line-height: 1.5;
+}
+
+#revelacoes {
+
+    color: #aaa;
+}
+
+
+/* ==================================================
+   RECOMPENSA DO CONTRATO
+================================================== */
+
+.valor {
+
+    text-align: center;
+
+    background: #222;
+
+    padding: 15px;
+
+    margin: 20px 0;
+}
+
+.valor strong {
+
+    display: block;
+
+    font-size: 28px;
+}
+
+#btnAceitar {
+
+    width: 100%;
+
+    background: white;
+
+    color: black;
+}
+
+
+/* ==================================================
+   RESPONSIVIDADE
+================================================== */
+
+@media(max-width:700px) {
+
+    .grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+
+        grid-column: auto;
+    }
+
+    .item-admin {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .usuario {
+
+        width: 100%;
+
+        flex-wrap: wrap;
+    }
+
+}
+
+
+/* ==================================================
+   FIM DO CSS
+================================================== */
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     TELA DE LOGIN
+================================================== -->
+
+<div id="telaLogin">
+
+    <div class="login">
+
+        <h1>LESTER</h1>
+
+        <p>
+            MISSÕES // ACESSO
+        </p>
+
+
+        <div class="campo">
+
+            <label>
+                USUÁRIO
+            </label>
+
+            <input
+                type="text"
+                id="usuario"
+                placeholder="Digite seu usuário"
+                autocomplete="username"
+            >
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                SENHA
+            </label>
+
+            <input
+                type="password"
+                id="senha"
+                placeholder="Digite sua senha"
+                autocomplete="current-password"
+            >
+
+        </div>
+
+
+        <button
+            id="btnEntrar"
+            onclick="entrar()"
+        >
+            ENTRAR
+        </button>
+
+
+        <div id="erroLogin"></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     SISTEMA
+================================================== -->
+
+<div id="sistema">
+
+
+    <!-- ==================================================
+         CABEÇALHO
+    ================================================== -->
+
+    <header>
+
+        <div class="logo">
+            LESTER // MISSÕES
+        </div>
+
+
+        <div class="usuario">
+
+            <span
+                id="badgeAdmin"
+                class="admin"
+                style="display:none;"
+            >
+                ADMIN
+            </span>
+
+
+            <span id="nomeUsuario">
+                Usuário
+            </span>
+
+
+            <button
+                id="btnSair"
+                onclick="sair()"
+            >
+                SAIR
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <div class="conteudo">
+
+
+        <!-- ==================================================
+             PAINEL ADMIN
+        ================================================== -->
+
+        <div id="painelAdmin">
+
+
+            <div class="box">
+
+                <h2>
+                    Painel Administrativo
+                </h2>
+
+                <p style="color:#777;">
+                    Aqui você cria e administra os contratos.
+                </p>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 FORMULÁRIO DO ALVO
+            ================================================== -->
+
+            <div class="box">
+
+                <h2 id="tituloFormulario">
+                    Novo Alvo
+                </h2>
+
+
+                <div class="grid">
+
+
+                    <div class="campo">
+
+                        <label>
+                            NOME DO ALVO
+                        </label>
+
+                        <input
+                            id="alvoNome"
+                            placeholder="Ex.: Hercules Mendes"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            RECOMPENSA
+                        </label>
+
+                        <input
+                            id="alvoRecompensa"
+                            type="number"
+                            placeholder="50000"
+                        >
+
+                    </div>
+
+
+                    <div class="campo full">
+
+                        <label>
+                            DESCRIÇÃO
+                        </label>
+
+                        <textarea
+                            id="alvoDescricao"
+                            placeholder="Descrição da missão..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="campo full">
+
+                        <label>
+                            URL DA FOTO
+                        </label>
+
+                        <input
+                            id="alvoFoto"
+                            placeholder="https://..."
+                        >
+
+                    </div>
+
+
+                    <div class="campo full">
+
+                        <label>
+                            INFORMAÇÃO IMPORTANTE
+                        </label>
+
+                        <textarea
+                            id="alvoInfo"
+                            placeholder="Informação que pode ser revelada..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            LOCALIZAÇÃO 1
+                        </label>
+
+                        <input id="local1">
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            LOCALIZAÇÃO 2
+                        </label>
+
+                        <input id="local2">
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            LOCALIZAÇÃO 3
+                        </label>
+
+                        <input id="local3">
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    id="btnSalvar"
+                    onclick="salvarAlvo()"
+                >
+                    SALVAR ALVO
+                </button>
+
+
+                <button
+                    id="btnCancelar"
+                    onclick="cancelarEdicao()"
+                >
+                    CANCELAR
+                </button>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 LISTA DE ALVOS DO ADMIN
+            ================================================== -->
+
+            <div class="box">
+
+                <h2>
+                    Alvos cadastrados
+                </h2>
+
+                <div
+                    id="listaAdmin"
+                    class="lista-admin"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==================================================
+             PAINEL PLAYER
+        ================================================== -->
+
+        <div id="painelPlayer">
+
+
+            <div class="box">
+
+                <h2>
+                    Contratos disponíveis
+                </h2>
+
+                <p style="color:#777;">
+                    Escolha um alvo para receber o contrato.
+                </p>
+
+            </div>
+
+
+            <div
+                id="listaPlayer"
+                class="alvos"
+            ></div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     MODAL DO CONTRATO
+================================================== -->
+
+<div id="modal">
+
+    <div class="modal">
+
+
+        <div class="modal-top">
+
+            <h2 id="modalNome">
+                Contrato
+            </h2>
+
+
+            <button
+                class="fechar"
+                onclick="fecharModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <p
+            id="modalDescricao"
+            style="color:#999;"
+        ></p>
+
+
+        <!-- ==================================================
+             REVELAR INFORMAÇÃO
+        ================================================== -->
+
+        <div class="opcao">
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    id="checkInfo"
+                    onchange="calcular()"
+                >
+
+
+                <span>
+
+                    <strong>
+                        Revelar informação importante
+                    </strong>
+
+                    <br>
+
+                    <small style="color:#777;">
+                        -25% da recompensa
+                    </small>
+
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <!-- ==================================================
+             REVELAR LOCALIZAÇÕES
+        ================================================== -->
+
+        <div class="opcao">
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    id="checkLocal"
+                    onchange="calcular()"
+                >
+
+
+                <span>
+
+                    <strong>
+                        Revelar localizações
+                    </strong>
+
+                    <br>
+
+                    <small style="color:#777;">
+                        -25% da recompensa
+                    </small>
+
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <div id="revelacoes"></div>
+
+
+        <!-- ==================================================
+             VALOR
+        ================================================== -->
+
+        <div class="valor">
+
+            <small>
+                RECOMPENSA
+            </small>
+
+            <strong id="valor">
+                $0
+            </strong>
+
+        </div>
+
+
+        <button
+            id="btnAceitar"
+            onclick="aceitar()"
+        >
+            ACEITAR CONTRATO
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* ==================================================
+   USUÁRIOS
+================================================== */
+
+const usuarios = {
+
+    kaius: {
+
+        nome: "Kaius",
+
+        senha: "28/09",
+
+        tipo: "player"
+
+    },
+
+
+    gaby: {
+
+        nome: "Gaby",
+
+        senha: "22/09",
+
+        tipo: "player"
+
+    },
+
+
+    duda: {
+
+        nome: "Duda",
+
+        senha: "13/09",
+
+        tipo: "player"
+
+    },
+
+
+    italo: {
+
+        nome: "Italo",
+
+        senha: "1822",
+
+        tipo: "admin"
+
+    }
+
+};
+
+
+
+/* ==================================================
+   VARIÁVEIS DO SISTEMA
+================================================== */
+
+let usuarioAtual = null;
+
+let alvoAtual = null;
+
+let alvos = [];
+
+let editando = null;
+
+
+
+/* ==================================================
+   LOGIN
+================================================== */
+
+function entrar() {
+
+
+    const usuario =
+        document
+        .getElementById("usuario")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const senha =
+        document
+        .getElementById("senha")
+        .value
+        .trim();
+
+
+    const erro =
+        document.getElementById("erroLogin");
+
+
+    erro.style.display = "none";
+
+
+    if (!usuario || !senha) {
+
+        erro.innerText =
+            "Digite o usuário e a senha.";
+
+        erro.style.display = "block";
+
+        return;
+    }
+
+
+    const conta =
+        usuarios[usuario];
+
+
+    if (!conta) {
+
+        erro.innerText =
+            "Usuário não encontrado.";
+
+        erro.style.display = "block";
+
+        return;
+    }
+
+
+    if (conta.senha !== senha) {
+
+        erro.innerText =
+            "Senha incorreta.";
+
+        erro.style.display = "block";
+
+        return;
+    }
+
+
+    usuarioAtual = conta;
+
+
+    localStorage.setItem(
+        "lester_usuario",
+        usuario
+    );
+
+
+    mostrarSistema();
+
+}
+
+
+
+/* ==================================================
+   MOSTRAR SISTEMA
+================================================== */
+
+function mostrarSistema() {
+
+
+    if (!usuarioAtual) {
+
+        return;
+
+    }
+
+
+    document
+        .getElementById("telaLogin")
+        .style.display = "none";
+
+
+    document
+        .getElementById("sistema")
+        .style.display = "block";
+
+
+    document
+        .getElementById("nomeUsuario")
+        .innerText =
+            usuarioAtual.nome;
+
+
+
+    /* ==================================================
+       ADMIN
+    ================================================== */
+
+    if (usuarioAtual.tipo === "admin") {
+
+
+        document
+            .getElementById("badgeAdmin")
+            .style.display =
+                "inline-block";
+
+
+        document
+            .getElementById("painelAdmin")
+            .style.display =
+                "block";
+
+
+        document
+            .getElementById("painelPlayer")
+            .style.display =
+                "none";
+
+    }
+
+
+    /* ==================================================
+       PLAYER
+    ================================================== */
+
+    else {
+
+
+        document
+            .getElementById("badgeAdmin")
+            .style.display =
+                "none";
+
+
+        document
+            .getElementById("painelAdmin")
+            .style.display =
+                "none";
+
+
+        document
+            .getElementById("painelPlayer")
+            .style.display =
+                "block";
+
+    }
+
+
+    carregarAlvos();
+
+}
+
+
+
+/* ==================================================
+   SAIR
+================================================== */
+
+function sair() {
+
+
+    localStorage.removeItem(
+        "lester_usuario"
+    );
+
+
+    usuarioAtual = null;
+
+
+    location.reload();
+
+}
+
+
+
+/* ==================================================
+   CARREGAR ALVOS
+================================================== */
+
+function carregarAlvos() {
+
+
+    const dados =
+        localStorage.getItem(
+            "lester_alvos"
+        );
+
+
+    if (dados) {
+
+
+        try {
+
+            alvos = JSON.parse(dados);
+
+        }
+
+
+        catch (erro) {
+
+            alvos = [];
+
+        }
+
+    }
+
+
+    else {
+
+        alvos = [];
+
+    }
+
+
+    if (usuarioAtual.tipo === "admin") {
+
+        renderizarAdmin();
+
+    }
+
+
+    else {
+
+        renderizarPlayer();
+
+    }
+
+}
+
+
+
+/* ==================================================
+   SALVAR DADOS
+================================================== */
+
+function salvarDados() {
+
+
+    localStorage.setItem(
+        "lester_alvos",
+        JSON.stringify(alvos)
+    );
+
+}
+
+
+
+/* ==================================================
+   CRIAR / SALVAR ALVO
+================================================== */
+
+function salvarAlvo() {
+
+
+    const nome =
+        document
+        .getElementById("alvoNome")
+        .value
+        .trim();
+
+
+    const recompensa =
+        Number(
+            document
+            .getElementById("alvoRecompensa")
+            .value
+        );
+
+
+    const descricao =
+        document
+        .getElementById("alvoDescricao")
+        .value
+        .trim();
+
+
+    const foto =
+        document
+        .getElementById("alvoFoto")
+        .value
+        .trim();
+
+
+    const info =
+        document
+        .getElementById("alvoInfo")
+        .value
+        .trim();
+
+
+    const locais = [
+
+        document
+        .getElementById("local1")
+        .value
+        .trim(),
+
+
+        document
+        .getElementById("local2")
+        .value
+        .trim(),
+
+
+        document
+        .getElementById("local3")
+        .value
+        .trim()
+
+    ].filter(Boolean);
+
+
+
+    if (!nome) {
+
+        alert(
+            "Digite o nome do alvo."
+        );
+
+        return;
+
+    }
+
+
+    if (!recompensa || recompensa <= 0) {
+
+        alert(
+            "Digite uma recompensa válida."
+        );
+
+        return;
+
+    }
+
+
+
+    /* ==================================================
+       EDITAR ALVO EXISTENTE
+    ================================================== */
+
+    if (editando !== null) {
+
+
+        const index =
+            alvos.findIndex(
+                alvo =>
+                    alvo.id === editando
+            );
+
+
+        if (index !== -1) {
+
+
+            alvos[index] = {
+
+                id: editando,
+
+                nome: nome,
+
+                recompensa: recompensa,
+
+                descricao: descricao,
+
+                foto: foto,
+
+                info: info,
+
+                locais: locais,
+
+                ativo:
+                    alvos[index].ativo
+
+            };
+
+        }
+
+    }
+
+
+
+    /* ==================================================
+       CRIAR NOVO ALVO
+    ================================================== */
+
+    else {
+
+
+        const novoAlvo = {
+
+            id: Date.now(),
+
+            nome: nome,
+
+            recompensa: recompensa,
+
+            descricao: descricao,
+
+            foto: foto,
+
+            info: info,
+
+            locais: locais,
+
+            ativo: true
+
+        };
+
+
+        alvos.push(novoAlvo);
+
+    }
+
+
+
+    salvarDados();
+
+    limparFormulario();
+
+    renderizarAdmin();
+
+    alert("Alvo salvo com sucesso!");
+
+}
+
+
+
+/* ==================================================
+   MOSTRAR ALVOS PARA O ADMIN
+================================================== */
+
+function renderizarAdmin() {
+
+
+    const lista =
+        document.getElementById(
+            "listaAdmin"
+        );
+
+
+    if (!alvos.length) {
+
+
+        lista.innerHTML = `
+
+            <div class="vazio">
+
+                Nenhum alvo cadastrado.
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+    lista.innerHTML =
+
+        alvos.map(alvo => `
+
+            <div class="item-admin">
+
+                <div>
+
+                    <strong>
+                        ${escaparHTML(alvo.nome)}
+                    </strong>
+
+                    <br>
+
+                    <small>
+
+                        $${Number(
+                            alvo.recompensa
+                        ).toLocaleString("pt-BR")}
+
+                        |
+
+                        ${
+                            alvo.ativo
+                            ? "ATIVO"
+                            : "INATIVO"
+                        }
+
+                    </small>
+
+                </div>
+
+
+                <div class="acoes">
+
+                    <button
+                        onclick="editar(${alvo.id})"
+                    >
+                        EDITAR
+                    </button>
+
+
+                    <button
+                        onclick="alternar(${alvo.id})"
+                    >
+
+                        ${
+                            alvo.ativo
+                            ? "DESATIVAR"
+                            : "ATIVAR"
+                        }
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+
+/* ==================================================
+   EDITAR ALVO
+================================================== */
+
+function editar(id) {
+
+
+    const alvo =
+        alvos.find(
+            alvo =>
+                alvo.id === id
+        );
+
+
+    if (!alvo) {
+
+        return;
+
+    }
+
+
+    editando = id;
+
+
+    document
+        .getElementById(
+            "tituloFormulario"
+        )
+        .innerText =
+            "Editar Alvo";
+
+
+    document
+        .getElementById("alvoNome")
+        .value =
+            alvo.nome;
+
+
+    document
+        .getElementById("alvoRecompensa")
+        .value =
+            alvo.recompensa;
+
+
+    document
+        .getElementById("alvoDescricao")
+        .value =
+            alvo.descricao || "";
+
+
+    document
+        .getElementById("alvoFoto")
+        .value =
+            alvo.foto || "";
+
+
+    document
+        .getElementById("alvoInfo")
+        .value =
+            alvo.info || "";
+
+
+    document
+        .getElementById("local1")
+        .value =
+            alvo.locais?.[0] || "";
+
+
+    document
+        .getElementById("local2")
+        .value =
+            alvo.locais?.[1] || "";
+
+
+    document
+        .getElementById("local3")
+        .value =
+            alvo.locais?.[2] || "";
+
+
+    document
+        .getElementById("btnCancelar")
+        .style.display =
+            "inline-block";
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+
+/* ==================================================
+   CANCELAR EDIÇÃO
+================================================== */
+
+function cancelarEdicao() {
+
+    limparFormulario();
+
+}
+
+
+
+/* ==================================================
+   LIMPAR FORMULÁRIO
+================================================== */
+
+function limparFormulario() {
+
+
+    editando = null;
+
+
+    document
+        .getElementById(
+            "tituloFormulario"
+        )
+        .innerText =
+            "Novo Alvo";
+
+
+    document
+        .getElementById("alvoNome")
+        .value = "";
+
+
+    document
+        .getElementById("alvoRecompensa")
+        .value = "";
+
+
+    document
+        .getElementById("alvoDescricao")
+        .value = "";
+
+
+    document
+        .getElementById("alvoFoto")
+        .value = "";
+
+
+    document
+        .getElementById("alvoInfo")
+        .value = "";
+
+
+    document
+        .getElementById("local1")
+        .value = "";
+
+
+    document
+        .getElementById("local2")
+        .value = "";
+
+
+    document
+        .getElementById("local3")
+        .value = "";
+
+
+    document
+        .getElementById("btnCancelar")
+        .style.display =
+            "none";
+
+}
+
+
+
+/* ==================================================
+   ATIVAR / DESATIVAR ALVO
+================================================== */
+
+function alternar(id) {
+
+
+    const alvo =
+        alvos.find(
+            alvo =>
+                alvo.id === id
+        );
+
+
+    if (!alvo) {
+
+        return;
+
+    }
+
+
+    alvo.ativo =
+        !alvo.ativo;
+
+
+    salvarDados();
+
+    renderizarAdmin();
+
+}
+
+
+
+/* ==================================================
+   MOSTRAR ALVOS PARA O PLAYER
+================================================== */
+
+function renderizarPlayer() {
+
+
+    const lista =
+        document.getElementById(
+            "listaPlayer"
+        );
+
+
+    const ativos =
+        alvos.filter(
+            alvo =>
+                alvo.ativo
+        );
+
+
+    if (!ativos.length) {
+
+
+        lista.innerHTML = `
+
+            <div class="vazio">
+
+                Nenhum contrato disponível.
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+    lista.innerHTML =
+
+        ativos.map(alvo => `
+
+            <div class="alvo">
+
+
+                ${
+                    alvo.foto
+
+                    ?
+
+                    `
+
+                    <img
+                        src="${escaparAtributo(alvo.foto)}"
+                        alt="${escaparAtributo(alvo.nome)}"
+                        onerror="this.style.display='none'"
+                    >
+
+                    `
+
+                    :
+
+                    ""
+
+                }
+
+
+                <div class="alvo-conteudo">
+
+
+                    <h3>
+
+                        ${escaparHTML(alvo.nome)}
+
+                    </h3>
+
+
+                    <p>
+
+                        ${
+                            escaparHTML(
+                                alvo.descricao || ""
+                            )
+                        }
+
+                    </p>
+
+
+                    <div class="recompensa">
+
+                        $
+
+                        ${Number(
+                            alvo.recompensa
+                        ).toLocaleString("pt-BR")}
+
+                    </div>
+
+
+                    <button
+                        class="btnContrato"
+                        onclick="abrirContrato(${alvo.id})"
+                    >
+
+                        VER CONTRATO
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+
+/* ==================================================
+   ABRIR CONTRATO
+================================================== */
+
+function abrirContrato(id) {
+
+
+    alvoAtual =
+        alvos.find(
+            alvo =>
+                alvo.id === id
+        );
+
+
+    if (!alvoAtual) {
+
+        return;
+
+    }
+
+
+    document
+        .getElementById("modalNome")
+        .innerText =
+            alvoAtual.nome;
+
+
+    document
+        .getElementById("modalDescricao")
+        .innerText =
+            alvoAtual.descricao ||
+            "Contrato confidencial.";
+
+
+    document
+        .getElementById("checkInfo")
+        .checked = false;
+
+
+    document
+        .getElementById("checkLocal")
+        .checked = false;
+
+
+    calcular();
+
+
+    document
+        .getElementById("modal")
+        .style.display =
+            "flex";
+
+}
+
+
+
+/* ==================================================
+   CALCULAR RECOMPENSA
+================================================== */
+
+function calcular() {
+
+
+    if (!alvoAtual) {
+
+        return;
+
+    }
+
+
+    let multiplicador = 1;
+
+
+    const info =
+        document
+        .getElementById("checkInfo")
+        .checked;
+
+
+    const local =
+        document
+        .getElementById("checkLocal")
+        .checked;
+
+
+    if (info) {
+
+        multiplicador -= 0.25;
+
+    }
+
+
+    if (local) {
+
+        multiplicador -= 0.25;
+
+    }
+
+
+    const recompensa =
+        Math.floor(
+            alvoAtual.recompensa *
+            multiplicador
+        );
+
+
+    document
+        .getElementById("valor")
+        .innerText =
+            "$" +
+            recompensa.toLocaleString(
+                "pt-BR"
+            );
+
+
+    mostrarRevelacoes();
+
+}
+
+
+
+/* ==================================================
+   MOSTRAR INFORMAÇÕES REVELADAS
+================================================== */
+
+function mostrarRevelacoes() {
+
+
+    let html = "";
+
+
+    const mostrarInfo =
+        document
+        .getElementById("checkInfo")
+        .checked;
+
+
+    const mostrarLocal =
+        document
+        .getElementById("checkLocal")
+        .checked;
+
+
+
+    if (mostrarInfo) {
+
+
+        html += `
+
+            <div class="opcao">
+
+                <strong>
+                    Informação importante
+                </strong>
+
+                <p>
+
+                    ${
+                        escaparHTML(
+                            alvoAtual.info ||
+                            "Nenhuma informação cadastrada."
+                        )
+                    }
+
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    if (mostrarLocal) {
+
+
+        const locais =
+            alvoAtual.locais || [];
+
+
+        html += `
+
+            <div class="opcao">
+
+                <strong>
+                    Possíveis localizações
+                </strong>
+
+                <p>
+
+                    ${
+                        locais.length
+
+                        ?
+
+                        locais
+                            .map(
+                                (local, index) =>
+                                    `${index + 1}. ${escaparHTML(local)}`
+                            )
+                            .join("<br>")
+
+                        :
+
+                        "Nenhuma localização cadastrada."
+
+                    }
+
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    document
+        .getElementById("revelacoes")
+        .innerHTML =
+            html;
+
+}
+
+
+
+/* ==================================================
+   ACEITAR CONTRATO
+================================================== */
+
+function aceitar() {
+
+
+    if (!alvoAtual) {
+
+        return;
+
+    }
+
+
+    const info =
+        document
+        .getElementById("checkInfo")
+        .checked;
+
+
+    const local =
+        document
+        .getElementById("checkLocal")
+        .checked;
+
+
+    let multiplicador = 1;
+
+
+    if (info) {
+
+        multiplicador -= 0.25;
+
+    }
+
+
+    if (local) {
+
+        multiplicador -= 0.25;
+
+    }
+
+
+    const recompensa =
+        Math.floor(
+            alvoAtual.recompensa *
+            multiplicador
+        );
+
+
+    alert(
+
+        "CONTRATO ACEITO!\n\n" +
+
+        "Alvo: " +
+        alvoAtual.nome +
+
+        "\nRecompensa: $" +
+
+        recompensa.toLocaleString(
+            "pt-BR"
+        )
+
+    );
+
+
+    fecharModal();
+
+}
+
+
+
+/* ==================================================
+   FECHAR MODAL
+================================================== */
+
+function fecharModal() {
+
+
+    document
+        .getElementById("modal")
+        .style.display =
+            "none";
+
+
+    alvoAtual = null;
+
+}
+
+
+
+/* ==================================================
+   PROTEÇÃO DO TEXTO
+================================================== */
+
+function escaparHTML(texto) {
+
+
+    const div =
+        document.createElement("div");
+
+
+    div.innerText =
+        texto;
+
+
+    return div.innerHTML;
+
+}
+
+
+function escaparAtributo(texto) {
+
+
+    return String(texto)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;");
+
+}
+
+
+
+/* ==================================================
+   LOGIN AUTOMÁTICO
+================================================== */
+
+window.onload = function() {
+
+
+    const salvo =
+        localStorage.getItem(
+            "lester_usuario"
+        );
+
+
+    if (
+        salvo &&
+        usuarios[salvo]
+    ) {
+
+
+        usuarioAtual =
+            usuarios[salvo];
+
+
+        mostrarSistema();
+
+    }
+
+
+    /* ==================================================
+       ENTER NO LOGIN
+    ================================================== */
+
+    document
+        .getElementById("senha")
+        .addEventListener(
+            "keydown",
+            function(event) {
+
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    entrar();
+
+                }
+
+            }
+        );
+
+
+    document
+        .getElementById("usuario")
+        .addEventListener(
+            "keydown",
+            function(event) {
+
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    entrar();
+
+                }
+
+            }
+        );
+
+};
+
+
+
+/* ==================================================
+   FECHAR MODAL CLICANDO FORA
+================================================== */
+
+document
+    .getElementById("modal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+
+            if (
+                event.target ===
+                document.getElementById("modal")
+            ) {
+
+                fecharModal();
+
+            }
+
+        }
+    );
+
+
+</script>
+
+</body>
+
+</html>
