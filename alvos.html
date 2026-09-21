@@ -9,13 +9,8 @@
 
 <title>Alvos</title>
 
-<!-- =========================================================
-     FIREBASE
-========================================================= -->
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
 
 <style>
 
@@ -31,114 +26,52 @@ body{
 
     margin:0;
 
-    font-family:Arial, Helvetica, sans-serif;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #222 0%,
-            #101010 45%,
-            #050505 100%
-        );
+    background:#0b0b0b;
 
     color:white;
 
-    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
 
 }
 
-
-/* =========================================================
-   CONTAINER
-========================================================= */
-
-.container{
-
-    width:95%;
-
-    max-width:1200px;
-
-    margin:auto;
-
-    padding:30px 0 60px;
-
-}
-
-
-/* =========================================================
-   TÍTULO
-========================================================= */
-
-.titulo{
-
-    text-align:center;
-
-    margin-bottom:30px;
-
-}
-
-.titulo h1{
-
-    margin:0;
-
-    font-size:42px;
-
-    letter-spacing:3px;
-
-    text-transform:uppercase;
-
-}
-
-.titulo p{
-
-    color:#aaa;
-
-    margin-top:8px;
-
-}
-
-
-/* =========================================================
-   CAMPOS
-========================================================= */
-
+button,
 input,
 textarea,
 select{
 
-    width:100%;
+    font-family:inherit;
 
-    padding:12px;
+}
 
-    margin-top:7px;
+button{
 
-    margin-bottom:15px;
-
-    border:none;
-
-    border-radius:6px;
-
-    background:#202020;
+    background:#333;
 
     color:white;
 
-    font-size:15px;
+    border:none;
 
-}
+    padding:12px 18px;
 
-textarea{
+    border-radius:6px;
 
-    min-height:100px;
-
-    resize:vertical;
-
-}
-
-label{
+    cursor:pointer;
 
     font-weight:bold;
 
-    font-size:14px;
+}
+
+button:hover{
+
+    background:#555;
+
+}
+
+button:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
 
 }
 
@@ -147,79 +80,39 @@ label{
    BOTÕES
 ========================================================= */
 
-button{
-
-    border:none;
-
-    border-radius:6px;
-
-    padding:12px 18px;
-
-    background:#333;
-
-    color:white;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-button:hover{
-
-    background:#555;
-
-    transform:translateY(-1px);
-
-}
-
-.btn-principal{
-
-    background:#b00000;
-
-}
-
-.btn-principal:hover{
-
-    background:#d00000;
-
-}
-
 .btn-verde{
 
-    background:#126b25;
+    background:#14752b;
 
 }
 
 .btn-verde:hover{
 
-    background:#178c31;
+    background:#199438;
+
+}
+
+.btn-vermelho{
+
+    background:#a00000;
+
+}
+
+.btn-vermelho:hover{
+
+    background:#d00000;
 
 }
 
 .btn-amarelo{
 
-    background:#8a6500;
+    background:#866300;
 
 }
 
 .btn-amarelo:hover{
 
-    background:#b38400;
-
-}
-
-.btn-perigo{
-
-    background:#650000;
-
-}
-
-.btn-perigo:hover{
-
-    background:#900000;
+    background:#a87e00;
 
 }
 
@@ -234,33 +127,31 @@ button:hover{
 
     display:flex;
 
-    justify-content:center;
-
     align-items:center;
+
+    justify-content:center;
 
     padding:20px;
 
 }
 
-.login-box{
+.login{
 
     width:100%;
 
-    max-width:420px;
+    max-width:400px;
 
-    background:#151515;
-
-    border:1px solid #333;
-
-    border-radius:10px;
+    background:#181818;
 
     padding:30px;
 
-    box-shadow:0 10px 40px rgba(0,0,0,.6);
+    border-radius:10px;
+
+    border:1px solid #333;
 
 }
 
-.login-box h1{
+.login h1{
 
     text-align:center;
 
@@ -268,21 +159,45 @@ button:hover{
 
 }
 
-.login-erro{
 
-    color:#ff4444;
+/* =========================================================
+   CAMPOS
+========================================================= */
 
-    text-align:center;
+input,
+textarea{
+
+    width:100%;
+
+    background:#222;
+
+    color:white;
+
+    border:1px solid #444;
+
+    border-radius:6px;
+
+    padding:12px;
+
+    margin-top:7px;
 
     margin-bottom:15px;
 
-    display:none;
+    outline:none;
+
+}
+
+textarea{
+
+    min-height:100px;
+
+    resize:vertical;
 
 }
 
 
 /* =========================================================
-   SISTEMA PRINCIPAL
+   SISTEMA
 ========================================================= */
 
 #sistema{
@@ -291,9 +206,21 @@ button:hover{
 
 }
 
+.container{
+
+    width:95%;
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:30px 0 70px;
+
+}
+
 
 /* =========================================================
-   CABEÇALHO
+   TOPO
 ========================================================= */
 
 .topo{
@@ -306,21 +233,31 @@ button:hover{
 
     gap:15px;
 
-    margin-bottom:30px;
-
     flex-wrap:wrap;
+
+    margin-bottom:30px;
 
 }
 
-.usuario-logado{
+.topo h1{
 
-    color:#aaa;
+    margin:0;
+
+    font-size:40px;
+
+}
+
+.usuario{
+
+    color:#999;
+
+    margin-top:5px;
 
 }
 
 
 /* =========================================================
-   PAINÉIS
+   PAINEL
 ========================================================= */
 
 .painel{
@@ -359,22 +296,15 @@ button:hover{
 
 }
 
-
-/* =========================================================
-   CARTÃO DO ALVO
-========================================================= */
-
 .alvo{
 
-    background:#181818;
+    background:#1b1b1b;
 
     border:1px solid #333;
 
     border-radius:10px;
 
     overflow:hidden;
-
-    box-shadow:0 5px 20px rgba(0,0,0,.4);
 
 }
 
@@ -392,21 +322,21 @@ button:hover{
 
 }
 
-.alvo-conteudo{
+.alvo-corpo{
 
     padding:18px;
 
 }
 
-.alvo-conteudo h3{
+.alvo h3{
 
-    margin-top:0;
+    margin-top:8px;
 
     font-size:23px;
 
 }
 
-.alvo-descricao{
+.descricao{
 
     color:#ccc;
 
@@ -418,46 +348,11 @@ button:hover{
 
     font-size:22px;
 
+    color:#42e866;
+
     font-weight:bold;
 
     margin:15px 0;
-
-    color:#36d15c;
-
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-.status{
-
-    display:inline-block;
-
-    padding:5px 9px;
-
-    border-radius:5px;
-
-    font-size:12px;
-
-    font-weight:bold;
-
-}
-
-.status-ativo{
-
-    background:#145c24;
-
-    color:#73ff8f;
-
-}
-
-.status-inativo{
-
-    background:#5c1414;
-
-    color:#ff7777;
 
 }
 
@@ -472,7 +367,7 @@ button:hover{
 
     inset:0;
 
-    background:rgba(0,0,0,.82);
+    background:rgba(0,0,0,.85);
 
     display:none;
 
@@ -492,35 +387,29 @@ button:hover{
 
 }
 
-.modal-conteudo{
+.modal-box{
 
-    width:100%;
-
-    max-width:650px;
-
-    max-height:90vh;
-
-    overflow-y:auto;
-
-    background:#151515;
+    background:#161616;
 
     border:1px solid #444;
 
     border-radius:10px;
 
+    width:100%;
+
+    max-width:700px;
+
+    max-height:90vh;
+
+    overflow-y:auto;
+
     padding:25px;
-
-}
-
-.modal-conteudo h2{
-
-    margin-top:0;
 
 }
 
 
 /* =========================================================
-   RECOMPENSA DO CONTRATO
+   RECOMPENSA
 ========================================================= */
 
 .recompensa-original{
@@ -529,66 +418,68 @@ button:hover{
 
     text-decoration:line-through;
 
-    font-size:16px;
-
 }
 
 .recompensa-final{
 
-    font-size:30px;
+    font-size:32px;
 
-    color:#3cff69;
+    color:#43ed68;
 
     font-weight:bold;
+
+    margin-top:5px;
 
 }
 
 .desconto{
 
-    color:#ffb52e;
+    color:#ffbd2e;
 
     font-weight:bold;
+
+    margin-top:5px;
 
 }
 
 
 /* =========================================================
-   REVELAÇÕES
+   REVELAÇÃO
 ========================================================= */
 
-.revelacao{
+.bloco{
 
     background:#202020;
 
-    border-left:4px solid #777;
-
-    border-radius:5px;
+    border-radius:7px;
 
     padding:15px;
 
     margin:15px 0;
 
+    border-left:4px solid #555;
+
 }
 
-.revelacao h3{
+.bloco h3{
 
     margin-top:0;
 
 }
 
-.revelacao-bloqueada{
-
-    color:#aaa;
-
-    font-style:italic;
-
-}
-
-.revelacao-liberada{
+.conteudo-revelado{
 
     color:white;
 
     line-height:1.6;
+
+}
+
+.bloqueado{
+
+    color:#999;
+
+    font-style:italic;
 
 }
 
@@ -599,9 +490,9 @@ button:hover{
 
 .local{
 
-    background:#202020;
+    background:#292929;
 
-    padding:12px;
+    padding:10px;
 
     margin-top:8px;
 
@@ -611,37 +502,96 @@ button:hover{
 
 
 /* =========================================================
-   CONTRATO ACEITO
+   ADMIN
 ========================================================= */
 
-.contrato-aceito{
+.admin-item,
+.contrato{
 
-    border:1px solid #1e8b38;
+    background:#202020;
 
-    background:#102015;
+    border:1px solid #333;
 
-    border-radius:8px;
+    border-radius:7px;
 
-    padding:18px;
+    padding:16px;
 
-    margin-top:20px;
+    margin-bottom:12px;
 
 }
 
-.contrato-aceito h3{
+.admin-item strong{
 
-    color:#4dff72;
+    font-size:19px;
 
-    margin-top:0;
+}
+
+.linha{
+
+    margin:7px 0;
+
+    color:#bbb;
+
+}
+
+.linha strong{
+
+    color:white;
+
+}
+
+.status{
+
+    display:inline-block;
+
+    padding:5px 9px;
+
+    border-radius:5px;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+}
+
+.ativo{
+
+    background:#145c24;
+
+    color:#6cff8b;
+
+}
+
+.inativo{
+
+    background:#5c1414;
+
+    color:#ff7777;
+
+}
+
+.preparando{
+
+    background:#735700;
+
+    color:#ffe27a;
+
+}
+
+.aceito{
+
+    background:#145c24;
+
+    color:#6cff8b;
 
 }
 
 
 /* =========================================================
-   ADMIN - FORMULÁRIO
+   FORMULÁRIO ADMIN
 ========================================================= */
 
-.admin-form{
+.form-grid{
 
     display:grid;
 
@@ -651,83 +601,9 @@ button:hover{
 
 }
 
-.admin-form .campo-grande{
+.form-full{
 
     grid-column:1 / -1;
-
-}
-
-@media(max-width:700px){
-
-    .admin-form{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .admin-form .campo-grande{
-
-        grid-column:auto;
-
-    }
-
-}
-
-
-/* =========================================================
-   LISTA ADMIN
-========================================================= */
-
-.admin-item{
-
-    background:#202020;
-
-    border:1px solid #333;
-
-    border-radius:7px;
-
-    padding:15px;
-
-    margin-bottom:12px;
-
-}
-
-.admin-item strong{
-
-    font-size:18px;
-
-}
-
-
-/* =========================================================
-   CONTRATOS ADMIN
-========================================================= */
-
-.contrato-admin{
-
-    background:#191919;
-
-    border:1px solid #333;
-
-    border-radius:8px;
-
-    padding:17px;
-
-    margin-bottom:12px;
-
-}
-
-.contrato-admin .linha{
-
-    margin:6px 0;
-
-    color:#ccc;
-
-}
-
-.contrato-admin .linha strong{
-
-    color:white;
 
 }
 
@@ -738,42 +614,27 @@ button:hover{
 
 .aviso{
 
-    padding:14px;
-
-    border-radius:6px;
-
-    margin-bottom:15px;
-
-    background:#242424;
+    background:#222;
 
     border-left:4px solid #777;
 
-}
+    padding:14px;
 
-.aviso-sucesso{
+    margin:15px 0;
 
-    border-left-color:#29c64f;
-
-}
-
-.aviso-alerta{
-
-    border-left-color:#e0a400;
+    border-radius:5px;
 
 }
 
+.aviso-amarelo{
 
-/* =========================================================
-   SEPARADOR
-========================================================= */
+    border-left-color:#d39d00;
 
-.separador{
+}
 
-    height:1px;
+.aviso-verde{
 
-    background:#333;
-
-    margin:25px 0;
+    border-left-color:#22bd48;
 
 }
 
@@ -785,6 +646,44 @@ button:hover{
 .oculto{
 
     display:none !important;
+
+}
+
+
+/* =========================================================
+   SEPARADOR DE CONTRATOS
+========================================================= */
+
+.separador-contrato{
+
+    border:0;
+
+    border-top:1px solid #333;
+
+    margin:18px 0;
+
+}
+
+
+@media(max-width:700px){
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .form-full{
+
+        grid-column:auto;
+
+    }
+
+    .topo h1{
+
+        font-size:32px;
+
+    }
 
 }
 
@@ -802,39 +701,63 @@ button:hover{
 
 <div id="loginTela">
 
-    <div class="login-box">
+    <div class="login">
 
         <h1>ALVOS</h1>
 
-        <p style="text-align:center;color:#888;">
+        <p style="
+            text-align:center;
+            color:#888;
+        ">
+
             Central de contratos
+
         </p>
 
-        <div id="loginErro" class="login-erro">
+
+        <div
+            id="erroLogin"
+            style="
+                display:none;
+                color:#ff5555;
+                text-align:center;
+                margin-bottom:15px;
+            "
+        >
+
             Usuário ou senha incorretos.
+
         </div>
 
-        <label>Usuário</label>
+
+        <label>
+            Usuário
+        </label>
 
         <input
-            type="text"
-            id="loginUsuario"
+            id="usuarioLogin"
             autocomplete="off"
         >
 
-        <label>Senha</label>
+
+        <label>
+            Senha
+        </label>
 
         <input
+            id="senhaLogin"
             type="password"
-            id="loginSenha"
         >
 
+
         <button
-            class="btn-principal"
+            class="btn-vermelho"
             style="width:100%;"
-            onclick="fazerLogin()"
+            onclick="login()"
         >
+
             ENTRAR
+
         </button>
 
     </div>
@@ -848,303 +771,312 @@ button:hover{
 
 <div id="sistema">
 
-    <div class="container">
+<div class="container">
 
-        <!-- =====================================================
-             TOPO
-        ====================================================== -->
 
-        <div class="topo">
+<!-- =========================================================
+     TOPO
+========================================================= -->
 
-            <div>
+<div class="topo">
 
-                <h1 style="margin:0;">
-                    ALVOS
-                </h1>
+    <div>
 
-                <div class="usuario-logado">
+        <h1>
+            ALVOS
+        </h1>
 
-                    Usuário:
-                    <strong id="usuarioAtual"></strong>
+        <div class="usuario">
 
-                </div>
+            Logado como:
 
-            </div>
-
-            <button onclick="sair()">
-                SAIR
-            </button>
-
-        </div>
-
-
-        <!-- =====================================================
-             PAINEL ADMIN
-        ====================================================== -->
-
-        <div
-            id="painelAdmin"
-            class="painel oculto"
-        >
-
-            <h2>
-                PAINEL DO ADMINISTRADOR
-            </h2>
-
-
-            <div class="aviso aviso-alerta">
-
-                Somente o administrador pode criar,
-                editar e controlar os alvos.
-
-            </div>
-
-
-            <!-- =================================================
-                 FORMULÁRIO
-            ================================================== -->
-
-            <h3 id="tituloFormulario">
-                Criar novo alvo
-            </h3>
-
-            <div class="admin-form">
-
-                <div>
-
-                    <label>
-                        Nome do alvo
-                    </label>
-
-                    <input
-                        id="alvoNome"
-                        type="text"
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label>
-                        Recompensa
-                    </label>
-
-                    <input
-                        id="alvoRecompensa"
-                        type="number"
-                        min="0"
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label>
-                        Foto (URL)
-                    </label>
-
-                    <input
-                        id="alvoFoto"
-                        type="text"
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label>
-                        Status
-                    </label>
-
-                    <select id="alvoStatus">
-
-                        <option value="ativo">
-                            Ativo
-                        </option>
-
-                        <option value="inativo">
-                            Inativo
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="campo-grande">
-
-                    <label>
-                        Descrição
-                    </label>
-
-                    <textarea
-                        id="alvoDescricao"
-                    ></textarea>
-
-                </div>
-
-
-                <div class="campo-grande">
-
-                    <label>
-                        Informações importantes
-                    </label>
-
-                    <textarea
-                        id="alvoInformacao"
-                    ></textarea>
-
-                </div>
-
-
-                <div>
-
-                    <label>
-                        Local 1
-                    </label>
-
-                    <input
-                        id="alvoLocal1"
-                        type="text"
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label>
-                        Local 2
-                    </label>
-
-                    <input
-                        id="alvoLocal2"
-                        type="text"
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label>
-                        Local 3
-                    </label>
-
-                    <input
-                        id="alvoLocal3"
-                        type="text"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <button
-                class="btn-principal"
-                onclick="salvarAlvo()"
-            >
-                SALVAR ALVO
-            </button>
-
-            <button
-                id="btnCancelarEdicao"
-                class="btn-amarelo oculto"
-                onclick="cancelarEdicao()"
-            >
-                CANCELAR EDIÇÃO
-            </button>
-
-
-            <div class="separador"></div>
-
-
-            <!-- =================================================
-                 ALVOS ADMIN
-            ================================================== -->
-
-            <h3>
-                GERENCIAR ALVOS
-            </h3>
-
-            <div id="listaAdmin">
-
-                Carregando...
-
-            </div>
-
-
-            <div class="separador"></div>
-
-
-            <!-- =================================================
-                 CONTRATOS
-            ================================================== -->
-
-            <h3>
-                CONTRATOS ACEITOS
-            </h3>
-
-            <div id="listaContratosAdmin">
-
-                Carregando contratos...
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================================================
-             PAINEL PLAYER
-        ====================================================== -->
-
-        <div
-            id="painelPlayer"
-            class="painel"
-        >
-
-            <h2>
-                CONTRATOS DISPONÍVEIS
-            </h2>
-
-            <div
-                id="listaAlvos"
-                class="lista"
-            >
-
-                Carregando alvos...
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================================================
-             MEUS CONTRATOS
-        ====================================================== -->
-
-        <div
-            id="painelMeusContratos"
-            class="painel"
-        >
-
-            <h2>
-                MEUS CONTRATOS
-            </h2>
-
-            <div id="meusContratos">
-
-                Carregando...
-
-            </div>
+            <strong id="usuarioAtual"></strong>
 
         </div>
 
     </div>
+
+
+    <button onclick="sair()">
+
+        SAIR
+
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     PAINEL ADMIN
+========================================================= -->
+
+<div
+    id="admin"
+    class="painel oculto"
+>
+
+    <h2>
+        ADMINISTRADOR
+    </h2>
+
+
+    <div class="aviso aviso-amarelo">
+
+        Os contratos dos jogadores aparecem
+        abaixo em tempo real.
+
+    </div>
+
+
+    <!-- =====================================================
+         CRIAR / EDITAR ALVO
+    ====================================================== -->
+
+    <h3>
+        Criar / editar alvo
+    </h3>
+
+
+    <div class="form-grid">
+
+
+        <div>
+
+            <label>
+                Nome
+            </label>
+
+            <input id="nomeAlvo">
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Recompensa
+            </label>
+
+            <input
+                id="valorAlvo"
+                type="number"
+            >
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Foto
+            </label>
+
+            <input id="fotoAlvo">
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Status
+            </label>
+
+            <select
+                id="statusAlvo"
+                style="
+                    width:100%;
+                    padding:12px;
+                    background:#222;
+                    color:white;
+                    border:1px solid #444;
+                    border-radius:6px;
+                    margin-top:7px;
+                    margin-bottom:15px;
+                "
+            >
+
+                <option value="ativo">
+                    Ativo
+                </option>
+
+                <option value="inativo">
+                    Inativo
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-full">
+
+            <label>
+                Descrição
+            </label>
+
+            <textarea id="descricaoAlvo"></textarea>
+
+        </div>
+
+
+        <div class="form-full">
+
+            <label>
+                Informação importante
+            </label>
+
+            <textarea id="informacaoAlvo"></textarea>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Local 1
+            </label>
+
+            <input id="local1">
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Local 2
+            </label>
+
+            <input id="local2">
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Local 3
+            </label>
+
+            <input id="local3">
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="btn-vermelho"
+        onclick="salvarAlvo()"
+    >
+
+        SALVAR ALVO
+
+    </button>
+
+
+    <button
+        id="cancelarEdicao"
+        class="btn-amarelo oculto"
+        onclick="cancelarEdicao()"
+    >
+
+        CANCELAR EDIÇÃO
+
+    </button>
+
+
+    <hr style="
+        border-color:#333;
+        margin:30px 0;
+    ">
+
+
+    <!-- =====================================================
+         GERENCIAR ALVOS
+    ====================================================== -->
+
+    <h3>
+        GERENCIAR ALVOS
+    </h3>
+
+
+    <div id="listaAdmin">
+
+        Carregando...
+
+    </div>
+
+
+    <hr style="
+        border-color:#333;
+        margin:30px 0;
+    ">
+
+
+    <!-- =====================================================
+         CONTRATOS
+    ====================================================== -->
+
+    <h3>
+        CONTRATOS DOS JOGADORES
+    </h3>
+
+
+    <div id="listaContratos">
+
+        Carregando...
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     CONTRATOS DISPONÍVEIS
+========================================================= -->
+
+<div class="painel">
+
+    <h2>
+        CONTRATOS DISPONÍVEIS
+    </h2>
+
+
+    <div
+        id="listaAlvos"
+        class="lista"
+    >
+
+        Carregando...
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MEUS CONTRATOS
+========================================================= -->
+
+<div class="painel">
+
+    <h2>
+        MEUS CONTRATOS
+    </h2>
+
+
+    <div id="meusContratos">
+
+        Carregando...
+
+    </div>
+
+</div>
+
+
+</div>
 
 </div>
 
@@ -1154,157 +1086,161 @@ button:hover{
 ========================================================= -->
 
 <div
-    id="modalContrato"
+    id="modal"
     class="modal"
 >
 
-    <div class="modal-conteudo">
-
-        <h2 id="modalNomeAlvo">
-            Alvo
-        </h2>
+<div class="modal-box">
 
 
-        <div id="modalConteudo">
+    <h2 id="modalTitulo">
+        Alvo
+    </h2>
+
+
+    <div
+        id="modalDescricao"
+        class="descricao"
+    ></div>
+
+
+    <hr style="
+        border-color:#333;
+        margin:20px 0;
+    ">
+
+
+    <!-- =====================================================
+         RECOMPENSA
+    ====================================================== -->
+
+    <div>
+
+        <div class="recompensa-original">
+
+            Recompensa original:
+
+            <span id="recompensaOriginal">
+                R$ 0
+            </span>
 
         </div>
 
-
-        <div class="separador"></div>
-
-
-        <!-- =================================================
-             RECOMPENSA
-        ================================================== -->
 
         <div>
-
-            <div class="recompensa-original">
-
-                Recompensa original:
-                <span id="modalRecompensaOriginal">
-                    $0
-                </span>
-
-            </div>
-
-
-            <div>
-
-                Recompensa atual:
-
-            </div>
-
-
-            <div
-                id="modalRecompensaFinal"
-                class="recompensa-final"
-            >
-                $0
-            </div>
-
-
-            <div
-                id="modalDesconto"
-                class="desconto"
-            >
-            </div>
-
+            Recompensa atual:
         </div>
 
 
-        <div class="separador"></div>
-
-
-        <!-- =================================================
-             INFORMAÇÕES
-        ================================================== -->
-
         <div
-            id="areaInformacao"
-            class="revelacao"
+            id="recompensaFinal"
+            class="recompensa-final"
         >
 
-            <h3>
-                INFORMAÇÕES IMPORTANTES
-            </h3>
-
-            <div id="estadoInformacao">
-
-            </div>
-
-            <button
-                id="btnRevelarInformacao"
-                class="btn-amarelo"
-                onclick="revelarInformacao()"
-            >
-                REVELAR INFORMAÇÕES (-25%)
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             LOCAIS
-        ================================================== -->
-
-        <div
-            id="areaLocais"
-            class="revelacao"
-        >
-
-            <h3>
-                LOCALIZAÇÕES
-            </h3>
-
-            <div id="estadoLocais">
-
-            </div>
-
-            <button
-                id="btnRevelarLocais"
-                class="btn-amarelo"
-                onclick="revelarLocais()"
-            >
-                REVELAR LOCALIZAÇÕES (-25%)
-            </button>
+            R$ 0
 
         </div>
 
 
         <div
-            id="avisoContrato"
-            class="aviso aviso-alerta"
-        >
-
-            Ao aceitar o contrato, as escolhas de
-            informações e localizações serão permanentes.
-
-        </div>
-
-
-        <div style="
-            display:flex;
-            gap:10px;
-            flex-wrap:wrap;
-        ">
-
-            <button
-                class="btn-verde"
-                onclick="aceitarContrato()"
-            >
-                ACEITAR CONTRATO
-            </button>
-
-            <button
-                onclick="fecharModal()"
-            >
-                FECHAR
-            </button>
-
-        </div>
+            id="desconto"
+            class="desconto"
+        ></div>
 
     </div>
+
+
+    <!-- =====================================================
+         INFORMAÇÃO
+    ====================================================== -->
+
+    <div class="bloco">
+
+        <h3>
+            INFORMAÇÃO IMPORTANTE
+        </h3>
+
+
+        <div id="informacaoConteudo"></div>
+
+
+        <button
+            id="btnInformacao"
+            class="btn-amarelo"
+            onclick="revelarInformacao()"
+        >
+
+            REVELAR INFORMAÇÃO (-25%)
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOCAIS
+    ====================================================== -->
+
+    <div class="bloco">
+
+        <h3>
+            LOCALIZAÇÕES
+        </h3>
+
+
+        <div id="locaisConteudo"></div>
+
+
+        <button
+            id="btnLocais"
+            class="btn-amarelo"
+            onclick="revelarLocais()"
+        >
+
+            REVELAR LOCALIZAÇÕES (-25%)
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="avisoModal"
+        class="aviso aviso-amarelo"
+    >
+
+        As revelações são permanentes.
+
+    </div>
+
+
+    <div style="
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+    ">
+
+
+        <button
+            class="btn-verde"
+            onclick="aceitarContrato()"
+        >
+
+            ACEITAR CONTRATO
+
+        </button>
+
+
+        <button onclick="fecharModal()">
+
+            FECHAR
+
+        </button>
+
+    </div>
+
+
+</div>
 
 </div>
 
@@ -1316,34 +1252,41 @@ button:hover{
 ========================================================= */
 
 /*
-   COLOQUE AQUI O MESMO firebaseConfig
-   QUE VOCÊ JÁ USA NAS MISSÕES DO LESTER.
+   IMPORTANTE:
 
-   NÃO altere o restante do código.
+   COLOQUE AQUI EXATAMENTE O MESMO
+   firebaseConfig DO SEU INDEX.HTML.
+
 */
 
 const firebaseConfig = {
 
-    apiKey: "COLOQUE_AQUI",
+    apiKey: "COLOQUE_SEU_API_KEY",
 
     authDomain: "gta-rpg.firebaseapp.com",
 
-    databaseURL: "https://gta-rpg-default-rtdb.firebaseio.com",
+    databaseURL:
+        "https://gta-rpg-default-rtdb.firebaseio.com",
 
     projectId: "gta-rpg",
 
-    storageBucket: "gta-rpg.firebasestorage.app",
+    storageBucket:
+        "gta-rpg.firebasestorage.app",
 
-    messagingSenderId: "COLOQUE_AQUI",
+    messagingSenderId:
+        "COLOQUE_SEU_MESSAGING_SENDER_ID",
 
-    appId: "COLOQUE_AQUI"
+    appId:
+        "COLOQUE_SEU_APP_ID"
 
 };
 
 
 firebase.initializeApp(firebaseConfig);
 
-const db = firebase.database();
+
+const db =
+    firebase.database();
 
 
 /* =========================================================
@@ -1352,50 +1295,63 @@ const db = firebase.database();
 
 const usuarios = {
 
-    "Kaius": "28/09",
+    Kaius:"28/09",
 
-    "Gaby": "22/09",
+    Gaby:"22/09",
 
-    "Duda": "13/09",
+    Duda:"13/09",
 
-    "Italo": "1822"
+    Italo:"1822"
 
 };
 
 
 /* =========================================================
-   VARIÁVEIS DO SISTEMA
+   VARIÁVEIS
 ========================================================= */
 
 let usuarioAtual = null;
 
 let alvoAtual = null;
 
+let contratoAtual = null;
+
 let alvoEditando = null;
 
 
-/*
-   Estas variáveis NÃO determinam mais o desconto.
+/* =========================================================
+   DINHEIRO
+========================================================= */
 
-   O Firebase é que guarda o estado definitivo.
+function dinheiro(valor){
 
-   Elas servem apenas para controlar a tela atual.
-*/
+    return Number(valor || 0)
+        .toLocaleString(
+            "pt-BR",
+            {
+                style:"currency",
+                currency:"BRL"
+            }
+        );
 
-let contratoAtual = null;
+}
 
 
 /* =========================================================
-   FUNÇÕES AUXILIARES
+   ESCAPAR TEXTO
 ========================================================= */
 
 function escapar(texto){
 
-    if(texto === undefined || texto === null){
+    if(
+        texto === null ||
+        texto === undefined
+    ){
 
         return "";
 
     }
+
 
     return String(texto)
 
@@ -1412,22 +1368,17 @@ function escapar(texto){
 }
 
 
-function formatarDinheiro(valor){
+/* =========================================================
+   GERAR ID
+========================================================= */
 
-    return Number(valor || 0).toLocaleString(
-        "pt-BR",
-        {
-            style:"currency",
-            currency:"BRL"
-        }
-    );
+function novoId(){
 
-}
-
-
-function gerarId(){
-
-    return Date.now().toString();
+    return Date.now() +
+        "_" +
+        Math.random()
+            .toString(36)
+            .substring(2,8);
 
 }
 
@@ -1436,27 +1387,27 @@ function gerarId(){
    LOGIN
 ========================================================= */
 
-function fazerLogin(){
+function login(){
 
     const usuario =
-        document.getElementById("loginUsuario")
-        .value
-        .trim();
+        document.getElementById(
+            "usuarioLogin"
+        ).value.trim();
+
 
     const senha =
-        document.getElementById("loginSenha")
-        .value
-        .trim();
+        document.getElementById(
+            "senhaLogin"
+        ).value.trim();
 
 
     if(
-
         usuarios[usuario] &&
         usuarios[usuario] === senha
-
     ){
 
-        usuarioAtual = usuario;
+        usuarioAtual =
+            usuario;
 
 
         localStorage.setItem(
@@ -1472,8 +1423,9 @@ function fazerLogin(){
     else{
 
         document.getElementById(
-            "loginErro"
-        ).style.display = "block";
+            "erroLogin"
+        ).style.display =
+            "block";
 
     }
 
@@ -1488,35 +1440,43 @@ function abrirSistema(){
 
     document.getElementById(
         "loginTela"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 
 
     document.getElementById(
         "sistema"
-    ).style.display = "block";
+    ).style.display =
+        "block";
 
 
     document.getElementById(
         "usuarioAtual"
-    ).textContent = usuarioAtual;
+    ).textContent =
+        usuarioAtual;
 
 
-    if(usuarioAtual === "Italo"){
+    if(
+        usuarioAtual === "Italo"
+    ){
 
         document.getElementById(
-            "painelAdmin"
-        ).classList.remove("oculto");
+            "admin"
+        ).classList.remove(
+            "oculto"
+        );
 
-        carregarAdmin();
 
-        carregarContratosAdmin();
+        observarAdmin();
+
+        observarContratos();
 
     }
 
 
-    carregarAlvos();
+    observarAlvos();
 
-    carregarMeusContratos();
+    observarMeusContratos();
 
 }
 
@@ -1531,8 +1491,6 @@ function sair(){
         "alvos_usuario"
     );
 
-    usuarioAtual = null;
-
     location.reload();
 
 }
@@ -1542,83 +1500,11 @@ function sair(){
    SALVAR ALVO
 ========================================================= */
 
-function salvarAlvo(){
+async function salvarAlvo(){
 
-    if(usuarioAtual !== "Italo"){
-
-        return;
-
-    }
-
-
-    const nome =
-        document.getElementById(
-            "alvoNome"
-        ).value.trim();
-
-
-    const recompensa =
-        Number(
-            document.getElementById(
-                "alvoRecompensa"
-            ).value
-        );
-
-
-    const foto =
-        document.getElementById(
-            "alvoFoto"
-        ).value.trim();
-
-
-    const status =
-        document.getElementById(
-            "alvoStatus"
-        ).value;
-
-
-    const descricao =
-        document.getElementById(
-            "alvoDescricao"
-        ).value.trim();
-
-
-    const informacao =
-        document.getElementById(
-            "alvoInformacao"
-        ).value.trim();
-
-
-    const local1 =
-        document.getElementById(
-            "alvoLocal1"
-        ).value.trim();
-
-
-    const local2 =
-        document.getElementById(
-            "alvoLocal2"
-        ).value.trim();
-
-
-    const local3 =
-        document.getElementById(
-            "alvoLocal3"
-        ).value.trim();
-
-
-    if(!nome){
-
-        alert("Digite o nome do alvo.");
-
-        return;
-
-    }
-
-
-    if(!recompensa || recompensa <= 0){
-
-        alert("Digite uma recompensa válida.");
+    if(
+        usuarioAtual !== "Italo"
+    ){
 
         return;
 
@@ -1627,309 +1513,132 @@ function salvarAlvo(){
 
     const dados = {
 
-        nome: nome,
+        nome:
+            document.getElementById(
+                "nomeAlvo"
+            ).value.trim(),
 
-        recompensa: recompensa,
 
-        foto: foto,
+        recompensa:
+            Number(
+                document.getElementById(
+                    "valorAlvo"
+                ).value
+            ),
 
-        status: status,
 
-        descricao: descricao,
+        foto:
+            document.getElementById(
+                "fotoAlvo"
+            ).value.trim(),
 
-        informacao: informacao,
 
-        locais: {
+        status:
+            document.getElementById(
+                "statusAlvo"
+            ).value,
 
-            local1: local1,
 
-            local2: local2,
+        descricao:
+            document.getElementById(
+                "descricaoAlvo"
+            ).value.trim(),
 
-            local3: local3
 
-        },
+        informacao:
+            document.getElementById(
+                "informacaoAlvo"
+            ).value.trim(),
 
-        atualizadoEm: Date.now(),
 
-        atualizadoPor: usuarioAtual
+        locais:{
+
+            local1:
+                document.getElementById(
+                    "local1"
+                ).value.trim(),
+
+
+            local2:
+                document.getElementById(
+                    "local2"
+                ).value.trim(),
+
+
+            local3:
+                document.getElementById(
+                    "local3"
+                ).value.trim()
+
+        }
 
     };
 
 
-    let referencia;
+    if(!dados.nome){
 
+        alert(
+            "Digite o nome do alvo."
+        );
 
-    if(alvoEditando){
-
-        referencia =
-            db.ref(
-                "alvos/" + alvoEditando
-            );
-
-    }
-
-    else{
-
-        const id = gerarId();
-
-        referencia =
-            db.ref(
-                "alvos/" + id
-            );
+        return;
 
     }
 
 
-    referencia.set(dados)
+    if(
+        !dados.recompensa ||
+        dados.recompensa <= 0
+    ){
 
-        .then(()=>{
+        alert(
+            "Digite uma recompensa válida."
+        );
 
-            alert(
+        return;
+
+    }
+
+
+    try{
+
+        if(alvoEditando){
+
+            await db.ref(
+                "alvos/" +
                 alvoEditando
-                    ? "Alvo atualizado."
-                    : "Alvo criado."
-            );
-
-
-            limparFormulario();
-
-            carregarAlvos();
-
-            carregarAdmin();
-
-        })
-
-        .catch((erro)=>{
-
-            console.error(erro);
-
-            alert(
-                "Erro ao salvar o alvo."
-            );
-
-        });
-
-}
-
-
-/* =========================================================
-   MOSTRAR ALVOS PARA O ADMIN
-========================================================= */
-
-function carregarAdmin(){
-
-    db.ref("alvos").on(
-
-        "value",
-
-        (snapshot)=>{
-
-            const lista =
-                document.getElementById(
-                    "listaAdmin"
-                );
-
-
-            lista.innerHTML = "";
-
-
-            if(!snapshot.exists()){
-
-                lista.innerHTML =
-                    "<p>Nenhum alvo cadastrado.</p>";
-
-                return;
-
-            }
-
-
-            snapshot.forEach(
-
-                (item)=>{
-
-                    const alvo =
-                        item.val();
-
-                    const id =
-                        item.key;
-
-
-                    const div =
-                        document.createElement(
-                            "div"
-                        );
-
-                    div.className =
-                        "admin-item";
-
-
-                    div.innerHTML = `
-
-                        <strong>
-                            ${escapar(alvo.nome)}
-                        </strong>
-
-                        <br>
-
-                        ${formatarDinheiro(alvo.recompensa)}
-
-                        <br><br>
-
-                        <span class="status ${
-                            alvo.status === "ativo"
-                            ? "status-ativo"
-                            : "status-inativo"
-                        }">
-
-                            ${
-                                alvo.status === "ativo"
-                                ? "ATIVO"
-                                : "INATIVO"
-                            }
-
-                        </span>
-
-                        <br><br>
-
-                        <button
-                            onclick="editarAlvo('${id}')"
-                        >
-                            EDITAR
-                        </button>
-
-                        <button
-                            class="btn-amarelo"
-                            onclick="alternarAlvo('${id}')"
-                        >
-
-                            ${
-                                alvo.status === "ativo"
-                                ? "DESATIVAR"
-                                : "ATIVAR"
-                            }
-
-                        </button>
-
-                    `;
-
-
-                    lista.appendChild(div);
-
-                }
-
-            );
+            ).update(dados);
 
         }
 
-    );
+        else{
 
-}
-
-
-/* =========================================================
-   EDITAR ALVO
-========================================================= */
-
-function editarAlvo(id){
-
-    db.ref(
-        "alvos/" + id
-    )
-    .once("value")
-    .then((snapshot)=>{
-
-        const alvo =
-            snapshot.val();
-
-
-        if(!alvo){
-
-            return;
+            await db.ref(
+                "alvos/" +
+                novoId()
+            ).set(dados);
 
         }
 
 
-        alvoEditando = id;
+        alert(
+            "Alvo salvo com sucesso."
+        );
 
 
-        document.getElementById(
-            "alvoNome"
-        ).value = alvo.nome || "";
+        limparFormulario();
 
+    }
 
-        document.getElementById(
-            "alvoRecompensa"
-        ).value = alvo.recompensa || "";
+    catch(erro){
 
+        console.error(erro);
 
-        document.getElementById(
-            "alvoFoto"
-        ).value = alvo.foto || "";
+        alert(
+            "Erro ao salvar alvo."
+        );
 
-
-        document.getElementById(
-            "alvoStatus"
-        ).value = alvo.status || "ativo";
-
-
-        document.getElementById(
-            "alvoDescricao"
-        ).value = alvo.descricao || "";
-
-
-        document.getElementById(
-            "alvoInformacao"
-        ).value = alvo.informacao || "";
-
-
-        document.getElementById(
-            "alvoLocal1"
-        ).value =
-            alvo.locais?.local1 || "";
-
-
-        document.getElementById(
-            "alvoLocal2"
-        ).value =
-            alvo.locais?.local2 || "";
-
-
-        document.getElementById(
-            "alvoLocal3"
-        ).value =
-            alvo.locais?.local3 || "";
-
-
-        document.getElementById(
-            "tituloFormulario"
-        ).textContent =
-            "Editando alvo";
-
-
-        document.getElementById(
-            "btnCancelarEdicao"
-        ).classList.remove("oculto");
-
-        window.scrollTo({
-
-            top:0,
-
-            behavior:"smooth"
-
-        });
-
-    });
-
-}
-
-
-/* =========================================================
-   CANCELAR EDIÇÃO
-========================================================= */
-
-function cancelarEdicao(){
-
-    limparFormulario();
+    }
 
 }
 
@@ -1944,115 +1653,71 @@ function limparFormulario(){
 
 
     document.getElementById(
-        "alvoNome"
+        "nomeAlvo"
     ).value = "";
 
 
     document.getElementById(
-        "alvoRecompensa"
+        "valorAlvo"
     ).value = "";
 
 
     document.getElementById(
-        "alvoFoto"
+        "fotoAlvo"
     ).value = "";
 
 
     document.getElementById(
-        "alvoStatus"
-    ).value = "ativo";
+        "statusAlvo"
+    ).value =
+        "ativo";
 
 
     document.getElementById(
-        "alvoDescricao"
+        "descricaoAlvo"
     ).value = "";
 
 
     document.getElementById(
-        "alvoInformacao"
+        "informacaoAlvo"
     ).value = "";
 
 
     document.getElementById(
-        "alvoLocal1"
+        "local1"
     ).value = "";
 
 
     document.getElementById(
-        "alvoLocal2"
+        "local2"
     ).value = "";
 
 
     document.getElementById(
-        "alvoLocal3"
+        "local3"
     ).value = "";
 
 
     document.getElementById(
-        "tituloFormulario"
-    ).textContent =
-        "Criar novo alvo";
-
-
-    document.getElementById(
-        "btnCancelarEdicao"
-    ).classList.add("oculto");
+        "cancelarEdicao"
+    ).classList.add(
+        "oculto"
+    );
 
 }
 
 
 /* =========================================================
-   ATIVAR / DESATIVAR ALVO
+   OBSERVAR ALVOS
 ========================================================= */
 
-function alternarAlvo(id){
-
-    db.ref(
-        "alvos/" + id
-    )
-    .once("value")
-    .then((snapshot)=>{
-
-        const alvo =
-            snapshot.val();
-
-
-        if(!alvo){
-
-            return;
-
-        }
-
-
-        const novoStatus =
-            alvo.status === "ativo"
-                ? "inativo"
-                : "ativo";
-
-
-        db.ref(
-            "alvos/" +
-            id +
-            "/status"
-        )
-        .set(novoStatus);
-
-    });
-
-}
-
-
-/* =========================================================
-   MOSTRAR ALVOS PARA O PLAYER
-========================================================= */
-
-function carregarAlvos(){
+function observarAlvos(){
 
     db.ref("alvos").on(
 
         "value",
 
-        (snapshot)=>{
+        function(snapshot){
 
             const lista =
                 document.getElementById(
@@ -2063,7 +1728,9 @@ function carregarAlvos(){
             lista.innerHTML = "";
 
 
-            if(!snapshot.exists()){
+            if(
+                !snapshot.exists()
+            ){
 
                 lista.innerHTML =
                     "<p>Nenhum alvo disponível.</p>";
@@ -2075,10 +1742,11 @@ function carregarAlvos(){
 
             snapshot.forEach(
 
-                (item)=>{
+                function(item){
 
                     const alvo =
                         item.val();
+
 
                     const id =
                         item.key;
@@ -2093,7 +1761,7 @@ function carregarAlvos(){
                     }
 
 
-                    const foto =
+                    const imagem =
                         alvo.foto ||
                         "https://via.placeholder.com/800x500?text=ALVO";
 
@@ -2111,15 +1779,15 @@ function carregarAlvos(){
                     div.innerHTML = `
 
                         <img
-                            src="${escapar(foto)}"
+                            src="${escapar(imagem)}"
                             onerror="
                                 this.src='https://via.placeholder.com/800x500?text=ALVO'
                             "
                         >
 
-                        <div class="alvo-conteudo">
+                        <div class="alvo-corpo">
 
-                            <span class="status status-ativo">
+                            <span class="status ativo">
                                 ATIVO
                             </span>
 
@@ -2127,23 +1795,27 @@ function carregarAlvos(){
                                 ${escapar(alvo.nome)}
                             </h3>
 
-                            <div class="alvo-descricao">
+                            <div class="descricao">
 
-                                ${escapar(alvo.descricao)}
+                                ${escapar(
+                                    alvo.descricao
+                                )}
 
                             </div>
 
                             <div class="recompensa">
 
-                                ${formatarDinheiro(
+                                ${dinheiro(
                                     alvo.recompensa
                                 )}
 
                             </div>
 
                             <button
-                                class="btn-principal"
-                                onclick="abrirContrato('${id}')"
+                                class="btn-vermelho"
+                                onclick="
+                                    abrirContrato('${id}')
+                                "
                             >
 
                                 VER CONTRATO
@@ -2155,7 +1827,9 @@ function carregarAlvos(){
                     `;
 
 
-                    lista.appendChild(div);
+                    lista.appendChild(
+                        div
+                    );
 
                 }
 
@@ -2182,68 +1856,61 @@ async function abrirContrato(id){
             ).once("value");
 
 
-        if(!alvoSnapshot.exists()){
+        if(
+            !alvoSnapshot.exists()
+        ){
 
-            alert("Alvo não encontrado.");
+            alert(
+                "Este alvo não existe mais."
+            );
 
             return;
 
         }
 
 
-        const alvo =
-            alvoSnapshot.val();
-
-
         alvoAtual = {
 
             id:id,
 
-            ...alvo
+            ...alvoSnapshot.val()
 
         };
 
 
-        /*
-           Procura se o jogador já possui um contrato
-           para este alvo.
-        */
-
-        const contratoSnapshot =
+        const contratosSnapshot =
             await db.ref(
                 "contratos"
             )
-            .orderByChild("jogador")
-            .equalTo(usuarioAtual)
+            .orderByChild(
+                "jogadorAlvo"
+            )
+            .equalTo(
+                usuarioAtual +
+                "_" +
+                id
+            )
             .once("value");
 
 
         contratoAtual = null;
 
 
-        if(contratoSnapshot.exists()){
+        if(
+            contratosSnapshot.exists()
+        ){
 
-            contratoSnapshot.forEach(
+            contratosSnapshot.forEach(
 
-                (item)=>{
+                function(item){
 
-                    const contrato =
-                        item.val();
+                    contratoAtual = {
 
+                        id:item.key,
 
-                    if(
-                        contrato.alvoId === id
-                    ){
+                        ...item.val()
 
-                        contratoAtual = {
-
-                            id:item.key,
-
-                            ...contrato
-
-                        };
-
-                    }
+                    };
 
                 }
 
@@ -2252,7 +1919,14 @@ async function abrirContrato(id){
         }
 
 
-        mostrarModalContrato();
+        atualizarModal();
+
+
+        document.getElementById(
+            "modal"
+        ).classList.add(
+            "aberto"
+        );
 
     }
 
@@ -2261,7 +1935,7 @@ async function abrirContrato(id){
         console.error(erro);
 
         alert(
-            "Erro ao abrir o contrato."
+            "Erro ao abrir contrato."
         );
 
     }
@@ -2270,316 +1944,400 @@ async function abrirContrato(id){
 
 
 /* =========================================================
-   MOSTRAR MODAL
+   ATUALIZAR MODAL
 ========================================================= */
 
-function mostrarModalContrato(){
+function atualizarModal(){
 
     const alvo =
         alvoAtual;
 
 
     document.getElementById(
-        "modalNomeAlvo"
+        "modalTitulo"
     ).textContent =
         alvo.nome;
 
 
     document.getElementById(
-        "modalRecompensaOriginal"
+        "modalDescricao"
     ).textContent =
-        formatarDinheiro(
+        alvo.descricao || "";
+
+
+    document.getElementById(
+        "recompensaOriginal"
+    ).textContent =
+        dinheiro(
             alvo.recompensa
         );
 
 
-    document.getElementById(
-        "modalConteudo"
-    ).innerHTML = `
+    if(
+        !contratoAtual
+    ){
 
-        <div class="alvo-descricao">
+        mostrarInformacaoBloqueada();
 
-            ${escapar(alvo.descricao)}
+        mostrarLocaisBloqueados();
 
-        </div>
-
-    `;
-
-
-    /*
-       Se já existe contrato, usamos o estado
-       armazenado no Firebase.
-
-       Nunca calculamos novamente a partir
-       de checkbox.
-    */
-
-    if(contratoAtual){
-
-        mostrarEstadoContrato(
-            contratoAtual
+        atualizarRecompensa(
+            false,
+            false
         );
 
+
+        document.getElementById(
+            "avisoModal"
+        ).innerHTML = `
+
+            As revelações são permanentes.
+            Ao revelar uma informação, o desconto
+            será registrado no contrato.
+
+        `;
+
+
+        document.querySelector(
+            "#modal .btn-verde"
+        ).textContent =
+            "ACEITAR CONTRATO";
+
+
+        document.querySelector(
+            "#modal .btn-verde"
+        ).disabled =
+            false;
+
+
+        return;
+
     }
 
-    else{
 
-        mostrarEstadoNovoContrato();
-
-    }
-
-
-    document.getElementById(
-        "modalContrato"
-    ).classList.add("aberto");
-
-}
-
-
-/* =========================================================
-   NOVO CONTRATO
-========================================================= */
-
-function mostrarEstadoNovoContrato(){
-
-    document.getElementById(
-        "estadoInformacao"
-    ).innerHTML = `
-
-        <div class="revelacao-bloqueada">
-
-            Informação protegida.
-
-            <br><br>
-
-            Revelar esta informação reduz
-            permanentemente a recompensa em 25%.
-
-        </div>
-
-    `;
-
-
-    document.getElementById(
-        "estadoLocais"
-    ).innerHTML = `
-
-        <div class="revelacao-bloqueada">
-
-            Localizações protegidas.
-
-            <br><br>
-
-            Revelar as localizações reduz
-            permanentemente a recompensa em 25%.
-
-        </div>
-
-    `;
-
-
-    document.getElementById(
-        "btnRevelarInformacao"
-    ).classList.remove("oculto");
-
-
-    document.getElementById(
-        "btnRevelarLocais"
-    ).classList.remove("oculto");
-
-
-    document.getElementById(
-        "avisoContrato"
-    ).textContent =
-        "As informações reveladas ficam registradas no contrato e não podem ser revertidas.";
-
-
-    calcularRecompensaVisual({
-
-        informacaoRevelada:false,
-
-        locaisRevelados:false
-
-    });
-
-
-}
-
-
-/* =========================================================
-   ESTADO DO CONTRATO
-========================================================= */
-
-function mostrarEstadoContrato(contrato){
-
-    const informacao =
-        contrato.informacaoRevelada === true;
+    const info =
+        contratoAtual.informacaoRevelada === true;
 
 
     const locais =
-        contrato.locaisRevelados === true;
+        contratoAtual.locaisRevelados === true;
 
 
-    if(informacao){
+    if(info){
 
-        document.getElementById(
-            "estadoInformacao"
-        ).innerHTML = `
-
-            <div class="revelacao-liberada">
-
-                ${escapar(
-                    alvoAtual.informacao ||
-                    "Nenhuma informação cadastrada."
-                )}
-
-            </div>
-
-        `;
-
-        document.getElementById(
-            "btnRevelarInformacao"
-        ).classList.add("oculto");
+        mostrarInformacao();
 
     }
 
     else{
 
-        document.getElementById(
-            "estadoInformacao"
-        ).innerHTML = `
-
-            <div class="revelacao-bloqueada">
-
-                Informação não revelada.
-
-            </div>
-
-        `;
-
-        document.getElementById(
-            "btnRevelarInformacao"
-        ).classList.add("oculto");
+        mostrarInformacaoBloqueada();
 
     }
 
 
     if(locais){
 
-        const locaisArray = [
-
-            alvoAtual.locais?.local1,
-
-            alvoAtual.locais?.local2,
-
-            alvoAtual.locais?.local3
-
-        ].filter(Boolean);
-
-
-        let html = "";
-
-
-        if(locaisArray.length === 0){
-
-            html =
-                "Nenhuma localização cadastrada.";
-
-        }
-
-        else{
-
-            locaisArray.forEach(
-
-                (local,index)=>{
-
-                    html += `
-
-                        <div class="local">
-
-                            <strong>
-                                Local ${index + 1}
-                            </strong>
-
-                            <br>
-
-                            ${escapar(local)}
-
-                        </div>
-
-                    `;
-
-                }
-
-            );
-
-        }
-
-
-        document.getElementById(
-            "estadoLocais"
-        ).innerHTML =
-            html;
-
-
-        document.getElementById(
-            "btnRevelarLocais"
-        ).classList.add("oculto");
+        mostrarLocais();
 
     }
 
     else{
 
-        document.getElementById(
-            "estadoLocais"
-        ).innerHTML = `
-
-            <div class="revelacao-bloqueada">
-
-                Localizações não reveladas.
-
-            </div>
-
-        `;
-
-
-        document.getElementById(
-            "btnRevelarLocais"
-        ).classList.add("oculto");
+        mostrarLocaisBloqueados();
 
     }
 
 
-    calcularRecompensaVisual({
-
-        informacaoRevelada:informacao,
-
-        locaisRevelados:locais
-
-    });
+    atualizarRecompensa(
+        info,
+        locais
+    );
 
 
     document.getElementById(
-        "avisoContrato"
-    ).className =
-        "contrato-aceito";
-
-
-    document.getElementById(
-        "avisoContrato"
+        "avisoModal"
     ).innerHTML = `
 
-        <h3>
-            CONTRATO ACEITO
-        </h3>
-
-        Este contrato já foi registrado.
+        <strong>
+            Contrato registrado.
+        </strong>
 
         <br><br>
 
-        As revelações e a recompensa são permanentes.
+        Status:
+        ${escapar(
+            contratoAtual.status
+        )}
+
+        <br><br>
+
+        As revelações registradas não podem
+        ser desfeitas.
 
     `;
+
+
+    if(
+        contratoAtual.status === "Aceito"
+    ){
+
+        document.querySelector(
+            "#modal .btn-verde"
+        ).textContent =
+            "CONTRATO JÁ ACEITO";
+
+
+        document.querySelector(
+            "#modal .btn-verde"
+        ).disabled =
+            true;
+
+    }
+
+    else{
+
+        document.querySelector(
+            "#modal .btn-verde"
+        ).textContent =
+            "ACEITAR CONTRATO";
+
+
+        document.querySelector(
+            "#modal .btn-verde"
+        ).disabled =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   INFORMAÇÃO BLOQUEADA
+========================================================= */
+
+function mostrarInformacaoBloqueada(){
+
+    document.getElementById(
+        "informacaoConteudo"
+    ).innerHTML = `
+
+        <div class="bloqueado">
+
+            Informação protegida.
+
+            <br><br>
+
+            Revelar reduz permanentemente
+            a recompensa em 25%.
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "btnInformacao"
+    ).classList.remove(
+        "oculto"
+    );
+
+}
+
+
+/* =========================================================
+   MOSTRAR INFORMAÇÃO
+========================================================= */
+
+function mostrarInformacao(){
+
+    document.getElementById(
+        "informacaoConteudo"
+    ).innerHTML = `
+
+        <div class="conteudo-revelado">
+
+            ${escapar(
+                alvoAtual.informacao ||
+                "Nenhuma informação cadastrada."
+            )}
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "btnInformacao"
+    ).classList.add(
+        "oculto"
+    );
+
+}
+
+
+/* =========================================================
+   LOCAIS BLOQUEADOS
+========================================================= */
+
+function mostrarLocaisBloqueados(){
+
+    document.getElementById(
+        "locaisConteudo"
+    ).innerHTML = `
+
+        <div class="bloqueado">
+
+            Localizações protegidas.
+
+            <br><br>
+
+            Revelar reduz permanentemente
+            a recompensa em 25%.
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "btnLocais"
+    ).classList.remove(
+        "oculto"
+    );
+
+}
+
+
+/* =========================================================
+   MOSTRAR LOCAIS
+========================================================= */
+
+function mostrarLocais(){
+
+    let html = "";
+
+
+    const locais = [
+
+        alvoAtual.locais?.local1,
+
+        alvoAtual.locais?.local2,
+
+        alvoAtual.locais?.local3
+
+    ].filter(Boolean);
+
+
+    if(
+        locais.length === 0
+    ){
+
+        html =
+            "Nenhuma localização cadastrada.";
+
+    }
+
+    else{
+
+        locais.forEach(
+
+            function(local,index){
+
+                html += `
+
+                    <div class="local">
+
+                        <strong>
+                            Local ${index + 1}
+                        </strong>
+
+                        <br><br>
+
+                        ${escapar(local)}
+
+                    </div>
+
+                `;
+
+            }
+
+        );
+
+    }
+
+
+    document.getElementById(
+        "locaisConteudo"
+    ).innerHTML =
+        html;
+
+
+    document.getElementById(
+        "btnLocais"
+    ).classList.add(
+        "oculto"
+    );
+
+}
+
+
+/* =========================================================
+   ATUALIZAR RECOMPENSA
+========================================================= */
+
+function atualizarRecompensa(
+    informacao,
+    locais
+){
+
+    let desconto = 0;
+
+
+    if(informacao){
+
+        desconto += 25;
+
+    }
+
+
+    if(locais){
+
+        desconto += 25;
+
+    }
+
+
+    const original =
+        Number(
+            alvoAtual.recompensa
+        );
+
+
+    const final =
+        Math.round(
+            original *
+            (1 - desconto / 100)
+        );
+
+
+    document.getElementById(
+        "recompensaFinal"
+    ).textContent =
+        dinheiro(final);
+
+
+    document.getElementById(
+        "desconto"
+    ).textContent =
+        desconto > 0
+
+            ? "Desconto permanente: -" +
+              desconto +
+              "%"
+
+            : "";
 
 }
 
@@ -2590,25 +2348,10 @@ function mostrarEstadoContrato(contrato){
 
 async function revelarInformacao(){
 
-    if(!alvoAtual){
-
-        return;
-
-    }
-
-
-    /*
-       Se já existe contrato, não pode alterar.
-
-       Isso impede a pessoa de ficar alternando
-       o estado.
-    */
-
-    if(contratoAtual){
-
-        alert(
-            "Este contrato já foi registrado."
-        );
+    if(
+        contratoAtual &&
+        contratoAtual.informacaoRevelada === true
+    ){
 
         return;
 
@@ -2617,7 +2360,14 @@ async function revelarInformacao(){
 
     const confirmar =
         confirm(
-            "Revelar as informações reduzirá permanentemente a recompensa em 25%. Deseja continuar?"
+
+            "Você está prestes a revelar a informação.\n\n" +
+
+            "Isso reduzirá PERMANENTEMENTE " +
+            "a recompensa em 25%.\n\n" +
+
+            "Deseja continuar?"
+
         );
 
 
@@ -2628,66 +2378,114 @@ async function revelarInformacao(){
     }
 
 
-    /*
-       Aqui NÃO usamos checkbox.
-
-       Criamos um registro temporário do contrato
-       no Firebase.
-
-       A partir desse momento a revelação fica
-       registrada no servidor.
-    */
-
-    const id =
-        gerarId();
-
-
-    const contrato = {
-
-        jogador:usuarioAtual,
-
-        alvoId:alvoAtual.id,
-
-        alvoNome:alvoAtual.nome,
-
-        recompensaOriginal:
-            Number(alvoAtual.recompensa),
-
-        informacaoRevelada:true,
-
-        locaisRevelados:false,
-
-        recompensaFinal:
-            Math.round(
-                Number(alvoAtual.recompensa) * 0.75
-            ),
-
-        status:"Preparando",
-
-        criadoEm:Date.now()
-
-    };
-
-
     try{
 
-        await db.ref(
-            "contratos/" + id
-        ).set(contrato);
+        if(
+            !contratoAtual
+        ){
+
+            const id =
+                novoId();
 
 
-        contratoAtual = {
+            const contrato = {
 
-            id:id,
+                jogador:
+                    usuarioAtual,
 
-            ...contrato
+                jogadorAlvo:
+                    usuarioAtual +
+                    "_" +
+                    alvoAtual.id,
 
-        };
+                alvoId:
+                    alvoAtual.id,
+
+                alvoNome:
+                    alvoAtual.nome,
+
+                recompensaOriginal:
+                    Number(
+                        alvoAtual.recompensa
+                    ),
+
+                informacaoRevelada:
+                    true,
+
+                locaisRevelados:
+                    false,
+
+                recompensaFinal:
+                    Math.round(
+                        Number(
+                            alvoAtual.recompensa
+                        ) * 0.75
+                    ),
+
+                status:
+                    "Preparando",
+
+                criadoEm:
+                    Date.now()
+
+            };
 
 
-        mostrarEstadoContrato(
-            contratoAtual
-        );
+            await db.ref(
+                "contratos/" + id
+            ).set(
+                contrato
+            );
+
+
+            contratoAtual = {
+
+                id:id,
+
+                ...contrato
+
+            };
+
+        }
+
+        else{
+
+            const locais =
+                contratoAtual.locaisRevelados === true;
+
+
+            const recompensa =
+                calcularRecompensaBanco(
+                    true,
+                    locais
+                );
+
+
+            await db.ref(
+                "contratos/" +
+                contratoAtual.id
+            ).update({
+
+                informacaoRevelada:
+                    true,
+
+                recompensaFinal:
+                    recompensa
+
+            });
+
+
+            contratoAtual.informacaoRevelada =
+                true;
+
+
+            contratoAtual.recompensaFinal =
+                recompensa;
+
+        }
+
+
+        atualizarModal();
 
     }
 
@@ -2696,7 +2494,7 @@ async function revelarInformacao(){
         console.error(erro);
 
         alert(
-            "Não foi possível registrar a revelação."
+            "Erro ao registrar a revelação."
         );
 
     }
@@ -2710,18 +2508,10 @@ async function revelarInformacao(){
 
 async function revelarLocais(){
 
-    if(!alvoAtual){
-
-        return;
-
-    }
-
-
-    if(contratoAtual){
-
-        alert(
-            "Este contrato já foi registrado."
-        );
+    if(
+        contratoAtual &&
+        contratoAtual.locaisRevelados === true
+    ){
 
         return;
 
@@ -2730,7 +2520,14 @@ async function revelarLocais(){
 
     const confirmar =
         confirm(
-            "Revelar as localizações reduzirá permanentemente a recompensa em 25%. Deseja continuar?"
+
+            "Você está prestes a revelar as localizações.\n\n" +
+
+            "Isso reduzirá PERMANENTEMENTE " +
+            "a recompensa em 25%.\n\n" +
+
+            "Deseja continuar?"
+
         );
 
 
@@ -2741,56 +2538,114 @@ async function revelarLocais(){
     }
 
 
-    const id =
-        gerarId();
-
-
-    const contrato = {
-
-        jogador:usuarioAtual,
-
-        alvoId:alvoAtual.id,
-
-        alvoNome:alvoAtual.nome,
-
-        recompensaOriginal:
-            Number(alvoAtual.recompensa),
-
-        informacaoRevelada:false,
-
-        locaisRevelados:true,
-
-        recompensaFinal:
-            Math.round(
-                Number(alvoAtual.recompensa) * 0.75
-            ),
-
-        status:"Preparando",
-
-        criadoEm:Date.now()
-
-    };
-
-
     try{
 
-        await db.ref(
-            "contratos/" + id
-        ).set(contrato);
+        if(
+            !contratoAtual
+        ){
+
+            const id =
+                novoId();
 
 
-        contratoAtual = {
+            const contrato = {
 
-            id:id,
+                jogador:
+                    usuarioAtual,
 
-            ...contrato
+                jogadorAlvo:
+                    usuarioAtual +
+                    "_" +
+                    alvoAtual.id,
 
-        };
+                alvoId:
+                    alvoAtual.id,
+
+                alvoNome:
+                    alvoAtual.nome,
+
+                recompensaOriginal:
+                    Number(
+                        alvoAtual.recompensa
+                    ),
+
+                informacaoRevelada:
+                    false,
+
+                locaisRevelados:
+                    true,
+
+                recompensaFinal:
+                    Math.round(
+                        Number(
+                            alvoAtual.recompensa
+                        ) * 0.75
+                    ),
+
+                status:
+                    "Preparando",
+
+                criadoEm:
+                    Date.now()
+
+            };
 
 
-        mostrarEstadoContrato(
-            contratoAtual
-        );
+            await db.ref(
+                "contratos/" + id
+            ).set(
+                contrato
+            );
+
+
+            contratoAtual = {
+
+                id:id,
+
+                ...contrato
+
+            };
+
+        }
+
+        else{
+
+            const info =
+                contratoAtual.informacaoRevelada === true;
+
+
+            const recompensa =
+                calcularRecompensaBanco(
+                    info,
+                    true
+                );
+
+
+            await db.ref(
+                "contratos/" +
+                contratoAtual.id
+            ).update({
+
+                locaisRevelados:
+                    true,
+
+                recompensaFinal:
+                    recompensa
+
+            });
+
+
+            contratoAtual.locaisRevelados =
+                true;
+
+
+            contratoAtual.recompensaFinal =
+                recompensa;
+
+        }
+
+
+        atualizarModal();
 
     }
 
@@ -2799,7 +2654,7 @@ async function revelarLocais(){
         console.error(erro);
 
         alert(
-            "Não foi possível registrar a revelação."
+            "Erro ao registrar a revelação."
         );
 
     }
@@ -2808,68 +2663,39 @@ async function revelarLocais(){
 
 
 /* =========================================================
-   CALCULAR RECOMPENSA VISUAL
+   CALCULAR RECOMPENSA
 ========================================================= */
 
-function calcularRecompensaVisual(opcoes){
+function calcularRecompensaBanco(
+    informacao,
+    locais
+){
 
     let desconto = 0;
 
 
-    if(opcoes.informacaoRevelada){
+    if(informacao){
 
         desconto += 25;
 
     }
 
 
-    if(opcoes.locaisRevelados){
+    if(locais){
 
         desconto += 25;
 
     }
 
 
-    let recompensa =
+    return Math.round(
+
         Number(
             alvoAtual.recompensa
-        );
+        ) *
+        (1 - desconto / 100)
 
-
-    recompensa =
-        Math.round(
-            recompensa *
-            (1 - desconto / 100)
-        );
-
-
-    document.getElementById(
-        "modalRecompensaFinal"
-    ).textContent =
-        formatarDinheiro(
-            recompensa
-        );
-
-
-    if(desconto > 0){
-
-        document.getElementById(
-            "modalDesconto"
-        ).textContent =
-            "Desconto permanente: -" +
-            desconto +
-            "%";
-
-    }
-
-    else{
-
-        document.getElementById(
-            "modalDesconto"
-        ).textContent =
-            "";
-
-    }
+    );
 
 }
 
@@ -2880,228 +2706,118 @@ function calcularRecompensaVisual(opcoes){
 
 async function aceitarContrato(){
 
-    if(!alvoAtual){
+    if(
+        !contratoAtual
+    ){
 
-        return;
+        const confirmar =
+            confirm(
+                "Deseja aceitar este contrato?"
+            );
 
-    }
 
-
-    /*
-       Se já existe contrato, não cria outro.
-    */
-
-    if(contratoAtual){
-
-        alert(
-            "Você já possui um contrato para este alvo."
-        );
-
-        return;
-
-    }
-
-
-    const confirmar =
-        confirm(
-            "Deseja aceitar este contrato?"
-        );
-
-
-    if(!confirmar){
-
-        return;
-
-    }
-
-
-    /*
-       Contrato novo sem nenhuma revelação.
-    */
-
-    const contratoId =
-        gerarId();
-
-
-    const contrato = {
-
-        jogador:usuarioAtual,
-
-        alvoId:alvoAtual.id,
-
-        alvoNome:alvoAtual.nome,
-
-        recompensaOriginal:
-            Number(alvoAtual.recompensa),
-
-        informacaoRevelada:false,
-
-        locaisRevelados:false,
-
-        recompensaFinal:
-            Number(alvoAtual.recompensa),
-
-        status:"Aceito",
-
-        criadoEm:Date.now(),
-
-        aceitoEm:Date.now()
-
-    };
-
-
-    try{
-
-        await db.ref(
-            "contratos/" + contratoId
-        ).set(contrato);
-
-
-        contratoAtual = {
-
-            id:contratoId,
-
-            ...contrato
-
-        };
-
-
-        mostrarEstadoContrato(
-            contratoAtual
-        );
-
-
-        carregarMeusContratos();
-
-        carregarContratosAdmin();
-
-
-        alert(
-            "Contrato aceito com sucesso."
-        );
-
-    }
-
-    catch(erro){
-
-        console.error(erro);
-
-        alert(
-            "Erro ao registrar o contrato."
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CONFIRMAR CONTRATO COM REVELAÇÃO
-========================================================= */
-
-async function finalizarContratoRevelado(){
-
-    if(!contratoAtual){
-
-        return;
-
-    }
-
-
-    const confirmar =
-        confirm(
-            "Deseja aceitar este contrato com as revelações escolhidas?"
-        );
-
-
-    if(!confirmar){
-
-        return;
-
-    }
-
-
-    try{
-
-        await db.ref(
-            "contratos/" +
-            contratoAtual.id
-        )
-        .update({
-
-            status:"Aceito",
-
-            aceitoEm:Date.now()
-
-        });
-
-
-        contratoAtual.status =
-            "Aceito";
-
-
-        contratoAtual.aceitoEm =
-            Date.now();
-
-
-        mostrarEstadoContrato(
-            contratoAtual
-        );
-
-
-        carregarMeusContratos();
-
-        carregarContratosAdmin();
-
-
-        alert(
-            "Contrato aceito com sucesso."
-        );
-
-    }
-
-    catch(erro){
-
-        console.error(erro);
-
-        alert(
-            "Erro ao aceitar o contrato."
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CORREÇÃO DO BOTÃO DE ACEITAR
-========================================================= */
-
-const aceitarContratoOriginal =
-    aceitarContrato;
-
-
-aceitarContrato = async function(){
-
-    /*
-       Se já existe um contrato criado por
-       uma revelação, apenas finaliza esse contrato.
-
-       Isso é o que torna a revelação permanente.
-    */
-
-    if(contratoAtual){
-
-        if(
-            contratoAtual.status === "Preparando"
-        ){
-
-            await finalizarContratoRevelado();
+        if(!confirmar){
 
             return;
 
         }
 
+
+        try{
+
+            const id =
+                novoId();
+
+
+            const contrato = {
+
+                jogador:
+                    usuarioAtual,
+
+                jogadorAlvo:
+                    usuarioAtual +
+                    "_" +
+                    alvoAtual.id,
+
+                alvoId:
+                    alvoAtual.id,
+
+                alvoNome:
+                    alvoAtual.nome,
+
+                recompensaOriginal:
+                    Number(
+                        alvoAtual.recompensa
+                    ),
+
+                informacaoRevelada:
+                    false,
+
+                locaisRevelados:
+                    false,
+
+                recompensaFinal:
+                    Number(
+                        alvoAtual.recompensa
+                    ),
+
+                status:
+                    "Aceito",
+
+                criadoEm:
+                    Date.now(),
+
+                aceitoEm:
+                    Date.now()
+
+            };
+
+
+            await db.ref(
+                "contratos/" + id
+            ).set(
+                contrato
+            );
+
+
+            contratoAtual = {
+
+                id:id,
+
+                ...contrato
+
+            };
+
+
+            atualizarModal();
+
+
+            alert(
+                "CONTRATO ACEITO.\n\n" +
+                "O administrador já pode visualizar o contrato."
+            );
+
+        }
+
+        catch(erro){
+
+            console.error(erro);
+
+            alert(
+                "Erro ao aceitar contrato."
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    if(
+        contratoAtual.status === "Aceito"
+    ){
 
         alert(
             "Este contrato já foi aceito."
@@ -3112,25 +2828,103 @@ aceitarContrato = async function(){
     }
 
 
-    await aceitarContratoOriginal();
+    const confirmar =
+        confirm(
 
-};
+            "Deseja aceitar este contrato " +
+            "com as revelações escolhidas?"
+
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    try{
+
+        const recompensa =
+            calcularRecompensaBanco(
+
+                contratoAtual.informacaoRevelada === true,
+
+                contratoAtual.locaisRevelados === true
+
+            );
+
+
+        await db.ref(
+            "contratos/" +
+            contratoAtual.id
+        ).update({
+
+            status:
+                "Aceito",
+
+            recompensaFinal:
+                recompensa,
+
+            aceitoEm:
+                Date.now()
+
+        });
+
+
+        contratoAtual.status =
+            "Aceito";
+
+
+        contratoAtual.recompensaFinal =
+            recompensa;
+
+
+        contratoAtual.aceitoEm =
+            Date.now();
+
+
+        atualizarModal();
+
+
+        alert(
+            "CONTRATO ACEITO.\n\n" +
+            "O administrador já pode visualizar o contrato."
+        );
+
+    }
+
+    catch(erro){
+
+        console.error(erro);
+
+        alert(
+            "Erro ao registrar aceitação."
+        );
+
+    }
+
+}
 
 
 /* =========================================================
    MEUS CONTRATOS
 ========================================================= */
 
-function carregarMeusContratos(){
+function observarMeusContratos(){
 
     db.ref("contratos")
+
         .orderByChild("jogador")
+
         .equalTo(usuarioAtual)
+
         .on(
 
             "value",
 
-            (snapshot)=>{
+            function(snapshot){
 
                 const lista =
                     document.getElementById(
@@ -3141,7 +2935,9 @@ function carregarMeusContratos(){
                 lista.innerHTML = "";
 
 
-                if(!snapshot.exists()){
+                if(
+                    !snapshot.exists()
+                ){
 
                     lista.innerHTML =
                         "<p>Você ainda não possui contratos.</p>";
@@ -3153,7 +2949,7 @@ function carregarMeusContratos(){
 
                 snapshot.forEach(
 
-                    (item)=>{
+                    function(item){
 
                         const contrato =
                             item.val();
@@ -3166,20 +2962,43 @@ function carregarMeusContratos(){
 
 
                         div.className =
-                            "contrato-admin";
+                            "contrato";
+
+
+                        const statusClasse =
+                            contrato.status === "Aceito"
+
+                                ? "aceito"
+
+                                : "preparando";
 
 
                         div.innerHTML = `
 
-                            <div class="linha">
-
-                                <strong>
-                                    Alvo:
-                                </strong>
+                            <h3>
 
                                 ${escapar(
                                     contrato.alvoNome
                                 )}
+
+                            </h3>
+
+
+                            <div class="linha">
+
+                                <strong>
+                                    Status:
+                                </strong>
+
+                                <span
+                                    class="status ${statusClasse}"
+                                >
+
+                                    ${escapar(
+                                        contrato.status
+                                    )}
+
+                                </span>
 
                             </div>
 
@@ -3190,7 +3009,7 @@ function carregarMeusContratos(){
                                     Recompensa:
                                 </strong>
 
-                                ${formatarDinheiro(
+                                ${dinheiro(
                                     contrato.recompensaFinal
                                 )}
 
@@ -3200,26 +3019,13 @@ function carregarMeusContratos(){
                             <div class="linha">
 
                                 <strong>
-                                    Status:
-                                </strong>
-
-                                ${escapar(
-                                    contrato.status
-                                )}
-
-                            </div>
-
-
-                            <div class="linha">
-
-                                <strong>
-                                    Informações:
+                                    Informação:
                                 </strong>
 
                                 ${
                                     contrato.informacaoRevelada
-                                    ? "Reveladas (-25%)"
-                                    : "Não reveladas"
+                                    ? "Revelada (-25%)"
+                                    : "Não revelada"
                                 }
 
                             </div>
@@ -3242,7 +3048,9 @@ function carregarMeusContratos(){
                         `;
 
 
-                        lista.appendChild(div);
+                        lista.appendChild(
+                            div
+                        );
 
                     }
 
@@ -3256,12 +3064,14 @@ function carregarMeusContratos(){
 
 
 /* =========================================================
-   CONTRATOS ADMIN
+   ADMIN - CONTRATOS
 ========================================================= */
 
-function carregarContratosAdmin(){
+function observarContratos(){
 
-    if(usuarioAtual !== "Italo"){
+    if(
+        usuarioAtual !== "Italo"
+    ){
 
         return;
 
@@ -3272,53 +3082,44 @@ function carregarContratosAdmin(){
 
         "value",
 
-        (snapshot)=>{
+        function(snapshot){
 
             const lista =
                 document.getElementById(
-                    "listaContratosAdmin"
+                    "listaContratos"
                 );
 
 
             lista.innerHTML = "";
 
 
-            if(!snapshot.exists()){
+            if(
+                !snapshot.exists()
+            ){
 
-                lista.innerHTML =
-                    "<p>Nenhum contrato registrado.</p>";
+                lista.innerHTML = `
+
+                    <p>
+                        Nenhum contrato registrado.
+                    </p>
+
+                `;
 
                 return;
 
             }
 
 
-            let encontrados = 0;
-
-
             snapshot.forEach(
 
-                (item)=>{
+                function(item){
 
                     const contrato =
                         item.val();
 
 
-                    encontrados++;
-
-
-                    const data =
-                        contrato.aceitoEm ||
-                        contrato.criadoEm;
-
-
-                    const dataFormatada =
-                        data
-                        ? new Date(data)
-                            .toLocaleString(
-                                "pt-BR"
-                            )
-                        : "-";
+                    const id =
+                        item.key;
 
 
                     const div =
@@ -3328,10 +3129,32 @@ function carregarContratosAdmin(){
 
 
                     div.className =
-                        "contrato-admin";
+                        "contrato";
+
+
+                    const statusClasse =
+                        contrato.status === "Aceito"
+
+                            ? "aceito"
+
+                            : "preparando";
+
+
+                    const data =
+                        contrato.aceitoEm ||
+                        contrato.criadoEm;
 
 
                     div.innerHTML = `
+
+                        <h3>
+
+                            ${escapar(
+                                contrato.alvoNome
+                            )}
+
+                        </h3>
+
 
                         <div class="linha">
 
@@ -3349,12 +3172,18 @@ function carregarContratosAdmin(){
                         <div class="linha">
 
                             <strong>
-                                Alvo:
+                                Status:
                             </strong>
 
-                            ${escapar(
-                                contrato.alvoNome
-                            )}
+                            <span
+                                class="status ${statusClasse}"
+                            >
+
+                                ${escapar(
+                                    contrato.status
+                                )}
+
+                            </span>
 
                         </div>
 
@@ -3365,7 +3194,7 @@ function carregarContratosAdmin(){
                                 Recompensa original:
                             </strong>
 
-                            ${formatarDinheiro(
+                            ${dinheiro(
                                 contrato.recompensaOriginal
                             )}
 
@@ -3378,7 +3207,7 @@ function carregarContratosAdmin(){
                                 Recompensa final:
                             </strong>
 
-                            ${formatarDinheiro(
+                            ${dinheiro(
                                 contrato.recompensaFinal
                             )}
 
@@ -3388,13 +3217,13 @@ function carregarContratosAdmin(){
                         <div class="linha">
 
                             <strong>
-                                Informações:
+                                Informação revelada:
                             </strong>
 
                             ${
                                 contrato.informacaoRevelada
-                                ? "REVELADAS (-25%)"
-                                : "Não reveladas"
+                                ? "SIM (-25%)"
+                                : "NÃO"
                             }
 
                         </div>
@@ -3403,27 +3232,14 @@ function carregarContratosAdmin(){
                         <div class="linha">
 
                             <strong>
-                                Localizações:
+                                Localizações reveladas:
                             </strong>
 
                             ${
                                 contrato.locaisRevelados
-                                ? "REVELADAS (-25%)"
-                                : "Não reveladas"
+                                ? "SIM (-25%)"
+                                : "NÃO"
                             }
-
-                        </div>
-
-
-                        <div class="linha">
-
-                            <strong>
-                                Status:
-                            </strong>
-
-                            ${escapar(
-                                contrato.status
-                            )}
 
                         </div>
 
@@ -3434,28 +3250,430 @@ function carregarContratosAdmin(){
                                 Data:
                             </strong>
 
-                            ${dataFormatada}
+                            ${
+                                data
+
+                                ? new Date(data)
+                                    .toLocaleString(
+                                        "pt-BR"
+                                    )
+
+                                : "-"
+                            }
 
                         </div>
+
+
+                        <hr class="separador-contrato">
+
+
+                        <!-- =================================================
+                             EXCLUIR CONTRATO
+                        ================================================== -->
+
+                        <button
+                            class="btn-vermelho"
+                            onclick="
+                                excluirContrato('${id}')
+                            "
+                        >
+
+                            EXCLUIR CONTRATO
+
+                        </button>
 
                     `;
 
 
-                    lista.appendChild(div);
+                    lista.appendChild(
+                        div
+                    );
 
                 }
 
             );
 
+        }
 
-            if(encontrados === 0){
+    );
+
+}
+
+
+/* =========================================================
+   EXCLUIR CONTRATO
+   SOMENTE ITALO
+========================================================= */
+
+async function excluirContrato(id){
+
+    /*
+       Segurança básica:
+       somente o usuário Italo pode
+       utilizar esta função.
+    */
+
+    if(
+        usuarioAtual !== "Italo"
+    ){
+
+        alert(
+            "Somente o administrador pode excluir contratos."
+        );
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+
+            "EXCLUIR CONTRATO?\n\n" +
+
+            "Este contrato será removido " +
+            "do sistema.\n\n" +
+
+            "Essa ação não pode ser desfeita."
+
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    try{
+
+        await db.ref(
+            "contratos/" + id
+        ).remove();
+
+
+        alert(
+            "Contrato excluído com sucesso."
+        );
+
+    }
+
+    catch(erro){
+
+        console.error(erro);
+
+        alert(
+            "Não foi possível excluir o contrato."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ADMIN - ALVOS
+========================================================= */
+
+function observarAdmin(){
+
+    db.ref("alvos").on(
+
+        "value",
+
+        function(snapshot){
+
+            const lista =
+                document.getElementById(
+                    "listaAdmin"
+                );
+
+
+            lista.innerHTML = "";
+
+
+            if(
+                !snapshot.exists()
+            ){
 
                 lista.innerHTML =
-                    "<p>Nenhum contrato registrado.</p>";
+                    "<p>Nenhum alvo cadastrado.</p>";
+
+                return;
 
             }
 
+
+            snapshot.forEach(
+
+                function(item){
+
+                    const alvo =
+                        item.val();
+
+
+                    const id =
+                        item.key;
+
+
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    div.className =
+                        "admin-item";
+
+
+                    const ativo =
+                        alvo.status === "ativo";
+
+
+                    div.innerHTML = `
+
+                        <strong>
+
+                            ${escapar(
+                                alvo.nome
+                            )}
+
+                        </strong>
+
+
+                        <br><br>
+
+
+                        ${dinheiro(
+                            alvo.recompensa
+                        )}
+
+
+                        <br><br>
+
+
+                        <span
+                            class="status ${
+                                ativo
+                                ? "ativo"
+                                : "inativo"
+                            }"
+                        >
+
+                            ${
+                                ativo
+                                ? "ATIVO"
+                                : "INATIVO"
+                            }
+
+                        </span>
+
+
+                        <br><br>
+
+
+                        <button
+                            onclick="
+                                editarAlvo('${id}')
+                            "
+                        >
+
+                            EDITAR
+
+                        </button>
+
+
+                        <button
+                            class="btn-amarelo"
+                            onclick="
+                                alternarAlvo('${id}')
+                            "
+                        >
+
+                            ${
+                                ativo
+                                ? "DESATIVAR"
+                                : "ATIVAR"
+                            }
+
+                        </button>
+
+                    `;
+
+
+                    lista.appendChild(
+                        div
+                    );
+
+                }
+
+            );
+
         }
+
+    );
+
+}
+
+
+/* =========================================================
+   EDITAR ALVO
+========================================================= */
+
+async function editarAlvo(id){
+
+    const snapshot =
+        await db.ref(
+            "alvos/" + id
+        ).once("value");
+
+
+    if(
+        !snapshot.exists()
+    ){
+
+        return;
+
+    }
+
+
+    const alvo =
+        snapshot.val();
+
+
+    alvoEditando =
+        id;
+
+
+    document.getElementById(
+        "nomeAlvo"
+    ).value =
+        alvo.nome || "";
+
+
+    document.getElementById(
+        "valorAlvo"
+    ).value =
+        alvo.recompensa || "";
+
+
+    document.getElementById(
+        "fotoAlvo"
+    ).value =
+        alvo.foto || "";
+
+
+    document.getElementById(
+        "statusAlvo"
+    ).value =
+        alvo.status || "ativo";
+
+
+    document.getElementById(
+        "descricaoAlvo"
+    ).value =
+        alvo.descricao || "";
+
+
+    document.getElementById(
+        "informacaoAlvo"
+    ).value =
+        alvo.informacao || "";
+
+
+    document.getElementById(
+        "local1"
+    ).value =
+        alvo.locais?.local1 || "";
+
+
+    document.getElementById(
+        "local2"
+    ).value =
+        alvo.locais?.local2 || "";
+
+
+    document.getElementById(
+        "local3"
+    ).value =
+        alvo.locais?.local3 || "";
+
+
+    document.getElementById(
+        "cancelarEdicao"
+    ).classList.remove(
+        "oculto"
+    );
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =========================================================
+   CANCELAR EDIÇÃO
+========================================================= */
+
+function cancelarEdicao(){
+
+    limparFormulario();
+
+}
+
+
+/* =========================================================
+   ATIVAR / DESATIVAR ALVO
+========================================================= */
+
+async function alternarAlvo(id){
+
+    if(
+        usuarioAtual !== "Italo"
+    ){
+
+        return;
+
+    }
+
+
+    const snapshot =
+        await db.ref(
+            "alvos/" + id
+        ).once("value");
+
+
+    if(
+        !snapshot.exists()
+    ){
+
+        return;
+
+    }
+
+
+    const alvo =
+        snapshot.val();
+
+
+    await db.ref(
+        "alvos/" +
+        id +
+        "/status"
+    ).set(
+
+        alvo.status === "ativo"
+
+            ? "inativo"
+
+            : "ativo"
 
     );
 
@@ -3469,23 +3687,20 @@ function carregarContratosAdmin(){
 function fecharModal(){
 
     document.getElementById(
-        "modalContrato"
-    ).classList.remove("aberto");
-
-
-    alvoAtual = null;
-
-    contratoAtual = null;
+        "modal"
+    ).classList.remove(
+        "aberto"
+    );
 
 }
 
 
 /* =========================================================
-   FECHAR MODAL CLICANDO FORA
+   CLICAR FORA DO MODAL
 ========================================================= */
 
 document.getElementById(
-    "modalContrato"
+    "modal"
 ).addEventListener(
 
     "click",
@@ -3497,29 +3712,6 @@ document.getElementById(
         ){
 
             fecharModal();
-
-        }
-
-    }
-
-);
-
-
-/* =========================================================
-   ENTER NO LOGIN
-========================================================= */
-
-document.getElementById(
-    "loginSenha"
-).addEventListener(
-
-    "keydown",
-
-    function(event){
-
-        if(event.key === "Enter"){
-
-            fazerLogin();
 
         }
 
@@ -3554,6 +3746,31 @@ window.addEventListener(
 
 
             abrirSistema();
+
+        }
+
+    }
+
+);
+
+
+/* =========================================================
+   ENTER NO LOGIN
+========================================================= */
+
+document.getElementById(
+    "senhaLogin"
+).addEventListener(
+
+    "keydown",
+
+    function(event){
+
+        if(
+            event.key === "Enter"
+        ){
+
+            login();
 
         }
 
