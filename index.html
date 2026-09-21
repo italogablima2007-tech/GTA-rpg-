@@ -8,6 +8,24 @@
 
 <style>
 
+/* ==========================================
+   HACKER
+========================================== */
+
+.aba-hacker{
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.70)
+        ),
+        url("hacker.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+}
 *{
     box-sizing:border-box;
 }
@@ -122,6 +140,20 @@ body{
     background-size:cover;
     background-position:center;
 }
+<!-- ==========================================
+     HACKER
+========================================== -->
+
+<div
+    id="abaHacker"
+    class="aba aba-hacker"
+    onclick="abrirHacker()"
+    style="display:none;"
+>
+
+    <h2>HACKER</h2>
+
+</div>
 
 /* =========================
    LOGIN LESTER
@@ -764,7 +796,17 @@ firebase.initializeApp(firebaseConfig);
 
 const banco = firebase.database();
 
+/* ==========================================
+   ABRIR HACKER
+========================================== */
 
+function abrirHacker(){
+
+    window.location.href =
+        "./hacker.html";
+
+}
+    
 /* =========================
    USUÁRIOS
 ========================= */
