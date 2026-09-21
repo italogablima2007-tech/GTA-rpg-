@@ -1,740 +1,923 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Central do RPG</title>
-
-<style>
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#101010;
-    color:white;
-}
-
-.escondido{
-    display:none !important;
-}
-
-/* =========================
-   CENTRAL
-========================= */
-
-#central{
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:30px;
-}
-
-.titulo{
-    text-align:center;
-    margin-bottom:40px;
-}
-
-.titulo h1{
-    margin:0;
-    font-size:42px;
-    letter-spacing:2px;
-}
-
-.titulo p{
-    color:#aaa;
-    margin-top:10px;
-}
-
-.abas-central{
-    width:100%;
-    max-width:1200px;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:25px;
-}
-
-.aba{
-    min-height:220px;
-    border-radius:15px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    transition:.2s;
-    background:#1c1c1c;
-    border:1px solid #333;
-    overflow:hidden;
-    position:relative;
-}
-
-.aba:hover{
-    transform:scale(1.02);
-    border-color:#777;
-}
-
-.aba h2{
-    position:relative;
-    z-index:2;
-    font-size:25px;
-    text-align:center;
-}
-
-.aba-imoveis{
-    background:
-        linear-gradient(
-            rgba(0,0,0,.45),
-            rgba(0,0,0,.65)
-        );
-}
-
-.aba-lester{
-    background-image:
-        linear-gradient(
-            rgba(0,0,0,.35),
-            rgba(0,0,0,.65)
-        ),
-        url("./lester.jpg");
-
-    background-size:cover;
-    background-position:center;
-}
-
-
-/* =========================
-   ALVOS
-========================= */
-
-.aba-alvos{
-    background:
-        linear-gradient(
-            rgba(0,0,0,.35),
-            rgba(0,0,0,.65)
-        ),
-        url("alvos.jpg");
-
-    background-size:cover;
-    background-position:center;
-}
-
-/* =========================
-   LOGIN LESTER
-========================= */
-
-#login{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-
-.login-box{
-    width:100%;
-    max-width:400px;
-    background:#181818;
-    border:1px solid #333;
-    border-radius:15px;
-    padding:30px;
-    box-shadow:0 10px 40px rgba(0,0,0,.5);
-}
-
-.login-box h1{
-    text-align:center;
-    margin-top:0;
-}
-
-.login-box p{
-    text-align:center;
-    color:#999;
-}
-
-input,
-textarea,
-select{
-    width:100%;
-    padding:13px;
-    margin:7px 0 15px;
-    border-radius:7px;
-    border:1px solid #444;
-    background:#222;
-    color:white;
-    font-size:15px;
-}
-
-textarea{
-    min-height:100px;
-}
-
-button{
-    border:0;
-    border-radius:7px;
-    padding:12px 16px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.btn-vermelho{
-    width:100%;
-    background:#c40000;
-    color:white;
-}
-
-.btn-vermelho:hover{
-    background:#a00000;
-}
-
-.btn-voltar{
-    width:100%;
-    margin-top:10px;
-    background:#333;
-    color:white;
-}
-
-.erro{
-    color:#ff4444;
-    text-align:center;
-    margin-top:15px;
-}
-
-
-/* =========================
-   LESTER
-========================= */
-
-#lester{
-    min-height:100vh;
-}
-
-header{
-    background:#181818;
-    border-bottom:1px solid #333;
-    padding:18px 30px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:15px;
-}
-
-header h1{
-    margin:0;
-}
-
-.usuario{
-    display:flex;
-    align-items:center;
-    gap:20px;
-}
-
-.saldo{
-    color:#42d66b;
-    font-weight:bold;
-}
-
-.btn-sair{
-    background:#333;
-    color:white;
-}
-
-.container{
-    width:100%;
-    max-width:1200px;
-    margin:auto;
-    padding:30px 20px;
-}
-
-
-/* =========================
-   ABAS LESTER
-========================= */
-
-.abas{
-    display:flex;
-    gap:10px;
-    border-bottom:1px solid #333;
-    margin-bottom:30px;
-}
-
-.aba-lester-menu{
-    padding:13px 18px;
-    cursor:pointer;
-    color:#888;
-    font-weight:bold;
-}
-
-.aba-lester-menu.ativa{
-    color:#fff;
-    border-bottom:3px solid #c40000;
-}
-
-
-/* =========================
-   MISSÕES
-========================= */
-
-.grade{
-    display:grid;
-    grid-template-columns:
-        repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
-}
-
-.missao{
-    background:#1b1b1b;
-    border:1px solid #333;
-    border-radius:12px;
-    padding:20px;
-    position:relative;
-}
-
-.missao h3{
-    margin-top:0;
-}
-
-.missao p{
-    color:#bbb;
-    line-height:1.5;
-}
-
-.recompensa{
-    color:#42d66b !important;
-    font-weight:bold;
-}
-
-.prazo{
-    color:#ffb000 !important;
-}
-
-.cronometro{
-    position:absolute;
-    top:15px;
-    right:15px;
-    color:#ff4444;
-    font-weight:bold;
-}
-
-.btn-missao{
-    width:100%;
-    margin-top:10px;
-    background:#c40000;
-    color:white;
-}
-
-.btn-cancelar{
-    background:#444;
-}
-
-.vazio{
-    text-align:center;
-    color:#777;
-    padding:50px;
-}
-
-
-/* =========================
-   ADMIN
-========================= */
-
-.admin{
-    background:#1b1b1b;
-    border:1px solid #333;
-    border-radius:12px;
-    padding:25px;
-    margin-bottom:30px;
-}
-
-.admin h2{
-    color:#ff4444;
-}
-
-.admin-jogador{
-    background:#222;
-    border:1px solid #333;
-    border-radius:10px;
-    padding:15px;
-    margin-bottom:10px;
-}
-
-.admin-jogador strong{
-    display:block;
-    margin-bottom:10px;
-}
-
-.btn-pequeno{
-    background:#333;
-    color:white;
-    margin:3px;
-}
-
-.btn-pequeno:hover{
-    background:#c40000;
-}
-
-.mensagem{
-    padding:15px;
-    border-radius:8px;
-    margin-bottom:20px;
-    background:#222;
-}
-
-.sucesso{
-    color:#42d66b;
-}
-
-.aviso{
-    color:#ff4444;
-}
-
-
-/* =========================
-   RESPONSIVO
-========================= */
-
-@media(max-width:700px){
-
-    .abas-central{
-        grid-template-columns:1fr;
-    }
-
-    .aba{
-        min-height:170px;
-    }
-
-    .titulo h1{
-        font-size:30px;
-    }
-
-    header{
-        padding:15px;
-    }
-
-    .usuario{
-        width:100%;
-        justify-content:space-between;
-    }
-
-}
-
-</style>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Alvos</title>
+
+    <!-- ==========================================
+         FIREBASE
+    ========================================== -->
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+
+    <!-- ==========================================
+         ESTILO
+    ========================================== -->
+
+    <style>
+
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+
+            margin:0;
+
+            font-family:Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #252525,
+                    #080808 70%
+                );
+
+            color:white;
+
+            min-height:100vh;
+
+        }
+
+
+        /* ==========================================
+           TELA DE LOGIN
+        ========================================== */
+
+        #loginTela{
+
+            min-height:100vh;
+
+            display:flex;
+
+            justify-content:center;
+
+            align-items:center;
+
+            padding:20px;
+
+        }
+
+
+        .login-box{
+
+            width:100%;
+
+            max-width:420px;
+
+            background:#151515;
+
+            border:1px solid #333;
+
+            border-radius:12px;
+
+            padding:30px;
+
+            box-shadow:
+                0 10px 40px rgba(0,0,0,.6);
+
+            text-align:center;
+
+        }
+
+
+        .login-box h1{
+
+            margin-top:0;
+
+            margin-bottom:25px;
+
+            letter-spacing:2px;
+
+        }
+
+
+        input,
+        select,
+        textarea{
+
+            width:100%;
+
+            padding:13px;
+
+            margin-bottom:12px;
+
+            border-radius:6px;
+
+            border:1px solid #444;
+
+            background:#222;
+
+            color:white;
+
+            outline:none;
+
+        }
+
+
+        textarea{
+
+            min-height:100px;
+
+            resize:vertical;
+
+        }
+
+
+        button{
+
+            border:none;
+
+            border-radius:6px;
+
+            padding:12px 18px;
+
+            cursor:pointer;
+
+            font-weight:bold;
+
+        }
+
+
+        .btn-principal{
+
+            width:100%;
+
+            background:#b00000;
+
+            color:white;
+
+        }
+
+
+        .btn-principal:hover{
+
+            background:#d00000;
+
+        }
+
+
+        /* ==========================================
+           SISTEMA
+        ========================================== */
+
+        #sistema{
+
+            display:none;
+
+            min-height:100vh;
+
+            padding:25px;
+
+        }
+
+
+        .topo{
+
+            max-width:1200px;
+
+            margin:auto;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            gap:15px;
+
+            margin-bottom:25px;
+
+        }
+
+
+        .topo h1{
+
+            margin:0;
+
+            letter-spacing:2px;
+
+        }
+
+
+        .btn-sair{
+
+            background:#333;
+
+            color:white;
+
+        }
+
+
+        .btn-sair:hover{
+
+            background:#555;
+
+        }
+
+
+        .container{
+
+            max-width:1200px;
+
+            margin:auto;
+
+        }
+
+
+        /* ==========================================
+           PAINEL
+        ========================================== */
+
+        .painel{
+
+            background:#151515;
+
+            border:1px solid #333;
+
+            border-radius:10px;
+
+            padding:20px;
+
+            margin-bottom:25px;
+
+        }
+
+
+        .painel h2{
+
+            margin-top:0;
+
+            border-bottom:1px solid #333;
+
+            padding-bottom:12px;
+
+        }
+
+
+        /* ==========================================
+           ALVOS
+        ========================================== */
+
+        .alvos-grid{
+
+            display:grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(260px,1fr)
+                );
+
+            gap:18px;
+
+        }
+
+
+        .alvo-card{
+
+            background:#202020;
+
+            border:1px solid #383838;
+
+            border-radius:10px;
+
+            padding:18px;
+
+            transition:.2s;
+
+        }
+
+
+        .alvo-card:hover{
+
+            transform:translateY(-2px);
+
+            border-color:#666;
+
+        }
+
+
+        .alvo-card h3{
+
+            margin-top:0;
+
+            margin-bottom:8px;
+
+        }
+
+
+        .status{
+
+            display:inline-block;
+
+            padding:5px 9px;
+
+            border-radius:5px;
+
+            font-size:12px;
+
+            font-weight:bold;
+
+            margin-bottom:12px;
+
+        }
+
+
+        .ativo{
+
+            background:#155d15;
+
+            color:#b9ffb9;
+
+        }
+
+
+        .inativo{
+
+            background:#5d1515;
+
+            color:#ffb9b9;
+
+        }
+
+
+        .recompensa{
+
+            font-size:20px;
+
+            font-weight:bold;
+
+            margin:12px 0;
+
+        }
+
+
+        .btn{
+
+            width:100%;
+
+            margin-top:8px;
+
+            color:white;
+
+        }
+
+
+        .btn-verde{
+
+            background:#176b17;
+
+        }
+
+
+        .btn-verde:hover{
+
+            background:#208b20;
+
+        }
+
+
+        .btn-amarelo{
+
+            background:#806700;
+
+        }
+
+
+        .btn-amarelo:hover{
+
+            background:#a88700;
+
+        }
+
+
+        .btn-vermelho{
+
+            background:#8b1515;
+
+        }
+
+
+        .btn-vermelho:hover{
+
+            background:#b51c1c;
+
+        }
+
+
+        .btn-cinza{
+
+            background:#444;
+
+        }
+
+
+        /* ==========================================
+           CONTRATOS
+        ========================================== */
+
+        .contrato{
+
+            background:#202020;
+
+            border:1px solid #383838;
+
+            border-radius:10px;
+
+            padding:18px;
+
+            margin-bottom:15px;
+
+        }
+
+
+        .contrato h3{
+
+            margin-top:0;
+
+        }
+
+
+        .contrato-info{
+
+            line-height:1.6;
+
+            color:#ddd;
+
+        }
+
+
+        .contrato-preparando{
+
+            border-color:#806700;
+
+        }
+
+
+        .contrato-aceito{
+
+            border-color:#176b17;
+
+        }
+
+
+        /* ==========================================
+           MODAL
+        ========================================== */
+
+        .modal{
+
+            display:none;
+
+            position:fixed;
+
+            inset:0;
+
+            background:rgba(0,0,0,.8);
+
+            justify-content:center;
+
+            align-items:center;
+
+            padding:20px;
+
+            z-index:999;
+
+        }
+
+
+        .modal-conteudo{
+
+            width:100%;
+
+            max-width:700px;
+
+            max-height:90vh;
+
+            overflow-y:auto;
+
+            background:#151515;
+
+            border:1px solid #444;
+
+            border-radius:12px;
+
+            padding:25px;
+
+        }
+
+
+        .modal-topo{
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            gap:10px;
+
+        }
+
+
+        .fechar{
+
+            background:#333;
+
+            color:white;
+
+            font-size:20px;
+
+            padding:7px 12px;
+
+        }
+
+
+        .bloco-info{
+
+            background:#202020;
+
+            border:1px solid #383838;
+
+            border-radius:8px;
+
+            padding:15px;
+
+            margin:15px 0;
+
+        }
+
+
+        .bloqueado{
+
+            color:#999;
+
+            text-align:center;
+
+            padding:20px;
+
+        }
+
+
+        .local{
+
+            background:#252525;
+
+            border-radius:6px;
+
+            padding:10px;
+
+            margin:7px 0;
+
+        }
+
+
+        /* ==========================================
+           RESPONSIVO
+        ========================================== */
+
+        @media(max-width:600px){
+
+            #sistema{
+
+                padding:15px;
+
+            }
+
+            .topo{
+
+                flex-direction:column;
+
+                align-items:stretch;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
 
-<!-- =========================
-     CENTRAL
-========================= -->
-
-<div id="central">
-
-    <div class="titulo">
-
-        <h1>CENTRAL DO RPG</h1>
-
-        <p>Selecione uma área</p>
-
-    </div>
-
-
-    <div class="abas-central">
-
-        <!-- IMÓVEIS -->
-
-        <div
-            class="aba aba-imoveis"
-            onclick="abrirImoveis()"
-        >
-
-            <h2>IMÓVEIS</h2>
-
-        </div>
-
-
-        <!-- LESTER -->
-
-        <div
-            class="aba aba-lester"
-            onclick="abrirLogin()"
-        >
-
-            <h2>MISSÕES DO LESTER</h2>
-
-        </div>
-
-
-        <!-- ALVOS -->
-
-<a
-    href="./alvos.html"
-    class="aba aba-alvos"
->
-
-    <h2>ALVOS</h2>
-
-</a>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
+<!-- ==========================================
      LOGIN
-========================= -->
+========================================== -->
 
-<div
-    id="login"
-    class="escondido"
->
+<div id="loginTela">
 
     <div class="login-box">
 
-        <h1>MISSÕES DO LESTER</h1>
+        <h1>ALVOS</h1>
 
-        <p>Acesso restrito</p>
-
+        <p>Entre para acessar o sistema.</p>
 
         <input
-            id="usuarioLogin"
             type="text"
+            id="usuarioLogin"
             placeholder="Usuário"
         >
 
-
         <input
-            id="senhaLogin"
             type="password"
+            id="senhaLogin"
             placeholder="Senha"
         >
 
-
         <button
-            class="btn-vermelho"
-            onclick="fazerLogin()"
+            class="btn-principal"
+            onclick="login()"
         >
             ENTRAR
         </button>
 
-
-        <button
-            class="btn-voltar"
-            onclick="voltarCentral()"
-        >
-            VOLTAR
-        </button>
-
-
-        <div
-            id="erroLogin"
-            class="erro"
-        ></div>
-
     </div>
 
 </div>
 
 
-<!-- =========================
-     LESTER
-========================= -->
 
-<div
-    id="lester"
-    class="escondido"
->
+<!-- ==========================================
+     SISTEMA
+========================================== -->
 
-<header>
-
-    <h1>MISSÕES DO LESTER</h1>
+<div id="sistema">
 
 
-    <div class="usuario">
+    <div class="topo">
 
-        <strong id="nomeUsuario"></strong>
-
-        <span class="saldo">
-            $<span id="saldoUsuario">0</span>
-        </span>
+        <h1>ALVOS</h1>
 
         <button
             class="btn-sair"
-            onclick="sairLester()"
+            onclick="sair()"
         >
             SAIR
         </button>
 
     </div>
 
-</header>
+
+    <div class="container">
 
 
-<div class="container">
-
-    <div class="abas">
+        <!-- ==========================================
+             PAINEL ADMIN
+        ========================================== -->
 
         <div
-            id="abaMissoes"
-            class="aba-lester-menu ativa"
-            onclick="mostrarAbaLester('missoes')"
+            class="painel"
+            id="painelAdmin"
+            style="display:none;"
         >
-            MISSÕES
-        </div>
 
-
-        <div
-            id="abaAdmin"
-            class="aba-lester-menu escondido"
-            onclick="mostrarAbaLester('admin')"
-        >
-            ADMINISTRADOR
-        </div>
-
-    </div>
-
-
-    <div id="mensagem"></div>
-
-
-    <!-- MISSÕES -->
-
-    <div id="areaMissoes">
-
-        <h2>Missões disponíveis</h2>
-
-        <div
-            id="listaMissoes"
-            class="grade"
-        ></div>
-
-    </div>
-
-
-    <!-- ADMIN -->
-
-    <div
-        id="areaAdmin"
-        class="escondido"
-    >
-
-        <div class="admin">
-
-            <h2>CRIAR MISSÃO</h2>
-
-            <input
-                id="nomeMissao"
-                type="text"
-                placeholder="Nome da missão"
-            >
-
-
-            <textarea
-                id="descricaoMissao"
-                placeholder="Descrição da missão"
-            ></textarea>
+            <h2>GERENCIAR ALVOS</h2>
 
 
             <input
-                id="objetivoMissao"
-                type="text"
-                placeholder="Objetivo"
+                type="hidden"
+                id="alvoEditando"
             >
 
 
             <input
-                id="recompensaMissao"
+                type="text"
+                id="nomeAlvo"
+                placeholder="Nome do alvo"
+            >
+
+
+            <input
                 type="number"
-                placeholder="Recompensa"
-                min="0"
+                id="idadeAlvo"
+                placeholder="Idade"
             >
 
 
             <input
-                id="prazoMissao"
                 type="text"
-                placeholder="Prazo / local"
+                id="profissaoAlvo"
+                placeholder="Profissão"
             >
 
 
             <input
-                id="duracaoMissao"
-                type="number"
-                placeholder="Duração"
-                min="1"
+                type="text"
+                id="nacionalidadeAlvo"
+                placeholder="Nacionalidade"
             >
 
 
-            <select id="unidadeMissao">
+            <input
+                type="text"
+                id="residenciaAlvo"
+                placeholder="Residência"
+            >
 
-                <option value="minutos">
-                    Minutos
+
+            <select id="ameacaAlvo">
+
+                <option value="Baixa">
+                    Ameaça: Baixa
                 </option>
 
-                <option value="horas">
-                    Horas
+                <option value="Média">
+                    Ameaça: Média
                 </option>
 
-                <option value="dias">
-                    Dias
+                <option value="Alta">
+                    Ameaça: Alta
                 </option>
 
             </select>
 
 
-            <button
-                class="btn-vermelho"
-                onclick="criarMissao()"
+            <textarea
+                id="descricaoAlvo"
+                placeholder="Descrição"
+            ></textarea>
+
+
+            <textarea
+                id="informacaoAlvo"
+                placeholder="Informações importantes"
+            ></textarea>
+
+
+            <textarea
+                id="personalidadeAlvo"
+                placeholder="Personalidade"
+            ></textarea>
+
+
+            <textarea
+                id="equipamentoAlvo"
+                placeholder="Equipamentos"
+            ></textarea>
+
+
+            <textarea
+                id="locaisAlvo"
+                placeholder="Locais do alvo. Coloque um por linha."
+            ></textarea>
+
+
+            <input
+                type="number"
+                id="recompensaAlvo"
+                placeholder="Recompensa"
             >
-                CRIAR MISSÃO
+
+
+            <input
+                type="text"
+                id="objetivoAlvo"
+                placeholder="Objetivo"
+            >
+
+
+            <button
+                class="btn btn-verde"
+                onclick="salvarAlvo()"
+            >
+                SALVAR ALVO
             </button>
+
+
+            <button
+                class="btn btn-cinza"
+                id="btnCancelarEdicao"
+                onclick="cancelarEdicao()"
+                style="display:none;"
+            >
+                CANCELAR EDIÇÃO
+            </button>
+
+
+            <div
+                id="listaAlvosAdmin"
+                style="margin-top:25px;"
+            ></div>
 
         </div>
 
 
-        <h2>Jogadores e dinheiro</h2>
 
-        <div id="listaJogadores"></div>
+        <!-- ==========================================
+             ALVOS DISPONÍVEIS
+        ========================================== -->
+
+        <div class="painel">
+
+            <h2>ALVOS DISPONÍVEIS</h2>
+
+            <div
+                id="listaAlvos"
+                class="alvos-grid"
+            ></div>
+
+        </div>
 
 
-        <h2>Missões cadastradas</h2>
+
+        <!-- ==========================================
+             MEUS CONTRATOS
+        ========================================== -->
+
+        <div class="painel">
+
+            <h2>MEUS CONTRATOS</h2>
+
+            <div id="meusContratos"></div>
+
+        </div>
+
+
+
+        <!-- ==========================================
+             CONTRATOS DOS JOGADORES
+        ========================================== -->
 
         <div
-            id="listaAdminMissoes"
-        ></div>
+            class="painel"
+            id="painelContratosAdmin"
+            style="display:none;"
+        >
+
+            <h2>CONTRATOS DOS JOGADORES</h2>
+
+            <div id="contratosAdmin"></div>
+
+        </div>
+
 
     </div>
 
 </div>
 
+
+
+<!-- ==========================================
+     MODAL DO CONTRATO
+========================================== -->
+
+<div
+    class="modal"
+    id="modalContrato"
+>
+
+    <div class="modal-conteudo">
+
+
+        <div class="modal-topo">
+
+            <h2 id="modalTitulo">
+                CONTRATO
+            </h2>
+
+            <button
+                class="fechar"
+                onclick="fecharModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div id="modalCorpo"></div>
+
+
+    </div>
+
 </div>
 
-
-<!-- =========================
-     FIREBASE
-========================= -->
-
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 
 
 <script>
 
-/* =========================
-   FIREBASE
-========================= */
+
+/* ==========================================
+   FIREBASE CONFIG
+========================================== */
 
 const firebaseConfig = {
 
-    apiKey:
-        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBdJqg",
+    apiKey: "COLOQUE_SEU_API_KEY",
 
     authDomain:
         "gta-rpg.firebaseapp.com",
@@ -749,88 +932,53 @@ const firebaseConfig = {
         "gta-rpg.firebasestorage.app",
 
     messagingSenderId:
-        "318963858414",
+        "COLOQUE_SEU_MESSAGING_SENDER_ID",
 
     appId:
-        "1:318963858414:web:cc7122486ac5a3d267ecff",
-
-    measurementId:
-        "G-K157521F0H"
+        "COLOQUE_SEU_APP_ID"
 
 };
 
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(
+    firebaseConfig
+);
 
-const banco = firebase.database();
+
+const db =
+    firebase.database();
 
 
-/* =========================
+
+/* ==========================================
    USUÁRIOS
-========================= */
+========================================== */
 
 const usuarios = {
 
-    Kaius: "28/09",
+    Kaius:"28/09",
 
-    Gaby: "22/09",
+    Gaby:"22/09",
 
-    Duda: "13/09",
+    Duda:"13/09",
 
-    Italo: "1822"
+    Italo:"1822"
 
 };
+
 
 
 let usuarioAtual = null;
 
-let saldos = {};
-
-let missoes = {};
-
-let missoesAceitas = {};
+let alvoAtual = null;
 
 
-/* =========================
-   ABRIR IMÓVEIS
-========================= */
 
-function abrirImoveis(){
+/* ==========================================
+   LOGIN
+========================================== */
 
-    window.location.href = "./imoveis.html";
-
-}
-
-
-/* =========================
-   ABRIR ALVOS
-========================= */
-
-function abrirAlvos(){
-
-    window.location.href = "./alvos.html";
-
-}
-
-
-/* =========================
-   LOGIN LESTER
-========================= */
-
-function abrirLogin(){
-
-    document
-        .getElementById("central")
-        .classList.add("escondido");
-
-    document
-        .getElementById("login")
-        .classList.remove("escondido");
-
-}
-
-
-function fazerLogin(){
+function login(){
 
     const usuario =
         document
@@ -851,426 +999,195 @@ function fazerLogin(){
         usuarios[usuario] === senha
     ){
 
-        usuarioAtual = usuario;
+        usuarioAtual =
+            usuario;
 
 
-        sessionStorage.setItem(
-            "usuarioAtual",
+        localStorage.setItem(
+            "alvos_usuario",
             usuario
         );
 
 
-        abrirLester();
+        abrirSistema();
 
-    }
+    }else{
 
-    else{
-
-        document
-            .getElementById("erroLogin")
-            .innerText =
-            "Usuário ou senha incorretos.";
+        alert(
+            "Usuário ou senha incorretos."
+        );
 
     }
 
 }
 
 
-/* =========================
-   ABRIR LESTER
-========================= */
 
-function abrirLester(){
+/* ==========================================
+   ABRIR SISTEMA
+========================================== */
 
-    document
-        .getElementById("central")
-        .classList.add("escondido");
+function abrirSistema(){
 
     document
-        .getElementById("login")
-        .classList.add("escondido");
-
-    document
-        .getElementById("lester")
-        .classList.remove("escondido");
+        .getElementById("loginTela")
+        .style.display = "none";
 
 
     document
-        .getElementById("nomeUsuario")
-        .innerText = usuarioAtual;
-
-
-    if(usuarioAtual === "Italo"){
-
-        document
-            .getElementById("abaAdmin")
-            .classList.remove("escondido");
-
-    }
-
-
-    carregarDados();
-
-}
-
-
-/* =========================
-   LOGIN SALVO
-========================= */
-
-const usuarioSalvo =
-    sessionStorage.getItem("usuarioAtual");
-
-
-if(
-    usuarioSalvo &&
-    usuarios[usuarioSalvo]
-){
-
-    usuarioAtual = usuarioSalvo;
-
-    abrirLester();
-
-}
-
-
-/* =========================
-   CARREGAR DADOS
-========================= */
-
-function carregarDados(){
-
-
-    /* SALDOS */
-
-    banco
-        .ref("saldos")
-        .on("value",function(snapshot){
-
-            saldos =
-                snapshot.val() || {};
-
-
-            document
-                .getElementById("saldoUsuario")
-                .innerText =
-                Number(
-                    saldos[usuarioAtual] || 0
-                ).toLocaleString("pt-BR");
-
-
-            mostrarJogadores();
-
-        });
-
-
-    /* MISSÕES */
-
-    banco
-        .ref("missoes")
-        .on("value",function(snapshot){
-
-            missoes =
-                snapshot.val() || {};
-
-
-            mostrarMissoes();
-
-            mostrarAdminMissoes();
-
-        });
-
-
-    /* ACEITAS */
-
-    banco
-        .ref("missoesAceitas")
-        .on("value",function(snapshot){
-
-            missoesAceitas =
-                snapshot.val() || {};
-
-
-            mostrarMissoes();
-
-            mostrarAdminMissoes();
-
-        });
-
-}
-
-
-/* =========================
-   ABAS
-========================= */
-
-function mostrarAbaLester(aba){
-
-    document
-        .getElementById("areaMissoes")
-        .classList.add("escondido");
-
-    document
-        .getElementById("areaAdmin")
-        .classList.add("escondido");
-
-
-    document
-        .getElementById("abaMissoes")
-        .classList.remove("ativa");
-
-    document
-        .getElementById("abaAdmin")
-        .classList.remove("ativa");
-
-
-    if(aba === "missoes"){
-
-        document
-            .getElementById("areaMissoes")
-            .classList.remove("escondido");
-
-        document
-            .getElementById("abaMissoes")
-            .classList.add("ativa");
-
-    }
+        .getElementById("sistema")
+        .style.display = "block";
 
 
     if(
-        aba === "admin" &&
         usuarioAtual === "Italo"
     ){
 
         document
-            .getElementById("areaAdmin")
-            .classList.remove("escondido");
+            .getElementById("painelAdmin")
+            .style.display = "block";
+
 
         document
-            .getElementById("abaAdmin")
-            .classList.add("ativa");
+            .getElementById("painelContratosAdmin")
+            .style.display = "block";
+
+    }
+
+
+    observarAlvos();
+
+    observarMeusContratos();
+
+
+    if(
+        usuarioAtual === "Italo"
+    ){
+
+        observarContratos();
+
+        observarAdmin();
 
     }
 
 }
 
 
-/* =========================
-   MOSTRAR MISSÕES
-========================= */
 
-function mostrarMissoes(){
+/* ==========================================
+   SAIR
+========================================== */
 
-    const lista =
-        document.getElementById("listaMissoes");
+function sair(){
+
+    localStorage.removeItem(
+        "alvos_usuario"
+    );
+
+    usuarioAtual = null;
+
+    location.reload();
+
+}
 
 
-    if(!lista){
+
+/* ==========================================
+   SALVAR ALVO
+========================================== */
+
+async function salvarAlvo(){
+
+    if(
+        usuarioAtual !== "Italo"
+    ){
+
+        alert(
+            "Somente o administrador pode cadastrar alvos."
+        );
 
         return;
 
     }
 
 
-    lista.innerHTML = "";
-
-
-    const agora = Date.now();
-
-
-    const disponiveis =
-        Object.values(missoes)
-        .filter(function(missao){
-
-            return (
-                !missao.terminaEm ||
-                missao.terminaEm > agora
-            );
-
-        });
-
-
-    if(disponiveis.length === 0){
-
-        lista.innerHTML = `
-            <div class="vazio">
-                Nenhuma missão disponível.
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    disponiveis.forEach(function(missao){
-
-        const div =
-            document.createElement("div");
-
-
-        div.className = "missao";
-
-
-        const aceita =
-            missoesAceitas[missao.id] &&
-            missoesAceitas[missao.id][usuarioAtual];
-
-
-        div.innerHTML = `
-
-            <span
-                class="cronometro"
-                data-termina="${missao.terminaEm || 0}"
-            >
-                ${formatarTempo(
-                    (missao.terminaEm || 0) - Date.now()
-                )}
-            </span>
-
-            <h3>
-                ${missao.nome}
-            </h3>
-
-            <p>
-                ${missao.descricao}
-            </p>
-
-            <p>
-                <strong>Objetivo:</strong>
-                ${missao.objetivo}
-            </p>
-
-            <p class="recompensa">
-                RECOMPENSA:
-                $${Number(missao.recompensa || 0)
-                    .toLocaleString("pt-BR")}
-            </p>
-
-            <p class="prazo">
-                PRAZO:
-                ${missao.prazo || "Não informado"}
-            </p>
-
-            ${
-                aceita
-
-                ?
-
-                `
-                <button
-                    class="btn-missao btn-cancelar"
-                    onclick="cancelarMissao('${missao.id}')"
-                >
-                    AH, MUDEI DE IDEIA, NÃO QUERO MAIS
-                </button>
-                `
-
-                :
-
-                `
-                <button
-                    class="btn-missao"
-                    onclick="aceitarMissao('${missao.id}')"
-                >
-                    ACEITAR MISSÃO
-                </button>
-                `
-
-            }
-
-        `;
-
-
-        lista.appendChild(div);
-
-    });
-
-}
-
-
-/* =========================
-   ACEITAR
-========================= */
-
-function aceitarMissao(id){
-
-    banco
-        .ref(
-            "missoesAceitas/" +
-            id +
-            "/" +
-            usuarioAtual
-        )
-        .set(true)
-        .then(function(){
-
-            mostrarMensagem(
-                "VOCÊ ACEITOU A MISSÃO!",
-                "sucesso"
-            );
-
-        });
-
-}
-
-
-/* =========================
-   CANCELAR
-========================= */
-
-function cancelarMissao(id){
-
-    banco
-        .ref(
-            "missoesAceitas/" +
-            id +
-            "/" +
-            usuarioAtual
-        )
-        .remove()
-        .then(function(){
-
-            mostrarMensagem(
-                "Você cancelou a missão.",
-                "aviso"
-            );
-
-        });
-
-}
-
-
-/* =========================
-   CRIAR MISSÃO
-========================= */
-
-function criarMissao(){
-
-    if(usuarioAtual !== "Italo"){
-
-        return;
-
-    }
+    const idEditando =
+        document
+        .getElementById("alvoEditando")
+        .value;
 
 
     const nome =
         document
-        .getElementById("nomeMissao")
+        .getElementById("nomeAlvo")
         .value
         .trim();
+
+
+    const idade =
+        document
+        .getElementById("idadeAlvo")
+        .value;
+
+
+    const profissao =
+        document
+        .getElementById("profissaoAlvo")
+        .value
+        .trim();
+
+
+    const nacionalidade =
+        document
+        .getElementById("nacionalidadeAlvo")
+        .value
+        .trim();
+
+
+    const residencia =
+        document
+        .getElementById("residenciaAlvo")
+        .value
+        .trim();
+
+
+    const ameaca =
+        document
+        .getElementById("ameacaAlvo")
+        .value;
 
 
     const descricao =
         document
-        .getElementById("descricaoMissao")
+        .getElementById("descricaoAlvo")
         .value
         .trim();
 
 
-    const objetivo =
+    const informacao =
         document
-        .getElementById("objetivoMissao")
+        .getElementById("informacaoAlvo")
+        .value
+        .trim();
+
+
+    const personalidade =
+        document
+        .getElementById("personalidadeAlvo")
+        .value
+        .trim();
+
+
+    const equipamento =
+        document
+        .getElementById("equipamentoAlvo")
+        .value
+        .trim();
+
+
+    const locaisTexto =
+        document
+        .getElementById("locaisAlvo")
         .value
         .trim();
 
@@ -1278,42 +1195,22 @@ function criarMissao(){
     const recompensa =
         Number(
             document
-            .getElementById("recompensaMissao")
+            .getElementById("recompensaAlvo")
             .value
         );
 
 
-    const prazo =
+    const objetivo =
         document
-        .getElementById("prazoMissao")
+        .getElementById("objetivoAlvo")
         .value
         .trim();
 
 
-    const duracao =
-        Number(
-            document
-            .getElementById("duracaoMissao")
-            .value
-        );
-
-
-    const unidade =
-        document
-        .getElementById("unidadeMissao")
-        .value;
-
-
-    if(
-        !nome ||
-        !descricao ||
-        !objetivo ||
-        recompensa < 0 ||
-        !duracao
-    ){
+    if(!nome){
 
         alert(
-            "Preencha todos os campos da missão."
+            "Informe o nome do alvo."
         );
 
         return;
@@ -1321,358 +1218,1708 @@ function criarMissao(){
     }
 
 
-    let duracaoMs = 0;
+    const locais =
+        locaisTexto
+        .split("\n")
+        .map(
+            item => item.trim()
+        )
+        .filter(
+            item => item
+        );
 
 
-    if(unidade === "minutos"){
+    const dados = {
 
-        duracaoMs =
-            duracao *
-            60 *
-            1000;
+        nome,
 
-    }
+        idade,
 
+        profissao,
 
-    if(unidade === "horas"){
+        nacionalidade,
 
-        duracaoMs =
-            duracao *
-            60 *
-            60 *
-            1000;
+        residencia,
 
-    }
+        ameaca,
 
+        descricao,
 
-    if(unidade === "dias"){
+        informacao,
 
-        duracaoMs =
-            duracao *
-            24 *
-            60 *
-            60 *
-            1000;
+        personalidade,
 
-    }
+        equipamento,
 
+        locais,
 
-    const id =
-        String(Date.now());
+        recompensa,
 
+        objetivo,
 
-    const agora =
-        Date.now();
+        ativo:true,
 
-
-    const novaMissao = {
-
-        id:id,
-
-        nome:nome,
-
-        descricao:descricao,
-
-        objetivo:objetivo,
-
-        recompensa:recompensa,
-
-        prazo:prazo,
-
-        duracao:duracao,
-
-        unidade:unidade,
-
-        criadoEm:agora,
-
-        terminaEm:
-            agora +
-            duracaoMs
+        atualizadoEm:
+            Date.now()
 
     };
 
 
-    banco
-        .ref(
-            "missoes/" + id
-        )
-        .set(novaMissao)
-        .then(function(){
+    try{
 
-            document
-                .getElementById("nomeMissao")
-                .value = "";
+        if(idEditando){
 
-            document
-                .getElementById("descricaoMissao")
-                .value = "";
-
-            document
-                .getElementById("objetivoMissao")
-                .value = "";
-
-            document
-                .getElementById("recompensaMissao")
-                .value = "";
-
-            document
-                .getElementById("prazoMissao")
-                .value = "";
-
-            document
-                .getElementById("duracaoMissao")
-                .value = "";
-
-
-            mostrarMensagem(
-                "Missão criada com sucesso!",
-                "sucesso"
+            await db.ref(
+                "alvos/" + idEditando
+            ).update(
+                dados
             );
 
-        });
+            alert(
+                "Alvo atualizado."
+            );
 
-}
+        }else{
 
+            dados.criadoEm =
+                Date.now();
 
-/* =========================
-   JOGADORES
-========================= */
+            await db
+                .ref("alvos")
+                .push(dados);
 
-function mostrarJogadores(){
-
-    if(usuarioAtual !== "Italo"){
-
-        return;
-
-    }
-
-
-    const lista =
-        document
-        .getElementById("listaJogadores");
-
-
-    lista.innerHTML = "";
-
-
-    Object.keys(usuarios)
-    .filter(function(nome){
-
-        return nome !== "Italo";
-
-    })
-    .forEach(function(nome){
-
-        const div =
-            document.createElement("div");
-
-
-        div.className =
-            "admin-jogador";
-
-
-        div.innerHTML = `
-
-            <strong>
-                ${nome}
-            </strong>
-
-            <div>
-                Saldo:
-                $${Number(
-                    saldos[nome] || 0
-                ).toLocaleString("pt-BR")}
-            </div>
-
-            <br>
-
-            <button
-                class="btn-pequeno"
-                onclick="alterarSaldo('${nome}',100)"
-            >
-                +$100
-            </button>
-
-            <button
-                class="btn-pequeno"
-                onclick="alterarSaldo('${nome}',1000)"
-            >
-                +$1.000
-            </button>
-
-            <button
-                class="btn-pequeno"
-                onclick="alterarSaldo('${nome}',-100)"
-            >
-                -$100
-            </button>
-
-            <button
-                class="btn-pequeno"
-                onclick="alterarSaldo('${nome}',-1000)"
-            >
-                -$1.000
-            </button>
-
-        `;
-
-
-        lista.appendChild(div);
-
-    });
-
-}
-
-
-/* =========================
-   ALTERAR SALDO
-========================= */
-
-function alterarSaldo(nome,valor){
-
-    if(usuarioAtual !== "Italo"){
-
-        return;
-
-    }
-
-
-    const saldo =
-        Number(saldos[nome] || 0);
-
-
-    const novoSaldo =
-        Math.max(
-            0,
-            saldo + valor
-        );
-
-
-    banco
-        .ref(
-            "saldos/" + nome
-        )
-        .set(novoSaldo);
-
-}
-
-
-/* =========================
-   ADMIN MISSÕES
-========================= */
-
-function mostrarAdminMissoes(){
-
-    if(usuarioAtual !== "Italo"){
-
-        return;
-
-    }
-
-
-    const lista =
-        document
-        .getElementById(
-            "listaAdminMissoes"
-        );
-
-
-    if(!lista){
-
-        return;
-
-    }
-
-
-    lista.innerHTML = "";
-
-
-    Object.values(missoes)
-    .forEach(function(missao){
-
-        const div =
-            document.createElement("div");
-
-
-        div.className =
-            "admin-jogador";
-
-
-        let aceitos = [];
-
-
-        if(
-            missoesAceitas[missao.id]
-        ){
-
-            aceitos =
-                Object.keys(
-                    missoesAceitas[
-                        missao.id
-                    ]
-                );
+            alert(
+                "Alvo criado."
+            );
 
         }
 
 
-        div.innerHTML = `
+        limparFormulario();
 
-            <strong>
-                ${missao.nome}
-            </strong>
+    }
 
-            <p>
-                Recompensa:
-                $${Number(
-                    missao.recompensa || 0
-                ).toLocaleString("pt-BR")}
-            </p>
+    catch(erro){
 
-            <p>
-                Aceitaram:
-                ${
-                    aceitos.length
-                    ?
-                    aceitos.join(", ")
-                    :
-                    "Ninguém"
-                }
-            </p>
+        console.error(erro);
 
-            <button
-                class="btn-pequeno"
-                onclick="excluirMissao('${missao.id}')"
-            >
-                EXCLUIR MISSÃO
-            </button>
+        alert(
+            "Não foi possível salvar o alvo."
+        );
 
-        `;
-
-
-        lista.appendChild(div);
-
-    });
+    }
 
 }
 
 
-/* =========================
-   EXCLUIR MISSÃO
-========================= */
 
-function excluirMissao(id){
+/* ==========================================
+   LIMPAR FORMULÁRIO
+========================================== */
 
-    if(usuarioAtual !== "Italo"){
+function limparFormulario(){
 
+    document
+        .getElementById("alvoEditando")
+        .value = "";
+
+
+    document
+        .getElementById("nomeAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("idadeAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("profissaoAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("nacionalidadeAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("residenciaAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("ameacaAlvo")
+        .value = "Baixa";
+
+
+    document
+        .getElementById("descricaoAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("informacaoAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("personalidadeAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("equipamentoAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("locaisAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("recompensaAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("objetivoAlvo")
+        .value = "";
+
+
+    document
+        .getElementById("btnCancelarEdicao")
+        .style.display = "none";
+
+}
+
+
+
+/* ==========================================
+   OBSERVAR ALVOS
+========================================== */
+
+function observarAlvos(){
+
+    db.ref("alvos")
+    .on(
+        "value",
+        snapshot => {
+
+            const lista =
+                document
+                .getElementById("listaAlvos");
+
+
+            lista.innerHTML = "";
+
+
+            if(!snapshot.exists()){
+
+                lista.innerHTML =
+                    "<p>Nenhum alvo cadastrado.</p>";
+
+                return;
+
+            }
+
+
+            snapshot.forEach(
+                item => {
+
+                    const alvo =
+                        item.val();
+
+
+                    const id =
+                        item.key;
+
+
+                    if(
+                        alvo.ativo === false &&
+                        usuarioAtual !== "Italo"
+                    ){
+
+                        return;
+
+                    }
+
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "alvo-card";
+
+
+                    const status =
+                        alvo.ativo === false
+
+                        ? `
+                            <span class="status inativo">
+                                INATIVO
+                            </span>
+                          `
+
+                        : `
+                            <span class="status ativo">
+                                ATIVO
+                            </span>
+                          `;
+
+
+                    card.innerHTML = `
+
+                        ${status}
+
+                        <h3>
+                            ${alvo.nome || "Sem nome"}
+                        </h3>
+
+                        <p>
+                            ${alvo.profissao || ""}
+                        </p>
+
+                        <div class="recompensa">
+                            $${Number(
+                                alvo.recompensa || 0
+                            ).toLocaleString(
+                                "pt-BR"
+                            )}
+                        </div>
+
+                        <button
+                            class="btn btn-verde"
+                            onclick="
+                                abrirContrato('${id}')
+                            "
+                        >
+                            VER CONTRATO
+                        </button>
+
+                    `;
+
+
+                    lista.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==========================================
+   ABRIR CONTRATO
+========================================== */
+
+function abrirContrato(id){
+
+    db.ref(
+        "alvos/" + id
+    )
+    .once(
+        "value",
+        snapshot => {
+
+            if(!snapshot.exists()){
+
+                alert(
+                    "Alvo não encontrado."
+                );
+
+                return;
+
+            }
+
+
+            alvoAtual = {
+
+                id,
+
+                ...snapshot.val()
+
+            };
+
+
+            atualizarModal();
+
+            document
+                .getElementById("modalContrato")
+                .style.display = "flex";
+
+        }
+    );
+
+}
+
+
+
+/* ==========================================
+   ATUALIZAR MODAL
+========================================== */
+
+function atualizarModal(){
+
+    if(!alvoAtual){
         return;
+    }
+
+
+    document
+        .getElementById("modalTitulo")
+        .innerText =
+        "CONTRATO — " +
+        alvoAtual.nome;
+
+
+    const recompensa =
+        Number(
+            alvoAtual.recompensa || 0
+        );
+
+
+    const contratoRef =
+        db.ref("contratos");
+
+
+    contratoRef
+        .orderByChild("jogadorAlvo")
+        .equalTo(
+            usuarioAtual +
+            "_" +
+            alvoAtual.id
+        )
+        .once(
+            "value",
+            snapshot => {
+
+                let contrato = null;
+
+
+                snapshot.forEach(
+                    item => {
+
+                        contrato = {
+
+                            id:item.key,
+
+                            ...item.val()
+
+                        };
+
+                    }
+                );
+
+
+                if(!contrato){
+
+                    mostrarContratoCompleto(
+                        recompensa
+                    );
+
+                    return;
+
+                }
+
+
+                const recompensaAtual =
+                    Number(
+                        contrato.recompensaFinal ||
+                        recompensa
+                    );
+
+
+                mostrarContratoComEstado(
+                    contrato,
+                    recompensaAtual
+                );
+
+            }
+        );
+
+}
+
+
+
+/* ==========================================
+   CONTRATO COMPLETO
+========================================== */
+
+function mostrarContratoCompleto(
+    recompensa
+){
+
+    document
+        .getElementById("modalCorpo")
+        .innerHTML = `
+
+            <div class="bloco-info">
+
+                <strong>
+                    ALVO
+                </strong>
+
+                <p>
+                    ${alvoAtual.nome}
+                </p>
+
+                <p>
+                    Idade:
+                    ${alvoAtual.idade || "-"}
+                </p>
+
+                <p>
+                    Profissão:
+                    ${alvoAtual.profissao || "-"}
+                </p>
+
+                <p>
+                    Residência:
+                    ${alvoAtual.residencia || "-"}
+                </p>
+
+                <p>
+                    Ameaça:
+                    ${alvoAtual.ameaca || "-"}
+                </p>
+
+            </div>
+
+
+            <div class="bloco-info">
+
+                <strong>
+                    RECOMPENSA
+                </strong>
+
+                <div class="recompensa">
+                    $${recompensa.toLocaleString(
+                        "pt-BR"
+                    )}
+                </div>
+
+            </div>
+
+
+            <button
+                class="btn btn-verde"
+                onclick="aceitarContrato()"
+            >
+                ACEITAR CONTRATO
+            </button>
+
+        `;
+
+}
+
+
+
+/* ==========================================
+   CONTRATO COM ESTADO
+========================================== */
+
+function mostrarContratoComEstado(
+    contrato,
+    recompensa
+){
+
+    let desconto = 0;
+
+
+    if(
+        contrato.informacaoRevelada
+    ){
+
+        desconto += 25;
 
     }
 
 
     if(
-        !confirm(
-            "Deseja excluir esta missão?"
+        contrato.locaisRevelados
+    ){
+
+        desconto += 25;
+
+    }
+
+
+    document
+        .getElementById("modalCorpo")
+        .innerHTML = `
+
+            <div class="bloco-info">
+
+                <strong>
+                    ALVO
+                </strong>
+
+                <p>
+                    ${alvoAtual.nome}
+                </p>
+
+                <p>
+                    Idade:
+                    ${alvoAtual.idade || "-"}
+                </p>
+
+                <p>
+                    Profissão:
+                    ${alvoAtual.profissao || "-"}
+                </p>
+
+            </div>
+
+
+            <div class="bloco-info">
+
+                <strong>
+                    INFORMAÇÕES
+                </strong>
+
+                ${
+                    contrato.informacaoRevelada
+
+                    ?
+
+                    `
+                        <p>
+                            ${alvoAtual.informacao || "Sem informação."}
+                        </p>
+                    `
+
+                    :
+
+                    `
+                        <div class="bloqueado">
+                            🔒 Informações bloqueadas
+                        </div>
+
+                        <button
+                            class="btn btn-amarelo"
+                            onclick="
+                                revelarInformacao()
+                            "
+                        >
+                            REVELAR INFORMAÇÕES
+                        </button>
+                    `
+                }
+
+            </div>
+
+
+            <div class="bloco-info">
+
+                <strong>
+                    LOCAIS
+                </strong>
+
+                ${
+                    contrato.locaisRevelados
+
+                    ?
+
+                    `
+                        ${
+                            (alvoAtual.locais || [])
+                            .map(
+                                local => `
+                                    <div class="local">
+                                        ${local}
+                                    </div>
+                                `
+                            )
+                            .join("")
+                        }
+                    `
+
+                    :
+
+                    `
+                        <div class="bloqueado">
+                            🔒 Locais bloqueados
+                        </div>
+
+                        <button
+                            class="btn btn-amarelo"
+                            onclick="
+                                revelarLocais()
+                            "
+                        >
+                            REVELAR LOCAIS
+                        </button>
+                    `
+                }
+
+            </div>
+
+
+            <div class="bloco-info">
+
+                <strong>
+                    RECOMPENSA ATUAL
+                </strong>
+
+                <div class="recompensa">
+
+                    $${recompensa.toLocaleString(
+                        "pt-BR"
+                    )}
+
+                </div>
+
+            </div>
+
+
+            ${
+                contrato.status !== "Aceito"
+
+                ?
+
+                `
+                    <button
+                        class="btn btn-verde"
+                        onclick="
+                            aceitarContrato()
+                        "
+                    >
+                        ACEITAR CONTRATO
+                    </button>
+                `
+
+                :
+
+                `
+                    <div class="bloco-info">
+
+                        <strong>
+                            STATUS
+                        </strong>
+
+                        <p>
+                            CONTRATO ACEITO
+                        </p>
+
+                    </div>
+                `
+            }
+
+        `;
+
+}
+
+
+
+/* ==========================================
+   REVELAR INFORMAÇÃO
+========================================== */
+
+async function revelarInformacao(){
+
+    if(!alvoAtual){
+        return;
+    }
+
+
+    const chave =
+        usuarioAtual +
+        "_" +
+        alvoAtual.id;
+
+
+    const referencia =
+        db.ref("contratos");
+
+
+    const snapshot =
+        await referencia
+        .orderByChild("jogadorAlvo")
+        .equalTo(chave)
+        .once("value");
+
+
+    let contratoId = null;
+
+    let contrato = null;
+
+
+    snapshot.forEach(
+        item => {
+
+            contratoId =
+                item.key;
+
+            contrato =
+                item.val();
+
+        }
+    );
+
+
+    const recompensa =
+        calcularRecompensaBanco(
+            true,
+            contrato
+                ? contrato.locaisRevelados
+                : false,
+            alvoAtual.recompensa
+        );
+
+
+    if(contratoId){
+
+        await db.ref(
+            "contratos/" +
+            contratoId
         )
+        .update({
+
+            informacaoRevelada:true,
+
+            recompensaFinal:
+                recompensa
+
+        });
+
+    }else{
+
+        await db
+            .ref("contratos")
+            .push({
+
+                jogador:
+                    usuarioAtual,
+
+                jogadorAlvo:
+                    chave,
+
+                alvoId:
+                    alvoAtual.id,
+
+                alvoNome:
+                    alvoAtual.nome,
+
+                recompensaOriginal:
+                    Number(
+                        alvoAtual.recompensa || 0
+                    ),
+
+                informacaoRevelada:true,
+
+                locaisRevelados:false,
+
+                recompensaFinal:
+                    recompensa,
+
+                status:
+                    "Preparando",
+
+                criadoEm:
+                    Date.now()
+
+            });
+
+    }
+
+
+    atualizarModal();
+
+}
+
+
+
+/* ==========================================
+   REVELAR LOCAIS
+========================================== */
+
+async function revelarLocais(){
+
+    if(!alvoAtual){
+        return;
+    }
+
+
+    const chave =
+        usuarioAtual +
+        "_" +
+        alvoAtual.id;
+
+
+    const snapshot =
+        await db
+        .ref("contratos")
+        .orderByChild("jogadorAlvo")
+        .equalTo(chave)
+        .once("value");
+
+
+    let contratoId = null;
+
+    let contrato = null;
+
+
+    snapshot.forEach(
+        item => {
+
+            contratoId =
+                item.key;
+
+            contrato =
+                item.val();
+
+        }
+    );
+
+
+    const recompensa =
+        calcularRecompensaBanco(
+
+            contrato
+                ? contrato.informacaoRevelada
+                : false,
+
+            true,
+
+            alvoAtual.recompensa
+
+        );
+
+
+    if(contratoId){
+
+        await db.ref(
+            "contratos/" +
+            contratoId
+        )
+        .update({
+
+            locaisRevelados:true,
+
+            recompensaFinal:
+                recompensa
+
+        });
+
+    }else{
+
+        await db
+            .ref("contratos")
+            .push({
+
+                jogador:
+                    usuarioAtual,
+
+                jogadorAlvo:
+                    chave,
+
+                alvoId:
+                    alvoAtual.id,
+
+                alvoNome:
+                    alvoAtual.nome,
+
+                recompensaOriginal:
+                    Number(
+                        alvoAtual.recompensa || 0
+                    ),
+
+                informacaoRevelada:false,
+
+                locaisRevelados:true,
+
+                recompensaFinal:
+                    recompensa,
+
+                status:
+                    "Preparando",
+
+                criadoEm:
+                    Date.now()
+
+            });
+
+    }
+
+
+    atualizarModal();
+
+}
+
+
+
+/* ==========================================
+   CALCULAR RECOMPENSA
+========================================== */
+
+function calcularRecompensaBanco(
+
+    informacao,
+
+    locais,
+
+    recompensaOriginal
+
+){
+
+    let recompensa =
+        Number(
+            recompensaOriginal || 0
+        );
+
+
+    if(informacao){
+
+        recompensa *= .75;
+
+    }
+
+
+    if(locais){
+
+        recompensa *= .75;
+
+    }
+
+
+    return Math.round(
+        recompensa
+    );
+
+}
+
+
+
+/* ==========================================
+   ACEITAR CONTRATO
+========================================== */
+
+async function aceitarContrato(){
+
+    if(!alvoAtual){
+        return;
+    }
+
+
+    const chave =
+        usuarioAtual +
+        "_" +
+        alvoAtual.id;
+
+
+    const snapshot =
+        await db
+        .ref("contratos")
+        .orderByChild("jogadorAlvo")
+        .equalTo(chave)
+        .once("value");
+
+
+    let contratoId = null;
+
+    let contrato = null;
+
+
+    snapshot.forEach(
+        item => {
+
+            contratoId =
+                item.key;
+
+            contrato =
+                item.val();
+
+        }
+    );
+
+
+    const recompensa =
+        calcularRecompensaBanco(
+
+            contrato
+                ? contrato.informacaoRevelada
+                : false,
+
+            contrato
+                ? contrato.locaisRevelados
+                : false,
+
+            alvoAtual.recompensa
+
+        );
+
+
+    if(contratoId){
+
+        await db.ref(
+            "contratos/" +
+            contratoId
+        )
+        .update({
+
+            status:"Aceito",
+
+            recompensaFinal:
+                recompensa,
+
+            aceitoEm:
+                Date.now()
+
+        });
+
+    }else{
+
+        await db
+            .ref("contratos")
+            .push({
+
+                jogador:
+                    usuarioAtual,
+
+                jogadorAlvo:
+                    chave,
+
+                alvoId:
+                    alvoAtual.id,
+
+                alvoNome:
+                    alvoAtual.nome,
+
+                recompensaOriginal:
+                    Number(
+                        alvoAtual.recompensa || 0
+                    ),
+
+                informacaoRevelada:false,
+
+                locaisRevelados:false,
+
+                recompensaFinal:
+                    recompensa,
+
+                status:
+                    "Aceito",
+
+                criadoEm:
+                    Date.now(),
+
+                aceitoEm:
+                    Date.now()
+
+            });
+
+    }
+
+
+    alert(
+        "Contrato aceito com sucesso!"
+    );
+
+
+    fecharModal();
+
+}
+
+
+
+/* ==========================================
+   MEUS CONTRATOS
+========================================== */
+
+function observarMeusContratos(){
+
+    db.ref("contratos")
+    .on(
+        "value",
+        snapshot => {
+
+            const container =
+                document
+                .getElementById("meusContratos");
+
+
+            container.innerHTML = "";
+
+
+            let encontrou = false;
+
+
+            snapshot.forEach(
+                item => {
+
+                    const contrato =
+                        item.val();
+
+
+                    const id =
+                        item.key;
+
+
+                    if(
+                        contrato.jogador !==
+                        usuarioAtual
+                    ){
+
+                        return;
+
+                    }
+
+
+                    encontrou = true;
+
+
+                    const classe =
+                        contrato.status === "Aceito"
+
+                        ? "contrato contrato-aceito"
+
+                        : "contrato contrato-preparando";
+
+
+                    container.innerHTML += `
+
+                        <div
+                            class="${classe}"
+                        >
+
+                            <h3>
+                                ${contrato.alvoNome}
+                            </h3>
+
+                            <div class="contrato-info">
+
+                                <p>
+                                    Status:
+                                    <strong>
+                                        ${contrato.status}
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    Recompensa:
+                                    <strong>
+                                        $${Number(
+                                            contrato.recompensaFinal || 0
+                                        ).toLocaleString(
+                                            "pt-BR"
+                                        )}
+                                    </strong>
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+
+            if(!encontrou){
+
+                container.innerHTML =
+                    "<p>Você ainda não possui contratos.</p>";
+
+            }
+
+        }
+    );
+
+}
+
+
+
+/* ==========================================
+   CONTRATOS DOS JOGADORES — ADMIN
+========================================== */
+
+function observarContratos(){
+
+    db.ref("contratos")
+    .on(
+        "value",
+        snapshot => {
+
+            const container =
+                document
+                .getElementById("contratosAdmin");
+
+
+            container.innerHTML = "";
+
+
+            if(!snapshot.exists()){
+
+                container.innerHTML =
+                    "<p>Nenhum contrato registrado.</p>";
+
+                return;
+
+            }
+
+
+            snapshot.forEach(
+                item => {
+
+                    const contrato =
+                        item.val();
+
+
+                    const id =
+                        item.key;
+
+
+                    const classe =
+                        contrato.status === "Aceito"
+
+                        ? "contrato contrato-aceito"
+
+                        : "contrato contrato-preparando";
+
+
+                    container.innerHTML += `
+
+                        <div
+                            class="${classe}"
+                        >
+
+                            <h3>
+                                ${contrato.alvoNome}
+                            </h3>
+
+                            <div class="contrato-info">
+
+                                <p>
+                                    Jogador:
+                                    <strong>
+                                        ${contrato.jogador}
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    Status:
+                                    <strong>
+                                        ${contrato.status}
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    Recompensa original:
+                                    <strong>
+                                        $${Number(
+                                            contrato.recompensaOriginal || 0
+                                        ).toLocaleString(
+                                            "pt-BR"
+                                        )}
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    Recompensa atual:
+                                    <strong>
+                                        $${Number(
+                                            contrato.recompensaFinal || 0
+                                        ).toLocaleString(
+                                            "pt-BR"
+                                        )}
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    Informações reveladas:
+                                    <strong>
+                                        ${
+                                            contrato.informacaoRevelada
+                                            ? "SIM"
+                                            : "NÃO"
+                                        }
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    Locais revelados:
+                                    <strong>
+                                        ${
+                                            contrato.locaisRevelados
+                                            ? "SIM"
+                                            : "NÃO"
+                                        }
+                                    </strong>
+                                </p>
+
+                            </div>
+
+
+                            <button
+                                class="btn btn-vermelho"
+                                onclick="
+                                    excluirContrato('${id}')
+                                "
+                            >
+                                EXCLUIR CONTRATO
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==========================================
+   EXCLUIR CONTRATO — ADMIN
+========================================== */
+
+async function excluirContrato(id){
+
+    if(
+        usuarioAtual !== "Italo"
+    ){
+
+        alert(
+            "Somente o administrador pode excluir contratos."
+        );
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+
+            "EXCLUIR CONTRATO?\n\n" +
+
+            "O contrato será removido " +
+            "permanentemente do sistema.\n\n" +
+
+            "Essa ação não pode ser desfeita."
+
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    try{
+
+        const referencia =
+            db.ref(
+                "contratos/" + id
+            );
+
+
+        await referencia.remove();
+
+
+        /*
+         * CONFIRMAÇÃO REAL NO FIREBASE
+         */
+
+        const verificar =
+            await referencia.once(
+                "value"
+            );
+
+
+        if(
+            verificar.exists()
+        ){
+
+            alert(
+
+                "O Firebase não permitiu " +
+                "a exclusão do contrato."
+
+            );
+
+            console.error(
+                "Contrato ainda existe no Firebase."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Contrato excluído com sucesso."
+        );
+
+    }
+
+    catch(erro){
+
+        console.error(
+            "ERRO AO EXCLUIR:",
+            erro
+        );
+
+
+        alert(
+
+            "Não foi possível excluir o contrato.\n\n" +
+
+            "Provavelmente as Rules do Firebase " +
+            "estão bloqueando a exclusão."
+
+        );
+
+    }
+
+}
+
+
+
+/* ==========================================
+   ADMINISTRAR ALVOS
+========================================== */
+
+function observarAdmin(){
+
+    db.ref("alvos")
+    .on(
+        "value",
+        snapshot => {
+
+            const container =
+                document
+                .getElementById(
+                    "listaAlvosAdmin"
+                );
+
+
+            container.innerHTML = "";
+
+
+            snapshot.forEach(
+                item => {
+
+                    const alvo =
+                        item.val();
+
+
+                    const id =
+                        item.key;
+
+
+                    container.innerHTML += `
+
+                        <div class="contrato">
+
+                            <h3>
+                                ${alvo.nome}
+                            </h3>
+
+                            <p>
+                                Status:
+                                ${
+                                    alvo.ativo === false
+                                    ? "INATIVO"
+                                    : "ATIVO"
+                                }
+                            </p>
+
+
+                            <button
+                                class="btn btn-amarelo"
+                                onclick="
+                                    editarAlvo('${id}')
+                                "
+                            >
+                                EDITAR
+                            </button>
+
+
+                            <button
+                                class="btn btn-cinza"
+                                onclick="
+                                    alternarAlvo('${id}')
+                                "
+                            >
+                                ${
+                                    alvo.ativo === false
+                                    ? "ATIVAR"
+                                    : "DESATIVAR"
+                                }
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==========================================
+   EDITAR ALVO
+========================================== */
+
+function editarAlvo(id){
+
+    db.ref(
+        "alvos/" + id
+    )
+    .once(
+        "value",
+        snapshot => {
+
+            if(!snapshot.exists()){
+                return;
+            }
+
+
+            const alvo =
+                snapshot.val();
+
+
+            document
+                .getElementById("alvoEditando")
+                .value = id;
+
+
+            document
+                .getElementById("nomeAlvo")
+                .value =
+                alvo.nome || "";
+
+
+            document
+                .getElementById("idadeAlvo")
+                .value =
+                alvo.idade || "";
+
+
+            document
+                .getElementById("profissaoAlvo")
+                .value =
+                alvo.profissao || "";
+
+
+            document
+                .getElementById("nacionalidadeAlvo")
+                .value =
+                alvo.nacionalidade || "";
+
+
+            document
+                .getElementById("residenciaAlvo")
+                .value =
+                alvo.residencia || "";
+
+
+            document
+                .getElementById("ameacaAlvo")
+                .value =
+                alvo.ameaca || "Baixa";
+
+
+            document
+                .getElementById("descricaoAlvo")
+                .value =
+                alvo.descricao || "";
+
+
+            document
+                .getElementById("informacaoAlvo")
+                .value =
+                alvo.informacao || "";
+
+
+            document
+                .getElementById("personalidadeAlvo")
+                .value =
+                alvo.personalidade || "";
+
+
+            document
+                .getElementById("equipamentoAlvo")
+                .value =
+                alvo.equipamento || "";
+
+
+            document
+                .getElementById("locaisAlvo")
+                .value =
+                (alvo.locais || [])
+                .join("\n");
+
+
+            document
+                .getElementById("recompensaAlvo")
+                .value =
+                alvo.recompensa || "";
+
+
+            document
+                .getElementById("objetivoAlvo")
+                .value =
+                alvo.objetivo || "";
+
+
+            document
+                .getElementById(
+                    "btnCancelarEdicao"
+                )
+                .style.display = "block";
+
+        }
+    );
+
+}
+
+
+
+/* ==========================================
+   CANCELAR EDIÇÃO
+========================================== */
+
+function cancelarEdicao(){
+
+    limparFormulario();
+
+}
+
+
+
+/* ==========================================
+   ATIVAR / DESATIVAR ALVO
+========================================== */
+
+async function alternarAlvo(id){
+
+    if(
+        usuarioAtual !== "Italo"
     ){
 
         return;
@@ -1680,214 +2927,132 @@ function excluirMissao(id){
     }
 
 
-    const atualizacoes = {};
+    const snapshot =
+        await db.ref(
+            "alvos/" + id
+        ).once("value");
 
 
-    atualizacoes[
-        "missoes/" + id
-    ] = null;
+    if(!snapshot.exists()){
+        return;
+    }
 
 
-    atualizacoes[
-        "missoesAceitas/" + id
-    ] = null;
+    const alvo =
+        snapshot.val();
 
 
-    banco
-        .ref()
-        .update(atualizacoes);
+    await db.ref(
+        "alvos/" + id
+    ).update({
+
+        ativo:
+            alvo.ativo === false
+
+            ? true
+
+            : false
+
+    });
 
 }
 
 
-/* =========================
-   CRONÔMETRO
-========================= */
 
-function formatarTempo(ms){
+/* ==========================================
+   FECHAR MODAL
+========================================== */
 
-    if(ms <= 0){
-
-        return "EXPIRADA";
-
-    }
-
-
-    let segundos =
-        Math.floor(ms / 1000);
-
-
-    const dias =
-        Math.floor(
-            segundos / 86400
-        );
-
-
-    segundos %= 86400;
-
-
-    const horas =
-        Math.floor(
-            segundos / 3600
-        );
-
-
-    segundos %= 3600;
-
-
-    const minutos =
-        Math.floor(
-            segundos / 60
-        );
-
-
-    segundos %= 60;
-
-
-    if(dias > 0){
-
-        return (
-            dias + "d " +
-            horas + "h " +
-            minutos + "m"
-        );
-
-    }
-
-
-    if(horas > 0){
-
-        return (
-            horas + "h " +
-            minutos + "m " +
-            segundos + "s"
-        );
-
-    }
-
-
-    return (
-        minutos + "m " +
-        segundos + "s"
-    );
-
-}
-
-
-function atualizarCronometros(){
+function fecharModal(){
 
     document
-        .querySelectorAll(
-            ".cronometro"
+        .getElementById(
+            "modalContrato"
         )
-        .forEach(function(elemento){
-
-            const termina =
-                Number(
-                    elemento
-                    .dataset
-                    .termina
-                );
+        .style.display = "none";
 
 
-            const restante =
-                termina -
-                Date.now();
-
-
-            elemento.innerText =
-                formatarTempo(
-                    restante
-                );
-
-        });
+    alvoAtual = null;
 
 }
 
 
-setInterval(
-    atualizarCronometros,
-    1000
-);
+
+/* ==========================================
+   FECHAR MODAL CLICANDO FORA
+========================================== */
+
+document
+    .getElementById(
+        "modalContrato"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
+            ){
+
+                fecharModal();
+
+            }
+
+        }
+    );
 
 
-/* =========================
-   MENSAGEM
-========================= */
 
-function mostrarMensagem(
-    texto,
-    tipo
+/* ==========================================
+   ENTER NO LOGIN
+========================================== */
+
+document
+    .getElementById(
+        "senhaLogin"
+    )
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(
+                event.key === "Enter"
+            ){
+
+                login();
+
+            }
+
+        }
+    );
+
+
+
+/* ==========================================
+   LOGIN AUTOMÁTICO
+========================================== */
+
+const usuarioSalvo =
+    localStorage.getItem(
+        "alvos_usuario"
+    );
+
+
+if(
+    usuarioSalvo &&
+    usuarios[usuarioSalvo]
 ){
 
-    const elemento =
-        document
-        .getElementById(
-            "mensagem"
-        );
+    usuarioAtual =
+        usuarioSalvo;
 
 
-    elemento.innerHTML =
-        `
-        <div class="mensagem ${tipo}">
-            ${texto}
-        </div>
-        `;
-
-
-    setTimeout(function(){
-
-        elemento.innerHTML = "";
-
-    },5000);
-
-}
-
-
-/* =========================
-   SAIR
-========================= */
-
-function sairLester(){
-
-    sessionStorage.removeItem(
-        "usuarioAtual"
-    );
-
-
-    usuarioAtual = null;
-
-
-    document
-        .getElementById("lester")
-        .classList.add("escondido");
-
-
-    document
-        .getElementById("central")
-        .classList.remove("escondido");
-
-}
-
-
-/* =========================
-   VOLTAR
-========================= */
-
-function voltarCentral(){
-
-    document
-        .getElementById("login")
-        .classList.add("escondido");
-
-
-    document
-        .getElementById("central")
-        .classList.remove("escondido");
+    abrirSistema();
 
 }
 
 </script>
 
 </body>
+
 </html>
