@@ -49,6 +49,14 @@ body{
 
 }
 
+button,
+input,
+select{
+
+    font-family:inherit;
+
+}
+
 
 /* =========================================================
    LOGIN
@@ -95,7 +103,7 @@ body{
 }
 
 
-.simbolo{
+.login-logo .simbolo{
 
     font-size:42px;
 
@@ -169,8 +177,7 @@ body{
 }
 
 
-.campo input,
-.campo select{
+.campo input{
 
     width:100%;
 
@@ -189,8 +196,7 @@ body{
 }
 
 
-.campo input:focus,
-.campo select:focus{
+.campo input:focus{
 
     border-color:#00ff88;
 
@@ -231,6 +237,13 @@ body{
 
     box-shadow:
         0 0 15px rgba(0,255,136,.5);
+
+}
+
+
+.btn:active{
+
+    transform:scale(.99);
 
 }
 
@@ -976,6 +989,29 @@ body{
 
 
 /* =========================================================
+   MENSAGEM FIREBASE
+========================================================= */
+
+.firebase-erro{
+
+    display:none;
+
+    margin-top:15px;
+
+    padding:12px;
+
+    border:1px solid #ff3333;
+
+    background:#160303;
+
+    color:#ff6666;
+
+    font-size:12px;
+
+}
+
+
+/* =========================================================
    RESPONSIVO
 ========================================================= */
 
@@ -1499,11 +1535,17 @@ body{
         </button>
 
 
+        <div
+            id="firebaseErro"
+            class="firebase-erro"
+        ></div>
+
+
         <div class="admin-separador"></div>
 
 
         <h3>
-            ACESSOS
+            ACESSOS ATIVOS
         </h3>
 
 
@@ -1558,16 +1600,6 @@ const firebaseConfig = {
 };
 
 
-firebase.initializeApp(
-    firebaseConfig
-);
-
-
-const db =
-    firebase.database();
-
-
-
 /* =========================================================
    USUÁRIOS
 ========================================================= */
@@ -1585,10 +1617,13 @@ const usuarios = {
 };
 
 
-
 /* =========================================================
    VARIÁVEIS
 ========================================================= */
+
+let db = null;
+
+let firebasePronto = false;
 
 let usuarioAtual = null;
 
@@ -1618,6 +1653,68 @@ let firewallResposta = [];
 
 let firewallJogador = [];
 
+let listenerAcesso = null;
+
+let listenerAcessosAdmin = null;
+
+
+/* =========================================================
+   INICIAR FIREBASE
+========================================================= */
+
+function iniciarFirebase(){
+
+    try{
+
+        if(
+            typeof firebase === "undefined"
+        ){
+
+            console.error(
+                "Firebase não carregado."
+            );
+
+            return false;
+
+        }
+
+
+        if(
+            !firebase.apps.length
+        ){
+
+            firebase.initializeApp(
+                firebaseConfig
+            );
+
+        }
+
+
+        db =
+            firebase.database();
+
+
+        firebasePronto = true;
+
+
+        return true;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Erro ao iniciar Firebase:",
+            error
+        );
+
+        firebasePronto = false;
+
+        return false;
+
+    }
+
+}
 
 
 /* =========================================================
@@ -1626,31 +1723,78 @@ let firewallJogador = [];
 
 function entrar(){
 
+    const campoUsuario =
+        document.getElementById(
+            "usuario"
+        );
+
+    const campoSenha =
+        document.getElementById(
+            "senha"
+        );
+
+    const erro =
+        document.getElementById(
+            "erro"
+        );
+
+
+    if(
+        !campoUsuario ||
+        !campoSenha ||
+        !erro
+    ){
+
+        return;
+
+    }
+
+
     const nome =
-        document
-        .getElementById("usuario")
+        campoUsuario
         .value
         .trim();
 
 
     const senha =
-        document
-        .getElementById("senha")
+        campoSenha
         .value
         .trim();
-
-
-    const erro =
-        document.getElementById("erro");
 
 
     erro.textContent = "";
 
 
+    if(!nome){
+
+        erro.textContent =
+            "DIGITE O USUÁRIO.";
+
+        campoUsuario.focus();
+
+        return;
+
+    }
+
+
+    if(!senha){
+
+        erro.textContent =
+            "DIGITE O CÓDIGO DE ACESSO.";
+
+        campoSenha.focus();
+
+        return;
+
+    }
+
+
     let usuarioReal = null;
 
 
-    for(const nomeUsuario in usuarios){
+    for(
+        const nomeUsuario in usuarios
+    ){
 
         if(
             nomeUsuario.toLowerCase() ===
@@ -1705,6 +1849,12 @@ function entrar(){
 }
 
 
+/* =========================================================
+   EXPOR LOGIN
+========================================================= */
+
+window.entrar = entrar;
+
 
 /* =========================================================
    ABRIR SISTEMA
@@ -1712,61 +1862,127 @@ function entrar(){
 
 function abrirSistema(){
 
-    document
-        .getElementById("loginTela")
-        .style.display =
+    const login =
+        document.getElementById(
+            "loginTela"
+        );
+
+    const sistema =
+        document.getElementById(
+            "sistema"
+        );
+
+
+    if(!login || !sistema){
+
+        return;
+
+    }
+
+
+    login.style.display =
         "none";
 
 
-    document
-        .getElementById("sistema")
-        .style.display =
+    sistema.style.display =
         "block";
 
 
     document
-        .getElementById("usuarioLogado")
+        .getElementById(
+            "usuarioLogado"
+        )
         .textContent =
         "● CONECTADO: " +
         usuarioAtual.toUpperCase();
 
-
-    /* ---------------------------------------------
-       ADMIN
-    --------------------------------------------- */
 
     if(
         usuarioAtual === "Italo"
     ){
 
         document
-            .getElementById("admin")
+            .getElementById(
+                "admin"
+            )
             .style.display =
             "block";
 
 
-        observarAcessos();
+        iniciarFirebase();
+
+
+        if(firebasePronto){
+
+            observarAcessos();
+
+        }
 
     }
 
     else{
 
         document
-            .getElementById("admin")
+            .getElementById(
+                "admin"
+            )
             .style.display =
             "none";
 
     }
 
 
-    /* ---------------------------------------------
-       OUVIR O ACESSO DO JOGADOR
-    --------------------------------------------- */
+    iniciarFirebase();
 
-    ouvirAcesso();
+
+    if(firebasePronto){
+
+        ouvirAcesso();
+
+    }
 
 }
 
+
+/* =========================================================
+   VERIFICAR LOGIN SALVO
+========================================================= */
+
+function verificarLoginSalvo(){
+
+    const salvo =
+        localStorage.getItem(
+            "hacker_usuario"
+        );
+
+
+    if(!salvo){
+
+        return;
+
+    }
+
+
+    if(
+        !usuarios[salvo]
+    ){
+
+        localStorage.removeItem(
+            "hacker_usuario"
+        );
+
+        return;
+
+    }
+
+
+    usuarioAtual =
+        salvo;
+
+
+    abrirSistema();
+
+}
 
 
 /* =========================================================
@@ -1775,24 +1991,113 @@ function abrirSistema(){
 
 function sair(){
 
-    localStorage.removeItem(
-        "hacker_usuario"
-    );
-
-
     if(intervalo){
 
         clearInterval(
             intervalo
         );
 
+        intervalo = null;
+
     }
+
+
+    if(
+        db &&
+        usuarioAtual &&
+        listenerAcesso
+    ){
+
+        db.ref(
+            "hackerAcessos/" +
+            usuarioAtual
+        ).off(
+            "value",
+            listenerAcesso
+        );
+
+    }
+
+
+    if(
+        db &&
+        listenerAcessosAdmin
+    ){
+
+        db.ref(
+            "hackerAcessos"
+        ).off(
+            "value",
+            listenerAcessosAdmin
+        );
+
+    }
+
+
+    localStorage.removeItem(
+        "hacker_usuario"
+    );
 
 
     location.reload();
 
 }
 
+
+/* =========================================================
+   MOSTRAR ERRO FIREBASE
+========================================================= */
+
+function mostrarErroFirebase(
+    mensagem
+){
+
+    const caixa =
+        document.getElementById(
+            "firebaseErro"
+        );
+
+
+    if(!caixa){
+
+        return;
+
+    }
+
+
+    caixa.textContent =
+        mensagem;
+
+
+    caixa.style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   ESCONDER ERRO FIREBASE
+========================================================= */
+
+function esconderErroFirebase(){
+
+    const caixa =
+        document.getElementById(
+            "firebaseErro"
+        );
+
+
+    if(caixa){
+
+        caixa.style.display =
+            "none";
+
+        caixa.textContent =
+            "";
+
+    }
+
+}
 
 
 /* =========================================================
@@ -1801,19 +2106,30 @@ function sair(){
 
 function ouvirAcesso(){
 
-    if(!usuarioAtual){
+    if(
+        !usuarioAtual ||
+        !firebasePronto
+    ){
 
         return;
 
     }
 
 
-    db.ref(
-        "hackerAcessos/" +
-        usuarioAtual
-    )
-    .on(
-        "value",
+    if(listenerAcesso){
+
+        db.ref(
+            "hackerAcessos/" +
+            usuarioAtual
+        ).off(
+            "value",
+            listenerAcesso
+        );
+
+    }
+
+
+    listenerAcesso =
         function(snapshot){
 
             console.log(
@@ -1859,7 +2175,15 @@ function ouvirAcesso(){
 
             mostrarAcesso();
 
-        },
+        };
+
+
+    db.ref(
+        "hackerAcessos/" +
+        usuarioAtual
+    ).on(
+        "value",
+        listenerAcesso,
         function(error){
 
             console.error(
@@ -1873,7 +2197,6 @@ function ouvirAcesso(){
 }
 
 
-
 /* =========================================================
    MOSTRAR SEM ACESSO
 ========================================================= */
@@ -1881,30 +2204,37 @@ function ouvirAcesso(){
 function mostrarSemAcesso(){
 
     document
-        .getElementById("semAcesso")
+        .getElementById(
+            "semAcesso"
+        )
         .style.display =
         "block";
 
 
     document
-        .getElementById("acessoLiberado")
+        .getElementById(
+            "acessoLiberado"
+        )
         .style.display =
         "none";
 
 
     document
-        .getElementById("minigame")
+        .getElementById(
+            "minigame"
+        )
         .style.display =
         "none";
 
 
     document
-        .getElementById("resultado")
+        .getElementById(
+            "resultado"
+        )
         .style.display =
         "none";
 
 }
-
 
 
 /* =========================================================
@@ -1914,58 +2244,73 @@ function mostrarSemAcesso(){
 function mostrarAcesso(){
 
     document
-        .getElementById("semAcesso")
+        .getElementById(
+            "semAcesso"
+        )
         .style.display =
         "none";
 
 
     document
-        .getElementById("acessoLiberado")
+        .getElementById(
+            "acessoLiberado"
+        )
         .style.display =
         "block";
 
 
     document
-        .getElementById("minigame")
+        .getElementById(
+            "minigame"
+        )
         .style.display =
         "none";
 
 
     document
-        .getElementById("resultado")
+        .getElementById(
+            "resultado"
+        )
         .style.display =
         "none";
 
 
     document
-        .getElementById("infoJogador")
+        .getElementById(
+            "infoJogador"
+        )
         .textContent =
-        acessoAtual.jogador;
+        acessoAtual.jogador || "-";
 
 
     document
-        .getElementById("infoDificuldade")
+        .getElementById(
+            "infoDificuldade"
+        )
         .textContent =
-        acessoAtual.dificuldade;
+        acessoAtual.dificuldade || "-";
 
 
     document
-        .getElementById("infoRecurso")
+        .getElementById(
+            "infoRecurso"
+        )
         .textContent =
-        acessoAtual.recurso;
+        acessoAtual.recurso || "-";
 
 
     document
-        .getElementById("infoTempo")
+        .getElementById(
+            "infoTempo"
+        )
         .textContent =
-        acessoAtual.tempo +
+        (acessoAtual.tempo || 0) +
         " segundos";
 
 
     jogoAtivo = false;
 
 }
-
 
 
 /* =========================================================
@@ -1978,10 +2323,6 @@ async function liberarAcesso(){
         "LIBERAR ACESSO CLICADO"
     );
 
-
-    /* ---------------------------------------------
-       SEGURANÇA
-    --------------------------------------------- */
 
     if(
         usuarioAtual !== "Italo"
@@ -1996,40 +2337,66 @@ async function liberarAcesso(){
     }
 
 
-    /* ---------------------------------------------
-       DADOS
-    --------------------------------------------- */
+    if(
+        !firebasePronto
+    ){
+
+        iniciarFirebase();
+
+    }
+
+
+    if(
+        !firebasePronto ||
+        !db
+    ){
+
+        alert(
+            "Firebase não está conectado."
+        );
+
+        return;
+
+    }
+
+
+    esconderErroFirebase();
+
 
     const jogador =
         document
-        .getElementById("adminJogador")
+        .getElementById(
+            "adminJogador"
+        )
         .value;
 
 
     const tempo =
         Number(
             document
-            .getElementById("adminTempo")
+            .getElementById(
+                "adminTempo"
+            )
             .value
         );
 
 
     const dificuldade =
         document
-        .getElementById("adminDificuldade")
+        .getElementById(
+            "adminDificuldade"
+        )
         .value;
 
 
     const recurso =
         document
-        .getElementById("adminRecurso")
+        .getElementById(
+            "adminRecurso"
+        )
         .value
         .trim();
 
-
-    /* ---------------------------------------------
-       VALIDAÇÕES
-    --------------------------------------------- */
 
     if(!jogador){
 
@@ -2067,10 +2434,6 @@ async function liberarAcesso(){
     }
 
 
-    /* ---------------------------------------------
-       OBJETO
-    --------------------------------------------- */
-
     const acesso = {
 
         ativo:true,
@@ -2092,30 +2455,45 @@ async function liberarAcesso(){
     };
 
 
+    const caminho =
+        "hackerAcessos/" +
+        jogador;
+
+
     console.log(
-        "ENVIANDO PARA FIREBASE:",
+        "SALVANDO:",
+        caminho,
         acesso
     );
 
 
-    /* ---------------------------------------------
-       SALVAR
-    --------------------------------------------- */
+    const botao =
+        document.getElementById(
+            "btnLiberar"
+        );
+
+
+    if(botao){
+
+        botao.disabled =
+            true;
+
+        botao.textContent =
+            "[ ENVIANDO... ]";
+
+    }
+
 
     try{
 
         await db
-            .ref(
-                "hackerAcessos/" +
-                jogador
-            )
-            .set(
-                acesso
-            );
+            .ref(caminho)
+            .set(acesso);
 
 
         console.log(
-            "ACESSO SALVO COM SUCESSO"
+            "ACESSO SALVO:",
+            acesso
         );
 
 
@@ -2144,15 +2522,34 @@ async function liberarAcesso(){
         );
 
 
+        mostrarErroFirebase(
+            "ERRO AO LIBERAR ACESSO: " +
+            error.message
+        );
+
+
         alert(
-            "ERRO AO LIBERAR ACESSO:\n\n" +
+            "Não foi possível liberar o acesso.\n\n" +
             error.message
         );
 
     }
 
-}
+    finally{
 
+        if(botao){
+
+            botao.disabled =
+                false;
+
+            botao.textContent =
+                "[ LIBERAR ACESSO ]";
+
+        }
+
+    }
+
+}
 
 
 /* =========================================================
@@ -2162,7 +2559,8 @@ async function liberarAcesso(){
 function observarAcessos(){
 
     if(
-        usuarioAtual !== "Italo"
+        usuarioAtual !== "Italo" ||
+        !firebasePronto
     ){
 
         return;
@@ -2170,21 +2568,33 @@ function observarAcessos(){
     }
 
 
-    db.ref(
-        "hackerAcessos"
-    )
-    .on(
-        "value",
+    const referencia =
+        db.ref(
+            "hackerAcessos"
+        );
+
+
+    if(listenerAcessosAdmin){
+
+        referencia.off(
+            "value",
+            listenerAcessosAdmin
+        );
+
+    }
+
+
+    listenerAcessosAdmin =
         function(snapshot){
 
             const lista =
-                document
-                .getElementById(
+                document.getElementById(
                     "listaAcessos"
                 );
 
 
-            lista.innerHTML = "";
+            lista.innerHTML =
+                "";
 
 
             if(
@@ -2220,37 +2630,88 @@ function observarAcessos(){
                         "acesso-admin";
 
 
-                    div.innerHTML = `
+                    const titulo =
+                        document.createElement(
+                            "strong"
+                        );
 
-                        <strong>
-                            ${jogador}
-                        </strong>
 
-                        <p>
-                            STATUS:
-                            ${
-                                acesso.ativo
-                                ? "ACESSO ATIVO"
-                                : "ENCERRADO"
-                            }
-                        </p>
+                    titulo.textContent =
+                        jogador;
 
-                        <p>
-                            TEMPO:
-                            ${acesso.tempo}s
-                        </p>
 
-                        <p>
-                            DIFICULDADE:
-                            ${acesso.dificuldade}
-                        </p>
+                    div.appendChild(
+                        titulo
+                    );
 
-                        <p>
-                            RECURSO:
-                            ${acesso.recurso}
-                        </p>
 
-                    `;
+                    const status =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    status.textContent =
+                        "STATUS: " +
+                        (
+                            acesso.ativo
+                            ? "ACESSO ATIVO"
+                            : "ENCERRADO"
+                        );
+
+
+                    div.appendChild(
+                        status
+                    );
+
+
+                    const tempo =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    tempo.textContent =
+                        "TEMPO: " +
+                        acesso.tempo +
+                        "s";
+
+
+                    div.appendChild(
+                        tempo
+                    );
+
+
+                    const dificuldade =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    dificuldade.textContent =
+                        "DIFICULDADE: " +
+                        acesso.dificuldade;
+
+
+                    div.appendChild(
+                        dificuldade
+                    );
+
+
+                    const recurso =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    recurso.textContent =
+                        "RECURSO: " +
+                        acesso.recurso;
+
+
+                    div.appendChild(
+                        recurso
+                    );
 
 
                     if(
@@ -2275,14 +2736,16 @@ function observarAcessos(){
                             "[ REVOGAR ACESSO ]";
 
 
-                        botao.onclick =
+                        botao.addEventListener(
+                            "click",
                             function(){
 
                                 revogarAcesso(
                                     jogador
                                 );
 
-                            };
+                            }
+                        );
 
 
                         div.appendChild(
@@ -2299,7 +2762,12 @@ function observarAcessos(){
                 }
             );
 
-        },
+        };
+
+
+    referencia.on(
+        "value",
+        listenerAcessosAdmin,
         function(error){
 
             console.error(
@@ -2307,11 +2775,16 @@ function observarAcessos(){
                 error
             );
 
+
+            mostrarErroFirebase(
+                "Erro ao carregar acessos: " +
+                error.message
+            );
+
         }
     );
 
 }
-
 
 
 /* =========================================================
@@ -2384,7 +2857,6 @@ async function revogarAcesso(
 }
 
 
-
 /* =========================================================
    INICIAR INVASÃO
 ========================================================= */
@@ -2401,9 +2873,12 @@ function iniciarInvasao(){
     }
 
 
-    jogoAtivo = true;
+    jogoAtivo =
+        true;
 
-    indiceJogo = 0;
+
+    indiceJogo =
+        0;
 
 
     const quantidade =
@@ -2434,19 +2909,25 @@ function iniciarInvasao(){
 
 
     document
-        .getElementById("acessoLiberado")
+        .getElementById(
+            "acessoLiberado"
+        )
         .style.display =
         "none";
 
 
     document
-        .getElementById("minigame")
+        .getElementById(
+            "minigame"
+        )
         .style.display =
         "block";
 
 
     document
-        .getElementById("resultado")
+        .getElementById(
+            "resultado"
+        )
         .style.display =
         "none";
 
@@ -2463,7 +2944,6 @@ function iniciarInvasao(){
     iniciarProximoMinigame();
 
 }
-
 
 
 /* =========================================================
@@ -2496,6 +2976,46 @@ function obterQuantidadeJogos(){
 }
 
 
+/* =========================================================
+   EMBARALHAR
+========================================================= */
+
+function embaralhar(array){
+
+    const copia =
+        [...array];
+
+
+    for(
+        let i =
+            copia.length - 1;
+        i > 0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+
+        [
+            copia[i],
+            copia[j]
+        ] =
+        [
+            copia[j],
+            copia[i]
+        ];
+
+    }
+
+
+    return copia;
+
+}
+
 
 /* =========================================================
    PRÓXIMO MINIGAME
@@ -2527,40 +3047,40 @@ function iniciarProximoMinigame(){
     atualizarProgresso();
 
 
-    if(
-        jogoAtual === "codigo"
+    switch(
+        jogoAtual
     ){
 
-        iniciarCodigo();
+        case "codigo":
 
-    }
+            iniciarCodigo();
 
-    else if(
-        jogoAtual === "memoria"
-    ){
+            break;
 
-        iniciarMemoria();
 
-    }
+        case "memoria":
 
-    else if(
-        jogoAtual === "terminal"
-    ){
+            iniciarMemoria();
 
-        iniciarTerminal();
+            break;
 
-    }
 
-    else if(
-        jogoAtual === "firewall"
-    ){
+        case "terminal":
 
-        iniciarFirewall();
+            iniciarTerminal();
+
+            break;
+
+
+        case "firewall":
+
+            iniciarFirewall();
+
+            break;
 
     }
 
 }
-
 
 
 /* =========================================================
@@ -2574,7 +3094,9 @@ function atualizarProgresso(){
 
 
     document
-        .getElementById("progressoTexto")
+        .getElementById(
+            "progressoTexto"
+        )
         .textContent =
         (indiceJogo + 1) +
         "/" +
@@ -2582,7 +3104,9 @@ function atualizarProgresso(){
 
 
     document
-        .getElementById("barraInterna")
+        .getElementById(
+            "barraInterna"
+        )
         .style.width =
         (
             indiceJogo /
@@ -2592,7 +3116,6 @@ function atualizarProgresso(){
         "%";
 
 }
-
 
 
 /* =========================================================
@@ -2610,6 +3133,13 @@ function iniciarCronometro(){
         setInterval(
             function(){
 
+                if(!jogoAtivo){
+
+                    return;
+
+                }
+
+
                 tempoRestante--;
 
 
@@ -2625,7 +3155,8 @@ function iniciarCronometro(){
                     );
 
 
-                    jogoAtivo = false;
+                    jogoAtivo =
+                        false;
 
 
                     finalizarInvasao(
@@ -2643,7 +3174,6 @@ function iniciarCronometro(){
     atualizarTimer();
 
 }
-
 
 
 /* =========================================================
@@ -2676,9 +3206,19 @@ function atualizarTimer(){
 
 
     timer.textContent =
-        String(minutos).padStart(2,"0") +
+        String(
+            minutos
+        ).padStart(
+            2,
+            "0"
+        ) +
         ":" +
-        String(segundos).padStart(2,"0");
+        String(
+            segundos
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     timer.className =
@@ -2708,21 +3248,24 @@ function atualizarTimer(){
 }
 
 
-
 /* =========================================================
-   MINIGAME — CÓDIGO
+   CRACK
 ========================================================= */
 
 function iniciarCodigo(){
 
     document
-        .getElementById("minigameTitulo")
+        .getElementById(
+            "minigameTitulo"
+        )
         .textContent =
         "CRACK";
 
 
     document
-        .getElementById("minigameSubtitulo")
+        .getElementById(
+            "minigameSubtitulo"
+        )
         .textContent =
         "QUEBRE O CÓDIGO DE SEGURANÇA";
 
@@ -2731,7 +3274,8 @@ function iniciarCodigo(){
         obterTamanhoCodigo();
 
 
-    codigoAtual = "";
+    codigoAtual =
+        "";
 
 
     for(
@@ -2749,7 +3293,9 @@ function iniciarCodigo(){
 
 
     document
-        .getElementById("conteudoMinigame")
+        .getElementById(
+            "conteudoMinigame"
+        )
         .innerHTML = `
 
             <div class="terminal">
@@ -2797,6 +3343,7 @@ function iniciarCodigo(){
 
 
                     <button
+                        type="button"
                         class="btn"
                         id="btnCodigo"
                     >
@@ -2811,21 +3358,42 @@ function iniciarCodigo(){
 
 
     document
-        .getElementById("btnCodigo")
-        .onclick =
-        function(){
-
-            verificarCodigo();
-
-        };
+        .getElementById(
+            "btnCodigo"
+        )
+        .addEventListener(
+            "click",
+            verificarCodigo
+        );
 
 
     document
-        .getElementById("inputCodigo")
+        .getElementById(
+            "inputCodigo"
+        )
+        .addEventListener(
+            "keydown",
+            function(event){
+
+                if(
+                    event.key === "Enter"
+                ){
+
+                    verificarCodigo();
+
+                }
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "inputCodigo"
+        )
         .focus();
 
 }
-
 
 
 /* =========================================================
@@ -2858,10 +3426,1232 @@ function obterTamanhoCodigo(){
 }
 
 
-
 /* =========================================================
    VERIFICAR CÓDIGO
 ========================================================= */
 
-functi
+function verificarCodigo(){
+
+    if(!jogoAtivo){
+
+        return;
+
+    }
+
+
+    const input =
+        document
+        .getElementById(
+            "inputCodigo"
+        );
+
+
+    if(!input){
+
+        return;
+
+    }
+
+
+    if(
+        input.value.trim() ===
+        codigoAtual
+    ){
+
+        concluirMinigame();
+
+    }
+
+    else{
+
+        finalizarInvasao(
+            false,
+            "CÓDIGO INCORRETO."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MEMÓRIA
+========================================================= */
+
+function iniciarMemoria(){
+
+    document
+        .getElementById(
+            "minigameTitulo"
+        )
+        .textContent =
+        "MEMÓRIA";
+
+
+    document
+        .getElementById(
+            "minigameSubtitulo"
+        )
+        .textContent =
+        "MEMORIZE A SEQUÊNCIA";
+
+
+    const quantidade =
+        obterTamanhoMemoria();
+
+
+    const simbolos = [
+
+        "▲",
+        "■",
+        "●",
+        "◆",
+        "★",
+        "◆",
+        "○",
+        "△"
+
+    ];
+
+
+    memoriaSequencia =
+        [];
+
+
+    memoriaResposta =
+        [];
+
+
+    for(
+        let i = 0;
+        i < quantidade;
+        i++
+    ){
+
+        memoriaSequencia.push(
+            simbolos[
+                Math.floor(
+                    Math.random() *
+                    simbolos.length
+                )
+            ]
+        );
+
+    }
+
+
+    document
+        .getElementById(
+            "conteudoMinigame"
+        )
+        .innerHTML = `
+
+            <div class="terminal">
+
+                <div class="terminal-top">
+
+                    <span>
+                        PROTOCOLO: MEMORY
+                    </span>
+
+                    <span
+                        id="timer"
+                        class="timer"
+                    >
+                        --:--
+                    </span>
+
+                </div>
+
+
+                <div class="game-box">
+
+                    <p>
+                        MEMORIZE A SEQUÊNCIA:
+                    </p>
+
+
+                    <div
+                        id="memoriaSequencia"
+                        class="sequencia"
+                    >
+                        ${memoriaSequencia
+                            .map(
+                                s =>
+                                `<span class="simbolo">${s}</span>`
+                            )
+                            .join("")
+                        }
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="btn"
+                        id="btnMemoriaPronto"
+                    >
+                        [ SEQUÊNCIA MEMORIZADA ]
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+    document
+        .getElementById(
+            "btnMemoriaPronto"
+        )
+        .addEventListener(
+            "click",
+            esconderMemoria
+        );
+
+}
+
+
+/* =========================================================
+   TAMANHO MEMÓRIA
+========================================================= */
+
+function obterTamanhoMemoria(){
+
+    switch(
+        acessoAtual.dificuldade
+    ){
+
+        case "Fácil":
+            return 3;
+
+        case "Normal":
+            return 4;
+
+        case "Difícil":
+            return 6;
+
+        case "Extremo":
+            return 8;
+
+        default:
+            return 3;
+
+    }
+
+}
+
+
+/* =========================================================
+   ESCONDER MEMÓRIA
+========================================================= */
+
+function esconderMemoria(){
+
+    const container =
+        document.getElementById(
+            "conteudoMinigame"
+        );
+
+
+    container.innerHTML = `
+
+        <div class="terminal">
+
+            <div class="terminal-top">
+
+                <span>
+                    PROTOCOLO: MEMORY
+                </span>
+
+                <span
+                    id="timer"
+                    class="timer"
+                >
+                    --:--
+                </span>
+
+            </div>
+
+
+            <div class="game-box">
+
+                <p>
+                    AGORA REPRODUZA A SEQUÊNCIA.
+                </p>
+
+
+                <div
+                    class="sequencia"
+                    style="font-size:28px;"
+                >
+                    <span class="memoria-escondida">
+                        [ SEQUÊNCIA OCULTA ]
+                    </span>
+                </div>
+
+
+                <div
+                    id="memoriaOpcoes"
+                    class="opcoes"
+                ></div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    const opcoes =
+        document.getElementById(
+            "memoriaOpcoes"
+        );
+
+
+    memoriaResposta =
+        [];
+
+
+    memoriaSequencia.forEach(
+        function(simbolo){
+
+            const botao =
+                document.createElement(
+                    "button"
+                );
+
+
+            botao.type =
+                "button";
+
+
+            botao.className =
+                "opcao";
+
+
+            botao.textContent =
+                simbolo;
+
+
+            botao.addEventListener(
+                "click",
+                function(){
+
+                    memoriaResposta.push(
+                        simbolo
+                    );
+
+
+                    botao.style.opacity =
+                        "0.4";
+
+
+                    botao.disabled =
+                        true;
+
+
+                    if(
+                        memoriaResposta.length ===
+                        memoriaSequencia.length
+                    ){
+
+                        verificarMemoria();
+
+                    }
+
+                }
+            );
+
+
+            opcoes.appendChild(
+                botao
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   VERIFICAR MEMÓRIA
+========================================================= */
+
+function verificarMemoria(){
+
+    for(
+        let i = 0;
+        i < memoriaSequencia.length;
+        i++
+    ){
+
+        if(
+            memoriaResposta[i] !==
+            memoriaSequencia[i]
+        ){
+
+            finalizarInvasao(
+                false,
+                "SEQUÊNCIA INCORRETA."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    concluirMinigame();
+
+}
+
+
+/* =========================================================
+   TERMINAL
+========================================================= */
+
+function iniciarTerminal(){
+
+    document
+        .getElementById(
+            "minigameTitulo"
+        )
+        .textContent =
+        "TERMINAL";
+
+
+    document
+        .getElementById(
+            "minigameSubtitulo"
+        )
+        .textContent =
+        "IDENTIFIQUE O CÓDIGO CORRETO";
+
+
+    const caracteres =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+
+    terminalResposta =
+        "";
+
+
+    const tamanho =
+        5;
+
+
+    for(
+        let i = 0;
+        i < tamanho;
+        i++
+    ){
+
+        terminalResposta +=
+            caracteres[
+                Math.floor(
+                    Math.random() *
+                    caracteres.length
+                )
+            ];
+
+    }
+
+
+    const opcoes =
+        [
+            terminalResposta
+        ];
+
+
+    while(
+        opcoes.length < 6
+    ){
+
+        let falso = "";
+
+
+        for(
+            let i = 0;
+            i < tamanho;
+            i++
+        ){
+
+            falso +=
+                caracteres[
+                    Math.floor(
+                        Math.random() *
+                        caracteres.length
+                    )
+                ];
+
+        }
+
+
+        if(
+            !opcoes.includes(falso)
+        ){
+
+            opcoes.push(
+                falso
+            );
+
+        }
+
+    }
+
+
+    embaralhar(opcoes);
+
+
+    document
+        .getElementById(
+            "conteudoMinigame"
+        )
+        .innerHTML = `
+
+            <div class="terminal">
+
+                <div class="terminal-top">
+
+                    <span>
+                        PROTOCOLO: TERMINAL
+                    </span>
+
+                    <span
+                        id="timer"
+                        class="timer"
+                    >
+                        --:--
+                    </span>
+
+                </div>
+
+
+                <div class="game-box">
+
+                    <p>
+                        ENCONTRE A CHAVE DE ACESSO.
+                    </p>
+
+
+                    <p style="color:#477d61;">
+                        Escolha o código correto.
+                    </p>
+
+
+                    <div
+                        id="terminalOpcoes"
+                        class="opcoes"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+    const container =
+        document.getElementById(
+            "terminalOpcoes"
+        );
+
+
+    opcoes.forEach(
+        function(codigo){
+
+            const botao =
+                document.createElement(
+                    "button"
+                );
+
+
+            botao.type =
+                "button";
+
+
+            botao.className =
+                "opcao";
+
+
+            botao.textContent =
+                codigo;
+
+
+            botao.addEventListener(
+                "click",
+                function(){
+
+                    verificarTerminal(
+                        codigo
+                    );
+
+                }
+            );
+
+
+            container.appendChild(
+                botao
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   VERIFICAR TERMINAL
+========================================================= */
+
+function verificarTerminal(
+    codigo
+){
+
+    if(!jogoAtivo){
+
+        return;
+
+    }
+
+
+    if(
+        codigo ===
+        terminalResposta
+    ){
+
+        concluirMinigame();
+
+    }
+
+    else{
+
+        finalizarInvasao(
+            false,
+            "CÓDIGO DO TERMINAL INCORRETO."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FIREWALL
+========================================================= */
+
+function iniciarFirewall(){
+
+    document
+        .getElementById(
+            "minigameTitulo"
+        )
+        .textContent =
+        "FIREWALL";
+
+
+    document
+        .getElementById(
+            "minigameSubtitulo"
+        )
+        .textContent =
+        "DESATIVE A SEQUÊNCIA DO FIREWALL";
+
+
+    const quantidade =
+        obterTamanhoFirewall();
+
+
+    const numeros = [];
+
+
+    while(
+        numeros.length <
+        quantidade
+    ){
+
+        const numero =
+            Math.floor(
+                Math.random() * 16
+            ) + 1;
+
+
+        if(
+            !numeros.includes(numero)
+        ){
+
+            numeros.push(
+                numero
+            );
+
+        }
+
+    }
+
+
+    firewallResposta =
+        embaralhar(
+            numeros
+        );
+
+
+    firewallJogador =
+        [];
+
+
+    document
+        .getElementById(
+            "conteudoMinigame"
+        )
+        .innerHTML = `
+
+            <div class="terminal">
+
+                <div class="terminal-top">
+
+                    <span>
+                        PROTOCOLO: FIREWALL
+                    </span>
+
+                    <span
+                        id="timer"
+                        class="timer"
+                    >
+                        --:--
+                    </span>
+
+                </div>
+
+
+                <div class="game-box">
+
+                    <p>
+                        CLIQUE NOS NÚMEROS NA ORDEM CRESCENTE.
+                    </p>
+
+
+                    <p style="color:#477d61;">
+                        Sequência: menor → maior
+                    </p>
+
+
+                    <div
+                        id="firewallGrade"
+                        class="firewall-grade"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+    const grade =
+        document.getElementById(
+            "firewallGrade"
+        );
+
+
+    const valores =
+        embaralhar(
+            [...firewallResposta]
+        );
+
+
+    valores.forEach(
+        function(numero){
+
+            const botao =
+                document.createElement(
+                    "button"
+                );
+
+
+            botao.type =
+                "button";
+
+
+            botao.textContent =
+                numero;
+
+
+            botao.addEventListener(
+                "click",
+                function(){
+
+                    clicarFirewall(
+                        numero,
+                        botao
+                    );
+
+                }
+            );
+
+
+            grade.appendChild(
+                botao
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   TAMANHO FIREWALL
+========================================================= */
+
+function obterTamanhoFirewall(){
+
+    switch(
+        acessoAtual.dificuldade
+    ){
+
+        case "Fácil":
+            return 4;
+
+        case "Normal":
+            return 6;
+
+        case "Difícil":
+            return 8;
+
+        case "Extremo":
+            return 10;
+
+        default:
+            return 4;
+
+    }
+
+}
+
+
+/* =========================================================
+   CLICAR FIREWALL
+========================================================= */
+
+function clicarFirewall(
+    numero,
+    botao
+){
+
+    if(!jogoAtivo){
+
+        return;
+
+    }
+
+
+    const esperado =
+        [...firewallResposta]
+        .sort(
+            (a,b) =>
+            a - b
+        );
+
+
+    const posicao =
+        firewallJogador.length;
+
+
+    if(
+        numero !==
+        esperado[posicao]
+    ){
+
+        finalizarInvasao(
+            false,
+            "FIREWALL BLOQUEOU A INVASÃO."
+        );
+
+        return;
+
+    }
+
+
+    firewallJogador.push(
+        numero
+    );
+
+
+    botao.classList.add(
+        "selecionado"
+    );
+
+
+    botao.disabled =
+        true;
+
+
+    if(
+        firewallJogador.length ===
+        esperado.length
+    ){
+
+        concluirMinigame();
+
+    }
+
+}
+
+
+/* =========================================================
+   CONCLUIR MINIGAME
+========================================================= */
+
+function concluirMinigame(){
+
+    if(!jogoAtivo){
+
+        return;
+
+    }
+
+
+    indiceJogo++;
+
+
+    atualizarProgresso();
+
+
+    setTimeout(
+        function(){
+
+            if(
+                indiceJogo >=
+                sequenciaJogos.length
+            ){
+
+                finalizarInvasao(
+                    true,
+                    "TODOS OS PROTOCOLOS FORAM SUPERADOS."
+                );
+
+                return;
+
+            }
+
+
+            iniciarProximoMinigame();
+
+        },
+        400
+    );
+
+}
+
+
+/* =========================================================
+   FINALIZAR INVASÃO
+========================================================= */
+
+function finalizarInvasao(
+    sucesso,
+    motivo
+){
+
+    if(
+        !jogoAtivo &&
+        !sucesso
+    ){
+
+        return;
+
+    }
+
+
+    jogoAtivo =
+        false;
+
+
+    clearInterval(
+        intervalo
+    );
+
+
+    intervalo =
+        null;
+
+
+    document
+        .getElementById(
+            "minigame"
+        )
+        .style.display =
+        "none";
+
+
+    const resultado =
+        document.getElementById(
+            "resultado"
+        );
+
+
+    resultado.style.display =
+        "block";
+
+
+    resultado.className =
+        "painel " +
+        (
+            sucesso
+            ? "sucesso"
+            : "falha"
+        );
+
+
+    const titulo =
+        document.getElementById(
+            "resultadoTitulo"
+        );
+
+
+    const texto =
+        document.getElementById(
+            "resultadoTexto"
+        );
+
+
+    if(sucesso){
+
+        titulo.textContent =
+            "✓ INVASÃO CONCLUÍDA";
+
+
+        texto.textContent =
+            "ACESSO OBTIDO. RECURSO DESBLOQUEADO: " +
+            acessoAtual.recurso;
+
+    }
+
+    else{
+
+        titulo.textContent =
+            "✕ INVASÃO FALHOU";
+
+
+        texto.textContent =
+            motivo;
+
+    }
+
+}
+
+
+/* =========================================================
+   VOLTAR AO TERMINAL
+========================================================= */
+
+function voltarTerminal(){
+
+    clearInterval(
+        intervalo
+    );
+
+
+    intervalo =
+        null;
+
+
+    jogoAtivo =
+        false;
+
+
+    if(
+        acessoAtual &&
+        acessoAtual.ativo === true
+    ){
+
+        mostrarAcesso();
+
+    }
+
+    else{
+
+        mostrarSemAcesso();
+
+    }
+
+}
+
+
+/* =========================================================
+   EVENTOS
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        /* -----------------------------------------
+           CONECTAR
+        ----------------------------------------- */
+
+        const btnEntrar =
+            document.getElementById(
+                "btnEntrar"
+            );
+
+
+        if(btnEntrar){
+
+            btnEntrar.addEventListener(
+                "click",
+                function(event){
+
+                    event.preventDefault();
+
+                    entrar();
+
+                }
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           ENTER NO LOGIN
+        ----------------------------------------- */
+
+        const senha =
+            document.getElementById(
+                "senha"
+            );
+
+
+        if(senha){
+
+            senha.addEventListener(
+                "keydown",
+                function(event){
+
+                    if(
+                        event.key ===
+                        "Enter"
+                    ){
+
+                        event.preventDefault();
+
+                        entrar();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           DESCONECTAR
+        ----------------------------------------- */
+
+        const btnSair =
+            document.getElementById(
+                "btnSair"
+            );
+
+
+        if(btnSair){
+
+            btnSair.addEventListener(
+                "click",
+                sair
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           INICIAR INVASÃO
+        ----------------------------------------- */
+
+        const btnIniciar =
+            document.getElementById(
+                "btnIniciar"
+            );
+
+
+        if(btnIniciar){
+
+            btnIniciar.addEventListener(
+                "click",
+                iniciarInvasao
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           VOLTAR TERMINAL
+        ----------------------------------------- */
+
+        const btnVoltarTerminal =
+            document.getElementById(
+                "btnVoltarTerminal"
+            );
+
+
+        if(btnVoltarTerminal){
+
+            btnVoltarTerminal.addEventListener(
+                "click",
+                voltarTerminal
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           LIBERAR ACESSO
+        ----------------------------------------- */
+
+        const btnLiberar =
+            document.getElementById(
+                "btnLiberar"
+            );
+
+
+        if(btnLiberar){
+
+            btnLiberar.addEventListener(
+                "click",
+                function(event){
+
+                    event.preventDefault();
+
+                    liberarAcesso();
+
+                }
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           INICIAR FIREBASE
+        ----------------------------------------- */
+
+        iniciarFirebase();
+
+
+        /* -----------------------------------------
+           RECUPERAR LOGIN
+        ----------------------------------------- */
+
+        verificarLoginSalvo();
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
 ```
