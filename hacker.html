@@ -3814,194 +3814,98 @@ function verificarMemoria(){
 
 function iniciarTerminal(){
 
-    document
-        .getElementById(
-            "minigameTitulo"
-        )
-        .textContent =
-        "TERMINAL";
+    terminalResposta = "";
 
+    const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    document
-        .getElementById(
-            "minigameSubtitulo"
-        )
-        .textContent =
-        "IDENTIFIQUE O CÓDIGO CORRETO";
+    // ==========================================
+    // GERAR CÓDIGO CORRETO
+    // ==========================================
 
-
-    const caracteres =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-
-    terminalResposta =
-        "";
-
-
-    const tamanho =
-        5;
-
-
-    for(
-        let i = 0;
-        i < tamanho;
-        i++
-    ){
-
-        terminalResposta +=
-            caracteres[
-                Math.floor(
-                    Math.random() *
-                    caracteres.length
-                )
-            ];
-
+    for(let i = 0; i < 5; i++){
+        terminalResposta += caracteres[
+            Math.floor(Math.random() * caracteres.length)
+        ];
     }
 
+    // ==========================================
+    // CRIAR CÓDIGOS
+    // ==========================================
 
-    const opcoes =
-        [
-            terminalResposta
-        ];
+    let codigos = [terminalResposta];
 
-
-    while(
-        opcoes.length < 6
-    ){
+    while(codigos.length < 6){
 
         let falso = "";
 
-
-        for(
-            let i = 0;
-            i < tamanho;
-            i++
-        ){
-
-            falso +=
-                caracteres[
-                    Math.floor(
-                        Math.random() *
-                        caracteres.length
-                    )
-                ];
-
+        for(let i = 0; i < 5; i++){
+            falso += caracteres[
+                Math.floor(Math.random() * caracteres.length)
+            ];
         }
 
-
-        if(
-            !opcoes.includes(falso)
-        ){
-
-            opcoes.push(
-                falso
-            );
-
+        if(!codigos.includes(falso)){
+            codigos.push(falso);
         }
-
     }
 
+    // ==========================================
+    // EMBARALHAR
+    // ==========================================
 
-    embaralhar(opcoes);
+    codigos.sort(() => Math.random() - 0.5);
 
+    // ==========================================
+    // MOSTRAR MINIGAME
+    // ==========================================
 
-    document
-        .getElementById(
-            "conteudoMinigame"
-        )
-        .innerHTML = `
+    const area = document.getElementById("areaMinigame");
 
-            <div class="terminal">
+    area.innerHTML = `
 
-                <div class="terminal-top">
+        <div class="terminal-box">
 
-                    <span>
-                        PROTOCOLO: TERMINAL
-                    </span>
+            <h2>HACKER // TERMINAL</h2>
 
-                    <span
-                        id="timer"
-                        class="timer"
-                    >
-                        --:--
-                    </span>
+            <p class="terminal-status">
+                > ACESSANDO TERMINAL...
+            </p>
 
-                </div>
+            <p class="terminal-status">
+                > DADOS CRIPTOGRAFADOS ENCONTRADOS
+            </p>
 
+            <div class="codigo-alvo">
 
-                <div class="game-box">
+                <div>CÓDIGO-ALVO</div>
 
-                    <p>
-                        ENCONTRE A CHAVE DE ACESSO.
-                    </p>
-
-
-                    <p style="color:#477d61;">
-                        Escolha o código correto.
-                    </p>
-
-
-                    <div
-                        id="terminalOpcoes"
-                        class="opcoes"
-                    ></div>
-
-                </div>
+                <strong>${terminalResposta}</strong>
 
             </div>
 
-        `;
+            <p class="terminal-instrucao">
+                IDENTIFIQUE O CÓDIGO-ALVO ENTRE AS OPÇÕES:
+            </p>
 
+            <div class="opcoes-terminal">
 
-    const container =
-        document.getElementById(
-            "terminalOpcoes"
-        );
+                ${codigos.map(codigo => `
 
+                    <button
+                        class="botao-terminal"
+                        onclick="verificarTerminal('${codigo}')"
+                    >
+                        ${codigo}
+                    </button>
 
-    opcoes.forEach(
-        function(codigo){
+                `).join("")}
 
-            const botao =
-                document.createElement(
-                    "button"
-                );
+            </div>
 
+        </div>
 
-            botao.type =
-                "button";
-
-
-            botao.className =
-                "opcao";
-
-
-            botao.textContent =
-                codigo;
-
-
-            botao.addEventListener(
-                "click",
-                function(){
-
-                    verificarTerminal(
-                        codigo
-                    );
-
-                }
-            );
-
-
-            container.appendChild(
-                botao
-            );
-
-        }
-    );
-
+    `;
 }
-
-
 /* =========================================================
    VERIFICAR TERMINAL
 ========================================================= */
