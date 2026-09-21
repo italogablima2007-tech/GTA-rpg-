@@ -1,4 +1,185 @@
-<!DOCTYPE html>
+function liberarAcesso(){
+
+    /* =====================================================
+       VERIFICAR SE É O ADMIN
+    ===================================================== */
+
+    if(usuarioAtual !== "Italo"){
+
+        alert("ACESSO NEGADO.");
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       VERIFICAR FIREBASE
+    ===================================================== */
+
+    if(!db){
+
+        alert(
+            "O sistema ainda não conseguiu conectar ao Firebase."
+        );
+
+        console.error(
+            "Firebase DB não inicializado."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       PEGAR DADOS DO FORMULÁRIO
+    ===================================================== */
+
+    const jogador =
+        document.getElementById(
+            "adminJogador"
+        ).value;
+
+
+    let tempo =
+        Number(
+            document.getElementById(
+                "adminTempo"
+            ).value
+        );
+
+
+    const dificuldade =
+        document.getElementById(
+            "adminDificuldade"
+        ).value;
+
+
+    const recurso =
+        document.getElementById(
+            "adminRecurso"
+        ).value.trim();
+
+
+    /* =====================================================
+       VALIDAÇÕES
+    ===================================================== */
+
+    if(!jogador){
+
+        alert(
+            "Selecione um jogador."
+        );
+
+        return;
+
+    }
+
+
+    if(!tempo || tempo < 10){
+
+        alert(
+            "O tempo mínimo é de 10 segundos."
+        );
+
+        return;
+
+    }
+
+
+    if(!recurso){
+
+        alert(
+            "Digite o recurso que será desbloqueado."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       CRIAR ACESSO
+    ===================================================== */
+
+    const acesso = {
+
+        ativo: true,
+
+        jogador: jogador,
+
+        tempo: tempo,
+
+        dificuldade: dificuldade,
+
+        recurso: recurso,
+
+        criadoEm: Date.now(),
+
+        criadoPor: "Italo"
+
+    };
+
+
+    console.log(
+        "Tentando liberar acesso:",
+        acesso
+    );
+
+
+    /* =====================================================
+       SALVAR NO FIREBASE
+    ===================================================== */
+
+    db.ref(
+        "hackerAcessos/" + jogador
+    )
+    .set(acesso)
+
+    .then(function(){
+
+        console.log(
+            "Acesso salvo com sucesso:",
+            jogador
+        );
+
+
+        alert(
+            "✓ ACESSO LIBERADO PARA " +
+            jogador.toUpperCase()
+        );
+
+
+        /* Limpar recurso */
+
+        document.getElementById(
+            "adminRecurso"
+        ).value = "";
+
+
+        /* Atualizar lista */
+
+        carregarAcessosAdmin();
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "ERRO AO LIBERAR ACESSO:",
+            error
+        );
+
+
+        alert(
+            "ERRO AO LIBERAR ACESSO:\n\n" +
+            error.message
+        );
+
+    });
+
+         }<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -7,6 +188,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>HACKER // TERMINAL</title>
+
 
 <!-- =========================================================
      FIREBASE
@@ -31,10 +213,19 @@ const usuarios = {
 
 let usuarioAtual = null;
 
+
+/* =========================================================
+   ENTRAR
+========================================================= */
+
 function entrar(){
 
-    const usuarioInput = document.getElementById("usuario").value.trim();
-    const senhaInput = document.getElementById("senha").value.trim();
+    const usuarioInput =
+        document.getElementById("usuario").value.trim();
+
+    const senhaInput =
+        document.getElementById("senha").value.trim();
+
 
     if(!usuarios[usuarioInput]){
 
@@ -42,7 +233,9 @@ function entrar(){
             "USUÁRIO NÃO ENCONTRADO.";
 
         return;
+
     }
+
 
     if(usuarios[usuarioInput] !== senhaInput){
 
@@ -50,44 +243,64 @@ function entrar(){
             "CÓDIGO DE ACESSO INCORRETO.";
 
         return;
+
     }
 
+
     usuarioAtual = usuarioInput;
+
 
     localStorage.setItem(
         "hacker_usuario",
         usuarioAtual
     );
 
+
     document.getElementById("erroLogin").innerText = "";
 
-    document.getElementById("loginTela").style.display = "none";
 
-    document.getElementById("sistema").style.display = "block";
+    document.getElementById("loginTela").style.display =
+        "none";
+
+
+    document.getElementById("sistema").style.display =
+        "block";
+
 
     document.getElementById("usuarioLogado").innerText =
         usuarioAtual.toUpperCase();
 
-    /* ADMIN */
+
+    /* =====================================================
+       ADMIN
+    ===================================================== */
 
     if(usuarioAtual === "Italo"){
 
         document.getElementById("adminPanel").style.display =
             "block";
 
-        carregarAcessosAdmin();
-
     }else{
 
         document.getElementById("adminPanel").style.display =
             "none";
+
     }
 
-    iniciarFirebase();
 
-    ouvirAcessoJogador();
+    /* =====================================================
+       INICIAR SISTEMA
+    ===================================================== */
+
+    iniciarSistema();
+
 }
 
+
+
+/* =========================================================
+   VOLTAR
+========================================================= */
 
 function voltar(){
 
@@ -96,31 +309,57 @@ function voltar(){
 }
 
 
-window.addEventListener("DOMContentLoaded", function(){
 
-    document
-        .getElementById("btnEntrar")
-        .addEventListener("click", entrar);
+/* =========================================================
+   EVENTOS DO LOGIN
+========================================================= */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const btnEntrar =
+            document.getElementById("btnEntrar");
 
 
-    document
-        .getElementById("btnVoltar")
-        .addEventListener("click", voltar);
+        const btnVoltar =
+            document.getElementById("btnVoltar");
 
 
-    document
-        .getElementById("senha")
-        .addEventListener("keydown", function(event){
+        btnEntrar.addEventListener(
+            "click",
+            entrar
+        );
 
-            if(event.key === "Enter"){
 
-                entrar();
+        btnVoltar.addEventListener(
+            "click",
+            function(){
+
+                window.location.href =
+                    "./index.html";
 
             }
+        );
 
-        });
 
-});
+        document
+            .getElementById("senha")
+            .addEventListener(
+                "keydown",
+                function(event){
+
+                    if(event.key === "Enter"){
+
+                        entrar();
+
+                    }
+
+                }
+            );
+
+    }
+);
 
 </script>
 
@@ -135,9 +374,12 @@ window.addEventListener("DOMContentLoaded", function(){
     box-sizing:border-box;
 }
 
+
 body{
 
     margin:0;
+
+    min-height:100vh;
 
     background:#020403;
 
@@ -146,8 +388,6 @@ body{
     font-family:
         "Courier New",
         monospace;
-
-    min-height:100vh;
 
 }
 
@@ -503,7 +743,7 @@ body{
 
     margin-top:20px;
 
-    padding:12px;
+    padding:14px;
 
     width:100%;
 
@@ -1122,7 +1362,7 @@ body{
 
 
 <!-- =========================================================
-     TELA DE LOGIN
+     LOGIN
 ========================================================= -->
 
 <div id="loginTela">
@@ -1193,6 +1433,10 @@ body{
 
 <div class="container">
 
+
+    <!-- =====================================================
+         CABEÇALHO
+    ====================================================== -->
 
     <div class="header">
 
@@ -1308,7 +1552,7 @@ body{
                 <input
                     type="text"
                     id="adminRecurso"
-                    placeholder="Ex: Cofre, Sistema, Arquivo..."
+                    placeholder="Ex: Sistema de Segurança"
                 >
 
             </div>
@@ -1319,7 +1563,8 @@ body{
 
         <button
             class="btnAdmin"
-            onclick="liberarAcesso()"
+            id="btnLiberarAcesso"
+            type="button"
         >
             [ LIBERAR ACESSO ]
         </button>
@@ -1355,7 +1600,8 @@ body{
             </div>
 
             <div class="statusInfo">
-                Nenhuma invasão foi autorizada para este usuário.
+                Nenhuma invasão foi autorizada
+                para este usuário.
             </div>
 
         </div>
@@ -1363,7 +1609,7 @@ body{
 
         <button
             id="btnIniciar"
-            onclick="iniciarInvasao()"
+            type="button"
         >
             [ INICIAR INVASÃO ]
         </button>
@@ -1469,81 +1715,7 @@ body{
 
 let db = null;
 
-let acessoAtual = null;
-
-let sequenciaMinigames = [];
-
-let indiceMinigame = 0;
-
-let tempoInicioInvasao = 0;
-
-let tempoTotalInvasao = 0;
-
-let intervaloTempo = null;
-
-let tempoRestante = 0;
-
-let memoriaSequencia = [];
-
-let memoriaResposta = [];
-
-let codigoTerminalCorreto = "";
-
-let firewallCorreto = "";
-
-
-
-/* =========================================================
-   FIREBASE
-========================================================= */
-
-const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBjJqg",
-
-    authDomain:
-        "gta-rpg.firebaseapp.com",
-
-    databaseURL:
-        "https://gta-rpg-default-rtdb.firebaseio.com",
-
-    projectId:
-        "gta-rpg",
-
-    storageBucket:
-        "gta-rpg.firebasestorage.app",
-
-    messagingSenderId:
-        "318963858414",
-
-    appId:
-        "1:318963858414:web:cc7122486ac5a3d267ecff",
-
-    measurementId:
-        "G-K157521F0H"
-
-};
-
-
-
-function iniciarFirebase(){
-
-    try{
-
-        if(!firebase.apps.length){
-
-            firebase.initializeApp(firebaseConfig);
-
-        }
-
-        db = firebase.database();
-
-    }catch(error){
-
-        console.error(
-            "Erro ao iniciar Firebase:",
-            error   margin-bottom:15px;
+let acessoAtual = nul   margin-bottom:15px;
 
 }
 
