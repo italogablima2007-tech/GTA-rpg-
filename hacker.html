@@ -5,27 +5,16 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>HACKER // GTA RPG</title>
 
 
-<!-- ==========================================
-     FIREBASE
-========================================== -->
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-
 <style>
 
-/* ==========================================
-   RESET
-========================================== */
+/* ==================================================
+   GERAL
+================================================== */
 
 *{
     box-sizing:border-box;
@@ -54,9 +43,9 @@ body{
 }
 
 
-/* ==========================================
+/* ==================================================
    EFEITO TERMINAL
-========================================== */
+================================================== */
 
 body::before{
 
@@ -83,9 +72,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    LOGIN
-========================================== */
+================================================== */
 
 #loginTela{
 
@@ -181,7 +170,7 @@ body::before{
 }
 
 
-.login-logo .simbolo{
+.simbolo{
 
     font-size:50px;
 
@@ -307,7 +296,13 @@ body::before{
 }
 
 
+/* ==================================================
+   BOTÕES
+================================================== */
+
 .btn{
+
+    display:block;
 
     width:100%;
 
@@ -328,6 +323,10 @@ body::before{
     letter-spacing:2px;
 
     cursor:pointer;
+
+    text-align:center;
+
+    text-decoration:none;
 
     transition:.2s;
 
@@ -383,9 +382,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    SISTEMA
-========================================== */
+================================================== */
 
 #sistema{
 
@@ -409,9 +408,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    TOPO
-========================================== */
+================================================== */
 
 .topo{
 
@@ -484,9 +483,9 @@ body::before{
 }
 
 
-/* ==========================================
-   PAINÉIS
-========================================== */
+/* ==================================================
+   PAINEL
+================================================== */
 
 .painel{
 
@@ -513,9 +512,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    SEM ACESSO
-========================================== */
+================================================== */
 
 #semAcesso{
 
@@ -549,9 +548,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    ACESSO
-========================================== */
+================================================== */
 
 #acessoLiberado{
 
@@ -617,9 +616,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    MINIGAME
-========================================== */
+================================================== */
 
 #minigame{
 
@@ -655,9 +654,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    PROGRESSO
-========================================== */
+================================================== */
 
 .progresso{
 
@@ -702,15 +701,12 @@ body::before{
 
     background:#00ff88;
 
-    box-shadow:
-        0 0 10px #00ff88;
-
 }
 
 
-/* ==========================================
+/* ==================================================
    CRACK
-========================================== */
+================================================== */
 
 .codigo{
 
@@ -754,9 +750,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    MEMÓRIA
-========================================== */
+================================================== */
 
 .memoria-sequencia{
 
@@ -805,9 +801,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    TERMINAL
-========================================== */
+================================================== */
 
 .terminal{
 
@@ -857,9 +853,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    FIREWALL
-========================================== */
+================================================== */
 
 .firewall-grade{
 
@@ -907,9 +903,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    RESULTADO
-========================================== */
+================================================== */
 
 #resultado{
 
@@ -929,9 +925,9 @@ body::before{
 }
 
 
-/* ==========================================
+/* ==================================================
    ADMIN
-========================================== */
+================================================== */
 
 #admin{
 
@@ -952,6 +948,718 @@ body::before{
     display:block;
 
     color:#477d61;
+
+    margin-bottom:7px;
+
+    font-size:12px;
+
+}
+
+
+.admin-campo input,
+.admin-campo select{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#010401;
+
+    color:#00ff88;
+
+    border:1px solid #164d31;
+
+    outline:none;
+
+}
+
+
+.admin-separador{
+
+    border-top:1px solid #123d27;
+
+    margin:25px 0;
+
+}
+
+
+.acesso-admin{
+
+    border:1px solid #123d27;
+
+    background:#020803;
+
+    padding:15px;
+
+    margin-bottom:10px;
+
+}
+
+
+.acesso-admin button{
+
+    margin-top:10px;
+
+}
+
+
+/* ==================================================
+   RESPONSIVO
+================================================== */
+
+@media(max-width:800px){
+
+    .info-acesso{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:600px){
+
+    .topo{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .info-acesso{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .terminal-opcoes{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .firewall-grade{
+
+        grid-template-columns:
+            repeat(3,1fr);
+
+    }
+
+}
+
+</style>
+
+
+<!-- ==================================================
+     LOGIN SCRIPT
+     
+     ESTE SCRIPT É INDEPENDENTE DO FIREBASE.
+================================================== -->
+
+<script>
+
+function entrar(){
+
+    const usuario =
+        document
+        .getElementById("usuario")
+        .value
+        .trim();
+
+    const senha =
+        document
+        .getElementById("senha")
+        .value
+        .trim();
+
+    const erro =
+        document
+        .getElementById("erro");
+
+
+    erro.textContent = "";
+
+
+    if(usuario === ""){
+
+        erro.textContent =
+            "ERRO: informe o usuário.";
+
+        return;
+
+    }
+
+
+    if(senha === ""){
+
+        erro.textContent =
+            "ERRO: informe a senha.";
+
+        return;
+
+    }
+
+
+    const usuarios = {
+
+        Kaius:"28/09",
+
+        Gaby:"22/09",
+
+        Duda:"13/09",
+
+        Italo:"1822"
+
+    };
+
+
+    let usuarioReal = null;
+
+
+    for(
+        const nome in usuarios
+    ){
+
+        if(
+            nome.toLowerCase() ===
+            usuario.toLowerCase()
+        ){
+
+            usuarioReal = nome;
+
+            break;
+
+        }
+
+    }
+
+
+    if(usuarioReal === null){
+
+        erro.textContent =
+            "ERRO: usuário não encontrado.";
+
+        return;
+
+    }
+
+
+    if(
+        usuarios[usuarioReal] !==
+        senha
+    ){
+
+        erro.textContent =
+            "ERRO: senha incorreta.";
+
+        return;
+
+    }
+
+
+    /*
+     * LOGIN APROVADO
+     */
+
+    localStorage.setItem(
+        "hacker_usuario",
+        usuarioReal
+    );
+
+
+    /*
+     * Mostra o sistema.
+     */
+
+    document
+        .getElementById("loginTela")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("sistema")
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById("usuarioLogado")
+        .textContent =
+        "● CONECTADO: " +
+        usuarioReal;
+
+
+    /*
+     * Guarda a variável global.
+     */
+
+    window.usuarioAtual =
+        usuarioReal;
+
+
+    /*
+     * Só Ítalo vê o painel admin.
+     */
+
+    if(usuarioReal === "Italo"){
+
+        document
+            .getElementById("admin")
+            .style.display =
+            "block";
+
+    }
+
+
+    /*
+     * Depois do login,
+     * carregamos o Firebase.
+     */
+
+    iniciarFirebase();
+
+}
+
+
+function voltar(){
+
+    window.location.href =
+        "./index.html";
+
+}
+
+
+function sair(){
+
+    localStorage.removeItem(
+        "hacker_usuario"
+    );
+
+    window.location.reload();
+
+}
+
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const btn =
+            document
+            .getElementById(
+                "btnEntrar"
+            );
+
+        const btnVoltar =
+            document
+            .getElementById(
+                "btnVoltar"
+            );
+
+
+        btn.onclick =
+            entrar;
+
+
+        btnVoltar.onclick =
+            voltar;
+
+
+        document
+        .getElementById("senha")
+        .addEventListener(
+            "keydown",
+            function(event){
+
+                if(
+                    event.key ===
+                    "Enter"
+                ){
+
+                    entrar();
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     LOGIN
+================================================== -->
+
+<section id="loginTela">
+
+<div class="login-container">
+
+
+    <div class="login-logo">
+
+        <div class="simbolo">
+            ◉
+        </div>
+
+        <h1>
+            HACKER
+        </h1>
+
+        <p>
+            // SECURE TERMINAL ACCESS //
+        </p>
+
+    </div>
+
+
+    <div class="terminal-linha">
+
+        SYSTEM://GTA-RPG<br>
+        CONNECTION://ENCRYPTED<br>
+        STATUS://WAITING FOR AUTHENTICATION
+
+    </div>
+
+
+    <div class="campo">
+
+        <label>
+            USUÁRIO
+        </label>
+
+        <input
+            id="usuario"
+            type="text"
+            autocomplete="off"
+            placeholder="Digite seu usuário"
+        >
+
+    </div>
+
+
+    <div class="campo">
+
+        <label>
+            SENHA
+        </label>
+
+        <input
+            id="senha"
+            type="password"
+            autocomplete="off"
+            placeholder="Digite sua senha"
+        >
+
+    </div>
+
+
+    <button
+        type="button"
+        class="btn"
+        id="btnEntrar"
+    >
+
+        [ CONECTAR ]
+
+    </button>
+
+
+    <a
+        href="./index.html"
+        class="btn btn-voltar"
+        id="btnVoltar"
+    >
+
+        [ VOLTAR ]
+
+    </a>
+
+
+    <div
+        id="erro"
+        class="erro"
+    ></div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     SISTEMA
+================================================== -->
+
+<section id="sistema">
+
+<div class="container">
+
+
+    <div class="topo">
+
+        <div>
+
+            <h1>
+                HACKER // TERMINAL
+            </h1>
+
+            <div
+                id="usuarioLogado"
+                class="status-online"
+            ></div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="btn btn-sair"
+            onclick="sair()"
+        >
+
+            DESCONECTAR
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         SEM ACESSO
+    ================================================== -->
+
+    <div
+        id="semAcesso"
+        class="painel"
+    >
+
+        <div class="cadeado">
+            ▣
+        </div>
+
+        <h2>
+            NENHUM ACESSO DISPONÍVEL
+        </h2>
+
+        <p>
+            Nenhuma operação foi autorizada
+            para este usuário.
+        </p>
+
+        <p>
+            Aguardando autorização...
+        </p>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         ACESSO
+    ================================================== -->
+
+    <div
+        id="acessoLiberado"
+        class="painel"
+    >
+
+        <div class="alerta-acesso">
+
+            >
+            <strong>
+                OPERAÇÃO AUTORIZADA
+            </strong>
+
+            <br>
+
+            >
+            Conexão segura estabelecida.
+
+        </div>
+
+
+        <h2>
+            INVASÃO DISPONÍVEL
+        </h2>
+
+
+        <div class="info-acesso">
+
+
+            <div class="info">
+
+                <small>
+                    JOGADOR
+                </small>
+
+                <strong
+                    id="infoJogador"
+                >
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>
+                    DIFICULDADE
+                </small>
+
+                <strong
+                    id="infoDificuldade"
+                >
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>
+                    RECURSO
+                </small>
+
+                <strong
+                    id="infoRecurso"
+                >
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>
+                    TEMPO
+                </small>
+
+                <strong
+                    id="infoTempo"
+                >
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="btn"
+            onclick="iniciarInvasao()"
+        >
+
+            [ INICIAR INVASÃO ]
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         MINIGAME
+    ================================================== -->
+
+    <div
+        id="minigame"
+        class="painel"
+    >
+
+        <div
+            id="minigameTitulo"
+            class="minigame-titulo"
+        ></div>
+
+
+        <div
+            id="minigameSubtitulo"
+            class="minigame-subtitulo"
+        ></div>
+
+
+        <div class="progresso">
+
+            <div class="progresso-texto">
+
+                <span>
+                    OPERAÇÃO
+                </span>
+
+                <span
+                    id="progressoTexto"
+                >
+                    0/0
+                </span>
+
+            </div>
+
+
+            <div class="barra">
+
+                <div
+                    id="barraInterna"
+                    class="barra-interna"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="conteudoMinigame"
+        ></div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         RESULTADO
+    ================================================== -->
+
+    <div
+        id="resultado"
+        class="painel"
+    >
+
+        <h2
+            id="resultadoTitulo"
+        ></h2>
+
+
+        <p
+            id="resultadoTexto"
+        ></p>
+
+
+        <button
+            type="button"
+            class="btn"
+            onclick="voltarTerminal()"
+        >
+
+            [ VOLTAR A61;
 
     margin-bottom:7px;
 
