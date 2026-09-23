@@ -2708,6 +2708,14 @@ function atualizarSuspeitos() {
 
             "</button> " +
 
+            "<button class='btn' onclick=\"editarFichaPorId('" +
+            s.id +
+            "')\">" +
+
+            "EDITAR" +
+
+            "</button> " +
+
             "<button class='btn btn-danger' onclick=\"excluirFichaPorId('" +
             s.id +
             "')\">" +
@@ -2772,6 +2780,12 @@ function abrirPerfil(id) {
     if (usuarioLogado.tipo === "admin") {
 
         adminBotao =
+
+            "<button class='btn' onclick='editarFicha()'>" +
+
+            "EDITAR FICHA" +
+
+            "</button>" +
 
             "<button class='btn' onclick='adicionarCrime()'>" +
 
@@ -2941,6 +2955,129 @@ function abrirPerfil(id) {
 
     atualizarCrimes();
 
+}
+
+
+/* =====================================================
+   EDITAR FICHA
+===================================================== */
+
+function editarFichaPorId(id) {
+
+    if (!usuarioLogado || usuarioLogado.tipo !== "admin") {
+        alert("Apenas o administrador pode editar fichas.");
+        return;
+    }
+
+    var ficha = encontrarFicha(id);
+
+    if (!ficha) {
+        alert("Ficha não encontrada.");
+        return;
+    }
+
+    editarDadosDaFicha(ficha);
+}
+
+
+function editarFicha() {
+
+    if (!suspeitoAtual) {
+        alert("Nenhuma ficha selecionada.");
+        return;
+    }
+
+    if (!usuarioLogado || usuarioLogado.tipo !== "admin") {
+        alert("Apenas o administrador pode editar fichas.");
+        return;
+    }
+
+    editarDadosDaFicha(suspeitoAtual);
+}
+
+
+function editarDadosDaFicha(ficha) {
+
+    var nome = prompt("Nome do indivíduo:", ficha.nome || "");
+    if (nome === null) return;
+    nome = nome.trim();
+    if (!nome) {
+        alert("O nome não pode ficar vazio.");
+        return;
+    }
+
+    var status = prompt("Status:", ficha.status || "LIBERADO");
+    if (status === null) return;
+    status = status.trim() || "LIBERADO";
+
+    var procurado = prompt(
+        "Nível de procurado (0 a 5):",
+        ficha.procurado != null ? ficha.procurado : 0
+    );
+    if (procurado === null) return;
+    procurado = parseInt(procurado, 10);
+    if (isNaN(procurado) || procurado < 0 || procurado > 5) {
+        alert("O nível de procurado deve ser um número entre 0 e 5.");
+        return;
+    }
+
+    var perigo = prompt(
+        "Nível de perigo (1 a 5):",
+        ficha.perigo != null ? ficha.perigo : 1
+    );
+    if (perigo === null) return;
+    perigo = parseInt(perigo, 10);
+    if (isNaN(perigo) || perigo < 1 || perigo > 5) {
+        alert("O nível de perigo deve ser um número entre 1 e 5.");
+        return;
+    }
+
+    var local = prompt("Última localização:", ficha.local || "");
+    if (local === null) return;
+
+    var veiculo = prompt("Veículo:", ficha.veiculo || "");
+    if (veiculo === null) return;
+
+    var player = prompt(
+        "Player vinculado (deixe vazio para remover):",
+        ficha.player || ""
+    );
+    if (player === null) return;
+
+    // Verifica se outro cadastro já usa esse player.
+    var playerNormalizado = player.trim();
+    if (playerNormalizado) {
+        var outraFicha = encontrarFichaDoPlayer(playerNormalizado);
+
+        if (outraFicha && outraFicha.id !== ficha.id) {
+            alert("Esse player já possui outra ficha vinculada.");
+            return;
+        }
+    }
+
+    ficha.nome = nome;
+    ficha.status = status;
+    ficha.procurado = procurado;
+    ficha.perigo = perigo;
+    ficha.local = local.trim() || "Não informado";
+    ficha.veiculo = veiculo.trim() || "Nenhum registrado";
+    ficha.player = playerNormalizado || null;
+
+    // Garante que fichas antigas continuem compatíveis.
+    if (!Array.isArray(ficha.crimes)) {
+        ficha.crimes = [];
+    }
+
+    salvarDados();
+    atualizarTudo();
+
+    // Se a ficha estava aberta, redesenha a ficha já atualizada.
+    if (suspeitoAtual && suspeitoAtual.id === ficha.id) {
+        suspeitoAtual = ficha;
+        abrirPerfil(ficha.id);
+    }
+
+    alert("Ficha " + ficha.id + " atualizada com sucesso.");
 }
 
 
