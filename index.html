@@ -1,600 +1,554 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Central do RPG</title>
-
-    <!-- ==========================================
-         FIREBASE
-    =========================================== -->
-
-    <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
-
-
-    <!-- ==========================================
-         ESTILO
-    =========================================== -->
-
-    <style>
-
-        *{
-            box-sizing:border-box;
-        }
-
-        body{
-            margin:0;
-            font-family:Arial, Helvetica, sans-serif;
-            background:#101010;
-            color:white;
-            min-height:100vh;
-        }
-
-        button,
-        input,
-        textarea,
-        select{
-            font-family:inherit;
-        }
-
-
-        /* ==========================================
-           CENTRAL
-        =========================================== */
-
-        #central{
-            min-height:100vh;
-            padding:50px 25px;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-        }
-
-        .titulo{
-            font-size:42px;
-            font-weight:bold;
-            letter-spacing:4px;
-            margin-bottom:10px;
-            text-align:center;
-        }
-
-        .subtitulo{
-            color:#999;
-            margin-bottom:45px;
-            text-align:center;
-        }
-
-
-        /* ==========================================
-           ABAS
-        =========================================== */
-
-        .abas-central{
-            width:100%;
-            max-width:1200px;
-            display:grid;
-            grid-template-columns:repeat(4,1fr);
-            gap:25px;
-        }
-
-        .aba{
-            height:220px;
-            border:2px solid #333;
-            border-radius:12px;
-            overflow:hidden;
-            display:flex;
-            align-items:flex-end;
-            justify-content:center;
-            cursor:pointer;
-            transition:.25s;
-            position:relative;
-            background-size:cover;
-            background-position:center;
-        }
-
-        .aba:hover{
-            transform:translateY(-5px);
-            border-color:#fff;
-        }
-
-        .aba h2{
-            width:100%;
-            margin:0;
-            padding:25px 10px;
-            text-align:center;
-            font-size:24px;
-            letter-spacing:2px;
-            background:linear-gradient(
-                transparent,
-                rgba(0,0,0,.95)
-            );
-        }
-
-
-        /* ==========================================
-           IMÓVEIS
-        =========================================== */
-
-        .aba-imoveis{
-            background:
-                linear-gradient(
-                    rgba(0,0,0,.30),
-                    rgba(0,0,0,.75)
-                ),
-                url("./imoveis.jpg");
-
-            background-size:cover;
-            background-position:center;
-        }
-
-
-        /* ==========================================
-           LESTER
-        =========================================== */
-
-        .aba-lester{
-            background:
-                linear-gradient(
-                    rgba(0,0,0,.30),
-                    rgba(0,0,0,.75)
-                ),
-                url("./lester.jpg");
-
-            background-size:cover;
-            background-position:center;
-        }
-
-
-        /* ==========================================
-           ALVOS
-        =========================================== */
-
-        .aba-alvos{
-            background:
-                linear-gradient(
-                    rgba(0,0,0,.30),
-                    rgba(0,0,0,.75)
-                ),
-                url("./alvos.jpg");
-
-            background-size:cover;
-            background-position:center;
-        }
-
-
-        /* ==========================================
-           HACKER
-           
-           IMPORTANTE:
-           A ABA FICA SEMPRE VISÍVEL.
-           NÃO EXISTE VERIFICAÇÃO DE ACESSO AQUI.
-        =========================================== */
-
-        .aba-hacker{
-            background:
-                linear-gradient(
-                    rgba(0,0,0,.30),
-                    rgba(0,0,0,.70)
-                ),
-                url("./hacker.jpg");
-
-            background-size:cover;
-            background-position:center;
-        }
-
-        .aba-hacker:hover{
-            border-color:#00ff88;
-        }
-
-
-        /* ==========================================
-           LOGIN LESTER
-        =========================================== */
-
-        #login{
-            display:none;
-            min-height:100vh;
-            align-items:center;
-            justify-content:center;
-            padding:25px;
-        }
-
-        .login-box{
-            width:100%;
-            max-width:400px;
-            background:#181818;
-            border:1px solid #333;
-            border-radius:12px;
-            padding:30px;
-            box-shadow:0 10px 40px rgba(0,0,0,.5);
-        }
-
-        .login-box h2{
-            text-align:center;
-            margin-top:0;
-            margin-bottom:25px;
-        }
-
-        .campo{
-            margin-bottom:15px;
-        }
-
-        .campo label{
-            display:block;
-            margin-bottom:7px;
-            color:#aaa;
-            font-size:14px;
-        }
-
-        .campo input,
-        .campo textarea,
-        .campo select{
-            width:100%;
-            padding:12px;
-            background:#101010;
-            color:white;
-            border:1px solid #444;
-            border-radius:6px;
-            outline:none;
-        }
-
-        .campo textarea{
-            min-height:100px;
-            resize:vertical;
-        }
-
-        .campo input:focus,
-        .campo textarea:focus,
-        .campo select:focus{
-            border-color:#777;
-        }
-
-        .btn{
-            width:100%;
-            padding:12px;
-            border:0;
-            border-radius:6px;
-            cursor:pointer;
-            font-weight:bold;
-            background:#fff;
-            color:#000;
-            transition:.2s;
-        }
-
-        .btn:hover{
-            opacity:.85;
-        }
-
-        .btn-voltar{
-            margin-top:10px;
-            background:#292929;
-            color:white;
-        }
-
-        .erro{
-            color:#ff4444;
-            text-align:center;
-            margin-top:15px;
-            min-height:20px;
-        }
-
-
-        /* ==========================================
-           ÁREA LESTER
-        =========================================== */
-
-        #lester{
-            display:none;
-            min-height:100vh;
-            padding:25px;
-        }
-
-        .lester-container{
-            width:100%;
-            max-width:1200px;
-            margin:auto;
-        }
-
-        .lester-topo{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            gap:20px;
-            padding:20px;
-            background:#181818;
-            border:1px solid #333;
-            border-radius:10px;
-            margin-bottom:25px;
-        }
-
-        .lester-info h2{
-            margin:0 0 5px;
-        }
-
-        .saldo{
-            color:#00ff88;
-            font-size:20px;
-            font-weight:bold;
-        }
-
-        .btn-sair{
-            width:auto;
-            padding:10px 20px;
-            background:#8b0000;
-            color:white;
-        }
-
-
-        /* ==========================================
-           ABAS DO LESTER
-        =========================================== */
-
-        .lester-tabs{
-            display:flex;
-            gap:10px;
-            margin-bottom:25px;
-            flex-wrap:wrap;
-        }
-
-        .lester-tab{
-            padding:12px 20px;
-            background:#222;
-            border:1px solid #444;
-            color:white;
-            border-radius:6px;
-            cursor:pointer;
-        }
-
-        .lester-tab.ativo{
-            background:#fff;
-            color:#000;
-        }
-
-        .lester-painel{
-            display:none;
-        }
-
-        .lester-painel.ativo{
-            display:block;
-        }
-
-
-        /* ==========================================
-           MISSÕES
-        =========================================== */
-
-        .missao{
-            background:#181818;
-            border:1px solid #333;
-            border-radius:10px;
-            padding:20px;
-            margin-bottom:15px;
-        }
-
-        .missao h3{
-            margin-top:0;
-            margin-bottom:10px;
-        }
-
-        .missao p{
-            color:#bbb;
-            line-height:1.5;
-        }
-
-        .missao-info{
-            display:grid;
-            grid-template-columns:repeat(3,1fr);
-            gap:10px;
-            margin:15px 0;
-        }
-
-        .info-box{
-            background:#101010;
-            padding:12px;
-            border-radius:6px;
-            border:1px solid #292929;
-        }
-
-        .info-box small{
-            display:block;
-            color:#777;
-            margin-bottom:5px;
-        }
-
-        .recompensa{
-            color:#00ff88;
-            font-weight:bold;
-        }
-
-        .tempo{
-            color:#ffd000;
-            font-weight:bold;
-        }
-
-        .acoes{
-            display:flex;
-            gap:10px;
-            flex-wrap:wrap;
-        }
-
-        .acoes button{
-            width:auto;
-            padding:10px 18px;
-        }
-
-        .btn-aceitar{
-            background:#00a86b;
-            color:white;
-        }
-
-        .btn-cancelar{
-            background:#8b0000;
-            color:white;
-        }
-
-
-        /* ==========================================
-           ADMIN
-        =========================================== */
-
-        .admin-box{
-            background:#181818;
-            border:1px solid #333;
-            border-radius:10px;
-            padding:20px;
-            margin-bottom:25px;
-        }
-
-        .admin-box h3{
-            margin-top:0;
-        }
-
-        .form-grid{
-            display:grid;
-            grid-template-columns:repeat(2,1fr);
-            gap:15px;
-        }
-
-        .form-grid .campo-full{
-            grid-column:1 / -1;
-        }
-
-        .admin-missao{
-            border:1px solid #333;
-            padding:15px;
-            border-radius:8px;
-            margin-top:10px;
-            background:#111;
-        }
-
-        .admin-missao-header{
-            display:flex;
-            justify-content:space-between;
-            gap:10px;
-            align-items:center;
-        }
-
-        .btn-excluir{
-            width:auto;
-            background:#8b0000;
-            color:white;
-            padding:8px 14px;
-        }
-
-
-        /* ==========================================
-           SALDOS
-        =========================================== */
-
-        .saldo-jogador{
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:15px;
-            padding:15px;
-            background:#111;
-            border:1px solid #333;
-            border-radius:8px;
-            margin-bottom:10px;
-        }
-
-        .saldo-acoes{
-            display:flex;
-            gap:5px;
-            flex-wrap:wrap;
-        }
-
-        .saldo-acoes button{
-            width:auto;
-            padding:7px 10px;
-        }
-
-        .mais{
-            background:#006b45;
-            color:white;
-        }
-
-        .menos{
-            background:#8b0000;
-            color:white;
-        }
-
-
-        /* ==========================================
-           MENSAGEM
-        =========================================== */
-
-        #mensagem{
-            position:fixed;
-            bottom:25px;
-            right:25px;
-            background:#222;
-            color:white;
-            padding:15px 20px;
-            border-radius:8px;
-            border:1px solid #444;
-            display:none;
-            z-index:9999;
-            box-shadow:0 5px 20px rgba(0,0,0,.5);
-        }
-
-
-        /* ==========================================
-           RESPONSIVO
-        =========================================== */
-
-        @media(max-width:900px){
-
-            .abas-central{
-                grid-template-columns:repeat(2,1fr);
-            }
-
-            .missao-info{
-                grid-template-columns:1fr;
-            }
-
-        }
-
-        @media(max-width:700px){
-
-            .abas-central{
-                grid-template-columns:1fr;
-            }
-
-            .aba{
-                height:180px;
-            }
-
-            .titulo{
-                font-size:30px;
-            }
-
-            .lester-topo{
-                flex-direction:column;
-                align-items:flex-start;
-            }
-
-            .form-grid{
-                grid-template-columns:1fr;
-            }
-
-            .form-grid .campo-full{
-                grid-column:auto;
-            }
-
-            .saldo-jogador{
-                flex-direction:column;
-                align-items:flex-start;
-            }
-
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Central do RPG</title>
+
+<!-- ==========================================
+     FIREBASE
+========================================== -->
+
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+
+
+<style>
+
+/* ==========================================
+   GERAL
+========================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#101010;
+    color:white;
+    min-height:100vh;
+}
+
+button,
+input,
+textarea,
+select{
+    font-family:inherit;
+}
+
+.escondido{
+    display:none !important;
+}
+
+
+/* ==========================================
+   CENTRAL
+========================================== */
+
+#central{
+    min-height:100vh;
+    padding:50px 25px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.titulo{
+    font-size:42px;
+    font-weight:bold;
+    letter-spacing:4px;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+.subtitulo{
+    color:#999;
+    margin-bottom:45px;
+    text-align:center;
+}
+
+
+/* ==========================================
+   ABAS DA CENTRAL
+========================================== */
+
+.abas-central{
+    width:100%;
+    max-width:1200px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:25px;
+}
+
+.aba{
+    height:220px;
+    border:2px solid #333;
+    border-radius:12px;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    cursor:pointer;
+    transition:.25s;
+    position:relative;
+    background-size:cover;
+    background-position:center;
+}
+
+.aba:hover{
+    transform:translateY(-5px);
+    border-color:#fff;
+}
+
+.aba h2{
+    width:100%;
+    margin:0;
+    padding:25px 10px;
+    text-align:center;
+    font-size:24px;
+    letter-spacing:2px;
+    background:linear-gradient(
+        transparent,
+        rgba(0,0,0,.95)
+    );
+}
+
+
+/* ==========================================
+   IMÓVEIS
+========================================== */
+
+.aba-imoveis{
+    background:
+        linear-gradient(
+            rgba(0,0,0,.30),
+            rgba(0,0,0,.75)
+        ),
+        url("./imoveis.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+
+/* ==========================================
+   LESTER
+========================================== */
+
+.aba-lester{
+    background:
+        linear-gradient(
+            rgba(0,0,0,.30),
+            rgba(0,0,0,.75)
+        ),
+        url("./lester.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+
+/* ==========================================
+   ALVOS
+========================================== */
+
+.aba-alvos{
+    background:
+        linear-gradient(
+            rgba(0,0,0,.30),
+            rgba(0,0,0,.75)
+        ),
+        url("./alvos.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+
+/* ==========================================
+   HACKER
+========================================== */
+
+.aba-hacker{
+    background:
+        linear-gradient(
+            rgba(0,0,0,.30),
+            rgba(0,0,0,.70)
+        ),
+        url("./hacker.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+.aba-hacker:hover{
+    border-color:#00ff88;
+}
+
+
+/* ==========================================
+   POLÍCIA
+========================================== */
+
+.aba-policia{
+    background:
+        linear-gradient(
+            rgba(0,0,0,.30),
+            rgba(0,0,0,.75)
+        ),
+        url("./policia.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+.aba-policia:hover{
+    border-color:#2f80ff;
+}
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+#login{
+    min-height:100vh;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+.login-box{
+    width:100%;
+    max-width:400px;
+    background:#181818;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:30px;
+    box-shadow:0 10px 40px rgba(0,0,0,.5);
+}
+
+.login-box h2{
+    text-align:center;
+    margin-top:0;
+    margin-bottom:25px;
+}
+
+.campo{
+    margin-bottom:15px;
+}
+
+.campo label{
+    display:block;
+    margin-bottom:7px;
+    color:#aaa;
+    font-size:14px;
+}
+
+.campo input,
+.campo textarea,
+.campo select{
+    width:100%;
+    padding:12px;
+    background:#101010;
+    color:white;
+    border:1px solid #444;
+    border-radius:6px;
+    outline:none;
+}
+
+.campo textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus{
+    border-color:#777;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+    background:#fff;
+    color:#000;
+    transition:.2s;
+}
+
+.btn:hover{
+    opacity:.85;
+}
+
+.btn-voltar{
+    margin-top:10px;
+    background:#292929;
+    color:white;
+}
+
+.erro{
+    color:#ff4444;
+    text-align:center;
+    margin-top:15px;
+    min-height:20px;
+}
+
+
+/* ==========================================
+   LESTER
+========================================== */
+
+#lester{
+    display:none;
+    min-height:100vh;
+    padding:25px;
+}
+
+.lester-container{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+}
+
+.lester-topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    padding:20px;
+    background:#181818;
+    border:1px solid #333;
+    border-radius:10px;
+    margin-bottom:25px;
+}
+
+.lester-info h2{
+    margin:0 0 5px;
+}
+
+.saldo{
+    color:#00ff88;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.btn-sair{
+    width:auto;
+    padding:10px 20px;
+    background:#8b0000;
+    color:white;
+}
+
+
+/* ==========================================
+   ABAS LESTER
+========================================== */
+
+.lester-tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.lester-tab{
+    padding:12px 20px;
+    background:#222;
+    border:1px solid #444;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.lester-tab.ativo{
+    background:#fff;
+    color:#000;
+}
+
+.lester-painel{
+    display:none;
+}
+
+.lester-painel.ativo{
+    display:block;
+}
+
+
+/* ==========================================
+   MISSÕES
+========================================== */
+
+.missao{
+    background:#181818;
+    border:1px solid #333;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:15px;
+}
+
+.missao h3{
+    margin-top:0;
+    margin-bottom:10px;
+}
+
+.missao p{
+    color:#bbb;
+    line-height:1.5;
+}
+
+.recompensa{
+    color:#00ff88 !important;
+    font-weight:bold;
+}
+
+.prazo{
+    color:#ffd000 !important;
+}
+
+.cronometro{
+    display:inline-block;
+    color:#ffd000;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.btn-missao{
+    border:0;
+    padding:10px 18px;
+    border-radius:6px;
+    background:#00a86b;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-cancelar{
+    background:#8b0000;
+}
+
+
+/* ==========================================
+   ADMIN
+========================================== */
+
+.admin-box{
+    background:#181818;
+    border:1px solid #333;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:25px;
+}
+
+.admin-box h3{
+    margin-top:0;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.form-grid .campo-full{
+    grid-column:1 / -1;
+}
+
+.admin-jogador{
+    border:1px solid #333;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:10px;
+    background:#111;
+}
+
+.btn-pequeno{
+    width:auto;
+    padding:8px 12px;
+    border:0;
+    border-radius:5px;
+    cursor:pointer;
+    background:#333;
+    color:white;
+    margin:3px;
+}
+
+.btn-pequeno:hover{
+    opacity:.8;
+}
+
+
+/* ==========================================
+   MENSAGEM
+========================================== */
+
+#mensagem{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:#222;
+    color:white;
+    padding:15px 20px;
+    border-radius:8px;
+    border:1px solid #444;
+    display:none;
+    z-index:9999;
+    box-shadow:0 5px 20px rgba(0,0,0,.5);
+}
+
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media(max-width:1000px){
+
+    .abas-central{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:700px){
+
+    .abas-central{
+        grid-template-columns:1fr;
+    }
+
+    .aba{
+        height:180px;
+    }
+
+    .titulo{
+        font-size:30px;
+    }
+
+    .lester-topo{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid .campo-full{
+        grid-column:auto;
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -602,335 +556,168 @@
 <body>
 
 
-    <!-- ==========================================
-         CENTRAL
-    =========================================== -->
+<!-- ==========================================
+     CENTRAL
+========================================== -->
 
-    <section id="central">
+<section id="central">
 
-        <div class="titulo">
-            CENTRAL DO RPG
-        </div>
+    <div class="titulo">
+        CENTRAL DO RPG
+    </div>
 
-        <div class="subtitulo">
-            Sistema principal
-        </div>
-
-
-        <div class="abas-central">
+    <div class="subtitulo">
+        Sistema principal
+    </div>
 
 
-            <!-- IMÓVEIS -->
-
-            <div
-                class="aba aba-imoveis"
-                onclick="abrirImoveis()"
-            >
-
-                <h2>
-                    IMÓVEIS
-                </h2>
-
-            </div>
+    <div class="abas-central">
 
 
-            <!-- MISSÕES DO LESTER -->
+        <!-- IMÓVEIS -->
 
-            <div
-                class="aba aba-lester"
-                onclick="abrirLogin()"
-            >
-
-                <h2>
-                    MISSÕES DO LESTER
-                </h2>
-
-            </div>
-
-
-            <!-- ALVOS -->
-
-            <div
-                class="aba aba-alvos"
-                onclick="abrirAlvos()"
-            >
-
-                <h2>
-                    ALVOS
-                </h2>
-
-            </div>
-
-
-            <!-- HACKER -->
-
-            <!--
-                IMPORTANTE:
-
-                ESTA ABA FICA DISPONÍVEL PARA TODOS.
-
-                NÃO EXISTE:
-                - verificarAcessoHacker()
-                - esconder aba
-                - liberar aba por jogador
-
-                O controle de autorização fica no hacker.html.
-            -->
-
-            <div
-                id="abaHacker"
-                class="aba aba-hacker"
-                onclick="abrirHacker()"
-            >
-
-                <h2>
-                    HACKER
-                </h2>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- ==========================================
-         LOGIN LESTER
-    =========================================== -->
-
-    <section id="login">
-
-        <div class="login-box">
+        <div
+            class="aba aba-imoveis"
+            onclick="abrirImoveis()"
+        >
 
             <h2>
-                LOGIN
+                IMÓVEIS
             </h2>
-
-            <div class="campo">
-
-                <label>
-                    Usuário
-                </label>
-
-                <input
-                    type="text"
-                    id="loginUsuario"
-                    placeholder="Digite seu nome"
-                >
-
-            </div>
-
-
-            <div class="campo">
-
-                <label>
-                    Senha
-                </label>
-
-                <input
-                    type="password"
-                    id="loginSenha"
-                    placeholder="Digite sua senha"
-                >
-
-            </div>
-
-
-            <button
-                class="btn"
-                onclick="fazerLogin()"
-            >
-                ENTRAR
-            </button>
-
-
-            <button
-                class="btn btn-voltar"
-                onclick="voltarCentral()"
-            >
-                VOLTAR
-            </button>
-
-
-            <div
-                id="erroLogin"
-                class="erro"
-            ></div>
 
         </div>
 
-    </section>
+
+        <!-- LESTER -->
+
+        <div
+            class="aba aba-lester"
+            onclick="abrirLogin()"
+        >
+
+            <h2>
+                MISSÕES DO LESTER
+            </h2>
+
+        </div>
 
 
+        <!-- ALVOS -->
 
-    <!-- ==========================================
-         ÁREA DO LESTER
-    =========================================== -->
+        <div
+            class="aba aba-alvos"
+            onclick="abrirAlvos()"
+        >
 
-    <section id="lester">
+            <h2>
+                ALVOS
+            </h2>
 
-        <div class="lester-container">
-
-
-            <!-- CABEÇALHO -->
-
-            <div class="lester-topo">
-
-                <div class="lester-info">
-
-                    <h2>
-                        MISSÕES DO LESTER
-                    </h2>
-
-                    <div>
-                        Jogador:
-                        <strong id="nomeUsuario">
-                            -
-                        </strong>
-                    </div>
-
-                    <div class="saldo">
-                        $
-                        <span id="saldoUsuario">
-                            0
-                        </span>
-                    </div>
-
-                </div>
+        </div>
 
 
-                <button
-                    class="btn btn-sair"
-                    onclick="sairLester()"
-                >
-                    SAIR
-                </button>
+        <!-- HACKER -->
 
-            </div>
+        <div
+            id="abaHacker"
+            class="aba aba-hacker"
+            onclick="abrirHacker()"
+        >
 
+            <h2>
+                HACKER
+            </h2>
 
-
-            <!-- ABAS -->
-
-            <div class="lester-tabs">
-
-                <button
-                    class="lester-tab ativo"
-                    onclick="abrirPainel('missoes', this)"
-                >
-                    MISSÕES
-                </button>
+        </div>
 
 
-                <button
-                    id="botaoAdmin"
-                    class="lester-tab"
-                    onclick="abrirPainel('admin', this)"
-                    style="display:none;"
-                >
-                    ADMINISTRADOR
-                </button>
+        <!-- POLÍCIA -->
 
-            </div>
+        <div
+            class="aba aba-policia"
+            onclick="abrirPolicia()"
+        >
 
+            <h2>
+                POLÍCIA
+            </h2>
 
+        </div>
 
-            <!-- ==========================================
-                 PAINEL MISSÕES
-            =========================================== -->
-
-            <div
-                id="painelMissoes"
-                class="lester-painel ativo"
-            >
-
-                <div id="listaMissoes">
-
-                    <p>
-                        Carregando missões...
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ==========================================
-                 PAINEL ADMIN
-            =========================================== -->
-
-            <div
-                id="painelAdmin"
-                class="lester-painel"
-            >
-
-
-                <!-- CRIAR MISSÃO -->
-
-                <div class="admin-box">
-
-                    <h3>
-                        CRIAR NOVA MISSÃO
-                    </h3>
-
-
-                    <div class="form-grid">
-
-
-                        <div class="campo">
-
-                            <label>
-                                Nome da missão
-                            </label>
-
-                            <input
-                                id="missaoNome"
-                                type="text"
-                                placeholder="Ex: Roubo ao Banco"
-                            >
-
-                        </div>
-
-
-                        <div class="campo">
-
-                            <label>
-                                Objetivo
-                            </label>
-
-                            <input
-                                id="missaoObjetivo"
-                                type="text"
-                                placeholder="Ex: Roubar o banco"
-                            >
-
-                        </div>
-
-
-                        <div class="campo campo-full">
-
-                            <label>
-                                Descrição
-                            </label>
-
-                            <textarea
-                                id="missaoDescricao"
-                                placeholder="Descrição da missão..."
-                            ></textarea>
-
-                        </div>
-
-
-                        <div class="campo">
-
-                          v>
 
     </div>
 
-</div>
+</section>
+
+
+
+<!-- ==========================================
+     LOGIN LESTER
+========================================== -->
+
+<section id="login">
+
+    <div class="login-box">
+
+        <h2>
+            LOGIN
+        </h2>
+
+
+        <div class="campo">
+
+            <label>
+                Usuário
+            </label>
+
+            <input
+                type="text"
+                id="loginUsuario"
+                placeholder="Digite seu nome"
+            >
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Senha
+            </label>
+
+            <input
+                type="password"
+                id="loginSenha"
+                placeholder="Digite sua senha"
+            >
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="fazerLogin()"
+        >
+            ENTRAR
+        </button>
+
+
+        <button
+            class="btn btn-voltar"
+            onclick="voltarCentral()"
+        >
+            VOLTAR
+        </button>
+
+
+        <div
+            id="erroLogin"
+            class="erro"
+        ></div>
+
+    </div>
+
+</section>
 
 
 
@@ -938,222 +725,275 @@
      LESTER
 ========================================== -->
 
-<div
-    id="lester"
-    class="escondido"
->
+<section id="lester">
 
+    <div class="lester-container">
 
-<header>
 
-    <h1>MISSÕES DO LESTER</h1>
+        <div class="lester-topo">
 
+            <div class="lester-info">
 
-    <div class="usuario">
+                <h2>
+                    MISSÕES DO LESTER
+                </h2>
 
-        <strong id="nomeUsuario"></strong>
+                <div>
+                    Jogador:
+                    <strong id="nomeUsuario">
+                        -
+                    </strong>
+                </div>
 
+                <div class="saldo">
+                    $
+                    <span id="saldoUsuario">
+                        0
+                    </span>
+                </div>
 
-        <span class="saldo">
-
-            $<span id="saldoUsuario">0</span>
-
-        </span>
-
-
-        <button
-            class="btn-sair"
-            onclick="sairLester()"
-        >
-
-            SAIR
-
-        </button>
-
-    </div>
-
-</header>
-
-
-
-<div class="container">
-
-
-    <!-- ======================================
-         ABAS
-    ====================================== -->
-
-    <div class="abas">
-
-
-        <div
-            id="abaMissoes"
-            class="aba-lester-menu ativa"
-            onclick="mostrarAbaLester('missoes')"
-        >
-
-            MISSÕES
-
-        </div>
-
-
-        <div
-            id="abaAdmin"
-            class="aba-lester-menu escondido"
-            onclick="mostrarAbaLester('admin')"
-        >
-
-            ADMINISTRADOR
-
-        </div>
-
-
-    </div>
-
-
-
-    <div id="mensagem"></div>
-
-
-
-    <!-- ======================================
-         MISSÕES
-    ====================================== -->
-
-    <div id="areaMissoes">
-
-        <h2>Missões disponíveis</h2>
-
-
-        <div
-            id="listaMissoes"
-            class="grade"
-        ></div>
-
-    </div>
-
-
-
-    <!-- ======================================
-         ADMIN
-    ====================================== -->
-
-    <div
-        id="areaAdmin"
-        class="escondido"
-    >
-
-
-        <div class="admin">
-
-            <h2>CRIAR MISSÃO</h2>
-
-
-            <input
-                id="nomeMissao"
-                type="text"
-                placeholder="Nome da missão"
-            >
-
-
-            <textarea
-                id="descricaoMissao"
-                placeholder="Descrição da missão"
-            ></textarea>
-
-
-            <input
-                id="objetivoMissao"
-                type="text"
-                placeholder="Objetivo"
-            >
-
-
-            <input
-                id="recompensaMissao"
-                type="number"
-                placeholder="Recompensa"
-                min="0"
-            >
-
-
-            <input
-                id="prazoMissao"
-                type="text"
-                placeholder="Prazo / local"
-            >
-
-
-            <input
-                id="duracaoMissao"
-                type="number"
-                placeholder="Duração"
-                min="1"
-            >
-
-
-            <select id="unidadeMissao">
-
-                <option value="minutos">
-                    Minutos
-                </option>
-
-                <option value="horas">
-                    Horas
-                </option>
-
-                <option value="dias">
-                    Dias
-                </option>
-
-            </select>
+            </div>
 
 
             <button
-                class="btn-vermelho"
-                onclick="criarMissao()"
+                class="btn btn-sair"
+                onclick="sairLester()"
             >
-
-                CRIAR MISSÃO
-
+                SAIR
             </button>
 
         </div>
 
 
 
-        <h2>Jogadores e dinheiro</h2>
+        <!-- ABAS LESTER -->
 
+        <div class="lester-tabs">
+
+            <button
+                id="abaMissoes"
+                class="lester-tab ativo"
+                onclick="abrirPainel('missoes', this)"
+            >
+                MISSÕES
+            </button>
+
+
+            <button
+                id="abaAdmin"
+                class="lester-tab"
+                onclick="abrirPainel('admin', this)"
+                style="display:none;"
+            >
+                ADMINISTRADOR
+            </button>
+
+        </div>
+
+
+
+        <!-- PAINEL MISSÕES -->
 
         <div
-            id="listaJogadores"
-        ></div>
+            id="painelMissoes"
+            class="lester-painel ativo"
+        >
+
+            <div id="listaMissoes">
+
+                <p>
+                    Carregando missões...
+                </p>
+
+            </div>
+
+        </div>
 
 
 
-        <h2>Missões cadastradas</h2>
-
+        <!-- PAINEL ADMIN -->
 
         <div
-            id="listaAdminMissoes"
-        ></div>
+            id="painelAdmin"
+            class="lester-painel"
+        >
 
+
+            <div class="admin-box">
+
+                <h3>
+                    CRIAR NOVA MISSÃO
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="campo">
+
+                        <label>
+                            Nome da missão
+                        </label>
+
+                        <input
+                            id="nomeMissao"
+                            type="text"
+                            placeholder="Ex: Roubo ao Banco"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            Objetivo
+                        </label>
+
+                        <input
+                            id="objetivoMissao"
+                            type="text"
+                            placeholder="Ex: Roubar o banco"
+                        >
+
+                    </div>
+
+
+                    <div class="campo campo-full">
+
+                        <label>
+                            Descrição
+                        </label>
+
+                        <textarea
+                            id="descricaoMissao"
+                            placeholder="Descrição da missão..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            Recompensa
+                        </label>
+
+                        <input
+                            id="recompensaMissao"
+                            type="number"
+                            min="0"
+                            placeholder="Ex: 50000"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            Prazo / Local
+                        </label>
+
+                        <input
+                            id="prazoMissao"
+                            type="text"
+                            placeholder="Ex: Los Santos"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            Duração
+                        </label>
+
+                        <input
+                            id="duracaoMissao"
+                            type="number"
+                            min="1"
+                            placeholder="Ex: 30"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label>
+                            Unidade
+                        </label>
+
+                        <select id="unidadeMissao">
+
+                            <option value="minutos">
+                                Minutos
+                            </option>
+
+                            <option value="horas">
+                                Horas
+                            </option>
+
+                            <option value="dias">
+                                Dias
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    class="btn"
+                    onclick="criarMissao()"
+                >
+                    CRIAR MISSÃO
+                </button>
+
+            </div>
+
+
+
+            <!-- JOGADORES -->
+
+            <div class="admin-box">
+
+                <h3>
+                    JOGADORES E DINHEIRO
+                </h3>
+
+                <div id="listaJogadores"></div>
+
+            </div>
+
+
+
+            <!-- MISSÕES CADASTRADAS -->
+
+            <div class="admin-box">
+
+                <h3>
+                    MISSÕES CADASTRADAS
+                </h3>
+
+                <div id="listaAdminMissoes"></div>
+
+            </div>
+
+        </div>
 
     </div>
 
-</div>
-
-</div>
+</section>
 
 
 
-<!-- ==========================================
-     FIREBASE
-========================================== -->
-
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<div id="mensagem"></div>
 
 
 
@@ -1194,10 +1034,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-
 const banco =
     firebase.database();
-
 
 
 /* ==========================================
@@ -1226,9 +1064,8 @@ let missoes = {};
 let missoesAceitas = {};
 
 
-
 /* ==========================================
-   ABRIR IMÓVEIS
+   NAVEGAÇÃO DA CENTRAL
 ========================================== */
 
 function abrirImoveis(){
@@ -1239,11 +1076,6 @@ function abrirImoveis(){
 }
 
 
-
-/* ==========================================
-   ABRIR ALVOS
-========================================== */
-
 function abrirAlvos(){
 
     window.location.href =
@@ -1251,11 +1083,6 @@ function abrirAlvos(){
 
 }
 
-
-
-/* ==========================================
-   ABRIR HACKER
-========================================== */
 
 function abrirHacker(){
 
@@ -1265,131 +1092,43 @@ function abrirHacker(){
 }
 
 
+function abrirPolicia(){
 
-/* ==========================================
-   VERIFICAR ACESSO HACKER
-========================================== */
-
-function verificarAcessoHacker(){
-
-    const aba =
-        document.getElementById(
-            "abaHacker"
-        );
-
-
-    if(!aba){
-
-        return;
-
-    }
-
-
-    /*
-     * ITALO É ADMINISTRADOR
-     *
-     * Sempre possui acesso.
-     */
-
-    if(usuarioAtual === "Italo"){
-
-        aba.style.display =
-            "flex";
-
-        return;
-
-    }
-
-
-    /*
-     * Se não houver usuário logado,
-     * o Hacker fica escondido.
-     */
-
-    if(!usuarioAtual){
-
-        aba.style.display =
-            "none";
-
-        return;
-
-    }
-
-
-    /*
-     * Consulta:
-     *
-     * hackerAcessos/NOME
-     */
-
-    banco
-        .ref(
-            "hackerAcessos/" +
-            usuarioAtual
-        )
-        .on(
-            "value",
-            function(snapshot){
-
-                const acesso =
-                    snapshot.val();
-
-
-                if(
-                    acesso &&
-                    acesso.ativo === true
-                ){
-
-                    aba.style.display =
-                        "flex";
-
-                }
-
-                else{
-
-                    aba.style.display =
-                        "none";
-
-                }
-
-            }
-        );
+    window.location.href =
+        "./policia.html";
 
 }
 
 
-
 /* ==========================================
-   LOGIN LESTER
+   LOGIN
 ========================================== */
 
 function abrirLogin(){
 
     document
         .getElementById("central")
-        .classList.add("escondido");
-
+        .style.display = "none";
 
     document
         .getElementById("login")
-        .classList.remove("escondido");
+        .style.display = "flex";
 
 }
-
 
 
 function fazerLogin(){
 
     const usuario =
         document
-        .getElementById("usuarioLogin")
+        .getElementById("loginUsuario")
         .value
         .trim();
 
 
     const senha =
         document
-        .getElementById("senhaLogin")
+        .getElementById("loginSenha")
         .value
         .trim();
 
@@ -1425,31 +1164,6 @@ function fazerLogin(){
 }
 
 
-
-/* ==========================================
-   VOLTAR PARA CENTRAL
-========================================== */
-
-function voltarCentral(){
-
-    document
-        .getElementById("login")
-        .classList.add("escondido");
-
-
-    document
-        .getElementById("central")
-        .classList.remove("escondido");
-
-
-    document
-        .getElementById("erroLogin")
-        .innerText = "";
-
-}
-
-
-
 /* ==========================================
    ABRIR LESTER
 ========================================== */
@@ -1458,17 +1172,15 @@ function abrirLester(){
 
     document
         .getElementById("central")
-        .classList.add("escondido");
-
+        .style.display = "none";
 
     document
         .getElementById("login")
-        .classList.add("escondido");
-
+        .style.display = "none";
 
     document
         .getElementById("lester")
-        .classList.remove("escondido");
+        .style.display = "block";
 
 
     document
@@ -1477,23 +1189,19 @@ function abrirLester(){
         usuarioAtual;
 
 
-    /*
-     * Hacker é atualizado
-     * sempre que o jogador entra.
-     */
-
-    verificarAcessoHacker();
-
-
-    if(
-        usuarioAtual === "Italo"
-    ){
+    if(usuarioAtual === "Italo"){
 
         document
             .getElementById("abaAdmin")
-            .classList.remove(
-                "escondido"
-            );
+            .style.display = "block";
+
+    }
+
+    else{
+
+        document
+            .getElementById("abaAdmin")
+            .style.display = "none";
 
     }
 
@@ -1501,7 +1209,6 @@ function abrirLester(){
     carregarDados();
 
 }
-
 
 
 /* ==========================================
@@ -1522,356 +1229,14 @@ if(
     usuarioAtual =
         usuarioSalvo;
 
-
-    /*
-     * Se já estava logado,
-     * abre Lester.
-     */
-
     abrirLester();
 
 }
 
 
-
 /* ==========================================
-   CARREGAR DADOS
+   CARREGAR FIREBASE
 ========================================== */
-
-function carregarDados(){
-
-
-    /* ======================================
-       SALDOS
-    ====================================== */
-
-    banco
-        .ref("saldos")
-        .on(
-            "value",
-            function(snapshot){
-
-                saldos =
-                    snapshot.val() || {};
-
-
-                const elemento =
-                    document.getElementById(
-                        "saldoUsuario"
-                    );
-
-
-                if(elemento){
-
-                    elemento.innerText =
-                        Number(
-                            saldos[
-                                usuarioAtual
-                            ] || 0
-                        ).toLocaleString(
-                            "pt-BR"
-                        );
-
-                }
-
-
-                mostrarJogadores();
-
-            }
-        );
-
-
-
-    /* ======================================
-       MIS     type="text"
-                placeholder="Prazo / local"
-            >
-
-
-            <input
-                id="duracaoMissao"
-                type="number"
-                placeholder="Duração"
-                min="1"
-            >
-
-
-            <select id="unidadeMissao">
-
-                <option value="minutos">
-                    Minutos
-                </option>
-
-                <option value="horas">
-                    Horas
-                </option>
-
-                <option value="dias">
-                    Dias
-                </option>
-
-            </select>
-
-
-            <button
-                class="btn-vermelho"
-                onclick="criarMissao()"
-            >
-                CRIAR MISSÃO
-            </button>
-
-        </div>
-
-
-        <h2>Jogadores e dinheiro</h2>
-
-        <div id="listaJogadores"></div>
-
-
-        <h2>Missões cadastradas</h2>
-
-        <div
-            id="listaAdminMissoes"
-        ></div>
-
-    </div>
-
-</div>
-
-</div>
-
-
-<!-- =========================
-     FIREBASE
-========================= -->
-
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
-
-
-<script>
-
-/* =========================
-   FIREBASE
-========================= */
-
-const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBdJqg",
-
-    authDomain:
-        "gta-rpg.firebaseapp.com",
-
-    databaseURL:
-        "https://gta-rpg-default-rtdb.firebaseio.com",
-
-    projectId:
-        "gta-rpg",
-
-    storageBucket:
-        "gta-rpg.firebasestorage.app",
-
-    messagingSenderId:
-        "318963858414",
-
-    appId:
-        "1:318963858414:web:cc7122486ac5a3d267ecff",
-
-    measurementId:
-        "G-K157521F0H"
-
-};
-
-
-firebase.initializeApp(firebaseConfig);
-
-const banco = firebase.database();
-
-/* ==========================================
-   ABRIR HACKER
-========================================== */
-
-function abrirHacker(){
-
-    window.location.href =
-        "./hacker.html";
-
-}
-    
-/* =========================
-   USUÁRIOS
-========================= */
-
-const usuarios = {
-
-    Kaius: "28/09",
-
-    Gaby: "22/09",
-
-    Duda: "13/09",
-
-    Italo: "1822"
-
-};
-
-
-let usuarioAtual = null;
-
-let saldos = {};
-
-let missoes = {};
-
-let missoesAceitas = {};
-
-
-/* =========================
-   ABRIR IMÓVEIS
-========================= */
-
-function abrirImoveis(){
-
-    window.location.href = "./imoveis.html";
-
-}
-
-
-/* =========================
-   ABRIR ALVOS
-========================= */
-
-function abrirAlvos(){
-
-    window.location.href = "./alvos.html";
-
-}
-
-
-/* =========================
-   LOGIN LESTER
-========================= */
-
-function abrirLogin(){
-
-    document
-        .getElementById("central")
-        .classList.add("escondido");
-
-    document
-        .getElementById("login")
-        .classList.remove("escondido");
-
-}
-
-
-function fazerLogin(){
-
-    const usuario =
-        document
-        .getElementById("usuarioLogin")
-        .value
-        .trim();
-
-
-    const senha =
-        document
-        .getElementById("senhaLogin")
-        .value
-        .trim();
-
-
-    if(
-        usuarios[usuario] &&
-        usuarios[usuario] === senha
-    ){
-
-        usuarioAtual = usuario;
-
-
-        sessionStorage.setItem(
-            "usuarioAtual",
-            usuario
-        );
-
-
-        abrirLester();
-
-    }
-
-    else{
-
-        document
-            .getElementById("erroLogin")
-            .innerText =
-            "Usuário ou senha incorretos.";
-
-    }
-
-}
-
-
-/* =========================
-   ABRIR LESTER
-========================= */
-
-function abrirLester(){
-
-    document
-        .getElementById("central")
-        .classList.add("escondido");
-
-    document
-        .getElementById("login")
-        .classList.add("escondido");
-
-    document
-        .getElementById("lester")
-        .classList.remove("escondido");
-
-
-    document
-        .getElementById("nomeUsuario")
-        .innerText = usuarioAtual;
-
-
-    if(usuarioAtual === "Italo"){
-
-        document
-            .getElementById("abaAdmin")
-            .classList.remove("escondido");
-
-    }
-
-
-    carregarDados();
-
-}
-
-
-/* =========================
-   LOGIN SALVO
-========================= */
-
-const usuarioSalvo =
-    sessionStorage.getItem("usuarioAtual");
-
-
-if(
-    usuarioSalvo &&
-    usuarios[usuarioSalvo]
-){
-
-    usuarioAtual = usuarioSalvo;
-
-    abrirLester();
-
-}
-
-
-/* =========================
-   CARREGAR DADOS
-========================= */
 
 function carregarDados(){
 
@@ -1886,12 +1251,20 @@ function carregarDados(){
                 snapshot.val() || {};
 
 
+            const saldo =
+                Number(
+                    saldos[
+                        usuarioAtual
+                    ] || 0
+                );
+
+
             document
                 .getElementById("saldoUsuario")
                 .innerText =
-                Number(
-                    saldos[usuarioAtual] || 0
-                ).toLocaleString("pt-BR");
+                saldo.toLocaleString(
+                    "pt-BR"
+                );
 
 
             mostrarJogadores();
@@ -1916,7 +1289,7 @@ function carregarDados(){
         });
 
 
-    /* ACEITAS */
+    /* MISSÕES ACEITAS */
 
     banco
         .ref("missoesAceitas")
@@ -1935,69 +1308,71 @@ function carregarDados(){
 }
 
 
-/* =========================
-   ABAS
-========================= */
+/* ==========================================
+   ABAS LESTER
+========================================== */
 
-function mostrarAbaLester(aba){
-
-    document
-        .getElementById("areaMissoes")
-        .classList.add("escondido");
+function abrirPainel(nome,botao){
 
     document
-        .getElementById("areaAdmin")
-        .classList.add("escondido");
+        .getElementById("painelMissoes")
+        .classList.remove("ativo");
+
+    document
+        .getElementById("painelAdmin")
+        .classList.remove("ativo");
 
 
     document
         .getElementById("abaMissoes")
-        .classList.remove("ativa");
+        .classList.remove("ativo");
 
     document
         .getElementById("abaAdmin")
-        .classList.remove("ativa");
+        .classList.remove("ativo");
 
 
-    if(aba === "missoes"){
+    if(nome === "missoes"){
 
         document
-            .getElementById("areaMissoes")
-            .classList.remove("escondido");
+            .getElementById("painelMissoes")
+            .classList.add("ativo");
 
         document
             .getElementById("abaMissoes")
-            .classList.add("ativa");
+            .classList.add("ativo");
 
     }
 
 
     if(
-        aba === "admin" &&
+        nome === "admin" &&
         usuarioAtual === "Italo"
     ){
 
         document
-            .getElementById("areaAdmin")
-            .classList.remove("escondido");
+            .getElementById("painelAdmin")
+            .classList.add("ativo");
 
         document
             .getElementById("abaAdmin")
-            .classList.add("ativa");
+            .classList.add("ativo");
 
     }
 
 }
 
 
-/* =========================
+/* ==========================================
    MOSTRAR MISSÕES
-========================= */
+========================================== */
 
 function mostrarMissoes(){
 
     const lista =
-        document.getElementById("listaMissoes");
+        document.getElementById(
+            "listaMissoes"
+        );
 
 
     if(!lista){
@@ -2010,7 +1385,8 @@ function mostrarMissoes(){
     lista.innerHTML = "";
 
 
-    const agora = Date.now();
+    const agora =
+        Date.now();
 
 
     const disponiveis =
@@ -2028,7 +1404,7 @@ function mostrarMissoes(){
     if(disponiveis.length === 0){
 
         lista.innerHTML = `
-            <div class="vazio">
+            <div class="missao">
                 Nenhuma missão disponível.
             </div>
         `;
@@ -2044,12 +1420,17 @@ function mostrarMissoes(){
             document.createElement("div");
 
 
-        div.className = "missao";
+        div.className =
+            "missao";
 
 
         const aceita =
-            missoesAceitas[missao.id] &&
-            missoesAceitas[missao.id][usuarioAtual];
+            missoesAceitas[
+                missao.id
+            ] &&
+            missoesAceitas[
+                missao.id
+            ][usuarioAtual];
 
 
         div.innerHTML = `
@@ -2059,33 +1440,48 @@ function mostrarMissoes(){
                 data-termina="${missao.terminaEm || 0}"
             >
                 ${formatarTempo(
-                    (missao.terminaEm || 0) - Date.now()
+                    (missao.terminaEm || 0) -
+                    Date.now()
                 )}
             </span>
 
+
             <h3>
-                ${missao.nome}
+                ${escaparHTML(missao.nome)}
             </h3>
 
+
             <p>
-                ${missao.descricao}
+                ${escaparHTML(missao.descricao)}
             </p>
+
 
             <p>
                 <strong>Objetivo:</strong>
-                ${missao.objetivo}
+                ${escaparHTML(missao.objetivo)}
             </p>
+
 
             <p class="recompensa">
+
                 RECOMPENSA:
-                $${Number(missao.recompensa || 0)
-                    .toLocaleString("pt-BR")}
+                $${Number(
+                    missao.recompensa || 0
+                ).toLocaleString("pt-BR")}
+
             </p>
 
+
             <p class="prazo">
+
                 PRAZO:
-                ${missao.prazo || "Não informado"}
+                ${escaparHTML(
+                    missao.prazo ||
+                    "Não informado"
+                )}
+
             </p>
+
 
             ${
                 aceita
@@ -2124,9 +1520,9 @@ function mostrarMissoes(){
 }
 
 
-/* =========================
-   ACEITAR
-========================= */
+/* ==========================================
+   ACEITAR MISSÃO
+========================================== */
 
 function aceitarMissao(id){
 
@@ -2141,8 +1537,7 @@ function aceitarMissao(id){
         .then(function(){
 
             mostrarMensagem(
-                "VOCÊ ACEITOU A MISSÃO!",
-                "sucesso"
+                "VOCÊ ACEITOU A MISSÃO!"
             );
 
         });
@@ -2150,9 +1545,9 @@ function aceitarMissao(id){
 }
 
 
-/* =========================
-   CANCELAR
-========================= */
+/* ==========================================
+   CANCELAR MISSÃO
+========================================== */
 
 function cancelarMissao(id){
 
@@ -2167,8 +1562,7 @@ function cancelarMissao(id){
         .then(function(){
 
             mostrarMensagem(
-                "Você cancelou a missão.",
-                "aviso"
+                "Você cancelou a missão."
             );
 
         });
@@ -2176,9 +1570,9 @@ function cancelarMissao(id){
 }
 
 
-/* =========================
+/* ==========================================
    CRIAR MISSÃO
-========================= */
+========================================== */
 
 function criarMissao(){
 
@@ -2329,7 +1723,8 @@ function criarMissao(){
 
     banco
         .ref(
-            "missoes/" + id
+            "missoes/" +
+            id
         )
         .set(novaMissao)
         .then(function(){
@@ -2360,8 +1755,7 @@ function criarMissao(){
 
 
             mostrarMensagem(
-                "Missão criada com sucesso!",
-                "sucesso"
+                "Missão criada com sucesso!"
             );
 
         });
@@ -2369,9 +1763,9 @@ function criarMissao(){
 }
 
 
-/* =========================
+/* ==========================================
    JOGADORES
-========================= */
+========================================== */
 
 function mostrarJogadores(){
 
@@ -2383,8 +1777,16 @@ function mostrarJogadores(){
 
 
     const lista =
-        document
-        .getElementById("listaJogadores");
+        document.getElementById(
+            "listaJogadores"
+        );
+
+
+    if(!lista){
+
+        return;
+
+    }
 
 
     lista.innerHTML = "";
@@ -2412,14 +1814,19 @@ function mostrarJogadores(){
                 ${nome}
             </strong>
 
+
             <div>
+
                 Saldo:
                 $${Number(
                     saldos[nome] || 0
                 ).toLocaleString("pt-BR")}
+
             </div>
 
+
             <br>
+
 
             <button
                 class="btn-pequeno"
@@ -2428,6 +1835,7 @@ function mostrarJogadores(){
                 +$100
             </button>
 
+
             <button
                 class="btn-pequeno"
                 onclick="alterarSaldo('${nome}',1000)"
@@ -2435,12 +1843,14 @@ function mostrarJogadores(){
                 +$1.000
             </button>
 
+
             <button
                 class="btn-pequeno"
                 onclick="alterarSaldo('${nome}',-100)"
             >
                 -$100
             </button>
+
 
             <button
                 class="btn-pequeno"
@@ -2459,9 +1869,9 @@ function mostrarJogadores(){
 }
 
 
-/* =========================
+/* ==========================================
    ALTERAR SALDO
-========================= */
+========================================== */
 
 function alterarSaldo(nome,valor){
 
@@ -2473,7 +1883,9 @@ function alterarSaldo(nome,valor){
 
 
     const saldo =
-        Number(saldos[nome] || 0);
+        Number(
+            saldos[nome] || 0
+        );
 
 
     const novoSaldo =
@@ -2485,16 +1897,17 @@ function alterarSaldo(nome,valor){
 
     banco
         .ref(
-            "saldos/" + nome
+            "saldos/" +
+            nome
         )
         .set(novoSaldo);
 
 }
 
 
-/* =========================
+/* ==========================================
    ADMIN MISSÕES
-========================= */
+========================================== */
 
 function mostrarAdminMissoes(){
 
@@ -2506,8 +1919,7 @@ function mostrarAdminMissoes(){
 
 
     const lista =
-        document
-        .getElementById(
+        document.getElementById(
             "listaAdminMissoes"
         );
 
@@ -2537,7 +1949,9 @@ function mostrarAdminMissoes(){
 
 
         if(
-            missoesAceitas[missao.id]
+            missoesAceitas[
+                missao.id
+            ]
         ){
 
             aceitos =
@@ -2553,17 +1967,22 @@ function mostrarAdminMissoes(){
         div.innerHTML = `
 
             <strong>
-                ${missao.nome}
+                ${escaparHTML(missao.nome)}
             </strong>
 
+
             <p>
+
                 Recompensa:
                 $${Number(
                     missao.recompensa || 0
                 ).toLocaleString("pt-BR")}
+
             </p>
 
+
             <p>
+
                 Aceitaram:
                 ${
                     aceitos.length
@@ -2572,7 +1991,9 @@ function mostrarAdminMissoes(){
                     :
                     "Ninguém"
                 }
+
             </p>
+
 
             <button
                 class="btn-pequeno"
@@ -2591,9 +2012,9 @@ function mostrarAdminMissoes(){
 }
 
 
-/* =========================
+/* ==========================================
    EXCLUIR MISSÃO
-========================= */
+========================================== */
 
 function excluirMissao(id){
 
@@ -2619,25 +2040,29 @@ function excluirMissao(id){
 
 
     atualizacoes[
-        "missoes/" + id
+        "missoes/" +
+        id
     ] = null;
 
 
     atualizacoes[
-        "missoesAceitas/" + id
+        "missoesAceitas/" +
+        id
     ] = null;
 
 
     banco
         .ref()
-        .update(atualizacoes);
+        .update(
+            atualizacoes
+        );
 
 }
 
 
-/* =========================
+/* ==========================================
    CRONÔMETRO
-========================= */
+========================================== */
 
 function formatarTempo(ms){
 
@@ -2649,7 +2074,9 @@ function formatarTempo(ms){
 
 
     let segundos =
-        Math.floor(ms / 1000);
+        Math.floor(
+            ms / 1000
+        );
 
 
     const dias =
@@ -2719,20 +2146,14 @@ function atualizarCronometros(){
 
             const termina =
                 Number(
-                    elemento
-                    .dataset
-                    .termina
+                    elemento.dataset.termina
                 );
-
-
-            const restante =
-                termina -
-                Date.now();
 
 
             elemento.innerText =
                 formatarTempo(
-                    restante
+                    termina -
+                    Date.now()
                 );
 
         });
@@ -2746,42 +2167,58 @@ setInterval(
 );
 
 
-/* =========================
+/* ==========================================
    MENSAGEM
-========================= */
+========================================== */
 
-function mostrarMensagem(
-    texto,
-    tipo
-){
+function mostrarMensagem(texto){
 
     const elemento =
-        document
-        .getElementById(
+        document.getElementById(
             "mensagem"
         );
 
 
-    elemento.innerHTML =
-        `
-        <div class="mensagem ${tipo}">
-            ${texto}
-        </div>
-        `;
+    elemento.innerText =
+        texto;
+
+
+    elemento.style.display =
+        "block";
 
 
     setTimeout(function(){
 
-        elemento.innerHTML = "";
+        elemento.style.display =
+            "none";
 
-    },5000);
+    },4000);
 
 }
 
 
-/* =========================
+/* ==========================================
+   ESCAPAR HTML
+========================================== */
+
+function escaparHTML(texto){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        texto == null
+        ? ""
+        : texto;
+
+    return div.innerHTML;
+
+}
+
+
+/* ==========================================
    SAIR
-========================= */
+========================================== */
 
 function sairLester(){
 
@@ -2790,35 +2227,46 @@ function sairLester(){
     );
 
 
-    usuarioAtual = null;
+    usuarioAtual =
+        null;
 
 
     document
         .getElementById("lester")
-        .classList.add("escondido");
+        .style.display =
+        "none";
 
 
     document
         .getElementById("central")
-        .classList.remove("escondido");
+        .style.display =
+        "flex";
 
 }
 
 
-/* =========================
+/* ==========================================
    VOLTAR
-========================= */
+========================================== */
 
 function voltarCentral(){
 
     document
         .getElementById("login")
-        .classList.add("escondido");
+        .style.display =
+        "none";
 
 
     document
         .getElementById("central")
-        .classList.remove("escondido");
+        .style.display =
+        "flex";
+
+
+    document
+        .getElementById("erroLogin")
+        .innerText =
+        "";
 
 }
 
@@ -2826,3 +2274,45 @@ function voltarCentral(){
 
 </body>
 </html>
+```
+
+### Estrutura da pasta
+
+Deixe assim:
+
+```text
+📁 CENTRAL DO RPG
+│
+├── index.html
+├── policia.html
+├── hacker.html
+├── alvos.html
+├── imoveis.html
+│
+├── policia.jpg
+├── hacker.jpg
+├── alvos.jpg
+├── imoveis.jpg
+└── lester.jpg
+```
+
+A parte nova é esta:
+
+```html
+<div
+    class="aba aba-policia"
+    onclick="abrirPolicia()"
+>
+    <h2>POLÍCIA</h2>
+</div>
+```
+
+E ao clicar nela:
+
+```javascript
+function abrirPolicia(){
+    window.location.href = "./policia.html";
+}
+```
+
+**Importante:** se você não tiver `policia.jpg` ainda, a aba continuará existindo, mas ficará sem a imagem de fundo. O arquivo `policia.html` precisa estar na mesma pasta do `index.html`.
