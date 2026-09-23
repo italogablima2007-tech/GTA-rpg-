@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LSPD Database</title>
 
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=1geJgDKi39RaMwXwRu5if_R2b6cztNdWrm4RDMCqIL_Mjwvx8K1rHlX-BuZDB-gGf-jGL6QD06s3cLiO4MKC3N6ItrFTMlBh6QJCsaben9eu7mhNX1GhFVstiYc7MileBhTabSJDlOVZ7iC2MUQvtFoPMkRmqq-sTJ6_u1G_zdLL2VuVButeX08to9OSr3o2-k5ZS9Tl-7sWQIybVesA1qzd6zu-LYIBzalU_2n96wK3Ce4bklr3Sm28SlCRStXD3ZiP9U2KxcCL6rbdWnThTA" charset="UTF-8"></script><style>
+<style>
 * {
     box-sizing: border-box;
 }
@@ -3642,6 +3642,18 @@ function atualizarOcorrencias() {
 
             "<td>" +
             botaoMapa +
+            " " +
+            "<button class='btn btn-warning' " +
+            "style='padding:6px 9px;font-size:10px' " +
+            "onclick='editarOcorrencia(" + i + ")'>" +
+            "EDITAR" +
+            "</button>" +
+            " " +
+            "<button class='btn btn-danger' " +
+            "style='padding:6px 9px;font-size:10px' " +
+            "onclick='excluirOcorrencia(" + i + ")'>" +
+            "EXCLUIR" +
+            "</button>" +
             "</td>" +
 
             "</tr>";
@@ -3672,6 +3684,80 @@ function abrirOcorrenciaNoMapa(indice) {
 
     pesquisarMapaPorId();
 
+}
+
+
+function editarOcorrencia(indice) {
+
+    if (typeof usuarioLogado !== "undefined" &&
+        usuarioLogado &&
+        usuarioLogado.tipo !== "admin") {
+        alert("Apenas o administrador pode editar ocorrências.");
+        return;
+    }
+
+    var o = ocorrencias[indice];
+    if (!o) return;
+
+    var novoTipo = prompt("Tipo da ocorrência:", o.tipo || "");
+    if (novoTipo === null) return;
+
+    var novoLocal = prompt("Local da ocorrência:", o.local || "");
+    if (novoLocal === null) return;
+
+    var novoSuspeitoId = prompt("ID do suspeito:", o.suspeitoId || "");
+    if (novoSuspeitoId === null) return;
+
+    var novoSuspeito = prompt("Nome do suspeito:", o.suspeito || "");
+    if (novoSuspeito === null) return;
+
+    var novaPrioridade = prompt("Prioridade:", o.prioridade || "");
+    if (novaPrioridade === null) return;
+
+    var novaDescricao = prompt("Descrição:", o.descricao || "");
+    if (novaDescricao === null) return;
+
+    o.tipo = novoTipo.trim();
+    o.local = novoLocal.trim();
+    o.suspeitoId = novoSuspeitoId.trim();
+    o.suspeito = novoSuspeito.trim();
+    o.prioridade = novaPrioridade.trim();
+    o.descricao = novaDescricao.trim();
+
+    if (typeof salvarDados === "function") salvarDados();
+    atualizarOcorrencias();
+
+    if (typeof atualizarTudo === "function") atualizarTudo();
+
+    alert("Ocorrência atualizada com sucesso.");
+}
+
+
+function excluirOcorrencia(indice) {
+
+    if (typeof usuarioLogado !== "undefined" &&
+        usuarioLogado &&
+        usuarioLogado.tipo !== "admin") {
+        alert("Apenas o administrador pode excluir ocorrências.");
+        return;
+    }
+
+    var o = ocorrencias[indice];
+    if (!o) return;
+
+    if (!confirm("Tem certeza que deseja excluir a ocorrência " +
+        (o.id || "selecionada") + "?")) {
+        return;
+    }
+
+    ocorrencias.splice(indice, 1);
+
+    if (typeof salvarDados === "function") salvarDados();
+    atualizarOcorrencias();
+
+    if (typeof atualizarTudo === "function") atualizarTudo();
+
+    alert("Ocorrência excluída com sucesso.");
 }
 
 
