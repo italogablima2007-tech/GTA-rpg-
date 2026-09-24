@@ -2147,10 +2147,7 @@ async function encerrarAcessoHacker(mostrarAviso) {
 
 async function verificarAcessoHacker() {
 
-    var params = new URLSearchParams(
-        window.location.search
-    );
-
+    var params = new URLSearchParams(window.location.search);
     var modo = params.get("hack");
     var jogadorInformado = (params.get("jogador") || "").trim();
 
@@ -2158,103 +2155,51 @@ async function verificarAcessoHacker() {
         return false;
     }
 
-    /*
-       IMPORTANTE: o hacker grava no Firebase usando o nome original
-       (ex.: Kaius). A URL pode chegar com Kaius, KAIUS ou kaius.
-       Encontramos aqui a chave oficial de USUARIOS para ler exatamente
-       o mesmo caminho no Firebase.
-    */
-    var jogador = Object.keys(USUARIOS).find(function(chave) {
+    /* A conta do jogador é identificada sem diferenciar maiúsculas/minúsculas. */
+    var usuarioKey = Object.keys(USUARIOS).find(function(chave) {
         return chave.toLowerCase() === jogadorInformado.toLowerCase();
     });
 
-    if (!jogador) {
-        console.warn("Jogador hacker não encontrado:", jogadorInformado);
+    if (!usuarioKey || USUARIOS[usuarioKey].tipo !== "player") {
+        console.warn("Jogador hacker inválido:", jogadorInformado);
         return false;
     }
-
-    /*
-       O acesso hacker não pode ser usado para transformar uma
-       conta administrativa normal em uma sessão hacker.
-       A URL deve apontar para um jogador existente.
-    */
-    if (!USUARIOS[jogador] ||
-        USUARIOS[jogador].tipo !== "player") {
-
-        console.warn(
-            "Tentativa de acesso hacker para usuário inválido:",
-            jogador
-        );
-
-        return false;
-    }
-
-    /*
-       NÃO bloqueamos a entrada usando sessionStorage.
-       Cada invasão gera uma nova autorização no Firebase com
-       um novo expiraEm. Assim, se o hacker acabou de liberar
-       novamente o acesso, a polícia deve entrar diretamente
-       no painel administrativo.
-    */
 
     try {
+        /*
+           O ponto importante: o Hacker pode ter gravado a autorização
+           como Kaius, kaius, KAIUS etc. Em vez de adivinhar a chave,
+           lemos hackerPoliceAcesso e encontramos a chave correta.
+        */
+        var raizSnapshot = await db.ref("hackerPoliceAcesso").once("value");
+        var raiz = raizSnapshot.val() || {};
+        var chaveFirebase = Object.keys(raiz).find(function(chave) {
+            return chave.toLowerCase() === jogadorInformado.toLowerCase();
+        });
 
-        var snapshot = await db.ref(
-            "hackerPoliceAcesso/" + jogador
-        ).once("value");
-
-        var acesso = snapshot.val();
-
-        if (!acesso) {
+        if (!chaveFirebase) {
+            console.warn("Nenhuma autorização hacker encontrada para:", jogadorInformado, raiz);
             return false;
         }
 
-        if (acesso.ativo !== true) {
+        var acesso = raiz[chaveFirebase];
+
+        if (!acesso || acesso.ativo !== true) {
+            console.warn("Autorização hacker inativa:", chaveFirebase);
             return false;
         }
 
         var expiraEm = Number(acesso.expiraEm);
 
-        if (!Number.isFinite(expiraEm)) {
-
-            await db.ref(
-                "hackerPoliceAcesso/" + jogador
-            ).update({
-                ativo: false
-            });
-
+        if (!Number.isFinite(expiraEm) || expiraEm <= Date.now()) {
+            await db.ref("hackerPoliceAcesso/" + chaveFirebase).update({ ativo: false });
             return false;
         }
 
-        /*
-           expiraEm é a fonte da duração da sessão.
-           Não são adicionados 45 segundos novamente aqui.
-        */
-        if (expiraEm <= Date.now()) {
-
-            await db.ref(
-                "hackerPoliceAcesso/" + jogador
-            ).update({
-                ativo: false
-            });
-
-            try {
-                sessionStorage.setItem(
-                    "lspd_hacker_encerrado_" + jogador,
-                    "1"
-                );
-            } catch (erroStorage) {}
-
-            return false;
-        }
-
-        /*
-           Guarda uma cópia da autorização original do Firebase.
-           A sessão temporária nunca é salva no localStorage.
-        */
+        /* Sessão temporária: NÃO passa pelo login. */
         acessoHacker = {
             ativo: true,
-            jogador: jogador,
+            jogador: chaveFirebase,
             centralKey: acesso.centralKey || "",
             centralNome: acesso.centralNome || "",
             autorizadoEm: Number(acesso.autorizadoEm) || 0,
@@ -2263,41 +2208,24 @@ async function verificarAcessoHacker() {
         };
 
         usuarioLogado = {
-
-            usuario: jogador,
-
-            nome: USUARIOS[jogador].nome,
-
+            usuario: usuarioKey,
+            nome: USUARIOS[usuarioKey].nome,
             tipo: "admin",
-
             hacker: true,
-
-            ficha: encontrarFichaDoPlayer(jogador)
-
+            ficha: encontrarFichaDoPlayer(usuarioKey)
         };
 
-        /*
-           Entrada HACKER: não passa pelo formulário de login.
-           Abre diretamente o painel administrativo.
-        */
+        /* ABRE DIRETAMENTE A ÁREA ADMINISTRATIVA. */
         var telaLogin = document.getElementById("loginTela");
         var sistema = document.getElementById("sistema");
 
-        if (telaLogin) {
-            telaLogin.style.display = "none";
-        }
-
-        if (sistema) {
-            sistema.style.display = "block";
-        }
+        if (telaLogin) telaLogin.style.display = "none";
+        if (sistema) sistema.style.display = "block";
 
         var nomeTopo = document.getElementById("usuarioNomeTopo");
         var tipoTopo = document.getElementById("usuarioTipoTopo");
 
-        if (nomeTopo) {
-            nomeTopo.textContent = usuarioLogado.nome;
-        }
-
+        if (nomeTopo) nomeTopo.textContent = usuarioLogado.nome;
         if (tipoTopo) {
             tipoTopo.textContent = "ADMIN";
             tipoTopo.className = "badge-admin";
@@ -2311,12 +2239,7 @@ async function verificarAcessoHacker() {
         return true;
 
     } catch (erro) {
-
-        console.error(
-            "Erro ao verificar acesso hacker:",
-            erro
-        );
-
+        console.error("Erro ao verificar acesso hacker:", erro);
         return false;
     }
 }
