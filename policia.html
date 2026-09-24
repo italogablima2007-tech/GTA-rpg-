@@ -5,6 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LSPD Database</title>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+    apiKey:"AIzaSyBwAUhihQZ3kwD9EuasUurXXLbPBjJqg",
+    authDomain:"gta-rpg.firebaseapp.com",
+    databaseURL:"https://gta-rpg-default-rtdb.firebaseio.com",
+    projectId:"gta-rpg",
+    storageBucket:"gta-rpg.firebasestorage.app",
+    messagingSenderId:"318963858414",
+    appId:"1:318963858414:web:cc7122486ac5a3d267ecff",
+    measurementId:"G-K157521F0H"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+</script>
+    
 <style>
 * {
     box-sizing: border-box;
@@ -1943,6 +1963,28 @@ tr:hover td {
 <script>
 
 /* =====================================================
+   FIREBASE — ACESSO DE HACKER
+===================================================== */
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBwAUhihQZ3kwD9EuasUurXXLbPBjJqg",
+    authDomain: "gta-rpg.firebaseapp.com",
+    databaseURL: "https://gta-rpg-default-rtdb.firebaseio.com",
+    projectId: "gta-rpg",
+    storageBucket: "gta-rpg.firebasestorage.app",
+    messagingSenderId: "318963858414",
+    appId: "1:318963858414:web:cc7122486ac5a3d267ecff",
+    measurementId: "G-K157521F0H"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+var acessoHacker = null;
+var acessoHackerInterval = null;
+    
+/* =====================================================
    USUÁRIOS
 ===================================================== */
 
@@ -1976,8 +2018,130 @@ var USUARIOS = {
 
 
 var usuarioLogado = null;
+var acessoHacker = null;
+var acessoHackerInterval = null;
 
+    /* =====================================================
+   VERIFICAR ACESSO ADMINISTRATIVO VIA HACKER
+===================================================== */
 
+async function verificarAcessoHacker() {
+
+    var params = new URLSearchParams(window.location.search);
+
+    var modo = params.get("hack");
+
+    var jogador = params.get("jogador");
+
+    if (modo !== "1" || !jogador) {
+        return false;
+    }
+
+    try {
+
+        var snapshot =
+            await db.ref("hackerPoliceAcesso/" + jogador).once("value");
+
+        var acesso = snapshot.val();
+
+        if (!acesso) {
+            return false;
+        }
+
+        if (!acesso.ativo) {
+            return false;
+        }
+
+        if (Number(acesso.expiraEm) <= Date.now()) {
+
+            await db.ref(
+                "hackerPoliceAcesso/" + jogador
+            ).update({
+                ativo: false
+            });
+
+            return false;
+        }
+
+        acessoHacker = acesso;
+
+        usuarioLogado = {
+
+            usuario: jogador,
+
+            nome: jogador,
+
+            tipo: "admin",
+
+            hacker: true,
+
+            ficha: encontrarFichaDoPlayer(jogador)
+
+        };
+
+        entrarSistema();
+
+        iniciarContagemAcessoHacker();
+
+        return true;
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao verificar acesso hacker:",
+            erro
+        );
+
+        return false;
+    }
+}
+
+    function iniciarContagemAcessoHacker() {
+
+    clearInterval(acessoHackerInterval);
+
+    acessoHackerInterval = setInterval(async function() {
+
+        if (!acessoHacker) {
+            clearInterval(acessoHackerInterval);
+            return;
+        }
+
+        var restante =
+            Number(acessoHacker.expiraEm) - Date.now();
+
+        if (restante <= 0) {
+
+            clearInterval(acessoHackerInterval);
+
+            acessoHacker = null;
+
+            await db.ref(
+                "hackerPoliceAcesso/" +
+                usuarioLogado.usuario
+            ).update({
+                ativo: false
+            });
+
+            alert(
+                "ACESSO HACKER ENCERRADO.\n\n" +
+                "As permissões administrativas foram revogadas."
+            );
+
+            usuarioLogado = null;
+
+            localStorage.removeItem(
+                "lspd_usuario_logado"
+            );
+
+            window.location.href =
+                "policial.html";
+
+        }
+
+    }, 500);
+
+}
 /* =====================================================
    DADOS
 ===================================================== */
@@ -2201,6 +2365,22 @@ function configurarPermissoes() {
 
 function sairSistema() {
 
+    // ENCERRAR ACESSO HACKER
+    if (acessoHacker && usuarioLogado && usuarioLogado.hacker) {
+
+        db.ref(
+            "hackerPoliceAcesso/" +
+            usuarioLogado.usuario
+        ).update({
+            ativo: false
+        });
+
+        clearInterval(acessoHackerInterval);
+
+        acessoHacker = null;
+    }
+
+
     usuarioLogado = null;
 
     localStorage.removeItem(
@@ -2224,7 +2404,6 @@ function sairSistema() {
         .value = "";
 
 }
-
 
 /* =====================================================
    NAVEGAÇÃO
@@ -4229,13 +4408,28 @@ document
    RECUPERAR SESSÃO
 ===================================================== */
 
-window.addEventListener("load", function() {
+    window.addEventListener("load", async function() {
+
+    /*
+       Primeiro verifica se veio de uma invasão Hacker.
+    */
+
+    var entrouPorHack =
+        await verificarAcessoHacker();
+
+    if (entrouPorHack) {
+        return;
+    }
+
+
+    /*
+       Caso contrário, usa o login normal.
+    */
 
     var salvo =
         localStorage.getItem(
             "lspd_usuario_logado"
         );
-
 
     if (
         salvo &&
@@ -4253,7 +4447,6 @@ window.addEventListener("load", function() {
             ficha: encontrarFichaDoPlayer(salvo)
 
         };
-
 
         entrarSistema();
 
