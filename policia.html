@@ -2263,8 +2263,36 @@ async function verificarAcessoHacker() {
 
         };
 
-        entrarSistema();
+        /*
+           Entrada HACKER: não passa pelo formulário de login.
+           Abre diretamente o painel administrativo.
+        */
+        var telaLogin = document.getElementById("loginTela");
+        var sistema = document.getElementById("sistema");
 
+        if (telaLogin) {
+            telaLogin.style.display = "none";
+        }
+
+        if (sistema) {
+            sistema.style.display = "block";
+        }
+
+        var nomeTopo = document.getElementById("usuarioNomeTopo");
+        var tipoTopo = document.getElementById("usuarioTipoTopo");
+
+        if (nomeTopo) {
+            nomeTopo.textContent = usuarioLogado.nome;
+        }
+
+        if (tipoTopo) {
+            tipoTopo.textContent = "ADMIN";
+            tipoTopo.className = "badge-admin";
+        }
+
+        configurarPermissoes();
+        atualizarTudo();
+        mostrarPagina("dashboard");
         iniciarContagemAcessoHacker();
 
         return true;
