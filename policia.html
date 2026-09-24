@@ -1983,7 +1983,8 @@ const db = firebase.database();
 
 var acessoHacker = null;
 var acessoHackerInterval = null;
-    
+var encerrandoAcessoHacker = false;
+
 /* =====================================================
    USUÁRIOS
 ===================================================== */
@@ -2016,31 +2017,201 @@ var USUARIOS = {
 
 };
 
-
 var usuarioLogado = null;
-var acessoHacker = null;
-var acessoHackerInterval = null;
 
-    /* =====================================================
+/* =====================================================
+   CONTROLE DE PERMISSÃO ADMINISTRATIVA
+===================================================== */
+
+/*
+   Para contas normais, o acesso administrativo depende do
+   tipo salvo em USUARIOS.
+
+   Para uma sessão criada pelo Hacker, além de tipo="admin",
+   o acesso só é considerado administrativo enquanto:
+   - acessoHacker existe;
+   - está ativo;
+   - expiraEm ainda não foi atingido.
+
+   Assim, mesmo antes do intervalo de segurança executar,
+   as funções administrativas deixam de aceitar comandos no
+   exato momento definido por expiraEm.
+*/
+function usuarioEhAdmin() {
+
+    if (!usuarioLogado) {
+        return false;
+    }
+
+    if (usuarioLogado.hacker === true) {
+
+        if (!acessoHacker) {
+            return false;
+        }
+
+        if (acessoHacker.ativo !== true) {
+            return false;
+        }
+
+        return Number(acessoHacker.expiraEm) > Date.now();
+    }
+
+    return usuarioLogado.tipo === "admin";
+}
+
+/* =====================================================
+   ENCERRAR ACESSO HACKER
+===================================================== */
+
+async function encerrarAcessoHacker(mostrarAviso) {
+
+    if (encerrandoAcessoHacker) {
+        return;
+    }
+
+    if (!acessoHacker && !(usuarioLogado && usuarioLogado.hacker)) {
+        return;
+    }
+
+    encerrandoAcessoHacker = true;
+
+    clearInterval(acessoHackerInterval);
+    acessoHackerInterval = null;
+
+    var jogador = usuarioLogado && usuarioLogado.hacker
+        ? usuarioLogado.usuario
+        : (acessoHacker ? acessoHacker.jogador : null);
+
+    /*
+       Marca a sessão localmente como encerrada antes do
+       redirecionamento. Isso impede que a mesma URL tente
+       restaurar a sessão hacker nesta aba caso a revogação
+       no Firebase demore alguns instantes.
+    */
+    if (jogador) {
+        try {
+            sessionStorage.setItem(
+                "lspd_hacker_encerrado_" + jogador,
+                "1"
+            );
+        } catch (erroStorage) {
+            console.warn("Não foi possível gravar o bloqueio local do acesso hacker.", erroStorage);
+        }
+    }
+
+    /*
+       A revogação é feita usando exatamente a chave do jogador
+       que foi autorizada pelo Hacker.
+    */
+    if (jogador) {
+
+        try {
+
+            await db.ref(
+                "hackerPoliceAcesso/" + jogador
+            ).update({
+                ativo: false
+            });
+
+        } catch (erro) {
+
+            /*
+               A sessão local continua sendo encerrada mesmo se
+               a rede/Firebase falhar. O erro fica registrado para
+               diagnóstico, e uma nova entrada pela URL não será
+               aceita nesta aba.
+            */
+            console.error(
+                "Erro ao revogar acesso hacker no Firebase:",
+                erro
+            );
+
+        }
+
+    }
+
+    acessoHacker = null;
+    usuarioLogado = null;
+
+    localStorage.removeItem("lspd_usuario_logado");
+
+    if (mostrarAviso) {
+
+        alert(
+            "ACESSO HACKER ENCERRADO.\n\n" +
+            "As permissões administrativas foram revogadas."
+        );
+
+    }
+
+    /*
+       Volta para a tela de login sem os parâmetros ?hack=1
+       e ?jogador=..., evitando reprocessamento da invasão.
+    */
+    window.location.href = "policial.html";
+}
+
+/* =====================================================
    VERIFICAR ACESSO ADMINISTRATIVO VIA HACKER
 ===================================================== */
 
 async function verificarAcessoHacker() {
 
-    var params = new URLSearchParams(window.location.search);
+    var params = new URLSearchParams(
+        window.location.search
+    );
 
     var modo = params.get("hack");
-
-    var jogador = params.get("jogador");
+    var jogador = (params.get("jogador") || "")
+        .trim()
+        .toLowerCase();
 
     if (modo !== "1" || !jogador) {
         return false;
     }
 
+    /*
+       O acesso hacker não pode ser usado para transformar uma
+       conta administrativa normal em uma sessão hacker.
+       A URL deve apontar para um jogador existente.
+    */
+    if (!USUARIOS[jogador] ||
+        USUARIOS[jogador].tipo !== "player") {
+
+        console.warn(
+            "Tentativa de acesso hacker para usuário inválido:",
+            jogador
+        );
+
+        return false;
+    }
+
+    /*
+       Se esta aba já encerrou o acesso hacker deste jogador,
+       não restaura a sessão usando a mesma URL.
+    */
     try {
 
-        var snapshot =
-            await db.ref("hackerPoliceAcesso/" + jogador).once("value");
+        if (
+            sessionStorage.getItem(
+                "lspd_hacker_encerrado_" + jogador
+            ) === "1"
+        ) {
+            return false;
+        }
+
+    } catch (erroStorage) {
+        console.warn(
+            "Não foi possível consultar o bloqueio local do acesso hacker.",
+            erroStorage
+        );
+    }
+
+    try {
+
+        var snapshot = await db.ref(
+            "hackerPoliceAcesso/" + jogador
+        ).once("value");
 
         var acesso = snapshot.val();
 
@@ -2048,11 +2219,13 @@ async function verificarAcessoHacker() {
             return false;
         }
 
-        if (!acesso.ativo) {
+        if (acesso.ativo !== true) {
             return false;
         }
 
-        if (Number(acesso.expiraEm) <= Date.now()) {
+        var expiraEm = Number(acesso.expiraEm);
+
+        if (!Number.isFinite(expiraEm)) {
 
             await db.ref(
                 "hackerPoliceAcesso/" + jogador
@@ -2063,13 +2236,47 @@ async function verificarAcessoHacker() {
             return false;
         }
 
-        acessoHacker = acesso;
+        /*
+           expiraEm é a fonte da duração da sessão.
+           Não são adicionados 45 segundos novamente aqui.
+        */
+        if (expiraEm <= Date.now()) {
+
+            await db.ref(
+                "hackerPoliceAcesso/" + jogador
+            ).update({
+                ativo: false
+            });
+
+            try {
+                sessionStorage.setItem(
+                    "lspd_hacker_encerrado_" + jogador,
+                    "1"
+                );
+            } catch (erroStorage) {}
+
+            return false;
+        }
+
+        /*
+           Guarda uma cópia da autorização original do Firebase.
+           A sessão temporária nunca é salva no localStorage.
+        */
+        acessoHacker = {
+            ativo: true,
+            jogador: jogador,
+            centralKey: acesso.centralKey || "",
+            centralNome: acesso.centralNome || "",
+            autorizadoEm: Number(acesso.autorizadoEm) || 0,
+            expiraEm: expiraEm,
+            origem: acesso.origem || "HACKER"
+        };
 
         usuarioLogado = {
 
             usuario: jogador,
 
-            nome: jogador,
+            nome: USUARIOS[jogador].nome,
 
             tipo: "admin",
 
@@ -2096,14 +2303,28 @@ async function verificarAcessoHacker() {
     }
 }
 
-    function iniciarContagemAcessoHacker() {
+/* =====================================================
+   CONTAGEM DO ACESSO HACKER
+===================================================== */
+
+function iniciarContagemAcessoHacker() {
 
     clearInterval(acessoHackerInterval);
 
-    acessoHackerInterval = setInterval(async function() {
+    /*
+       Verificação frequente apenas para detectar imediatamente
+       o fim da autorização e atualizar a interface.
+       As próprias funções administrativas também consultam
+       expiraEm através de usuarioEhAdmin().
+    */
+    acessoHackerInterval = setInterval(function() {
 
-        if (!acessoHacker) {
+        if (!acessoHacker ||
+            !usuarioLogado ||
+            usuarioLogado.hacker !== true) {
+
             clearInterval(acessoHackerInterval);
+            acessoHackerInterval = null;
             return;
         }
 
@@ -2113,35 +2334,15 @@ async function verificarAcessoHacker() {
         if (restante <= 0) {
 
             clearInterval(acessoHackerInterval);
+            acessoHackerInterval = null;
 
-            acessoHacker = null;
-
-            await db.ref(
-                "hackerPoliceAcesso/" +
-                usuarioLogado.usuario
-            ).update({
-                ativo: false
-            });
-
-            alert(
-                "ACESSO HACKER ENCERRADO.\n\n" +
-                "As permissões administrativas foram revogadas."
-            );
-
-            usuarioLogado = null;
-
-            localStorage.removeItem(
-                "lspd_usuario_logado"
-            );
-
-            window.location.href =
-                "policial.html";
+            encerrarAcessoHacker(true);
 
         }
 
-    }, 500);
-
+    }, 100);
 }
+
 /* =====================================================
    DADOS
 ===================================================== */
@@ -2269,6 +2470,14 @@ function fazerLogin() {
 
 function entrarSistema() {
 
+    if (usuarioLogado &&
+        usuarioLogado.hacker === true &&
+        !usuarioEhAdmin()) {
+
+        encerrarAcessoHacker(false);
+        return;
+    }
+
     document.getElementById("loginTela")
         .style.display = "none";
 
@@ -2285,7 +2494,7 @@ function entrarSistema() {
         document.getElementById("usuarioTipoTopo");
 
 
-    if (usuarioLogado.tipo === "admin") {
+    if (usuarioEhAdmin()) {
 
         tipo.textContent = "ADMIN";
 
@@ -2329,7 +2538,7 @@ function configurarPermissoes() {
 
     for (i = 0; i < admins.length; i++) {
 
-        if (usuarioLogado.tipo === "admin") {
+        if (usuarioEhAdmin()) {
 
             admins[i].style.display = "";
 
@@ -2363,23 +2572,18 @@ function configurarPermissoes() {
    SAIR
 ===================================================== */
 
-function sairSistema() {
+async function sairSistema() {
 
-    // ENCERRAR ACESSO HACKER
-    if (acessoHacker && usuarioLogado && usuarioLogado.hacker) {
+    /*
+       Sessão hacker: revoga no Firebase e encerra a sessão
+       temporária antes de voltar para o login.
+    */
+    if (usuarioLogado && usuarioLogado.hacker === true) {
 
-        db.ref(
-            "hackerPoliceAcesso/" +
-            usuarioLogado.usuario
-        ).update({
-            ativo: false
-        });
+        await encerrarAcessoHacker(false);
+        return;
 
-        clearInterval(acessoHackerInterval);
-
-        acessoHacker = null;
     }
-
 
     usuarioLogado = null;
 
@@ -2387,18 +2591,14 @@ function sairSistema() {
         "lspd_usuario_logado"
     );
 
-
     document.getElementById("sistema")
         .style.display = "none";
-
 
     document.getElementById("loginTela")
         .style.display = "flex";
 
-
     document.getElementById("loginUsuario")
         .value = "";
-
 
     document.getElementById("loginSenha")
         .value = "";
@@ -2444,7 +2644,7 @@ function abrirPagina(id, botao) {
 
 
     if (
-        usuarioLogado.tipo !== "admin" &&
+        !usuarioEhAdmin() &&
         (
             id === "suspeitos" ||
             id === "ocorrencias" ||
@@ -2608,7 +2808,7 @@ function perigoTexto(valor) {
 function abrirNovaFicha() {
 
     if (!usuarioLogado ||
-        usuarioLogado.tipo !== "admin") {
+        !usuarioEhAdmin()) {
 
         return;
 
@@ -2636,7 +2836,7 @@ function fecharNovaFicha() {
 function criarFicha() {
 
     if (!usuarioLogado ||
-        usuarioLogado.tipo !== "admin") {
+        !usuarioEhAdmin()) {
 
         alert("Apenas o administrador pode criar fichas.");
 
@@ -2956,7 +3156,7 @@ function abrirPerfil(id) {
     var adminBotao = "";
 
 
-    if (usuarioLogado.tipo === "admin") {
+    if (usuarioEhAdmin()) {
 
         adminBotao =
 
@@ -3143,7 +3343,7 @@ function abrirPerfil(id) {
 
 function editarFichaPorId(id) {
 
-    if (!usuarioLogado || usuarioLogado.tipo !== "admin") {
+    if (!usuarioLogado || !usuarioEhAdmin()) {
         alert("Apenas o administrador pode editar fichas.");
         return;
     }
@@ -3166,7 +3366,7 @@ function editarFicha() {
         return;
     }
 
-    if (!usuarioLogado || usuarioLogado.tipo !== "admin") {
+    if (!usuarioLogado || !usuarioEhAdmin()) {
         alert("Apenas o administrador pode editar fichas.");
         return;
     }
@@ -3425,7 +3625,7 @@ function filtrarSuspeitos() {
 
 function registrarOcorrencia() {
 
-    if (usuarioLogado.tipo !== "admin") {
+    if (!usuarioEhAdmin()) {
 
         alert("Sem permissão.");
 
@@ -4007,7 +4207,7 @@ function editarOcorrencia(indice) {
 
     if (typeof usuarioLogado !== "undefined" &&
         usuarioLogado &&
-        usuarioLogado.tipo !== "admin") {
+        !usuarioEhAdmin()) {
         alert("Apenas o administrador pode editar ocorrências.");
         return;
     }
@@ -4053,7 +4253,7 @@ function excluirOcorrencia(indice) {
 
     if (typeof usuarioLogado !== "undefined" &&
         usuarioLogado &&
-        usuarioLogado.tipo !== "admin") {
+        !usuarioEhAdmin()) {
         alert("Apenas o administrador pode excluir ocorrências.");
         return;
     }
@@ -4208,7 +4408,7 @@ function atualizarTabelaDashboard() {
 
 function excluirFichaPorId(id) {
 
-    if (!usuarioLogado || usuarioLogado.tipo !== "admin") {
+    if (!usuarioLogado || !usuarioEhAdmin()) {
         alert("Apenas o administrador pode excluir fichas.");
         return;
     }
