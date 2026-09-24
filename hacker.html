@@ -1,4561 +1,595 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>HACKER // TERMINAL</title>
-
-<!-- =========================================================
-     FIREBASE
-========================================================= -->
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=4GWjVihm-2fqvLfbYuOjxCti2QxXU4ohT-jAhXlm-TAepwhWg308nBNCdOTUo6t6h2A9Lepz6ehS9cQmjS-exlgwFri3OsXVHUsbb9bUKRpAPRrRF2nF-mzkgujOvpu-RnKuLpMJ8RUtJtoky31YmcSpQHFK2Pc_zin_Os2gelEVQv8h6-pfSDDrjmp-HXXynYy6GSmeAeqA8VBHZWILm6WHylTvZdKe8AFeTPfcVS6_64sz_uZO3zuSU6oplEa8A-qPNPpDK6d-S-KUZY5pdLSg6qoorj-0xkv5SkMvyb3QOgtp886doXBmViv8e_CsoiFYY-cqRSgGzi5Vx43MiQ" charset="UTF-8"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-
 <style>
-
-/* =========================================================
-   GERAL
-========================================================= */
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-
-    margin:0;
-
-    min-height:100vh;
-
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(0,255,136,.06),
-            transparent 50%
-        ),
-        #020403;
-
-    color:#00ff88;
-
-    font-family:
-        "Courier New",
-        monospace;
-
-}
-
-button,
-input,
-select{
-
-    font-family:inherit;
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-#loginTela{
-
-    min-height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    padding:20px;
-
-}
-
-
-.login-container{
-
-    width:100%;
-
-    max-width:430px;
-
-    padding:35px;
-
-    background:#050807;
-
-    border:1px solid #00ff88;
-
-    box-shadow:
-        0 0 20px rgba(0,255,136,.18),
-        inset 0 0 30px rgba(0,255,136,.03);
-
-}
-
-
-.login-logo{
-
-    text-align:center;
-
-}
-
-
-.login-logo .simbolo{
-
-    font-size:42px;
-
-    text-shadow:
-        0 0 15px #00ff88;
-
-}
-
-
-.login-logo h1{
-
-    margin:5px 0;
-
-    font-size:32px;
-
-    letter-spacing:6px;
-
-    text-shadow:
-        0 0 10px #00ff88;
-
-}
-
-
-.login-logo p{
-
-    margin:0 0 25px;
-
-    color:#477d61;
-
-    font-size:11px;
-
-}
-
-
-.terminal-linha{
-
-    border-top:1px solid #123d27;
-
-    border-bottom:1px solid #123d27;
-
-    padding:15px 0;
-
-    margin-bottom:25px;
-
-    color:#477d61;
-
-    font-size:11px;
-
-    line-height:1.8;
-
-}
-
-
-.campo{
-
-    margin-bottom:18px;
-
-}
-
-
-.campo label{
-
-    display:block;
-
-    margin-bottom:7px;
-
-    color:#70ffb1;
-
-    font-size:12px;
-
-}
-
-
-.campo input{
-
-    width:100%;
-
-    padding:13px;
-
-    background:#010401;
-
-    color:#00ff88;
-
-    border:1px solid #164d31;
-
-    outline:none;
-
-    font-family:inherit;
-
-}
-
-
-.campo input:focus{
-
-    border-color:#00ff88;
-
-    box-shadow:
-        0 0 8px rgba(0,255,136,.25);
-
-}
-
-
-.btn{
-
-    width:100%;
-
-    padding:14px;
-
-    margin-top:10px;
-
-    background:#03140b;
-
-    border:1px solid #00ff88;
-
-    color:#00ff88;
-
-    cursor:pointer;
-
-    font-family:inherit;
-
-    font-weight:bold;
-
-}
-
-
-.btn:hover{
-
-    background:#00ff88;
-
-    color:#000;
-
-    box-shadow:
-        0 0 15px rgba(0,255,136,.5);
-
-}
-
-
-.btn:active{
-
-    transform:scale(.99);
-
-}
-
-
-.btn-voltar{
-
-    display:block;
-
-    text-align:center;
-
-    text-decoration:none;
-
-}
-
-
-.erro{
-
-    min-height:18px;
-
-    margin-top:15px;
-
-    text-align:center;
-
-    color:#ff4444;
-
-    font-size:12px;
-
-}
-
-
-/* =========================================================
-   SISTEMA
-========================================================= */
-
-#sistema{
-
-    display:none;
-
-    min-height:100vh;
-
-    padding:20px;
-
-}
-
-
-.container{
-
-    width:100%;
-
-    max-width:1100px;
-
-    margin:auto;
-
-}
-
-
-.topo{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:20px;
-
-    border-bottom:1px solid #00ff88;
-
-    padding-bottom:18px;
-
-    margin-bottom:25px;
-
-}
-
-
-.topo h1{
-
-    margin:0;
-
-    font-size:25px;
-
-    text-shadow:
-        0 0 8px #00ff88;
-
-}
-
-
-.status-online{
-
-    margin-top:7px;
-
-    color:#477d61;
-
-    font-size:12px;
-
-}
-
-
-.btn-sair{
-
-    width:auto;
-
-    margin:0;
-
-}
-
-
-/* =========================================================
-   PAINÉIS
-========================================================= */
-
-.painel{
-
-    background:#050807;
-
-    border:1px solid #164d31;
-
-    padding:20px;
-
-    margin-bottom:20px;
-
-}
-
-
-.painel h2{
-
-    margin-top:0;
-
-    font-size:18px;
-
-}
-
-
-/* =========================================================
-   SEM ACESSO
-========================================================= */
-
-#semAcesso{
-
-    text-align:center;
-
-}
-
-
-.cadeado{
-
-    font-size:45px;
-
-    margin-bottom:10px;
-
-}
-
-
-#semAcesso p{
-
-    color:#477d61;
-
-}
-
-
-/* =========================================================
-   ACESSO LIBERADO
-========================================================= */
-
-#acessoLiberado{
-
-    display:none;
-
-    border-color:#00ff88;
-
-    box-shadow:
-        0 0 15px rgba(0,255,136,.08);
-
-}
-
-
-.alerta-acesso{
-
-    padding:15px;
-
-    margin-bottom:20px;
-
-    border:1px solid #00ff88;
-
-    background:#02140b;
-
-    line-height:1.7;
-
-}
-
-
-.info-acesso{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:12px;
-
-    margin:20px 0;
-
-}
-
-
-.info{
-
-    padding:15px;
-
-    background:#020503;
-
-    border:1px solid #123d27;
-
-}
-
-
-.info small{
-
-    display:block;
-
-    color:#477d61;
-
-    margin-bottom:8px;
-
-    font-size:10px;
-
-}
-
-
-.info strong{
-
-    color:#00ff88;
-
-    word-break:break-word;
-
-}
-
-
-/* =========================================================
-   MINIGAME
-========================================================= */
-
-#minigame{
-
-    display:none;
-
-}
-
-
-.minigame-titulo{
-
-    text-align:center;
-
-    font-size:27px;
-
-    letter-spacing:5px;
-
-    text-shadow:
-        0 0 10px #00ff88;
-
-}
-
-
-.minigame-subtitulo{
-
-    text-align:center;
-
-    color:#477d61;
-
-    margin:10px 0 25px;
-
-}
-
-
-.progresso-texto{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    color:#477d61;
-
-    font-size:11px;
-
-}
-
-
-.barra{
-
-    height:8px;
-
-    margin-top:7px;
-
-    background:#111;
-
-    border:1px solid #164d31;
-
-}
-
-
-.barra-interna{
-
-    width:0%;
-
-    height:100%;
-
-    background:#00ff88;
-
-    transition:.3s;
-
-}
-
-
-#conteudoMinigame{
-
-    margin-top:25px;
-
-}
-
-
-/* =========================================================
-   TERMINAL DOS MINIGAMES
-========================================================= */
-
-.terminal{
-
-    background:#010401;
-
-    border:1px solid #00ff88;
-
-    padding:20px;
-
-}
-
-
-.terminal-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    gap:10px;
-
-    padding-bottom:12px;
-
-    margin-bottom:20px;
-
-    border-bottom:1px solid #123d27;
-
-    color:#477d61;
-
-    font-size:11px;
-
-}
-
-
-.timer{
-
-    color:#00ff88;
-
-}
-
-
-.timer.alerta{
-
-    color:#ffff00;
-
-}
-
-
-.timer.perigo{
-
-    color:#ff3333;
-
-}
-
-
-.game-box{
-
-    text-align:center;
-
-}
-
-
-.codigo{
-
-    margin:30px 0;
-
-    font-size:36px;
-
-    letter-spacing:8px;
-
-    text-shadow:
-        0 0 10px #00ff88;
-
-}
-
-
-.input-codigo{
-
-    display:block;
-
-    width:100%;
-
-    max-width:400px;
-
-    margin:15px auto;
-
-    padding:13px;
-
-    text-align:center;
-
-    font-size:20px;
-
-    letter-spacing:4px;
-
-    background:#010401;
-
-    color:#00ff88;
-
-    border:1px solid #00ff88;
-
-    outline:none;
-
-}
-
-
-/* =========================================================
-   OPÇÕES
-========================================================= */
-
-.opcoes{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:10px;
-
-    max-width:650px;
-
-    margin:20px auto;
-
-}
-
-
-.opcao{
-
-    padding:15px;
-
-    background:#020803;
-
-    color:#00ff88;
-
-    border:1px solid #164d31;
-
-    cursor:pointer;
-
-    font-family:inherit;
-
-}
-
-
-.opcao:hover{
-
-    border-color:#00ff88;
-
-    background:#041b0c;
-
-}
-
-
-/* =========================================================
-   MEMÓRIA
-========================================================= */
-
-.sequencia{
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:15px;
-
-    min-height:80px;
-
-    margin:25px 0;
-
-}
-
-
-.sequencia .simbolo{
-
-    font-size:42px;
-
-}
-
-
-.memoria-escondida{
-
-    color:#477d61;
-
-    font-size:14px;
-
-}
-
-
-/* =========================================================
-   FIREWALL
-========================================================= */
-
-.firewall-grade{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:10px;
-
-    max-width:500px;
-
-    margin:25px auto;
-
-}
-
-
-.firewall-grade button{
-
-    height:65px;
-
-    background:#020803;
-
-    color:#00ff88;
-
-    border:1px solid #164d31;
-
-    cursor:pointer;
-
-    font-family:inherit;
-
-    font-size:18px;
-
-}
-
-
-.firewall-grade button:hover{
-
-    border-color:#00ff88;
-
-}
-
-
-.firewall-grade button.selecionado{
-
-    background:#00ff88;
-
-    color:#000;
-
-}
-
-
-/* =========================================================
-   RESULTADO
-========================================================= */
-
-#resultado{
-
-    display:none;
-
-    text-align:center;
-
-    padding:35px;
-
-}
-
-
-#resultado.sucesso{
-
-    border-color:#00ff88;
-
-}
-
-
-#resultado.falha{
-
-    border-color:#ff3333;
-
-}
-
-
-#resultado.falha h2{
-
-    color:#ff3333;
-
-}
-
-
-#resultado.sucesso h2{
-
-    color:#00ff88;
-
-}
-
-
-#resultadoTexto{
-
-    color:#477d61;
-
-}
-
-
-/* =========================================================
-   ADMIN
-========================================================= */
-
-#admin{
-
-    display:none;
-
-    border-color:#00ff88;
-
-}
-
-
-.admin-separador{
-
-    border-top:1px solid #123d27;
-
-    margin:25px 0;
-
-}
-
-
-.admin-titulo{
-
-    color:#00ff88;
-
-}
-
-
-.admin-campo{
-
-    margin-bottom:15px;
-
-}
-
-
-.admin-campo label{
-
-    display:block;
-
-    color:#70ffb1;
-
-    margin-bottom:7px;
-
-    font-size:12px;
-
-}
-
-
-.admin-campo input,
-.admin-campo select{
-
-    width:100%;
-
-    padding:12px;
-
-    background:#010401;
-
-    color:#00ff88;
-
-    border:1px solid #164d31;
-
-    outline:none;
-
-    font-family:inherit;
-
-}
-
-
-.admin-lista{
-
-    margin-top:20px;
-
-}
-
-
-.acesso-admin{
-
-    border:1px solid #123d27;
-
-    background:#020803;
-
-    padding:15px;
-
-    margin-bottom:10px;
-
-}
-
-
-.acesso-admin strong{
-
-    color:#00ff88;
-
-}
-
-
-.acesso-admin p{
-
-    color:#477d61;
-
-    font-size:12px;
-
-}
-
-
-.btn-revogar{
-
-    width:auto;
-
-    padding:8px 12px;
-
-    margin-top:5px;
-
-    color:#ff4444;
-
-    background:#160303;
-
-    border:1px solid #7d2222;
-
-}
-
-
-.btn-revogar:hover{
-
-    background:#ff3333;
-
-    color:#000;
-
-}
-
-
-/* =========================================================
-   MENSAGEM FIREBASE
-========================================================= */
-
-.firebase-erro{
-
-    display:none;
-
-    margin-top:15px;
-
-    padding:12px;
-
-    border:1px solid #ff3333;
-
-    background:#160303;
-
-    color:#ff6666;
-
-    font-size:12px;
-
-}
-
-
-/* =========================================================
-   RESPONSIVO
-========================================================= */
-
-@media(max-width:800px){
-
-    .info-acesso{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-}
-
-
-@media(max-width:600px){
-
-    #sistema{
-
-        padding:12px;
-
-    }
-
-
-    .topo{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-    }
-
-
-    .info-acesso{
-
-        grid-template-columns:1fr;
-
-    }
-
-
-    .opcoes{
-
-        grid-template-columns:1fr;
-
-    }
-
-
-    .firewall-grade{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-
-    .login-container{
-
-        padding:25px;
-
-    }
-
-}
-
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at center,rgba(0,255,136,.06),transparent 50%),#020403;color:#00ff88;font-family:"Courier New",monospace}button,input,select{font:inherit}.page{max-width:1000px;margin:auto;padding:20px}.box{background:#050807;border:1px solid #123d27;box-shadow:0 0 20px rgba(0,255,136,.08);padding:22px;margin-bottom:18px}.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.login-box{width:100%;max-width:430px;padding:35px;background:#050807;border:1px solid #00ff88;box-shadow:0 0 20px rgba(0,255,136,.18)}h1,h2,h3{margin-top:0;text-shadow:0 0 8px rgba(0,255,136,.4)}.logo{text-align:center;font-size:32px;letter-spacing:6px}.muted{color:#477d61;font-size:12px}.campo{margin:0 0 15px}.campo label{display:block;color:#70ffb1;font-size:12px;margin-bottom:7px}.campo input,.campo select{width:100%;padding:12px;background:#010401;color:#00ff88;border:1px solid #164d31;outline:none}.campo input:focus,.campo select:focus{border-color:#00ff88;box-shadow:0 0 8px rgba(0,255,136,.2)}.btn{width:100%;padding:13px;margin-top:8px;background:#03140b;border:1px solid #00ff88;color:#00ff88;cursor:pointer;font-weight:bold}.btn:hover{background:#00ff88;color:#000}.btn-small{width:auto;padding:8px 12px;margin:4px}.danger{border-color:#ff4444;color:#ff4444;background:#160303}.danger:hover{background:#ff3333;color:#000}.topo{display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:1px solid #123d27;padding-bottom:15px;margin-bottom:18px}.badge{padding:5px 9px;border:1px solid #00ff88;font-size:11px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.option{border:1px solid #164d31;background:#020803;padding:20px;cursor:pointer}.option:hover{border-color:#00ff88;background:#03140b}.option h3{margin-bottom:8px}.admin-lista{margin-top:15px}.item{border:1px solid #123d27;background:#020803;padding:14px;margin-bottom:10px}.item strong{color:#00ff88}.item p{margin:6px 0;color:#477d61;font-size:12px}.hidden{display:none!important}.status{padding:12px;border:1px solid #164d31;background:#010401;margin:12px 0}.success{border-color:#00ff88}.fail{border-color:#ff3333;color:#ff5555}.game-head{display:flex;justify-content:space-between;gap:15px;align-items:center}.timer{font-size:24px;font-weight:bold}.timer.alerta{color:#ffff55}.timer.perigo{color:#ff3333}.progress{height:8px;background:#06100a;border:1px solid #123d27;margin:15px 0}.progress-in{height:100%;background:#00ff88;width:0}.game-area{min-height:300px}.game-card{text-align:center;border:1px solid #123d27;background:#020803;padding:25px}.codigo{font-size:30px;letter-spacing:8px;margin:25px 0}.input-game{width:100%;max-width:420px;padding:13px;background:#010401;color:#00ff88;border:1px solid #164d31;text-align:center}.seq{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px 0}.seq button{width:70px;height:60px;background:#03140b;color:#00ff88;border:1px solid #164d31;cursor:pointer;font-size:22px}.seq button:hover{border-color:#00ff88}.firewall{display:grid;gap:7px;max-width:520px;margin:20px auto}.cell{aspect-ratio:1;background:#06100a;border:1px solid #164d31;color:#00ff88;cursor:pointer}.cell.on{background:#00ff88;color:#000}.terminal-lines{font-size:12px;line-height:1.8;text-align:left;background:#010401;border:1px solid #123d27;padding:15px;min-height:120px}.central-access{border-color:#00ff88}.central-id{font-size:20px;letter-spacing:3px}.admin-panel{border-color:#00ff88}.countdown{font-size:42px;text-align:center;margin:20px 0}.notice{padding:12px;border-left:3px solid #00ff88;background:#03140b;color:#70ffb1}.small{font-size:11px}.table-like{width:100%;border-collapse:collapse;font-size:12px}.table-like th,.table-like td{border:1px solid #123d27;padding:9px;text-align:left}.table-like th{color:#70ffb1}@media(max-width:700px){.grid,.grid3{grid-template-columns:1fr}.topo{flex-direction:column;align-items:flex-start}.page{padding:10px}}
 </style>
-
 </head>
-
-
 <body>
-
-
-<!-- =========================================================
-     LOGIN
-========================================================= -->
-
-<section id="loginTela">
-
-    <div class="login-container">
-
-        <div class="login-logo">
-
-            <div class="simbolo">
-                ◉
-            </div>
-
-            <h1>
-                HACKER
-            </h1>
-
-            <p>
-                // SECURE TERMINAL ACCESS //
-            </p>
-
-        </div>
-
-
-        <div class="terminal-linha">
-
-            SYSTEM://GTA-RPG<br>
-            CONNECTION://ENCRYPTED<br>
-            STATUS://WAITING FOR AUTHENTICATION
-
-        </div>
-
-
-        <div class="campo">
-
-            <label>
-                USUÁRIO
-            </label>
-
-            <input
-                id="usuario"
-                type="text"
-                autocomplete="off"
-                placeholder="Digite seu usuário"
-            >
-
-        </div>
-
-
-        <div class="campo">
-
-            <label>
-                CÓDIGO DE ACESSO
-            </label>
-
-            <input
-                id="senha"
-                type="password"
-                autocomplete="off"
-                placeholder="Digite seu código"
-            >
-
-        </div>
-
-
-        <button
-            type="button"
-            class="btn"
-            id="btnEntrar"
-        >
-            [ CONECTAR ]
-        </button>
-
-
-        <a
-            href="./index.html"
-            class="btn btn-voltar"
-        >
-            [ VOLTAR ]
-        </a>
-
-
-        <div
-            id="erro"
-            class="erro"
-        ></div>
-
-    </div>
-
+<section id="loginTela" class="login-wrap">
+  <div class="login-box">
+    <div class="logo">◉ HACKER</div>
+    <p class="muted" style="text-align:center">TERMINAL DE ACESSO RESTRITO</p>
+    <div class="status">USUÁRIO: <b>identificação local</b><br>CÓDIGO: <b>autorização necessária</b></div>
+    <div class="campo"><label>USUÁRIO</label><input id="loginUsuario" autocomplete="off"></div>
+    <div class="campo"><label>CÓDIGO DE ACESSO</label><input id="loginCodigo" type="password" autocomplete="off"></div>
+    <button class="btn" onclick="entrar()">CONECTAR</button>
+    <p id="loginErro" class="small" style="color:#ff4444"></p>
+  </div>
 </section>
 
+<main id="sistema" class="page hidden">
+  <div class="topo">
+    <div><h1>HACKER // TERMINAL</h1><div class="muted">OPERADOR: <span id="usuarioNome"></span></div></div>
+    <button class="btn btn-small danger" onclick="sair()">DESCONECTAR</button>
+  </div>
 
+  <section id="semAcesso" class="box hidden">
+    <h2>SEM ACESSO</h2>
+    <p class="muted">Nenhuma autorização de invasão foi liberada para este usuário.</p>
+  </section>
 
-<!-- =========================================================
-     SISTEMA
-========================================================= -->
-
-<section id="sistema">
-
-<div class="container">
-
-
-    <!-- =====================================================
-         TOPO
-    ===================================================== -->
-
-    <div class="topo">
-
-        <div>
-
-            <h1>
-                HACKER // TERMINAL
-            </h1>
-
-            <div
-                id="usuarioLogado"
-                class="status-online"
-            ></div>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="btn btn-sair"
-            id="btnSair"
-        >
-            DESCONECTAR
-        </button>
-
+  <section id="acessoLiberado" class="box hidden">
+    <h2>ACESSO LIBERADO</h2>
+    <div class="grid">
+      <div class="status">RECURSO<br><b id="acessoRecurso">---</b></div>
+      <div class="status">DIFICULDADE<br><b id="acessoDificuldade">---</b></div>
     </div>
+    <button class="btn" onclick="iniciarInvasao()">INICIAR INVASÃO</button>
+  </section>
 
+  <section id="centralEscolha" class="box hidden">
+    <h2>CENTRAIS</h2>
+    <p class="muted">Selecione uma central autorizada para iniciar a invasão.</p>
+    <div id="listaCentraisJogador" class="grid"></div>
+  </section>
 
+  <section id="centralLogin" class="box hidden">
+    <h2 id="centralLoginTitulo">CENTRAL</h2>
+    <p class="muted">IDENTIFICAÇÃO DA CENTRAL NECESSÁRIA.</p>
+    <div class="campo"><label>ID DA CENTRAL</label><input id="centralIdInput" autocomplete="off" placeholder="DIGITE O ID"></div>
+    <button class="btn" onclick="validarCentral()">AUTENTICAR CENTRAL</button>
+    <button class="btn btn-small" onclick="voltarCentrais()">VOLTAR</button>
+    <p id="centralErro" class="small" style="color:#ff4444"></p>
+  </section>
 
-    <!-- =====================================================
-         SEM ACESSO
-    ===================================================== -->
+  <section id="minigame" class="box hidden">
+    <div class="game-head"><div><h2 id="minigameTitulo">INVASÃO</h2><div id="minigameSubtitulo" class="muted"></div></div><div id="timer" class="timer">00:00</div></div>
+    <div class="progress"><div id="barraInterna" class="progress-in"></div></div>
+    <div class="muted">PROTOCOLO <span id="progressoTexto">0/0</span></div>
+    <div id="conteudoMinigame" class="game-area"></div>
+  </section>
 
-    <div
-        id="semAcesso"
-        class="painel"
-    >
+  <section id="resultado" class="box hidden">
+    <h2 id="resultadoTitulo"></h2>
+    <p id="resultadoTexto" class="muted"></p>
+    <button id="resultadoBtn" class="btn" onclick="voltarTerminal()">VOLTAR AO TERMINAL</button>
+  </section>
 
-        <div class="cadeado">
-            ▣
-        </div>
-
-        <h2>
-            NENHUM ACESSO DISPONÍVEL
-        </h2>
-
-        <p>
-            Nenhuma operação foi autorizada
-            para este usuário.
-        </p>
-
-        <p>
-            Aguardando autorização...
-        </p>
-
+  <section id="admin" class="box hidden">
+    <h2>ADMINISTRADOR — ÍTALO</h2>
+    <p class="muted">Controle das autorizações normais e das Centrais.</p>
+    <div class="admin-separador"></div>
+    <h3>LIBERAR INVASÃO NORMAL</h3>
+    <div class="grid">
+      <div class="campo"><label>JOGADOR</label><select id="adminJogador"><option>Kaius</option><option>Gaby</option><option>Duda</option></select></div>
+      <div class="campo"><label>TEMPO (SEGUNDOS)</label><input id="adminTempo" type="number" value="60" min="10"></div>
+      <div class="campo"><label>DIFICULDADE</label><select id="adminDificuldade"><option>Fácil</option><option>Normal</option><option>Difícil</option><option>Extremo</option></select></div>
+      <div class="campo"><label>RECURSO</label><input id="adminRecurso" value="Acesso ao sistema"></div>
     </div>
+    <button class="btn" onclick="liberarAcesso()">LIBERAR ACESSO</button>
+    <div id="listaAcessos" class="admin-lista"></div>
 
-
-
-    <!-- =====================================================
-         ACESSO LIBERADO
-    ===================================================== -->
-
-    <div
-        id="acessoLiberado"
-        class="painel"
-    >
-
-        <div class="alerta-acesso">
-
-            >
-            <strong>
-                OPERAÇÃO AUTORIZADA
-            </strong>
-
-            <br>
-
-            >
-            Conexão segura estabelecida.
-
-        </div>
-
-
-        <h2>
-            INVASÃO DISPONÍVEL
-        </h2>
-
-
-        <div class="info-acesso">
-
-            <div class="info">
-
-                <small>
-                    JOGADOR
-                </small>
-
-                <strong id="infoJogador">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info">
-
-                <small>
-                    DIFICULDADE
-                </small>
-
-                <strong id="infoDificuldade">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info">
-
-                <small>
-                    RECURSO
-                </small>
-
-                <strong id="infoRecurso">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info">
-
-                <small>
-                    TEMPO
-                </small>
-
-                <strong id="infoTempo">
-                    -
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="btn"
-            id="btnIniciar"
-        >
-            [ INICIAR INVASÃO ]
-        </button>
-
+    <div class="admin-separador"></div>
+    <h3>GERENCIAR CENTRAIS</h3>
+    <div class="notice small">Uma Central sempre executa os 4 minigames no modo EXTREMO. O acesso administrativo da Central permanece disponível dentro desta página por 45 segundos.</div>
+    <div class="grid">
+      <div class="campo"><label>NOME DA CENTRAL</label><input id="centralNomeAdmin" placeholder="Ex.: LSPD"></div>
+      <div class="campo"><label>ID DA CENTRAL</label><input id="centralIdAdmin" placeholder="Ex.: LSPD-4821"></div>
     </div>
+    <button class="btn" onclick="salvarCentral()">CADASTRAR CENTRAL</button>
+    <div id="listaCentraisAdmin" class="admin-lista"></div>
+  </section>
 
-
-
-    <!-- =====================================================
-         MINIGAME
-    ===================================================== -->
-
-    <div
-        id="minigame"
-        class="painel"
-    >
-
-        <div
-            id="minigameTitulo"
-            class="minigame-titulo"
-        ></div>
-
-
-        <div
-            id="minigameSubtitulo"
-            class="minigame-subtitulo"
-        ></div>
-
-
-        <div class="progresso-texto">
-
-            <span>
-                OPERAÇÃO
-            </span>
-
-            <span id="progressoTexto">
-                0/0
-            </span>
-
-        </div>
-
-
-        <div class="barra">
-
-            <div
-                id="barraInterna"
-                class="barra-interna"
-            ></div>
-
-        </div>
-
-
-        <div id="conteudoMinigame"></div>
-
+  <section id="painelCentral" class="box admin-panel hidden">
+    <div class="topo"><div><h2 id="painelCentralNome">CENTRAL</h2><div class="muted">MODO ADMINISTRATIVO TEMPORÁRIO</div></div><div class="badge">ACESSO CONCEDIDO</div></div>
+    <div class="countdown" id="centralCountdown">00:45</div>
+    <div class="notice">Você está dentro da Central. Este painel é uma simulação interna do sistema Hacker e não altera outro arquivo.</div>
+    <div class="grid3" style="margin-top:15px">
+      <div class="option" onclick="centralAcao('ocorrencias')"><h3>OCORRÊNCIAS</h3><p class="muted">Acessar registros.</p></div>
+      <div class="option" onclick="centralAcao('consultar')"><h3>CONSULTAR ID</h3><p class="muted">Pesquisar operador.</p></div>
+      <div class="option" onclick="centralAcao('registros')"><h3>REGISTROS</h3><p class="muted">Modificar dados.</p></div>
     </div>
-
-
-
-    <!-- =====================================================
-         RESULTADO
-    ===================================================== -->
-
-    <div
-        id="resultado"
-        class="painel"
-    >
-
-        <h2 id="resultadoTitulo"></h2>
-
-        <p id="resultadoTexto"></p>
-
-        <button
-            type="button"
-            class="btn"
-            id="btnVoltarTerminal"
-        >
-            [ VOLTAR AO TERMINAL ]
-        </button>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         ADMIN
-    ===================================================== -->
-
-    <div
-        id="admin"
-        class="painel"
-    >
-
-        <h2 class="admin-titulo">
-            // ADMINISTRADOR — ÍTALO
-        </h2>
-
-        <p style="color:#477d61;">
-            Libere uma autorização Hacker para um jogador.
-        </p>
-
-
-        <div class="admin-separador"></div>
-
-
-        <div class="admin-campo">
-
-            <label>
-                JOGADOR
-            </label>
-
-            <select id="adminJogador">
-
-                <option value="Kaius">
-                    Kaius
-                </option>
-
-                <option value="Gaby">
-                    Gaby
-                </option>
-
-                <option value="Duda">
-                    Duda
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="admin-campo">
-
-            <label>
-                TEMPO — SEGUNDOS
-            </label>
-
-            <input
-                id="adminTempo"
-                type="number"
-                min="10"
-                value="60"
-            >
-
-        </div>
-
-
-        <div class="admin-campo">
-
-            <label>
-                DIFICULDADE
-            </label>
-
-            <select id="adminDificuldade">
-
-                <option value="Fácil">
-                    FÁCIL — 1 MINIGAME
-                </option>
-
-                <option value="Normal">
-                    NORMAL — 2 MINIGAMES
-                </option>
-
-                <option value="Difícil">
-                    DIFÍCIL — 3 MINIGAMES
-                </option>
-
-                <option value="Extremo">
-                    EXTREMO — 4 MINIGAMES
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="admin-campo">
-
-            <label>
-                RECURSO DESBLOQUEADO
-            </label>
-
-            <input
-                id="adminRecurso"
-                type="text"
-                placeholder="Ex: Localização do alvo"
-            >
-
-        </div>
-
-
-        <button
-            type="button"
-            class="btn"
-            id="btnLiberar"
-        >
-            [ LIBERAR ACESSO ]
-        </button>
-
-
-        <div
-            id="firebaseErro"
-            class="firebase-erro"
-        ></div>
-
-
-        <div class="admin-separador"></div>
-
-
-        <h3>
-            ACESSOS ATIVOS
-        </h3>
-
-
-        <div
-            id="listaAcessos"
-            class="admin-lista"
-        >
-            Carregando...
-        </div>
-
-    </div>
-
-
-</div>
-
-</section>
-
-
+    <div id="centralResultado" class="terminal-lines" style="margin-top:15px">&gt; SISTEMA ADMINISTRATIVO ONLINE</div>
+  </section>
+</main>
 
 <script>
-
-/* =========================================================
-   FIREBASE
-========================================================= */
-
-const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyBwAUhihZQ3kwD9EuasUurXXLbPBjJqg",
-
-    authDomain:
-        "gta-rpg.firebaseapp.com",
-
-    databaseURL:
-        "https://gta-rpg-default-rtdb.firebaseio.com",
-
-    projectId:
-        "gta-rpg",
-
-    storageBucket:
-        "gta-rpg.firebasestorage.app",
-
-    messagingSenderId:
-        "318963858414",
-
-    appId:
-        "1:318963858414:web:cc7122486ac5a3d267ecff",
-
-    measurementId:
-        "G-K157521F0H"
-
-};
-
-
-/* =========================================================
-   USUÁRIOS
-========================================================= */
-
-const usuarios = {
-
-    Kaius:"28/09",
-
-    Gaby:"22/09",
-
-    Duda:"13/09",
-
-    Italo:"1822"
-
-};
-
-
-/* =========================================================
-   VARIÁVEIS
-========================================================= */
-
-let db = null;
-
-let firebasePronto = false;
-
-let usuarioAtual = null;
-
-let acessoAtual = null;
-
-let jogoAtivo = false;
-
-let sequenciaJogos = [];
-
-let indiceJogo = 0;
-
-let tempoRestante = 0;
-
-let intervalo = null;
-
-let jogoAtual = null;
-
-let codigoAtual = "";
-
-let memoriaSequencia = [];
-
-let memoriaResposta = [];
-
-let terminalResposta = "";
-
-let firewallResposta = [];
-
-let firewallJogador = [];
-
-let listenerAcesso = null;
-
-let listenerAcessosAdmin = null;
-
-
-/* =========================================================
-   INICIAR FIREBASE
-========================================================= */
-
-function iniciarFirebase(){
-
-    try{
-
-        if(
-            typeof firebase === "undefined"
-        ){
-
-            console.error(
-                "Firebase não carregado."
-            );
-
-            return false;
-
-        }
-
-
-        if(
-            !firebase.apps.length
-        ){
-
-            firebase.initializeApp(
-                firebaseConfig
-            );
-
-        }
-
-
-        db =
-            firebase.database();
-
-
-        firebasePronto = true;
-
-
-        return true;
-
-    }
-
-    catch(error){
-
-        console.error(
-            "Erro ao iniciar Firebase:",
-            error
-        );
-
-        firebasePronto = false;
-
-        return false;
-
-    }
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-function entrar(){
-
-    const campoUsuario =
-        document.getElementById(
-            "usuario"
-        );
-
-    const campoSenha =
-        document.getElementById(
-            "senha"
-        );
-
-    const erro =
-        document.getElementById(
-            "erro"
-        );
-
-
-    if(
-        !campoUsuario ||
-        !campoSenha ||
-        !erro
-    ){
-
-        return;
-
-    }
-
-
-    const nome =
-        campoUsuario
-        .value
-        .trim();
-
-
-    const senha =
-        campoSenha
-        .value
-        .trim();
-
-
-    erro.textContent = "";
-
-
-    if(!nome){
-
-        erro.textContent =
-            "DIGITE O USUÁRIO.";
-
-        campoUsuario.focus();
-
-        return;
-
-    }
-
-
-    if(!senha){
-
-        erro.textContent =
-            "DIGITE O CÓDIGO DE ACESSO.";
-
-        campoSenha.focus();
-
-        return;
-
-    }
-
-
-    let usuarioReal = null;
-
-
-    for(
-        const nomeUsuario in usuarios
-    ){
-
-        if(
-            nomeUsuario.toLowerCase() ===
-            nome.toLowerCase()
-        ){
-
-            usuarioReal =
-                nomeUsuario;
-
-            break;
-
-        }
-
-    }
-
-
-    if(!usuarioReal){
-
-        erro.textContent =
-            "USUÁRIO NÃO ENCONTRADO.";
-
-        return;
-
-    }
-
-
-    if(
-        usuarios[usuarioReal] !==
-        senha
-    ){
-
-        erro.textContent =
-            "CÓDIGO DE ACESSO INCORRETO.";
-
-        return;
-
-    }
-
-
-    usuarioAtual =
-        usuarioReal;
-
-
-    localStorage.setItem(
-        "hacker_usuario",
-        usuarioAtual
-    );
-
-
-    abrirSistema();
-
-}
-
-
-/* =========================================================
-   EXPOR LOGIN
-========================================================= */
-
-window.entrar = entrar;
-
-
-/* =========================================================
-   ABRIR SISTEMA
-========================================================= */
-
-function abrirSistema(){
-
-    const login =
-        document.getElementById(
-            "loginTela"
-        );
-
-    const sistema =
-        document.getElementById(
-            "sistema"
-        );
-
-
-    if(!login || !sistema){
-
-        return;
-
-    }
-
-
-    login.style.display =
-        "none";
-
-
-    sistema.style.display =
-        "block";
-
-
-    document
-        .getElementById(
-            "usuarioLogado"
-        )
-        .textContent =
-        "● CONECTADO: " +
-        usuarioAtual.toUpperCase();
-
-
-    if(
-        usuarioAtual === "Italo"
-    ){
-
-        document
-            .getElementById(
-                "admin"
-            )
-            .style.display =
-            "block";
-
-
-        iniciarFirebase();
-
-
-        if(firebasePronto){
-
-            observarAcessos();
-
-        }
-
-    }
-
-    else{
-
-        document
-            .getElementById(
-                "admin"
-            )
-            .style.display =
-            "none";
-
-    }
-
-
-    iniciarFirebase();
-
-
-    if(firebasePronto){
-
-        ouvirAcesso();
-
-    }
-
-}
-
-
-/* =========================================================
-   VERIFICAR LOGIN SALVO
-========================================================= */
-
-function verificarLoginSalvo(){
-
-    const salvo =
-        localStorage.getItem(
-            "hacker_usuario"
-        );
-
-
-    if(!salvo){
-
-        return;
-
-    }
-
-
-    if(
-        !usuarios[salvo]
-    ){
-
-        localStorage.removeItem(
-            "hacker_usuario"
-        );
-
-        return;
-
-    }
-
-
-    usuarioAtual =
-        salvo;
-
-
-    abrirSistema();
-
-}
-
-
-/* =========================================================
-   SAIR
-========================================================= */
-
-function sair(){
-
-    if(intervalo){
-
-        clearInterval(
-            intervalo
-        );
-
-        intervalo = null;
-
-    }
-
-
-    if(
-        db &&
-        usuarioAtual &&
-        listenerAcesso
-    ){
-
-        db.ref(
-            "hackerAcessos/" +
-            usuarioAtual
-        ).off(
-            "value",
-            listenerAcesso
-        );
-
-    }
-
-
-    if(
-        db &&
-        listenerAcessosAdmin
-    ){
-
-        db.ref(
-            "hackerAcessos"
-        ).off(
-            "value",
-            listenerAcessosAdmin
-        );
-
-    }
-
-
-    localStorage.removeItem(
-        "hacker_usuario"
-    );
-
-
-    location.reload();
-
-}
-
-
-/* =========================================================
-   MOSTRAR ERRO FIREBASE
-========================================================= */
-
-function mostrarErroFirebase(
-    mensagem
-){
-
-    const caixa =
-        document.getElementById(
-            "firebaseErro"
-        );
-
-
-    if(!caixa){
-
-        return;
-
-    }
-
-
-    caixa.textContent =
-        mensagem;
-
-
-    caixa.style.display =
-        "block";
-
-}
-
-
-/* =========================================================
-   ESCONDER ERRO FIREBASE
-========================================================= */
-
-function esconderErroFirebase(){
-
-    const caixa =
-        document.getElementById(
-            "firebaseErro"
-        );
-
-
-    if(caixa){
-
-        caixa.style.display =
-            "none";
-
-        caixa.textContent =
-            "";
-
-    }
-
-}
-
-
-/* =========================================================
-   OUVIR ACESSO DO JOGADOR
-========================================================= */
-
-function ouvirAcesso(){
-
-    if(
-        !usuarioAtual ||
-        !firebasePronto
-    ){
-
-        return;
-
-    }
-
-
-    if(listenerAcesso){
-
-        db.ref(
-            "hackerAcessos/" +
-            usuarioAtual
-        ).off(
-            "value",
-            listenerAcesso
-        );
-
-    }
-
-
-    listenerAcesso =
-        function(snapshot){
-
-            console.log(
-                "ACESSO RECEBIDO:",
-                usuarioAtual,
-                snapshot.val()
-            );
-
-
-            if(
-                !snapshot.exists()
-            ){
-
-                acessoAtual = null;
-
-                mostrarSemAcesso();
-
-                return;
-
-            }
-
-
-            const acesso =
-                snapshot.val();
-
-
-            if(
-                acesso.ativo !== true
-            ){
-
-                acessoAtual = null;
-
-                mostrarSemAcesso();
-
-                return;
-
-            }
-
-
-            acessoAtual =
-                acesso;
-
-
-            mostrarAcesso();
-
-        };
-
-
-    db.ref(
-        "hackerAcessos/" +
-        usuarioAtual
-    ).on(
-        "value",
-        listenerAcesso,
-        function(error){
-
-            console.error(
-                "ERRO AO LER ACESSO:",
-                error
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   MOSTRAR SEM ACESSO
-========================================================= */
-
-function mostrarSemAcesso(){
-
-    document
-        .getElementById(
-            "semAcesso"
-        )
-        .style.display =
-        "block";
-
-
-    document
-        .getElementById(
-            "acessoLiberado"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "minigame"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "resultado"
-        )
-        .style.display =
-        "none";
-
-}
-
-
-/* =========================================================
-   MOSTRAR ACESSO
-========================================================= */
-
-function mostrarAcesso(){
-
-    document
-        .getElementById(
-            "semAcesso"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "acessoLiberado"
-        )
-        .style.display =
-        "block";
-
-
-    document
-        .getElementById(
-            "minigame"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "resultado"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "infoJogador"
-        )
-        .textContent =
-        acessoAtual.jogador || "-";
-
-
-    document
-        .getElementById(
-            "infoDificuldade"
-        )
-        .textContent =
-        acessoAtual.dificuldade || "-";
-
-
-    document
-        .getElementById(
-            "infoRecurso"
-        )
-        .textContent =
-        acessoAtual.recurso || "-";
-
-
-    document
-        .getElementById(
-            "infoTempo"
-        )
-        .textContent =
-        (acessoAtual.tempo || 0) +
-        " segundos";
-
-
-    jogoAtivo = false;
-
-}
-
-
-/* =========================================================
-   ADMIN — LIBERAR ACESSO
-========================================================= */
-
-async function liberarAcesso(){
-
-    console.log(
-        "LIBERAR ACESSO CLICADO"
-    );
-
-
-    if(
-        usuarioAtual !== "Italo"
-    ){
-
-        alert(
-            "ACESSO NEGADO."
-        );
-
-        return;
-
-    }
-
-
-    if(
-        !firebasePronto
-    ){
-
-        iniciarFirebase();
-
-    }
-
-
-    if(
-        !firebasePronto ||
-        !db
-    ){
-
-        alert(
-            "Firebase não está conectado."
-        );
-
-        return;
-
-    }
-
-
-    esconderErroFirebase();
-
-
-    const jogador =
-        document
-        .getElementById(
-            "adminJogador"
-        )
-        .value;
-
-
-    const tempo =
-        Number(
-            document
-            .getElementById(
-                "adminTempo"
-            )
-            .value
-        );
-
-
-    const dificuldade =
-        document
-        .getElementById(
-            "adminDificuldade"
-        )
-        .value;
-
-
-    const recurso =
-        document
-        .getElementById(
-            "adminRecurso"
-        )
-        .value
-        .trim();
-
-
-    if(!jogador){
-
-        alert(
-            "Selecione um jogador."
-        );
-
-        return;
-
-    }
-
-
-    if(
-        !tempo ||
-        tempo < 10
-    ){
-
-        alert(
-            "O tempo mínimo é de 10 segundos."
-        );
-
-        return;
-
-    }
-
-
-    if(!recurso){
-
-        alert(
-            "Digite o recurso que será desbloqueado."
-        );
-
-        return;
-
-    }
-
-
-    const acesso = {
-
-        ativo:true,
-
-        jogador:jogador,
-
-        tempo:tempo,
-
-        dificuldade:dificuldade,
-
-        recurso:recurso,
-
-        criadoEm:
-            Date.now(),
-
-        criadoPor:
-            "Italo"
-
-    };
-
-
-    const caminho =
-        "hackerAcessos/" +
-        jogador;
-
-
-    console.log(
-        "SALVANDO:",
-        caminho,
-        acesso
-    );
-
-
-    const botao =
-        document.getElementById(
-            "btnLiberar"
-        );
-
-
-    if(botao){
-
-        botao.disabled =
-            true;
-
-        botao.textContent =
-            "[ ENVIANDO... ]";
-
-    }
-
-
-    try{
-
-        await db
-            .ref(caminho)
-            .set(acesso);
-
-
-        console.log(
-            "ACESSO SALVO:",
-            acesso
-        );
-
-
-        alert(
-            "✓ ACESSO LIBERADO PARA " +
-            jogador.toUpperCase()
-        );
-
-
-        document
-            .getElementById(
-                "adminRecurso"
-            )
-            .value = "";
-
-
-        observarAcessos();
-
-    }
-
-    catch(error){
-
-        console.error(
-            "ERRO FIREBASE:",
-            error
-        );
-
-
-        mostrarErroFirebase(
-            "ERRO AO LIBERAR ACESSO: " +
-            error.message
-        );
-
-
-        alert(
-            "Não foi possível liberar o acesso.\n\n" +
-            error.message
-        );
-
-    }
-
-    finally{
-
-        if(botao){
-
-            botao.disabled =
-                false;
-
-            botao.textContent =
-                "[ LIBERAR ACESSO ]";
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   ADMIN — OBSERVAR ACESSOS
-========================================================= */
-
-function observarAcessos(){
-
-    if(
-        usuarioAtual !== "Italo" ||
-        !firebasePronto
-    ){
-
-        return;
-
-    }
-
-
-    const referencia =
-        db.ref(
-            "hackerAcessos"
-        );
-
-
-    if(listenerAcessosAdmin){
-
-        referencia.off(
-            "value",
-            listenerAcessosAdmin
-        );
-
-    }
-
-
-    listenerAcessosAdmin =
-        function(snapshot){
-
-            const lista =
-                document.getElementById(
-                    "listaAcessos"
-                );
-
-
-            lista.innerHTML =
-                "";
-
-
-            if(
-                !snapshot.exists()
-            ){
-
-                lista.innerHTML =
-                    "<p style='color:#477d61;'>Nenhum acesso liberado.</p>";
-
-                return;
-
-            }
-
-
-            snapshot.forEach(
-                function(item){
-
-                    const acesso =
-                        item.val();
-
-
-                    const jogador =
-                        item.key;
-
-
-                    const div =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    div.className =
-                        "acesso-admin";
-
-
-                    const titulo =
-                        document.createElement(
-                            "strong"
-                        );
-
-
-                    titulo.textContent =
-                        jogador;
-
-
-                    div.appendChild(
-                        titulo
-                    );
-
-
-                    const status =
-                        document.createElement(
-                            "p"
-                        );
-
-
-                    status.textContent =
-                        "STATUS: " +
-                        (
-                            acesso.ativo
-                            ? "ACESSO ATIVO"
-                            : "ENCERRADO"
-                        );
-
-
-                    div.appendChild(
-                        status
-                    );
-
-
-                    const tempo =
-                        document.createElement(
-                            "p"
-                        );
-
-
-                    tempo.textContent =
-                        "TEMPO: " +
-                        acesso.tempo +
-                        "s";
-
-
-                    div.appendChild(
-                        tempo
-                    );
-
-
-                    const dificuldade =
-                        document.createElement(
-                            "p"
-                        );
-
-
-                    dificuldade.textContent =
-                        "DIFICULDADE: " +
-                        acesso.dificuldade;
-
-
-                    div.appendChild(
-                        dificuldade
-                    );
-
-
-                    const recurso =
-                        document.createElement(
-                            "p"
-                        );
-
-
-                    recurso.textContent =
-                        "RECURSO: " +
-                        acesso.recurso;
-
-
-                    div.appendChild(
-                        recurso
-                    );
-
-
-                    if(
-                        acesso.ativo
-                    ){
-
-                        const botao =
-                            document.createElement(
-                                "button"
-                            );
-
-
-                        botao.className =
-                            "btn btn-revogar";
-
-
-                        botao.type =
-                            "button";
-
-
-                        botao.textContent =
-                            "[ REVOGAR ACESSO ]";
-
-
-                        botao.addEventListener(
-                            "click",
-                            function(){
-
-                                revogarAcesso(
-                                    jogador
-                                );
-
-                            }
-                        );
-
-
-                        div.appendChild(
-                            botao
-                        );
-
-                    }
-
-
-                    lista.appendChild(
-                        div
-                    );
-
-                }
-            );
-
-        };
-
-
-    referencia.on(
-        "value",
-        listenerAcessosAdmin,
-        function(error){
-
-            console.error(
-                "ERRO AO OBSERVAR ACESSOS:",
-                error
-            );
-
-
-            mostrarErroFirebase(
-                "Erro ao carregar acessos: " +
-                error.message
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ADMIN — REVOGAR
-========================================================= */
-
-async function revogarAcesso(
-    jogador
-){
-
-    if(
-        usuarioAtual !== "Italo"
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        !confirm(
-            "Revogar acesso de " +
-            jogador +
-            "?"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    try{
-
-        await db
-            .ref(
-                "hackerAcessos/" +
-                jogador
-            )
-            .update({
-
-                ativo:false,
-
-                revogadoEm:
-                    Date.now()
-
-            });
-
-
-        alert(
-            "Acesso revogado."
-        );
-
-    }
-
-    catch(error){
-
-        console.error(
-            error
-        );
-
-
-        alert(
-            "Erro ao revogar acesso:\n" +
-            error.message
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   INICIAR INVASÃO
-========================================================= */
-
-function iniciarInvasao(){
-
-    if(
-        !acessoAtual ||
-        acessoAtual.ativo !== true
-    ){
-
-        return;
-
-    }
-
-
-    jogoAtivo =
-        true;
-
-
-    indiceJogo =
-        0;
-
-
-    const quantidade =
-        obterQuantidadeJogos();
-
-
-    const todosJogos = [
-
-        "codigo",
-
-        "memoria",
-
-        "terminal",
-
-        "firewall"
-
+const firebaseConfig={apiKey:"AIzaSyBwAUhihQZ3kwD9EuasUurXXLbPBjJqg",authDomain:"gta-rpg.firebaseapp.com",databaseURL:"https://gta-rpg-default-rtdb.firebaseio.com",projectId:"gta-rpg",storageBucket:"gta-rpg.firebasestorage.app",messagingSenderId:"318963858414",appId:"1:318963858414:web:cc7122486ac5a3d267ecff",measurementId:"G-K157521F0H"};
+firebase.initializeApp(firebaseConfig);const db=firebase.database();
+const usuarios={Kaius:"28/09",Gaby:"22/09",Duda:"13/09",Italo:"1822"};
+let usuarioAtual=null,acessoAtual=null,acessoListener=null,centralListener=null,centralSelecionada=null,centralAtiva=null;
+let jogoAtivo=false,jogoAtual="",indiceJogo=0,sequenciaJogos=[],tempoRestante=0,intervalo=null,codigoAtual="",memoriaSequencia=[],memoriaIndice=0,firewallGrade=[],firewallTamanho=4;
+let centralCountdownInterval=null;
+
+function $(id){return document.getElementById(id)}
+function mostrar(id,show=true){$(id).classList.toggle('hidden',!show)}
+function entrar(){const u=$('loginUsuario').value.trim(),c=$('loginCodigo').value;if(!usuarios[u]||usuarios[u]!==c){$('loginErro').textContent='USUÁRIO OU CÓDIGO INVÁLIDO.';return}usuarioAtual=u;localStorage.setItem('hacker_usuario',u);abrirSistema()}
+function verificarLoginSalvo(){const u=localStorage.getItem('hacker_usuario');if(u&&usuarios[u]){usuarioAtual=u;abrirSistema()}}
+function abrirSistema(){mostrar('loginTela',false);mostrar('sistema',true);$('usuarioNome').textContent=usuarioAtual;mostrar('admin',usuarioAtual==='Italo');mostrar('semAcesso',usuarioAtual!=='Italo');mostrar('centralEscolha',false);mostrar('centralLogin',false);mostrar('minigame',false);mostrar('resultado',false);mostrar('painelCentral',false);ouvirAcesso();observarCentrais();if(usuarioAtual==='Italo')observarAcessos()}
+function sair(){if(acessoListener){db.ref('hackerAcessos/'+usuarioAtual).off('value',acessoListener);acessoListener=null}if(centralListener){db.ref('hackerCentrais').off('value',centralListener);centralListener=null}localStorage.removeItem('hacker_usuario');location.reload()}
+function ouvirAcesso(){if(usuarioAtual==='Italo')return;const ref=db.ref('hackerAcessos/'+usuarioAtual);acessoListener=s=>{acessoAtual=s.val();if(acessoAtual&&acessoAtual.ativo){mostrar('semAcesso',false);mostrar('acessoLiberado',true);$('acessoRecurso').textContent=acessoAtual.recurso||'---';$('acessoDificuldade').textContent=acessoAtual.dificuldade||'---'}else{mostrar('acessoLiberado',false);mostrar('semAcesso',true)}};ref.on('value',acessoListener)}
+async function liberarAcesso(){if(usuarioAtual!=='Italo')return;const jogador=$('adminJogador').value,tempo=Math.max(10,Number($('adminTempo').value)||60),dificuldade=$('adminDificuldade').value,recurso=$('adminRecurso').value.trim()||'Acesso ao sistema';await db.ref('hackerAcessos/'+jogador).set({ativo:true,jogador,tempo,dificuldade,recurso,criadoEm:Date.now(),criadoPor:'Italo'});alert('Acesso liberado para '+jogador+'.')}
+function observarAcessos(){db.ref('hackerAcessos').on('value',snap=>{const lista=$('listaAcessos');lista.innerHTML='';const dados=snap.val()||{};Object.keys(dados).forEach(j=>{const a=dados[j],div=document.createElement('div');div.className='item';div.innerHTML='<strong>'+esc(j)+'</strong><p>STATUS: '+(a.ativo?'ACESSO ATIVO':'ENCERRADO')+'</p><p>TEMPO: '+esc(a.tempo)+'s</p><p>DIFICULDADE: '+esc(a.dificuldade)+'</p><p>RECURSO: '+esc(a.recurso)+'</p>';if(a.ativo){const b=document.createElement('button');b.className='btn btn-small danger';b.textContent='REVOGAR ACESSO';b.onclick=()=>revogarAcesso(j);div.appendChild(b)}lista.appendChild(div)})})}
+async function revogarAcesso(j){if(usuarioAtual!=='Italo')return;if(!confirm('Revogar acesso de '+j+'?'))return;await db.ref('hackerAcessos/'+j).update({ativo:false,revogadoEm:Date.now()})}
+
+function observarCentrais(){const ref=db.ref('hackerCentrais');centralListener=s=>{const dados=s.val()||{};renderCentraisAdmin(dados);renderCentraisJogador(dados)};ref.on('value',centralListener)}
+async function salvarCentral(){if(usuarioAtual!=='Italo')return;const nome=$('centralNomeAdmin').value.trim(),id=$('centralIdAdmin').value.trim();if(!nome||!id){alert('Preencha o nome e o ID da Central.');return}const snap=await db.ref('hackerCentrais').once('value');const dados=snap.val()||{};for(const k in dados){if(dados[k].idAcesso&&dados[k].idAcesso.toLowerCase()===id.toLowerCase()){alert('Esse ID já está cadastrado.');return}}await db.ref('hackerCentrais').push({ativo:true,nome,idAcesso:id,dificuldade:'Extremo',tempoAdmin:45,criadoEm:Date.now(),criadoPor:'Italo'});$('centralNomeAdmin').value='';$('centralIdAdmin').value='';alert('Central cadastrada.')}
+function renderCentraisAdmin(dados){if(usuarioAtual!=='Italo')return;const lista=$('listaCentraisAdmin');lista.innerHTML='';const keys=Object.keys(dados);if(!keys.length){lista.innerHTML='<p class="muted">Nenhuma Central cadastrada.</p>';return}keys.forEach(k=>{const c=dados[k],div=document.createElement('div');div.className='item';div.innerHTML='<strong>'+esc(c.nome)+'</strong><p>ID: '+esc(c.idAcesso)+'</p><p>STATUS: '+(c.ativo?'ATIVA':'DESATIVADA')+'</p><p>DIFICULDADE: EXTREMO | ADMIN: 45s</p>';const b=document.createElement('button');b.className='btn btn-small '+(c.ativo?'danger':'');b.textContent=c.ativo?'DESATIVAR':'ATIVAR';b.onclick=()=>alternarCentral(k,c.ativo);div.appendChild(b);const d=document.createElement('button');d.className='btn btn-small danger';d.textContent='EXCLUIR';d.onclick=()=>excluirCentral(k,c.nome);div.appendChild(d);lista.appendChild(div)})}
+async function alternarCentral(k,ativo){await db.ref('hackerCentrais/'+k).update({ativo:!ativo})}
+async function excluirCentral(k,nome){if(confirm('Excluir a Central '+nome+'?'))await db.ref('hackerCentrais/'+k).remove()}
+function renderCentraisJogador(dados){if(usuarioAtual==='Italo')return;const lista=$('listaCentraisJogador');lista.innerHTML='';let count=0;Object.keys(dados).forEach(k=>{const c=dados[k];if(!c.ativo)return;count++;const div=document.createElement('div');div.className='option';div.innerHTML='<h3>'+esc(c.nome)+'</h3><p class="muted">PROTOCOLO: EXTREMO</p><p class="small">IDENTIFICAÇÃO NECESSÁRIA</p>';div.onclick=()=>abrirCentral(k,c);lista.appendChild(div)});if(count){mostrar('centralEscolha',true);mostrar('semAcesso',false)}else mostrar('centralEscolha',false)}
+function abrirCentral(k,c){centralSelecionada=k;centralAtiva=c;mostrar('centralEscolha',false);mostrar('centralLogin',true);$('centralLoginTitulo').textContent='CENTRAL // '+c.nome;$('centralIdInput').value='';$('centralErro').textContent='';$('centralIdInput').focus()}
+function voltarCentrais(){mostrar('centralLogin',false);mostrar('centralEscolha',true)}
+async function validarCentral(){if(!centralSelecionada||!centralAtiva)return;const digitado=$('centralIdInput').value.trim();if(digitado!==String(centralAtiva.idAcesso)){ $('centralErro').textContent='ACESSO NEGADO — ID DA CENTRAL INVÁLIDO.';return}const snap=await db.ref('hackerCentrais/'+centralSelecionada).once('value');const c=snap.val();if(!c||!c.ativo){$('centralErro').textContent='CENTRAL INDISPONÍVEL.';return}centralAtiva=c;acessoAtual={ativo:true,jogador:usuarioAtual,tempo:90,dificuldade:'Extremo',recurso:'Acesso administrativo — '+c.nome,central:true,centralKey:centralSelecionada,centralNome:c.nome};mostrar('centralLogin',false);iniciarInvasao(true)}
+
+function iniciarInvasao(isCentral=false){
+
+    if(!acessoAtual || acessoAtual.ativo!==true) return;
+
+    jogoAtivo=true;
+    indiceJogo=0;
+
+    const todos=[
+        'codigo',
+        'memoria',
+        'terminal',
+        'firewall'
     ];
 
+    sequenciaJogos=embaralhar(todos);
 
-    sequenciaJogos =
-        embaralhar(
-            todosJogos
-        )
-        .slice(
-            0,
-            quantidade
-        );
+    mostrar('acessoLiberado',false);
+    mostrar('centralEscolha',false);
+    mostrar('minigame',true);
+    mostrar('resultado',false);
 
-
-    document
-        .getElementById(
-            "acessoLiberado"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "minigame"
-        )
-        .style.display =
-        "block";
-
-
-    document
-        .getElementById(
-            "resultado"
-        )
-        .style.display =
-        "none";
-
-
-    tempoRestante =
-        Number(
-            acessoAtual.tempo
-        );
-
+    /*
+        Central = sempre 90 segundos
+        Invasão normal = tempo definido pelo administrador
+    */
+    tempoRestante=
+        isCentral
+        ? 90
+        : Number(acessoAtual.tempo)||90;
 
     iniciarCronometro();
 
-
     iniciarProximoMinigame();
-
 }
 
-
-/* =========================================================
-   QUANTIDADE DE MINIGAMES
-========================================================= */
 
 function obterQuantidadeJogos(){
 
-    switch(
-        acessoAtual.dificuldade
-    ){
+    switch(acessoAtual.dificuldade){
 
-        case "Fácil":
+        case 'Fácil':
             return 1;
 
-        case "Normal":
+        case 'Normal':
             return 2;
 
-        case "Difícil":
+        case 'Difícil':
             return 3;
 
-        case "Extremo":
+        case 'Extremo':
             return 4;
 
         default:
             return 1;
-
     }
-
 }
 
 
-/* =========================================================
-   EMBARALHAR
-========================================================= */
+function embaralhar(a){
 
-function embaralhar(array){
-
-    const copia =
-        [...array];
-
-
-    for(
-        let i =
-            copia.length - 1;
-        i > 0;
-        i--
-    ){
-
-        const j =
-            Math.floor(
-                Math.random() *
-                (i + 1)
-            );
-
-
-        [
-            copia[i],
-            copia[j]
-        ] =
-        [
-            copia[j],
-            copia[i]
-        ];
-
-    }
-
-
-    return copia;
-
+    return [...a].sort(
+        ()=>Math.random()-.5
+    );
 }
 
-
-/* =========================================================
-   PRÓXIMO MINIGAME
-========================================================= */
 
 function iniciarProximoMinigame(){
 
-    if(
-        indiceJogo >=
-        sequenciaJogos.length
-    ){
+    if(!jogoAtivo) return;
+
+    if(indiceJogo>=sequenciaJogos.length){
 
         finalizarInvasao(
             true,
-            "TODOS OS PROTOCOLOS FORAM SUPERADOS."
+            'TODOS OS PROTOCOLOS FORAM SUPERADOS.'
         );
 
         return;
-
     }
 
-
-    jogoAtual =
-        sequenciaJogos[
-            indiceJogo
-        ];
-
+    jogoAtual=
+        sequenciaJogos[indiceJogo];
 
     atualizarProgresso();
 
 
-    switch(
-        jogoAtual
-    ){
+    if(jogoAtual==='codigo'){
 
-        case "codigo":
+        iniciarCodigo();
 
-            iniciarCodigo();
+    }else if(jogoAtual==='memoria'){
 
-            break;
+        iniciarMemoria();
 
+    }else if(jogoAtual==='terminal'){
 
-        case "memoria":
+        iniciarTerminal();
 
-            iniciarMemoria();
+    }else{
 
-            break;
-
-
-        case "terminal":
-
-            iniciarTerminal();
-
-            break;
-
-
-        case "firewall":
-
-            iniciarFirewall();
-
-            break;
+        iniciarFirewall();
 
     }
-
 }
 
-
-/* =========================================================
-   PROGRESSO
-========================================================= */
 
 function atualizarProgresso(){
 
-    const total =
+    const total=
         sequenciaJogos.length;
 
+    $('progressoTexto').textContent=
+        (indiceJogo+1)+'/'+total;
 
-    document
-        .getElementById(
-            "progressoTexto"
-        )
-        .textContent =
-        (indiceJogo + 1) +
-        "/" +
-        total;
-
-
-    document
-        .getElementById(
-            "barraInterna"
-        )
-        .style.width =
-        (
-            indiceJogo /
-            total *
-            100
-        ) +
-        "%";
-
+    $('barraInterna').style.width=
+        (indiceJogo/total*100)+'%';
 }
 
-
-/* =========================================================
-   CRONÔMETRO
-========================================================= */
 
 function iniciarCronometro(){
 
-    clearInterval(
-        intervalo
-    );
+    clearInterval(intervalo);
 
+    intervalo=setInterval(()=>{
 
-    intervalo =
-        setInterval(
-            function(){
+        if(!jogoAtivo) return;
 
-                if(!jogoAtivo){
+        tempoRestante--;
 
-                    return;
+        atualizarTimer();
 
-                }
 
+        if(tempoRestante<=0){
 
-                tempoRestante--;
+            clearInterval(intervalo);
 
-
-                atualizarTimer();
-
-
-                if(
-                    tempoRestante <= 0
-                ){
-
-                    clearInterval(
-                        intervalo
-                    );
-
-
-                    jogoAtivo =
-                        false;
-
-
-                    finalizarInvasao(
-                        false,
-                        "TEMPO ESGOTADO."
-                    );
-
-                }
-
-            },
-            1000
-        );
-
-
-    atualizarTimer();
-
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-function atualizarTimer(){
-
-    const timer =
-        document.getElementById(
-            "timer"
-        );
-
-
-    if(!timer){
-
-        return;
-
-    }
-
-
-    const minutos =
-        Math.floor(
-            tempoRestante / 60
-        );
-
-
-    const segundos =
-        tempoRestante % 60;
-
-
-    timer.textContent =
-        String(
-            minutos
-        ).padStart(
-            2,
-            "0"
-        ) +
-        ":" +
-        String(
-            segundos
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    timer.className =
-        "timer";
-
-
-    if(
-        tempoRestante <= 15
-    ){
-
-        timer.classList.add(
-            "perigo"
-        );
-
-    }
-
-    else if(
-        tempoRestante <= 30
-    ){
-
-        timer.classList.add(
-            "alerta"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CRACK
-========================================================= */
-
-function iniciarCodigo(){
-
-    document
-        .getElementById(
-            "minigameTitulo"
-        )
-        .textContent =
-        "CRACK";
-
-
-    document
-        .getElementById(
-            "minigameSubtitulo"
-        )
-        .textContent =
-        "QUEBRE O CÓDIGO DE SEGURANÇA";
-
-
-    const tamanho =
-        obterTamanhoCodigo();
-
-
-    codigoAtual =
-        "";
-
-
-    for(
-        let i = 0;
-        i < tamanho;
-        i++
-    ){
-
-        codigoAtual +=
-            Math.floor(
-                Math.random() * 10
-            );
-
-    }
-
-
-    document
-        .getElementById(
-            "conteudoMinigame"
-        )
-        .innerHTML = `
-
-            <div class="terminal">
-
-                <div class="terminal-top">
-
-                    <span>
-                        PROTOCOLO: CRACK
-                    </span>
-
-                    <span
-                        id="timer"
-                        class="timer"
-                    >
-                        --:--
-                    </span>
-
-                </div>
-
-
-                <div class="game-box">
-
-                    <p>
-                        CÓDIGO DE SEGURANÇA DETECTADO.
-                    </p>
-
-                    <p>
-                        Digite exatamente:
-                    </p>
-
-
-                    <div class="codigo">
-                        ${codigoAtual}
-                    </div>
-
-
-                    <input
-                        id="inputCodigo"
-                        class="input-codigo"
-                        type="text"
-                        inputmode="numeric"
-                        autocomplete="off"
-                        placeholder="DIGITE O CÓDIGO"
-                    >
-
-
-                    <button
-                        type="button"
-                        class="btn"
-                        id="btnCodigo"
-                    >
-                        CONFIRMAR
-                    </button>
-
-                </div>
-
-            </div>
-
-        `;
-
-
-    document
-        .getElementById(
-            "btnCodigo"
-        )
-        .addEventListener(
-            "click",
-            verificarCodigo
-        );
-
-
-    document
-        .getElementById(
-            "inputCodigo"
-        )
-        .addEventListener(
-            "keydown",
-            function(event){
-
-                if(
-                    event.key === "Enter"
-                ){
-
-                    verificarCodigo();
-
-                }
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "inputCodigo"
-        )
-        .focus();
-
-}
-
-
-/* =========================================================
-   TAMANHO CÓDIGO
-========================================================= */
-
-function obterTamanhoCodigo(){
-
-    switch(
-        acessoAtual.dificuldade
-    ){
-
-        case "Fácil":
-            return 4;
-
-        case "Normal":
-            return 6;
-
-        case "Difícil":
-            return 8;
-
-        case "Extremo":
-            return 10;
-
-        default:
-            return 4;
-
-    }
-
-}
-
-
-/* =========================================================
-   VERIFICAR CÓDIGO
-========================================================= */
-
-function verificarCodigo(){
-
-    if(!jogoAtivo){
-
-        return;
-
-    }
-
-
-    const input =
-        document
-        .getElementById(
-            "inputCodigo"
-        );
-
-
-    if(!input){
-
-        return;
-
-    }
-
-
-    if(
-        input.value.trim() ===
-        codigoAtual
-    ){
-
-        concluirMinigame();
-
-    }
-
-    else{
-
-        finalizarInvasao(
-            false,
-            "CÓDIGO INCORRETO."
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   MEMÓRIA
-========================================================= */
-
-function iniciarMemoria(){
-
-    document
-        .getElementById(
-            "minigameTitulo"
-        )
-        .textContent =
-        "MEMÓRIA";
-
-
-    document
-        .getElementById(
-            "minigameSubtitulo"
-        )
-        .textContent =
-        "MEMORIZE A SEQUÊNCIA";
-
-
-    const quantidade =
-        obterTamanhoMemoria();
-
-
-    const simbolos = [
-
-        "▲",
-        "■",
-        "●",
-        "◆",
-        "★",
-        "◆",
-        "○",
-        "△"
-
-    ];
-
-
-    memoriaSequencia =
-        [];
-
-
-    memoriaResposta =
-        [];
-
-
-    for(
-        let i = 0;
-        i < quantidade;
-        i++
-    ){
-
-        memoriaSequencia.push(
-            simbolos[
-                Math.floor(
-                    Math.random() *
-                    simbolos.length
-                )
-            ]
-        );
-
-    }
-
-
-    document
-        .getElementById(
-            "conteudoMinigame"
-        )
-        .innerHTML = `
-
-            <div class="terminal">
-
-                <div class="terminal-top">
-
-                    <span>
-                        PROTOCOLO: MEMORY
-                    </span>
-
-                    <span
-                        id="timer"
-                        class="timer"
-                    >
-                        --:--
-                    </span>
-
-                </div>
-
-
-                <div class="game-box">
-
-                    <p>
-                        MEMORIZE A SEQUÊNCIA:
-                    </p>
-
-
-                    <div
-                        id="memoriaSequencia"
-                        class="sequencia"
-                    >
-                        ${memoriaSequencia
-                            .map(
-                                s =>
-                                `<span class="simbolo">${s}</span>`
-                            )
-                            .join("")
-                        }
-                    </div>
-
-
-                    <button
-                        type="button"
-                        class="btn"
-                        id="btnMemoriaPronto"
-                    >
-                        [ SEQUÊNCIA MEMORIZADA ]
-                    </button>
-
-                </div>
-
-            </div>
-
-        `;
-
-
-    document
-        .getElementById(
-            "btnMemoriaPronto"
-        )
-        .addEventListener(
-            "click",
-            esconderMemoria
-        );
-
-}
-
-
-/* =========================================================
-   TAMANHO MEMÓRIA
-========================================================= */
-
-function obterTamanhoMemoria(){
-
-    switch(
-        acessoAtual.dificuldade
-    ){
-
-        case "Fácil":
-            return 3;
-
-        case "Normal":
-            return 4;
-
-        case "Difícil":
-            return 6;
-
-        case "Extremo":
-            return 8;
-
-        default:
-            return 3;
-
-    }
-
-}
-
-
-/* =========================================================
-   ESCONDER MEMÓRIA
-========================================================= */
-
-function esconderMemoria(){
-
-    const container =
-        document.getElementById(
-            "conteudoMinigame"
-        );
-
-
-    container.innerHTML = `
-
-        <div class="terminal">
-
-            <div class="terminal-top">
-
-                <span>
-                    PROTOCOLO: MEMORY
-                </span>
-
-                <span
-                    id="timer"
-                    class="timer"
-                >
-                    --:--
-                </span>
-
-            </div>
-
-
-            <div class="game-box">
-
-                <p>
-                    AGORA REPRODUZA A SEQUÊNCIA.
-                </p>
-
-
-                <div
-                    class="sequencia"
-                    style="font-size:28px;"
-                >
-                    <span class="memoria-escondida">
-                        [ SEQUÊNCIA OCULTA ]
-                    </span>
-                </div>
-
-
-                <div
-                    id="memoriaOpcoes"
-                    class="opcoes"
-                ></div>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    const opcoes =
-        document.getElementById(
-            "memoriaOpcoes"
-        );
-
-
-    memoriaResposta =
-        [];
-
-
-    memoriaSequencia.forEach(
-        function(simbolo){
-
-            const botao =
-                document.createElement(
-                    "button"
-                );
-
-
-            botao.type =
-                "button";
-
-
-            botao.className =
-                "opcao";
-
-
-            botao.textContent =
-                simbolo;
-
-
-            botao.addEventListener(
-                "click",
-                function(){
-
-                    memoriaResposta.push(
-                        simbolo
-                    );
-
-
-                    botao.style.opacity =
-                        "0.4";
-
-
-                    botao.disabled =
-                        true;
-
-
-                    if(
-                        memoriaResposta.length ===
-                        memoriaSequencia.length
-                    ){
-
-                        verificarMemoria();
-
-                    }
-
-                }
-            );
-
-
-            opcoes.appendChild(
-                botao
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   VERIFICAR MEMÓRIA
-========================================================= */
-
-function verificarMemoria(){
-
-    for(
-        let i = 0;
-        i < memoriaSequencia.length;
-        i++
-    ){
-
-        if(
-            memoriaResposta[i] !==
-            memoriaSequencia[i]
-        ){
+            jogoAtivo=false;
 
             finalizarInvasao(
                 false,
-                "SEQUÊNCIA INCORRETA."
+                'TEMPO ESGOTADO.'
             );
-
-            return;
-
         }
 
-    }
+    },1000);
 
-
-    concluirMinigame();
-
+    atualizarTimer();
 }
 
 
-/* =========================================================
-   TERMINAL
-========================================================= */
+function atualizarTimer(){
 
-function iniciarTerminal(){
+    const t=$('timer');
 
-    terminalResposta = "";
+    if(!t) return;
 
-    const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-    // ==========================================
-    // GERAR CÓDIGO CORRETO
-    // ==========================================
-
-    for(let i = 0; i < 5; i++){
-        terminalResposta += caracteres[
-            Math.floor(Math.random() * caracteres.length)
-        ];
-    }
-
-    // ==========================================
-    // CRIAR CÓDIGOS
-    // ==========================================
-
-    let codigos = [terminalResposta];
-
-    while(codigos.length < 6){
-
-        let falso = "";
-
-        for(let i = 0; i < 5; i++){
-            falso += caracteres[
-                Math.floor(Math.random() * caracteres.length)
-            ];
-        }
-
-        if(!codigos.includes(falso)){
-            codigos.push(falso);
-        }
-    }
-
-    // ==========================================
-    // EMBARALHAR
-    // ==========================================
-
-    codigos.sort(() => Math.random() - 0.5);
-
-    // ==========================================
-    // MOSTRAR MINIGAME
-    // ==========================================
-
-    const area = document.getElementById("areaMinigame");
-
-    area.innerHTML = `
-
-        <div class="terminal-box">
-
-            <h2>HACKER // TERMINAL</h2>
-
-            <p class="terminal-status">
-                > ACESSANDO TERMINAL...
-            </p>
-
-            <p class="terminal-status">
-                > DADOS CRIPTOGRAFADOS ENCONTRADOS
-            </p>
-
-            <div class="codigo-alvo">
-
-                <div>CÓDIGO-ALVO</div>
-
-                <strong>${terminalResposta}</strong>
-
-            </div>
-
-            <p class="terminal-instrucao">
-                IDENTIFIQUE O CÓDIGO-ALVO ENTRE AS OPÇÕES:
-            </p>
-
-            <div class="opcoes-terminal">
-
-                ${codigos.map(codigo => `
-
-                    <button
-                        class="botao-terminal"
-                        onclick="verificarTerminal('${codigo}')"
-                    >
-                        ${codigo}
-                    </button>
-
-                `).join("")}
-
-            </div>
-
-        </div>
-
-    `;
-}
-/* =========================================================
-   VERIFICAR TERMINAL
-========================================================= */
-
-function verificarTerminal(
-    codigo
-){
-
-    if(!jogoAtivo){
-
-        return;
-
-    }
-
-
-    if(
-        codigo ===
-        terminalResposta
-    ){
-
-        concluirMinigame();
-
-    }
-
-    else{
-
-        finalizarInvasao(
-            false,
-            "CÓDIGO DO TERMINAL INCORRETO."
+    const m=
+        Math.floor(
+            Math.max(0,tempoRestante)/60
         );
 
-    }
+    const s=
+        Math.max(0,tempoRestante)%60;
 
+
+    t.textContent=
+        String(m).padStart(2,'0')+
+        ':'+
+        String(s).padStart(2,'0');
+
+
+    t.className='timer';
+
+
+    if(tempoRestante<=15){
+
+        t.classList.add('perigo');
+
+    }else if(tempoRestante<=30){
+
+        t.classList.add('alerta');
+    }
 }
 
-
-/* =========================================================
-   FIREWALL
-========================================================= */
-
-function iniciarFirewall(){
-
-    document
-        .getElementById(
-            "minigameTitulo"
-        )
-        .textContent =
-        "FIREWALL";
-
-
-    document
-        .getElementById(
-            "minigameSubtitulo"
-        )
-        .textContent =
-        "DESATIVE A SEQUÊNCIA DO FIREWALL";
-
-
-    const quantidade =
-        obterTamanhoFirewall();
-
-
-    const numeros = [];
-
-
-    while(
-        numeros.length <
-        quantidade
-    ){
-
-        const numero =
-            Math.floor(
-                Math.random() * 16
-            ) + 1;
-
-
-        if(
-            !numeros.includes(numero)
-        ){
-
-            numeros.push(
-                numero
-            );
-
-        }
-
-    }
-
-
-    firewallResposta =
-        embaralhar(
-            numeros
-        );
-
-
-    firewallJogador =
-        [];
-
-
-    document
-        .getElementById(
-            "conteudoMinigame"
-        )
-        .innerHTML = `
-
-            <div class="terminal">
-
-                <div class="terminal-top">
-
-                    <span>
-                        PROTOCOLO: FIREWALL
-                    </span>
-
-                    <span
-                        id="timer"
-                        class="timer"
-                    >
-                        --:--
-                    </span>
-
-                </div>
-
-
-                <div class="game-box">
-
-                    <p>
-                        CLIQUE NOS NÚMEROS NA ORDEM CRESCENTE.
-                    </p>
-
-
-                    <p style="color:#477d61;">
-                        Sequência: menor → maior
-                    </p>
-
-
-                    <div
-                        id="firewallGrade"
-                        class="firewall-grade"
-                    ></div>
-
-                </div>
-
-            </div>
-
-        `;
-
-
-    const grade =
-        document.getElementById(
-            "firewallGrade"
-        );
-
-
-    const valores =
-        embaralhar(
-            [...firewallResposta]
-        );
-
-
-    valores.forEach(
-        function(numero){
-
-            const botao =
-                document.createElement(
-                    "button"
-                );
-
-
-            botao.type =
-                "button";
-
-
-            botao.textContent =
-                numero;
-
-
-            botao.addEventListener(
-                "click",
-                function(){
-
-                    clicarFirewall(
-                        numero,
-                        botao
-                    );
-
-                }
-            );
-
-
-            grade.appendChild(
-                botao
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   TAMANHO FIREWALL
-========================================================= */
-
-function obterTamanhoFirewall(){
-
-    switch(
-        acessoAtual.dificuldade
-    ){
-
-        case "Fácil":
-            return 4;
-
-        case "Normal":
-            return 6;
-
-        case "Difícil":
-            return 8;
-
-        case "Extremo":
-            return 10;
-
-        default:
-            return 4;
-
-    }
-
-}
-
-
-/* =========================================================
-   CLICAR FIREWALL
-========================================================= */
-
-function clicarFirewall(
-    numero,
-    botao
-){
-
-    if(!jogoAtivo){
-
-        return;
-
-    }
-
-
-    const esperado =
-        [...firewallResposta]
-        .sort(
-            (a,b) =>
-            a - b
-        );
-
-
-    const posicao =
-        firewallJogador.length;
-
-
-    if(
-        numero !==
-        esperado[posicao]
-    ){
-
-        finalizarInvasao(
-            false,
-            "FIREWALL BLOQUEOU A INVASÃO."
-        );
-
-        return;
-
-    }
-
-
-    firewallJogador.push(
-        numero
-    );
-
-
-    botao.classList.add(
-        "selecionado"
-    );
-
-
-    botao.disabled =
-        true;
-
-
-    if(
-        firewallJogador.length ===
-        esperado.length
-    ){
-
-        concluirMinigame();
-
-    }
-
-}
-
-
-/* =========================================================
-   CONCLUIR MINIGAME
-========================================================= */
 
 function concluirMinigame(){
 
-    if(!jogoAtivo){
-
-        return;
-
-    }
-
+    if(!jogoAtivo) return;
 
     indiceJogo++;
 
-
-    atualizarProgresso();
-
-
     setTimeout(
-        function(){
-
-            if(
-                indiceJogo >=
-                sequenciaJogos.length
-            ){
-
-                finalizarInvasao(
-                    true,
-                    "TODOS OS PROTOCOLOS FORAM SUPERADOS."
-                );
-
-                return;
-
-            }
-
-
-            iniciarProximoMinigame();
-
-        },
-        400
+        iniciarProximoMinigame,
+        350
     );
-
 }
 
 
-/* =========================================================
-   FINALIZAR INVASÃO
-========================================================= */
+function falhar(
+    m='PROTOCOLO REJEITADO.'
+){
 
-function finalizarInvasao(
+    if(!jogoAtivo) return;
+
+    jogoAtivo=false;
+
+    clearInterval(intervalo);
+
+    finalizarInvasao(
+        false,
+        m
+    );
+}
+
+
+/* =====================================================
+   FINALIZAÇÃO DA INVASÃO
+===================================================== */
+
+async function finalizarInvasao(
     sucesso,
     motivo
 ){
 
+    clearInterval(intervalo);
+
+    jogoAtivo=false;
+
+    mostrar('minigame',false);
+    mostrar('resultado',true);
+
+
+    $('resultado').className=
+        'box '+
+        (sucesso ? 'success' : 'fail');
+
+
+    $('resultadoTitulo').textContent=
+        sucesso
+        ? '✓ INVASÃO CONCLUÍDA'
+        : '✕ INVASÃO FALHOU';
+
+
+    /* =================================================
+       INVASÃO DE UMA CENTRAL
+    ================================================= */
+
     if(
-        !jogoAtivo &&
-        !sucesso
+        sucesso &&
+        acessoAtual &&
+        acessoAtual.central
     ){
 
+        try{
+
+            /*
+                O acesso administrativo da polícia
+                ficará válido por 45 segundos.
+            */
+
+            const expiraEm=
+                Date.now()+45000;
+
+
+            await db.ref(
+                'hackerPoliceAcesso/'+
+                usuarioAtual
+            ).set({
+
+                ativo:true,
+
+                jogador:
+                    usuarioAtual,
+
+                centralKey:
+                    acessoAtual.centralKey || '',
+
+                centralNome:
+                    acessoAtual.centralNome || '',
+
+                autorizadoEm:
+                    Date.now(),
+
+                expiraEm:
+                    expiraEm,
+
+                origem:
+                    'HACKER'
+
+            });
+
+
+            $('resultadoTexto').textContent=
+                'CENTRAL '+
+                acessoAtual.centralNome+
+                ' INVADIDA. '+
+                'ACESSO ADMINISTRATIVO DA POLÍCIA '+
+                'CONCEDIDO POR 45 SEGUNDOS.';
+
+
+            $('resultadoBtn').textContent=
+                'ABRIR ADMINISTRAÇÃO DA POLÍCIA';
+
+
+            $('resultadoBtn').onclick=
+                abrirAdministracaoPolicia;
+
+
+        }catch(erro){
+
+            console.error(
+                'Erro ao liberar acesso administrativo:',
+                erro
+            );
+
+
+            $('resultadoTexto').textContent=
+                'A invasão foi concluída, '+
+                'mas ocorreu um erro ao liberar '+
+                'o acesso administrativo.';
+
+
+            $('resultadoBtn').textContent=
+                'VOLTAR AO TERMINAL';
+
+
+            $('resultadoBtn').onclick=
+                voltarTerminal;
+        }
+
+
         return;
-
     }
 
 
-    jogoAtivo =
-        false;
+    /* =================================================
+       RESULTADO DE UMA INVASÃO NORMAL
+    ================================================= */
+
+    $('resultadoTexto').textContent=
+        motivo;
 
 
-    clearInterval(
-        intervalo
-    );
+    $('resultadoBtn').textContent=
+        'VOLTAR AO TERMINAL';
 
 
-    intervalo =
-        null;
-
-
-    document
-        .getElementById(
-            "minigame"
-        )
-        .style.display =
-        "none";
-
-
-    const resultado =
-        document.getElementById(
-            "resultado"
-        );
-
-
-    resultado.style.display =
-        "block";
-
-
-    resultado.className =
-        "painel " +
-        (
-            sucesso
-            ? "sucesso"
-            : "falha"
-        );
-
-
-    const titulo =
-        document.getElementById(
-            "resultadoTitulo"
-        );
-
-
-    const texto =
-        document.getElementById(
-            "resultadoTexto"
-        );
-
-
-    if(sucesso){
-
-        titulo.textContent =
-            "✓ INVASÃO CONCLUÍDA";
-
-
-        texto.textContent =
-            "ACESSO OBTIDO. RECURSO DESBLOQUEADO: " +
-            acessoAtual.recurso;
-
-    }
-
-    else{
-
-        titulo.textContent =
-            "✕ INVASÃO FALHOU";
-
-
-        texto.textContent =
-            motivo;
-
-    }
-
+    $('resultadoBtn').onclick=
+        voltarTerminal;
 }
 
 
-/* =========================================================
-   VOLTAR AO TERMINAL
-========================================================= */
+/* =====================================================
+   ABRIR ADMINISTRAÇÃO DA POLÍCIA
+===================================================== */
+
+function abrirAdministracaoPolicia(){
+
+    if(
+        !usuarioAtual ||
+        !acessoAtual ||
+        !acessoAtual.central
+    ){
+
+        return;
+    }
+
+
+    window.location.href=
+        'policial.html?hack=1&jogador='+
+        encodeURIComponent(usuarioAtual);
+}
+
+
+/* =====================================================
+   VOLTAR PARA O TERMINAL
+===================================================== */
 
 function voltarTerminal(){
 
-    clearInterval(
-        intervalo
+    mostrar(
+        'resultado',
+        false
+    );
+
+    mostrar(
+        'minigame',
+        false
+    );
+
+    mostrar(
+        'painelCentral',
+        false
     );
 
 
-    intervalo =
-        null;
+    if(usuarioAtual==='Italo'){
 
+        mostrar(
+            'admin',
+            true
+        );
 
-    jogoAtivo =
-        false;
+        return;
+    }
 
 
     if(
         acessoAtual &&
-        acessoAtual.ativo === true
+        acessoAtual.ativo &&
+        !acessoAtual.central
     ){
 
-        mostrarAcesso();
+        mostrar(
+            'acessoLiberado',
+            true
+        );
 
+    }else if(centralSelecionada){
+
+        mostrar(
+            'centralEscolha',
+            true
+        );
+
+    }else{
+
+        mostrar(
+            'semAcesso',
+            true
+        );
     }
-
-    else{
-
-        mostrarSemAcesso();
-
-    }
-
 }
+function iniciarCodigo(){setTitulo('CRACK','QUEBRE O CÓDIGO DE SEGURANÇA');const tamanho={Fácil:4,Normal:6,Difícil:8,Extremo:10}[acessoAtual.dificuldade]||10;codigoAtual='';for(let i=0;i<tamanho;i++)codigoAtual+=Math.floor(Math.random()*10);$('conteudoMinigame').innerHTML='<div class="game-card"><p>CÓDIGO DE SEGURANÇA DETECTADO.</p><div class="codigo">'+codigoAtual+'</div><input id="inputCodigo" class="input-game" inputmode="numeric" autocomplete="off" placeholder="DIGITE O CÓDIGO"><button id="btnCodigo" class="btn">CONFIRMAR</button></div>';$('btnCodigo').onclick=verificarCodigo;$('inputCodigo').onkeydown=e=>{if(e.key==='Enter')verificarCodigo()};$('inputCodigo').focus()}
+function verificarCodigo(){if($('inputCodigo').value.trim()===codigoAtual)concluirMinigame();else falhar('CÓDIGO INCORRETO.')}
 
+function iniciarMemoria(){setTitulo('MEMÓRIA','REPITA A SEQUÊNCIA CORRETA');const n={Fácil:3,Normal:4,Difícil:6,Extremo:8}[acessoAtual.dificuldade]||8;const simbolos=['◆','▲','●','■','★','✦'];const tempoMemoria={Fácil:3500,Normal:5000,Difícil:6500,Extremo:8000}[acessoAtual.dificuldade]||8000;memoriaSequencia=Array.from({length:n},()=>simbolos[Math.floor(Math.random()*simbolos.length)]);memoriaIndice=0;$('conteudoMinigame').innerHTML='<div class="game-card"><p id="memoriaMensagem">MEMORIZE A SEQUÊNCIA...</p><div id="sequenciaVisual" style="font-size:30px;letter-spacing:10px;margin:25px 0">'+memoriaSequencia.join(' ')+'</div><div id="botoesMemoria" class="seq"></div><p id="memoriaTempo" class="muted">TEMPO PARA DECORAR: '+(tempoMemoria/1000)+' SEGUNDOS</p></div>';setTimeout(()=>{if(!jogoAtivo)return;$('sequenciaVisual').textContent='? ? ? ? ? ? ? ?'.split(' ').slice(0,n).join(' ');$('memoriaMensagem').textContent='REPRODUZA A SEQUÊNCIA';$('memoriaTempo').textContent='SEQUÊNCIA OCULTA — REPRODUZA AGORA';const b=$('botoesMemoria');simbolos.forEach(s=>{const x=document.createElement('button');x.textContent=s;x.onclick=()=>clicarMemoria(s);b.appendChild(x)})},tempoMemoria)}
+function clicarMemoria(s){if(!jogoAtivo)return;if(s!==memoriaSequencia[memoriaIndice]){falhar('SEQUÊNCIA DE MEMÓRIA INCORRETA.');return}memoriaIndice++;if(memoriaIndice>=memoriaSequencia.length)concluirMinigame()}
 
-/* =========================================================
-   EVENTOS
-========================================================= */
+function iniciarTerminal(){setTitulo('TERMINAL','ANALISE A PISTA E ESCOLHA O COMANDO CORRETO');const desafios=[{pista:'O comando correto começa com A e possui exatamente 6 caracteres.',correto:'ACCESS'},{pista:'O comando correto começa com B, termina com S e possui 6 caracteres.',correto:'BYPASS'},{pista:'O comando correto começa com O e possui exatamente 8 caracteres.',correto:'OVERRIDE'},{pista:'O comando correto começa com I, termina com T e possui 6 caracteres.',correto:'INJECT'},{pista:'O comando correto possui exatamente 4 caracteres e termina com T.',correto:'ROOT'}];const desafio=desafios[Math.floor(Math.random()*desafios.length)];window.terminalCorreto=desafio.correto;const comandos=['ACCESS','BYPASS','OVERRIDE','INJECT','ROOT'];$('conteudoMinigame').innerHTML='<div class="game-card"><p>TERMINAL REMOTO DETECTADO.</p><div class="terminal-lines">> AUTH REQUIRED<br>> SECURITY LAYER: ACTIVE<br>> COMMAND CHANNEL OPEN<br>> ANALISANDO PROTOCOLO...<br>> PISTA DESBLOQUEADA</div><div class="notice" style="margin-top:15px"><strong>PISTA:</strong><br>'+desafio.pista+'</div><div class="seq">'+comandos.map(c=>'<button onclick="verificarTerminal(\''+c+'\')">'+c+'</button>').join('')+'</div></div>'}
+function verificarTerminal(c){if(c===window.terminalCorreto)concluirMinigame();else falhar('COMANDO REJEITADO PELO TERMINAL.')}
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
+function iniciarFirewall(){setTitulo('FIREWALL','DESATIVE TODOS OS NÓS');const total=50;firewallTamanho=10;firewallGrade=Array.from({length:total},()=>false);$('conteudoMinigame').innerHTML='<div class="game-card"><p>ATIVE TODOS OS 50 NÓS DO FIREWALL.</p><div id="firewallGrade" class="firewall" style="grid-template-columns:repeat(10,1fr)"></div><p id="firewallContador" class="muted"></p></div>';const g=$('firewallGrade');firewallGrade.forEach((_,i)=>{const b=document.createElement('button');b.className='cell';b.onclick=()=>clicarFirewall(i);g.appendChild(b)});atualizarFirewall()}
+function clicarFirewall(i){if(!jogoAtivo)return;if(firewallGrade[i])return;firewallGrade[i]=true;$('firewallGrade').children[i].classList.add('on');atualizarFirewall();if(firewallGrade.every(Boolean))concluirMinigame()}
+function atualizarFirewall(){$('firewallContador').textContent=firewallGrade.filter(Boolean).length+'/'+firewallGrade.length+' NÓS ATIVADOS'}
+function setTitulo(a,b){$('minigameTitulo').textContent=a;$('minigameSubtitulo').textContent=b}
 
-        /* -----------------------------------------
-           CONECTAR
-        ----------------------------------------- */
-
-        const btnEntrar =
-            document.getElementById(
-                "btnEntrar"
-            );
-
-
-        if(btnEntrar){
-
-            btnEntrar.addEventListener(
-                "click",
-                function(event){
-
-                    event.preventDefault();
-
-                    entrar();
-
-                }
-            );
-
-        }
-
-
-        /* -----------------------------------------
-           ENTER NO LOGIN
-        ----------------------------------------- */
-
-        const senha =
-            document.getElementById(
-                "senha"
-            );
-
-
-        if(senha){
-
-            senha.addEventListener(
-                "keydown",
-                function(event){
-
-                    if(
-                        event.key ===
-                        "Enter"
-                    ){
-
-                        event.preventDefault();
-
-                        entrar();
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* -----------------------------------------
-           DESCONECTAR
-        ----------------------------------------- */
-
-        const btnSair =
-            document.getElementById(
-                "btnSair"
-            );
-
-
-        if(btnSair){
-
-            btnSair.addEventListener(
-                "click",
-                sair
-            );
-
-        }
-
-
-        /* -----------------------------------------
-           INICIAR INVASÃO
-        ----------------------------------------- */
-
-        const btnIniciar =
-            document.getElementById(
-                "btnIniciar"
-            );
-
-
-        if(btnIniciar){
-
-            btnIniciar.addEventListener(
-                "click",
-                iniciarInvasao
-            );
-
-        }
-
-
-        /* -----------------------------------------
-           VOLTAR TERMINAL
-        ----------------------------------------- */
-
-        const btnVoltarTerminal =
-            document.getElementById(
-                "btnVoltarTerminal"
-            );
-
-
-        if(btnVoltarTerminal){
-
-            btnVoltarTerminal.addEventListener(
-                "click",
-                voltarTerminal
-            );
-
-        }
-
-
-        /* -----------------------------------------
-           LIBERAR ACESSO
-        ----------------------------------------- */
-
-        const btnLiberar =
-            document.getElementById(
-                "btnLiberar"
-            );
-
-
-        if(btnLiberar){
-
-            btnLiberar.addEventListener(
-                "click",
-                function(event){
-
-                    event.preventDefault();
-
-                    liberarAcesso();
-
-                }
-            );
-
-        }
-
-
-        /* -----------------------------------------
-           INICIAR FIREBASE
-        ----------------------------------------- */
-
-        iniciarFirebase();
-
-
-        /* -----------------------------------------
-           RECUPERAR LOGIN
-        ----------------------------------------- */
-
-        verificarLoginSalvo();
-
-    }
-);
-
+function abrirPainelCentral(){if(!acessoAtual.central)return;mostrar('resultado',false);mostrar('painelCentral',true);$('painelCentralNome').textContent=acessoAtual.centralNome;$('centralCountdown').textContent='00:45';let fim=Date.now()+45000;clearInterval(centralCountdownInterval);centralCountdownInterval=setInterval(()=>{const restante=Math.max(0,fim-Date.now());const s=Math.ceil(restante/1000);$('centralCountdown').textContent='00:'+String(s).padStart(2,'0');if(restante<=0){clearInterval(centralCountdownInterval);encerrarPainelCentral()}},250)}
+function encerrarPainelCentral(){mostrar('painelCentral',false);mostrar('resultado',true);$('resultado').className='box fail';$('resultadoTitulo').textContent='✕ ACESSO ENCERRADO';$('resultadoTexto').textContent='O período administrativo da Central terminou.';$('resultadoBtn').textContent='VOLTAR AO TERMINAL';$('resultadoBtn').onclick=voltarTerminal;centralAtiva=null;centralSelecionada=null}
+function centralAcao(acao){const nomes={ocorrencias:'MÓDULO DE OCORRÊNCIAS ABERTO.',consultar:'MÓDULO DE CONSULTA DE ID ABERTO.',registros:'MÓDULO DE REGISTROS ABERTO.'};$('centralResultado').innerHTML='> '+nomes[acao]+'<br>> ACESSO TEMPORÁRIO AUTORIZADO<br>> TEMPO RESTANTE: '+$('centralCountdown').textContent}
+function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+window.addEventListener('load',verificarLoginSalvo);
 </script>
-
 </body>
-
 </html>
-```
