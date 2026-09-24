@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,69 +11,95 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
     margin:0;
     min-height:100vh;
-    background:radial-gradient(circle at center,rgba(0,255,136,.06),transparent 50%),#020403;
+    background:
+        radial-gradient(circle at center,rgba(0,255,136,.06),transparent 50%),
+        #020403;
     color:#00ff88;
-    font-family:"Courier New",monospace
+    font-family:"Courier New",monospace;
 }
-button,input,select{font:inherit}
-.page{max-width:1000px;margin:auto;padding:20px}
+
+button,input,select{
+    font:inherit;
+}
+
+.page{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+
 .box{
     background:#050807;
     border:1px solid #123d27;
     box-shadow:0 0 20px rgba(0,255,136,.08);
     padding:22px;
-    margin-bottom:18px
+    margin-bottom:18px;
 }
+
 .login-wrap{
     min-height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:20px
+    padding:20px;
 }
+
 .login-box{
     width:100%;
     max-width:430px;
     padding:35px;
     background:#050807;
     border:1px solid #00ff88;
-    box-shadow:0 0 20px rgba(0,255,136,.18)
+    box-shadow:0 0 20px rgba(0,255,136,.18);
 }
+
 h1,h2,h3{
     margin-top:0;
-    text-shadow:0 0 8px rgba(0,255,136,.4)
+    text-shadow:0 0 8px rgba(0,255,136,.4);
 }
+
 .logo{
     text-align:center;
     font-size:32px;
-    letter-spacing:6px
+    letter-spacing:6px;
 }
+
 .muted{
     color:#477d61;
-    font-size:12px
+    font-size:12px;
 }
-.campo{margin:0 0 15px}
+
+.campo{
+    margin:0 0 15px;
+}
+
 .campo label{
     display:block;
     color:#70ffb1;
     font-size:12px;
-    margin-bottom:7px
+    margin-bottom:7px;
 }
-.campo input,.campo select{
+
+.campo input,
+.campo select{
     width:100%;
     padding:12px;
     background:#010401;
     color:#00ff88;
     border:1px solid #164d31;
-    outline:none
+    outline:none;
 }
-.campo input:focus,.campo select:focus{
+
+.campo input:focus,
+.campo select:focus{
     border-color:#00ff88;
-    box-shadow:0 0 8px rgba(0,255,136,.2)
+    box-shadow:0 0 8px rgba(0,255,136,.2);
 }
+
 .btn{
     width:100%;
     padding:13px;
@@ -81,26 +108,31 @@ h1,h2,h3{
     border:1px solid #00ff88;
     color:#00ff88;
     cursor:pointer;
-    font-weight:bold
+    font-weight:bold;
 }
+
 .btn:hover{
     background:#00ff88;
-    color:#000
+    color:#000;
 }
+
 .btn-small{
     width:auto;
     padding:8px 12px;
-    margin:4px
+    margin:4px;
 }
+
 .danger{
     border-color:#ff4444;
     color:#ff4444;
-    background:#160303
+    background:#160303;
 }
+
 .danger:hover{
     background:#ff3333;
-    color:#000
+    color:#000;
 }
+
 .topo{
     display:flex;
     justify-content:space-between;
@@ -108,94 +140,134 @@ h1,h2,h3{
     gap:15px;
     border-bottom:1px solid #123d27;
     padding-bottom:15px;
-    margin-bottom:18px
+    margin-bottom:18px;
 }
+
 .badge{
     padding:5px 9px;
     border:1px solid #00ff88;
-    font-size:11px
+    font-size:11px;
 }
+
 .grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:14px
+    gap:14px;
 }
+
 .grid3{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:14px
+    gap:14px;
 }
+
 .option{
     border:1px solid #164d31;
     background:#020803;
     padding:20px;
-    cursor:pointer
+    cursor:pointer;
 }
+
 .option:hover{
     border-color:#00ff88;
-    background:#03140b
+    background:#03140b;
 }
-.option h3{margin-bottom:8px}
-.admin-lista{margin-top:15px}
+
+.option h3{
+    margin-bottom:8px;
+}
+
+.admin-lista{
+    margin-top:15px;
+}
+
 .item{
     border:1px solid #123d27;
     background:#020803;
     padding:14px;
-    margin-bottom:10px
+    margin-bottom:10px;
 }
-.item strong{color:#00ff88}
+
+.item strong{
+    color:#00ff88;
+}
+
 .item p{
     margin:6px 0;
     color:#477d61;
-    font-size:12px
+    font-size:12px;
 }
-.hidden{display:none!important}
+
+.hidden{
+    display:none!important;
+}
+
 .status{
     padding:12px;
     border:1px solid #164d31;
     background:#010401;
-    margin:12px 0
+    margin:12px 0;
 }
-.success{border-color:#00ff88}
+
+.success{
+    border-color:#00ff88;
+}
+
 .fail{
     border-color:#ff3333;
-    color:#ff5555
+    color:#ff5555;
 }
+
 .game-head{
     display:flex;
     justify-content:space-between;
     gap:15px;
-    align-items:center
+    align-items:center;
 }
+
 .timer{
     font-size:24px;
-    font-weight:bold
+    font-weight:bold;
 }
-.timer.alerta{color:#ffff55}
-.timer.perigo{color:#ff3333}
+
+.timer.alerta{
+    color:#ffff55;
+}
+
+.timer.perigo{
+    color:#ff3333;
+}
+
 .progress{
     height:8px;
     background:#06100a;
     border:1px solid #123d27;
-    margin:15px 0
+    margin:15px 0;
 }
+
 .progress-in{
     height:100%;
     background:#00ff88;
-    width:0
+    width:0;
 }
-.game-area{min-height:300px}
+
+.game-area{
+    min-height:300px;
+}
+
 .game-card{
     text-align:center;
     border:1px solid #123d27;
     background:#020803;
-    padding:25px
+    padding:25px;
 }
+
 .codigo{
     font-size:30px;
     letter-spacing:8px;
-    margin:25px 0
+    margin:25px 0;
 }
+
 .input-game{
     width:100%;
     max-width:420px;
@@ -203,15 +275,17 @@ h1,h2,h3{
     background:#010401;
     color:#00ff88;
     border:1px solid #164d31;
-    text-align:center
+    text-align:center;
 }
+
 .seq{
     display:flex;
     justify-content:center;
     gap:10px;
     flex-wrap:wrap;
-    margin:20px 0
+    margin:20px 0;
 }
+
 .seq button{
     width:70px;
     height:60px;
@@ -219,26 +293,33 @@ h1,h2,h3{
     color:#00ff88;
     border:1px solid #164d31;
     cursor:pointer;
-    font-size:22px
+    font-size:22px;
 }
-.seq button:hover{border-color:#00ff88}
+
+.seq button:hover{
+    border-color:#00ff88;
+}
+
 .firewall{
     display:grid;
     gap:7px;
     max-width:520px;
-    margin:20px auto
+    margin:20px auto;
 }
+
 .cell{
     aspect-ratio:1;
     background:#06100a;
     border:1px solid #164d31;
     color:#00ff88;
-    cursor:pointer
+    cursor:pointer;
 }
+
 .cell.on{
     background:#00ff88;
-    color:#000
+    color:#000;
 }
+
 .terminal-lines{
     font-size:12px;
     line-height:1.8;
@@ -246,45 +327,71 @@ h1,h2,h3{
     background:#010401;
     border:1px solid #123d27;
     padding:15px;
-    min-height:120px
+    min-height:120px;
 }
-.central-access{border-color:#00ff88}
+
+.central-access{
+    border-color:#00ff88;
+}
+
 .central-id{
     font-size:20px;
-    letter-spacing:3px
+    letter-spacing:3px;
 }
-.admin-panel{border-color:#00ff88}
+
+.admin-panel{
+    border-color:#00ff88;
+}
+
 .countdown{
     font-size:42px;
     text-align:center;
-    margin:20px 0
+    margin:20px 0;
 }
+
 .notice{
     padding:12px;
     border-left:3px solid #00ff88;
     background:#03140b;
-    color:#70ffb1
+    color:#70ffb1;
 }
-.small{font-size:11px}
+
+.small{
+    font-size:11px;
+}
+
 .table-like{
     width:100%;
     border-collapse:collapse;
-    font-size:12px
+    font-size:12px;
 }
-.table-like th,.table-like td{
+
+.table-like th,
+.table-like td{
     border:1px solid #123d27;
     padding:9px;
-    text-align:left
+    text-align:left;
 }
-.table-like th{color:#70ffb1}
+
+.table-like th{
+    color:#70ffb1;
+}
 
 @media(max-width:700px){
-    .grid,.grid3{grid-template-columns:1fr}
+
+    .grid,
+    .grid3{
+        grid-template-columns:1fr;
+    }
+
     .topo{
         flex-direction:column;
-        align-items:flex-start
+        align-items:flex-start;
     }
-    .page{padding:10px}
+
+    .page{
+        padding:10px;
+    }
 }
 </style>
 </head>
@@ -292,6 +399,7 @@ h1,h2,h3{
 <body>
 
 <section id="loginTela" class="login-wrap">
+
     <div class="login-box">
 
         <div class="logo">◉ HACKER</div>
@@ -322,6 +430,7 @@ h1,h2,h3{
         <p id="loginErro" class="small" style="color:#ff4444"></p>
 
     </div>
+
 </section>
 
 
@@ -330,11 +439,14 @@ h1,h2,h3{
     <div class="topo">
 
         <div>
+
             <h1>HACKER // TERMINAL</h1>
+
             <div class="muted">
                 OPERADOR:
                 <span id="usuarioNome"></span>
             </div>
+
         </div>
 
         <button class="btn btn-small danger" onclick="sair()">
@@ -464,10 +576,7 @@ h1,h2,h3{
 
         </div>
 
-        <div
-            id="conteudoMinigame"
-            class="game-area"
-        ></div>
+        <div id="conteudoMinigame" class="game-area"></div>
 
     </section>
 
@@ -476,10 +585,7 @@ h1,h2,h3{
 
         <h2 id="resultadoTitulo"></h2>
 
-        <p
-            id="resultadoTexto"
-            class="muted"
-        ></p>
+        <p id="resultadoTexto" class="muted"></p>
 
         <button
             id="resultadoBtn"
@@ -502,8 +608,6 @@ h1,h2,h3{
             Controle das autorizações normais e das Centrais.
         </p>
 
-        <div class="admin-separador"></div>
-
         <h3>
             LIBERAR INVASÃO NORMAL
         </h3>
@@ -515,13 +619,14 @@ h1,h2,h3{
                 <label>JOGADOR</label>
 
                 <select id="adminJogador">
+
                     <option>Kaius</option>
                     <option>Gaby</option>
                     <option>Duda</option>
+
                 </select>
 
             </div>
-
 
             <div class="campo">
 
@@ -535,7 +640,6 @@ h1,h2,h3{
                 >
 
             </div>
-
 
             <div class="campo">
 
@@ -552,7 +656,6 @@ h1,h2,h3{
 
             </div>
 
-
             <div class="campo">
 
                 <label>RECURSO</label>
@@ -566,38 +669,24 @@ h1,h2,h3{
 
         </div>
 
-
-        <button
-            class="btn"
-            onclick="liberarAcesso()"
-        >
+        <button class="btn" onclick="liberarAcesso()">
             LIBERAR ACESSO
         </button>
 
-
-        <div
-            id="listaAcessos"
-            class="admin-lista"
-        ></div>
-
-
-        <div class="admin-separador"></div>
-
+        <div id="listaAcessos" class="admin-lista"></div>
 
         <h3>
             GERENCIAR CENTRAIS
         </h3>
 
-
         <div class="notice small">
 
             Uma Central sempre executa os 4 minigames
-            no modo EXTREMO. O acesso administrativo
-            da Central permanece disponível dentro desta
-            página por 45 segundos.
+            no modo EXTREMO. Após a invasão,
+            o acesso administrativo da polícia
+            permanece disponível por 45 segundos.
 
         </div>
-
 
         <div class="grid">
 
@@ -612,7 +701,6 @@ h1,h2,h3{
 
             </div>
 
-
             <div class="campo">
 
                 <label>ID DA CENTRAL</label>
@@ -626,27 +714,16 @@ h1,h2,h3{
 
         </div>
 
-
-        <button
-            class="btn"
-            onclick="salvarCentral()"
-        >
+        <button class="btn" onclick="salvarCentral()">
             CADASTRAR CENTRAL
         </button>
 
-
-        <div
-            id="listaCentraisAdmin"
-            class="admin-lista"
-        ></div>
+        <div id="listaCentraisAdmin" class="admin-lista"></div>
 
     </section>
 
 
-    <section
-        id="painelCentral"
-        class="box admin-panel hidden"
-    >
+    <section id="painelCentral" class="box admin-panel hidden">
 
         <div class="topo">
 
@@ -668,14 +745,9 @@ h1,h2,h3{
 
         </div>
 
-
-        <div
-            class="countdown"
-            id="centralCountdown"
-        >
+        <div class="countdown" id="centralCountdown">
             00:45
         </div>
-
 
         <div class="notice">
 
@@ -684,7 +756,6 @@ h1,h2,h3{
             do sistema Hacker e não altera outro arquivo.
 
         </div>
-
 
         <div
             class="grid3"
@@ -704,7 +775,6 @@ h1,h2,h3{
 
             </div>
 
-
             <div
                 class="option"
                 onclick="centralAcao('consultar')"
@@ -717,7 +787,6 @@ h1,h2,h3{
                 </p>
 
             </div>
-
 
             <div
                 class="option"
@@ -734,15 +803,12 @@ h1,h2,h3{
 
         </div>
 
-
         <div
             id="centralResultado"
             class="terminal-lines"
             style="margin-top:15px"
         >
-
             &gt; SISTEMA ADMINISTRATIVO ONLINE
-
         </div>
 
     </section>
@@ -751,6 +817,10 @@ h1,h2,h3{
 
 
 <script>
+
+/* =====================================================
+   FIREBASE
+===================================================== */
 
 const firebaseConfig = {
 
@@ -780,12 +850,14 @@ const firebaseConfig = {
 
 };
 
-
 firebase.initializeApp(firebaseConfig);
 
-const db =
-    firebase.database();
+const db = firebase.database();
 
+
+/* =====================================================
+   USUÁRIOS
+===================================================== */
 
 const usuarios = {
 
@@ -797,42 +869,42 @@ const usuarios = {
 };
 
 
-let usuarioAtual = null;
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
 
+let usuarioAtual = null;
 let acessoAtual = null;
 
 let acessoListener = null;
-
 let centralListener = null;
 
 let centralSelecionada = null;
-
 let centralAtiva = null;
 
 let jogoAtivo = false;
-
 let jogoAtual = "";
 
 let indiceJogo = 0;
-
 let sequenciaJogos = [];
 
 let tempoRestante = 0;
-
 let intervalo = null;
 
 let codigoAtual = "";
 
 let memoriaSequencia = [];
-
 let memoriaIndice = 0;
 
 let firewallGrade = [];
-
 let firewallTamanho = 4;
 
 let centralCountdownInterval = null;
 
+
+/* =====================================================
+   UTILITÁRIOS
+===================================================== */
 
 function $(id){
 
@@ -843,13 +915,23 @@ function $(id){
 
 function mostrar(id,show=true){
 
-    $(id).classList.toggle(
-        'hidden',
-        !show
-    );
+    const elemento = $(id);
+
+    if(elemento){
+
+        elemento.classList.toggle(
+            'hidden',
+            !show
+        );
+
+    }
 
 }
 
+
+/* =====================================================
+   LOGIN
+===================================================== */
 
 function entrar(){
 
@@ -858,7 +940,6 @@ function entrar(){
 
     const c =
         $('loginCodigo').value;
-
 
     if(
         !usuarios[u] ||
@@ -872,13 +953,14 @@ function entrar(){
 
     }
 
-
     usuarioAtual = u;
 
     localStorage.setItem(
         'hacker_usuario',
         u
     );
+
+    $('loginErro').textContent = '';
 
     abrirSistema();
 
@@ -891,7 +973,6 @@ function verificarLoginSalvo(){
         localStorage.getItem(
             'hacker_usuario'
         );
-
 
     if(
         u &&
@@ -919,22 +1000,18 @@ function abrirSistema(){
         true
     );
 
-
     $('usuarioNome').textContent =
         usuarioAtual;
-
 
     mostrar(
         'admin',
         usuarioAtual === 'Italo'
     );
 
-
     mostrar(
         'semAcesso',
         usuarioAtual !== 'Italo'
     );
-
 
     mostrar(
         'centralEscolha',
@@ -961,11 +1038,9 @@ function abrirSistema(){
         false
     );
 
-
     ouvirAcesso();
 
     observarCentrais();
-
 
     if(
         usuarioAtual === 'Italo'
@@ -977,6 +1052,10 @@ function abrirSistema(){
 
 }
 
+
+/* =====================================================
+   SAIR
+===================================================== */
 
 function sair(){
 
@@ -994,7 +1073,6 @@ function sair(){
 
     }
 
-
     if(centralListener){
 
         db.ref(
@@ -1008,16 +1086,21 @@ function sair(){
 
     }
 
+    clearInterval(intervalo);
+    clearInterval(centralCountdownInterval);
 
     localStorage.removeItem(
         'hacker_usuario'
     );
 
-
     location.reload();
 
 }
 
+
+/* =====================================================
+   OUVIR AUTORIZAÇÃO
+===================================================== */
 
 function ouvirAcesso(){
 
@@ -1029,19 +1112,16 @@ function ouvirAcesso(){
 
     }
 
-
     const ref =
         db.ref(
             'hackerAcessos/' +
             usuarioAtual
         );
 
-
     acessoListener = s => {
 
         acessoAtual =
             s.val();
-
 
         if(
             acessoAtual &&
@@ -1058,11 +1138,9 @@ function ouvirAcesso(){
                 true
             );
 
-
             $('acessoRecurso').textContent =
                 acessoAtual.recurso ||
                 '---';
-
 
             $('acessoDificuldade').textContent =
                 acessoAtual.dificuldade ||
@@ -1086,7 +1164,6 @@ function ouvirAcesso(){
 
     };
 
-
     ref.on(
         'value',
         acessoListener
@@ -1094,6 +1171,10 @@ function ouvirAcesso(){
 
 }
 
+
+/* =====================================================
+   ADMIN — LIBERAR ACESSO
+===================================================== */
 
 async function liberarAcesso(){
 
@@ -1105,10 +1186,8 @@ async function liberarAcesso(){
 
     }
 
-
     const jogador =
         $('adminJogador').value;
-
 
     const tempo =
         Math.max(
@@ -1118,15 +1197,12 @@ async function liberarAcesso(){
             ) || 60
         );
 
-
     const dificuldade =
         $('adminDificuldade').value;
-
 
     const recurso =
         $('adminRecurso').value.trim() ||
         'Acesso ao sistema';
-
 
     await db.ref(
         'hackerAcessos/' +
@@ -1134,23 +1210,14 @@ async function liberarAcesso(){
     ).set({
 
         ativo:true,
-
         jogador,
-
         tempo,
-
         dificuldade,
-
         recurso,
-
-        criadoEm:
-            Date.now(),
-
-        criadoPor:
-            'Italo'
+        criadoEm:Date.now(),
+        criadoPor:'Italo'
 
     });
-
 
     alert(
         'Acesso liberado para ' +
@@ -1160,6 +1227,10 @@ async function liberarAcesso(){
 
 }
 
+
+/* =====================================================
+   ADMIN — LISTA DE ACESSOS
+===================================================== */
 
 function observarAcessos(){
 
@@ -1172,13 +1243,10 @@ function observarAcessos(){
             const lista =
                 $('listaAcessos');
 
-
             lista.innerHTML = '';
-
 
             const dados =
                 snap.val() || {};
-
 
             Object.keys(dados)
             .forEach(j => {
@@ -1186,16 +1254,13 @@ function observarAcessos(){
                 const a =
                     dados[j];
 
-
                 const div =
                     document.createElement(
                         'div'
                     );
 
-
                 div.className =
                     'item';
-
 
                 div.innerHTML =
                     '<strong>' +
@@ -1222,7 +1287,6 @@ function observarAcessos(){
                     esc(a.recurso) +
                     '</p>';
 
-
                 if(a.ativo){
 
                     const b =
@@ -1230,24 +1294,19 @@ function observarAcessos(){
                             'button'
                         );
 
-
                     b.className =
                         'btn btn-small danger';
 
-
                     b.textContent =
                         'REVOGAR ACESSO';
-
 
                     b.onclick =
                         () =>
                             revogarAcesso(j);
 
-
                     div.appendChild(b);
 
                 }
-
 
                 lista.appendChild(div);
 
@@ -1269,7 +1328,6 @@ async function revogarAcesso(j){
 
     }
 
-
     if(
         !confirm(
             'Revogar acesso de ' +
@@ -1282,21 +1340,22 @@ async function revogarAcesso(j){
 
     }
 
-
     await db.ref(
         'hackerAcessos/' +
         j
     ).update({
 
         ativo:false,
-
-        revogadoEm:
-            Date.now()
+        revogadoEm:Date.now()
 
     });
 
 }
 
+
+/* =====================================================
+   CENTRAIS
+===================================================== */
 
 function observarCentrais(){
 
@@ -1305,25 +1364,21 @@ function observarCentrais(){
             'hackerCentrais'
         );
 
-
     centralListener =
         s => {
 
             const dados =
                 s.val() || {};
 
-
             renderCentraisAdmin(
                 dados
             );
-
 
             renderCentraisJogador(
                 dados
             );
 
         };
-
 
     ref.on(
         'value',
@@ -1332,6 +1387,10 @@ function observarCentrais(){
 
 }
 
+
+/* =====================================================
+   ADMIN — CRIAR CENTRAL
+===================================================== */
 
 async function salvarCentral(){
 
@@ -1343,18 +1402,15 @@ async function salvarCentral(){
 
     }
 
-
     const nome =
         $('centralNomeAdmin')
         .value
         .trim();
 
-
     const id =
         $('centralIdAdmin')
         .value
         .trim();
-
 
     if(
         !nome ||
@@ -1369,7 +1425,6 @@ async function salvarCentral(){
 
     }
 
-
     const snap =
         await db.ref(
             'hackerCentrais'
@@ -1377,10 +1432,8 @@ async function salvarCentral(){
             'value'
         );
 
-
     const dados =
         snap.val() || {};
-
 
     for(
         const k in dados
@@ -1403,38 +1456,22 @@ async function salvarCentral(){
 
     }
 
-
     await db.ref(
         'hackerCentrais'
     ).push({
 
         ativo:true,
-
         nome,
-
         idAcesso:id,
-
-        dificuldade:
-            'Extremo',
-
-        tempoAdmin:
-            45,
-
-        criadoEm:
-            Date.now(),
-
-        criadoPor:
-            'Italo'
+        dificuldade:'Extremo',
+        tempoAdmin:45,
+        criadoEm:Date.now(),
+        criadoPor:'Italo'
 
     });
 
-
-    $('centralNomeAdmin').value =
-        '';
-
-    $('centralIdAdmin').value =
-        '';
-
+    $('centralNomeAdmin').value = '';
+    $('centralIdAdmin').value = '';
 
     alert(
         'Central cadastrada.'
@@ -1442,6 +1479,10 @@ async function salvarCentral(){
 
 }
 
+
+/* =====================================================
+   ADMIN — LISTAR CENTRAIS
+===================================================== */
 
 function renderCentraisAdmin(dados){
 
@@ -1453,18 +1494,13 @@ function renderCentraisAdmin(dados){
 
     }
 
-
     const lista =
         $('listaCentraisAdmin');
 
-
-    lista.innerHTML =
-        '';
-
+    lista.innerHTML = '';
 
     const keys =
         Object.keys(dados);
-
 
     if(
         !keys.length
@@ -1479,22 +1515,18 @@ function renderCentraisAdmin(dados){
 
     }
 
-
     keys.forEach(k => {
 
         const c =
             dados[k];
-
 
         const div =
             document.createElement(
                 'div'
             );
 
-
         div.className =
             'item';
-
 
         div.innerHTML =
             '<strong>' +
@@ -1515,12 +1547,10 @@ function renderCentraisAdmin(dados){
 
             '<p>DIFICULDADE: EXTREMO | ADMIN: 45s</p>';
 
-
         const b =
             document.createElement(
                 'button'
             );
-
 
         b.className =
             'btn btn-small ' +
@@ -1530,12 +1560,10 @@ function renderCentraisAdmin(dados){
                 : ''
             );
 
-
         b.textContent =
             c.ativo
             ? 'DESATIVAR'
             : 'ATIVAR';
-
 
         b.onclick =
             () =>
@@ -1544,23 +1572,18 @@ function renderCentraisAdmin(dados){
                     c.ativo
                 );
 
-
         div.appendChild(b);
-
 
         const d =
             document.createElement(
                 'button'
             );
 
-
         d.className =
             'btn btn-small danger';
 
-
         d.textContent =
             'EXCLUIR';
-
 
         d.onclick =
             () =>
@@ -1569,9 +1592,7 @@ function renderCentraisAdmin(dados){
                     c.nome
                 );
 
-
         div.appendChild(d);
-
 
         lista.appendChild(div);
 
@@ -1590,8 +1611,7 @@ async function alternarCentral(
         k
     ).update({
 
-        ativo:
-            !ativo
+        ativo:!ativo
 
     });
 
@@ -1621,6 +1641,10 @@ async function excluirCentral(
 }
 
 
+/* =====================================================
+   JOGADOR — LISTAR CENTRAIS
+===================================================== */
+
 function renderCentraisJogador(dados){
 
     if(
@@ -1631,24 +1655,18 @@ function renderCentraisJogador(dados){
 
     }
 
-
     const lista =
         $('listaCentraisJogador');
 
-
-    lista.innerHTML =
-        '';
-
+    lista.innerHTML = '';
 
     let count = 0;
-
 
     Object.keys(dados)
     .forEach(k => {
 
         const c =
             dados[k];
-
 
         if(
             !c.ativo
@@ -1658,19 +1676,15 @@ function renderCentraisJogador(dados){
 
         }
 
-
         count++;
-
 
         const div =
             document.createElement(
                 'div'
             );
 
-
         div.className =
             'option';
-
 
         div.innerHTML =
             '<h3>' +
@@ -1685,7 +1699,6 @@ function renderCentraisJogador(dados){
             'IDENTIFICAÇÃO NECESSÁRIA' +
             '</p>';
 
-
         div.onclick =
             () =>
                 abrirCentral(
@@ -1693,11 +1706,9 @@ function renderCentraisJogador(dados){
                     c
                 );
 
-
         lista.appendChild(div);
 
     });
-
 
     if(count){
 
@@ -1725,6 +1736,10 @@ function renderCentraisJogador(dados){
 }
 
 
+/* =====================================================
+   ABRIR CENTRAL
+===================================================== */
+
 function abrirCentral(
     k,
     c
@@ -1733,35 +1748,26 @@ function abrirCentral(
     centralSelecionada =
         k;
 
-
     centralAtiva =
         c;
-
 
     mostrar(
         'centralEscolha',
         false
     );
 
-
     mostrar(
         'centralLogin',
         true
     );
 
-
     $('centralLoginTitulo').textContent =
         'CENTRAL // ' +
         c.nome;
 
+    $('centralIdInput').value = '';
 
-    $('centralIdInput').value =
-        '';
-
-
-    $('centralErro').textContent =
-        '';
-
+    $('centralErro').textContent = '';
 
     $('centralIdInput').focus();
 
@@ -1783,6 +1789,10 @@ function voltarCentrais(){
 }
 
 
+/* =====================================================
+   VALIDAR CENTRAL
+===================================================== */
+
 async function validarCentral(){
 
     if(
@@ -1794,12 +1804,10 @@ async function validarCentral(){
 
     }
 
-
     const digitado =
         $('centralIdInput')
         .value
         .trim();
-
 
     if(
         digitado !==
@@ -1815,7 +1823,6 @@ async function validarCentral(){
 
     }
 
-
     const snap =
         await db.ref(
             'hackerCentrais/' +
@@ -1824,10 +1831,8 @@ async function validarCentral(){
             'value'
         );
 
-
     const c =
         snap.val();
-
 
     if(
         !c ||
@@ -1841,10 +1846,8 @@ async function validarCentral(){
 
     }
 
-
     centralAtiva =
         c;
-
 
     acessoAtual = {
 
@@ -1872,12 +1875,10 @@ async function validarCentral(){
 
     };
 
-
     mostrar(
         'centralLogin',
         false
     );
-
 
     iniciarInvasao(
         true
@@ -1885,6 +1886,10 @@ async function validarCentral(){
 
 }
 
+
+/* =====================================================
+   INICIAR INVASÃO
+===================================================== */
 
 function iniciarInvasao(
     isCentral = false
@@ -1899,11 +1904,9 @@ function iniciarInvasao(
 
     }
 
-
     jogoAtivo = true;
 
     indiceJogo = 0;
-
 
     const todos = [
 
@@ -1914,12 +1917,10 @@ function iniciarInvasao(
 
     ];
 
-
     sequenciaJogos =
         embaralhar(
             todos
         );
-
 
     mostrar(
         'acessoLiberado',
@@ -1928,6 +1929,11 @@ function iniciarInvasao(
 
     mostrar(
         'centralEscolha',
+        false
+    );
+
+    mostrar(
+        'centralLogin',
         false
     );
 
@@ -1941,7 +1947,6 @@ function iniciarInvasao(
         false
     );
 
-
     tempoRestante =
         isCentral
         ? 90
@@ -1949,13 +1954,16 @@ function iniciarInvasao(
             acessoAtual.tempo
         ) || 90;
 
-
     iniciarCronometro();
 
     iniciarProximoMinigame();
 
 }
 
+
+/* =====================================================
+   QUANTIDADE DE JOGOS
+===================================================== */
 
 function obterQuantidadeJogos(){
 
@@ -1983,6 +1991,10 @@ function obterQuantidadeJogos(){
 }
 
 
+/* =====================================================
+   EMBARALHAR
+===================================================== */
+
 function embaralhar(a){
 
     return [
@@ -1995,6 +2007,10 @@ function embaralhar(a){
 }
 
 
+/* =====================================================
+   PRÓXIMO MINIGAME
+===================================================== */
+
 function iniciarProximoMinigame(){
 
     if(
@@ -2004,7 +2020,6 @@ function iniciarProximoMinigame(){
         return;
 
     }
-
 
     if(
         indiceJogo >=
@@ -2020,15 +2035,12 @@ function iniciarProximoMinigame(){
 
     }
 
-
     jogoAtual =
         sequenciaJogos[
             indiceJogo
         ];
 
-
     atualizarProgresso();
-
 
     if(
         jogoAtual ===
@@ -2066,11 +2078,14 @@ function iniciarProximoMinigame(){
 }
 
 
+/* =====================================================
+   PROGRESSO
+===================================================== */
+
 function atualizarProgresso(){
 
     const total =
         sequenciaJogos.length;
-
 
     $('progressoTexto').textContent =
         (
@@ -2078,7 +2093,6 @@ function atualizarProgresso(){
         ) +
         '/' +
         total;
-
 
     $('barraInterna').style.width =
         (
@@ -2091,12 +2105,15 @@ function atualizarProgresso(){
 }
 
 
+/* =====================================================
+   CRONÔMETRO
+===================================================== */
+
 function iniciarCronometro(){
 
     clearInterval(
         intervalo
     );
-
 
     intervalo =
         setInterval(
@@ -2110,12 +2127,9 @@ function iniciarCronometro(){
 
                 }
 
-
                 tempoRestante--;
 
-
                 atualizarTimer();
-
 
                 if(
                     tempoRestante <= 0
@@ -2125,10 +2139,8 @@ function iniciarCronometro(){
                         intervalo
                     );
 
-
                     jogoAtivo =
                         false;
-
 
                     finalizarInvasao(
                         false,
@@ -2141,7 +2153,6 @@ function iniciarCronometro(){
             1000
         );
 
-
     atualizarTimer();
 
 }
@@ -2152,29 +2163,25 @@ function atualizarTimer(){
     const t =
         $('timer');
 
-
     if(!t){
 
         return;
 
     }
 
-
-    const m =
-        Math.floor(
-            Math.max(
-                0,
-                tempoRestante
-            ) / 60
-        );
-
-
-    const s =
+    const tSeguro =
         Math.max(
             0,
             tempoRestante
-        ) % 60;
+        );
 
+    const m =
+        Math.floor(
+            tSeguro / 60
+        );
+
+    const s =
+        tSeguro % 60;
 
     t.textContent =
         String(m)
@@ -2183,10 +2190,8 @@ function atualizarTimer(){
         String(s)
         .padStart(2,'0');
 
-
     t.className =
         'timer';
-
 
     if(
         tempoRestante <= 15
@@ -2211,6 +2216,10 @@ function atualizarTimer(){
 }
 
 
+/* =====================================================
+   CONCLUIR MINIGAME
+===================================================== */
+
 function concluirMinigame(){
 
     if(
@@ -2221,17 +2230,27 @@ function concluirMinigame(){
 
     }
 
-
     indiceJogo++;
 
-
     setTimeout(
-        iniciarProximoMinigame,
+        () => {
+
+            if(jogoAtivo){
+
+                iniciarProximoMinigame();
+
+            }
+
+        },
         350
     );
 
 }
 
+
+/* =====================================================
+   FALHAR
+===================================================== */
 
 function falhar(
     m = 'PROTOCOLO REJEITADO.'
@@ -2245,15 +2264,12 @@ function falhar(
 
     }
 
-
     jogoAtivo =
         false;
-
 
     clearInterval(
         intervalo
     );
-
 
     finalizarInvasao(
         false,
@@ -2262,6 +2278,10 @@ function falhar(
 
 }
 
+
+/* =====================================================
+   FINALIZAR INVASÃO
+===================================================== */
 
 async function finalizarInvasao(
     sucesso,
@@ -2272,22 +2292,18 @@ async function finalizarInvasao(
         intervalo
     );
 
-
     jogoAtivo =
         false;
-
 
     mostrar(
         'minigame',
         false
     );
 
-
     mostrar(
         'resultado',
         true
     );
-
 
     $('resultado').className =
         'box ' +
@@ -2297,12 +2313,15 @@ async function finalizarInvasao(
             : 'fail'
         );
 
-
     $('resultadoTitulo').textContent =
         sucesso
         ? '✓ INVASÃO CONCLUÍDA'
         : '✕ INVASÃO FALHOU';
 
+
+    /* =================================================
+       ACESSO ESPECIAL DA CENTRAL
+    ================================================= */
 
     if(
         sucesso &&
@@ -2315,7 +2334,6 @@ async function finalizarInvasao(
             const expiraEm =
                 Date.now() +
                 45000;
-
 
             await db.ref(
                 'hackerPoliceAcesso/' +
@@ -2346,7 +2364,6 @@ async function finalizarInvasao(
 
             });
 
-
             $('resultadoTexto').textContent =
                 'CENTRAL ' +
                 acessoAtual.centralNome +
@@ -2354,14 +2371,11 @@ async function finalizarInvasao(
                 'ACESSO ADMINISTRATIVO DA POLÍCIA ' +
                 'CONCEDIDO POR 45 SEGUNDOS.';
 
-
             $('resultadoBtn').textContent =
                 'ABRIR ADMINISTRAÇÃO DA POLÍCIA';
 
-
             $('resultadoBtn').onclick =
                 abrirAdministracaoPolicia;
-
 
         }
 
@@ -2372,35 +2386,33 @@ async function finalizarInvasao(
                 erro
             );
 
-
             $('resultadoTexto').textContent =
                 'A invasão foi concluída, ' +
                 'mas ocorreu um erro ao liberar ' +
                 'o acesso administrativo.';
 
-
             $('resultadoBtn').textContent =
                 'VOLTAR AO TERMINAL';
-
 
             $('resultadoBtn').onclick =
                 voltarTerminal;
 
         }
 
-
         return;
 
     }
 
 
+    /* =================================================
+       INVASÃO NORMAL
+    ================================================= */
+
     $('resultadoTexto').textContent =
         motivo;
 
-
     $('resultadoBtn').textContent =
         'VOLTAR AO TERMINAL';
-
 
     $('resultadoBtn').onclick =
         voltarTerminal;
@@ -2410,18 +2422,33 @@ async function finalizarInvasao(
 
 /* =====================================================
    ABRIR ADMINISTRAÇÃO DA POLÍCIA
-   CORREÇÃO DO CAMINHO
+   CAMINHO CORRETO DO GITHUB PAGES
 ===================================================== */
 
 function abrirAdministracaoPolicia(){
-    if(!usuarioAtual || !acessoAtual || !acessoAtual.central){
+
+    if(
+        !usuarioAtual ||
+        !acessoAtual ||
+        !acessoAtual.central
+    ){
+
         return;
+
     }
+
+    const jogador =
+        encodeURIComponent(
+            usuarioAtual
+        );
 
     window.location.href =
         'https://italogablima2007-tech.github.io/GTA-rpg-/policia.html?hack=1&jogador=' +
-        encodeURIComponent(usuarioAtual);
+        jogador;
+
 }
+
+
 /* =====================================================
    VOLTAR PARA O TERMINAL
 ===================================================== */
@@ -2433,18 +2460,15 @@ function voltarTerminal(){
         false
     );
 
-
     mostrar(
         'minigame',
         false
     );
 
-
     mostrar(
         'painelCentral',
         false
     );
-
 
     if(
         usuarioAtual === 'Italo'
@@ -2458,7 +2482,6 @@ function voltarTerminal(){
         return;
 
     }
-
 
     if(
         acessoAtual &&
@@ -2496,13 +2519,16 @@ function voltarTerminal(){
 }
 
 
+/* =====================================================
+   MINIGAME — CÓDIGO
+===================================================== */
+
 function iniciarCodigo(){
 
     setTitulo(
         'CRACK',
         'QUEBRE O CÓDIGO DE SEGURANÇA'
     );
-
 
     const tamanho = {
 
@@ -2515,9 +2541,7 @@ function iniciarCodigo(){
         acessoAtual.dificuldade
     ] || 10;
 
-
     codigoAtual = '';
-
 
     for(
         let i = 0;
@@ -2531,7 +2555,6 @@ function iniciarCodigo(){
             );
 
     }
-
 
     $('conteudoMinigame').innerHTML =
 
@@ -2557,10 +2580,8 @@ function iniciarCodigo(){
 
         '</div>';
 
-
     $('btnCodigo').onclick =
         verificarCodigo;
-
 
     $('inputCodigo').onkeydown =
         e => {
@@ -2574,7 +2595,6 @@ function iniciarCodigo(){
             }
 
         };
-
 
     $('inputCodigo').focus();
 
@@ -2603,13 +2623,16 @@ function verificarCodigo(){
 }
 
 
+/* =====================================================
+   MINIGAME — MEMÓRIA
+===================================================== */
+
 function iniciarMemoria(){
 
     setTitulo(
         'MEMÓRIA',
         'REPITA A SEQUÊNCIA CORRETA'
     );
-
 
     const n = {
 
@@ -2622,16 +2645,16 @@ function iniciarMemoria(){
         acessoAtual.dificuldade
     ] || 8;
 
-
     const simbolos = [
+
         '◆',
         '▲',
         '●',
         '■',
         '★',
         '✦'
-    ];
 
+    ];
 
     const tempoMemoria = {
 
@@ -2643,7 +2666,6 @@ function iniciarMemoria(){
     }[
         acessoAtual.dificuldade
     ] || 8000;
-
 
     memoriaSequencia =
         Array.from(
@@ -2659,10 +2681,8 @@ function iniciarMemoria(){
                 ]
         );
 
-
     memoriaIndice =
         0;
-
 
     $('conteudoMinigame').innerHTML =
 
@@ -2691,7 +2711,6 @@ function iniciarMemoria(){
 
         '</div>';
 
-
     setTimeout(
         () => {
 
@@ -2703,28 +2722,20 @@ function iniciarMemoria(){
 
             }
 
-
             $('sequenciaVisual').textContent =
-                '? ? ? ? ? ? ? ?'
-                .split(' ')
-                .slice(
-                    0,
-                    n
-                )
+                '?'
+                .repeat(n)
+                .split('')
                 .join(' ');
-
 
             $('memoriaMensagem').textContent =
                 'REPRODUZA A SEQUÊNCIA';
 
-
             $('memoriaTempo').textContent =
                 'SEQUÊNCIA OCULTA — REPRODUZA AGORA';
 
-
             const b =
                 $('botoesMemoria');
-
 
             simbolos.forEach(
                 s => {
@@ -2734,15 +2745,12 @@ function iniciarMemoria(){
                             'button'
                         );
 
-
                     x.textContent =
                         s;
-
 
                     x.onclick =
                         () =>
                             clicarMemoria(s);
-
 
                     b.appendChild(x);
 
@@ -2766,7 +2774,6 @@ function clicarMemoria(s){
 
     }
 
-
     if(
         s !==
         memoriaSequencia[
@@ -2782,9 +2789,7 @@ function clicarMemoria(s){
 
     }
 
-
     memoriaIndice++;
-
 
     if(
         memoriaIndice >=
@@ -2798,13 +2803,16 @@ function clicarMemoria(s){
 }
 
 
+/* =====================================================
+   MINIGAME — TERMINAL
+===================================================== */
+
 function iniciarTerminal(){
 
     setTitulo(
         'TERMINAL',
         'ANALISE A PISTA E ESCOLHA O COMANDO CORRETO'
     );
-
 
     const desafios = [
 
@@ -2845,7 +2853,6 @@ function iniciarTerminal(){
 
     ];
 
-
     const desafio =
         desafios[
             Math.floor(
@@ -2854,10 +2861,8 @@ function iniciarTerminal(){
             )
         ];
 
-
     window.terminalCorreto =
         desafio.correto;
-
 
     const comandos = [
 
@@ -2868,7 +2873,6 @@ function iniciarTerminal(){
         'ROOT'
 
     ];
-
 
     $('conteudoMinigame').innerHTML =
 
@@ -2935,6 +2939,10 @@ function verificarTerminal(c){
 }
 
 
+/* =====================================================
+   MINIGAME — FIREWALL
+===================================================== */
+
 function iniciarFirewall(){
 
     setTitulo(
@@ -2942,14 +2950,11 @@ function iniciarFirewall(){
         'DESATIVE TODOS OS NÓS'
     );
 
-
     const total =
         50;
 
-
     firewallTamanho =
         10;
-
 
     firewallGrade =
         Array.from(
@@ -2958,7 +2963,6 @@ function iniciarFirewall(){
             },
             () => false
         );
-
 
     $('conteudoMinigame').innerHTML =
 
@@ -2978,10 +2982,8 @@ function iniciarFirewall(){
 
         '</div>';
 
-
     const g =
         $('firewallGrade');
-
 
     firewallGrade.forEach(
         (_,i) => {
@@ -2991,21 +2993,17 @@ function iniciarFirewall(){
                     'button'
                 );
 
-
             b.className =
                 'cell';
-
 
             b.onclick =
                 () =>
                     clicarFirewall(i);
 
-
             g.appendChild(b);
 
         }
     );
-
 
     atualizarFirewall();
 
@@ -3022,7 +3020,6 @@ function clicarFirewall(i){
 
     }
 
-
     if(
         firewallGrade[i]
     ){
@@ -3031,19 +3028,15 @@ function clicarFirewall(i){
 
     }
 
-
     firewallGrade[i] =
         true;
-
 
     $('firewallGrade')
         .children[i]
         .classList
         .add('on');
 
-
     atualizarFirewall();
-
 
     if(
         firewallGrade.every(
@@ -3075,6 +3068,10 @@ function atualizarFirewall(){
 }
 
 
+/* =====================================================
+   TÍTULO DOS MINIGAMES
+===================================================== */
+
 function setTitulo(
     a,
     b
@@ -3083,16 +3080,20 @@ function setTitulo(
     $('minigameTitulo').textContent =
         a;
 
-
     $('minigameSubtitulo').textContent =
         b;
 
 }
 
 
+/* =====================================================
+   PAINEL DA CENTRAL
+===================================================== */
+
 function abrirPainelCentral(){
 
     if(
+        !acessoAtual ||
         !acessoAtual.central
     ){
 
@@ -3100,36 +3101,29 @@ function abrirPainelCentral(){
 
     }
 
-
     mostrar(
         'resultado',
         false
     );
-
 
     mostrar(
         'painelCentral',
         true
     );
 
-
     $('painelCentralNome').textContent =
         acessoAtual.centralNome;
-
 
     $('centralCountdown').textContent =
         '00:45';
 
-
-    let fim =
+    const fim =
         Date.now() +
         45000;
-
 
     clearInterval(
         centralCountdownInterval
     );
-
 
     centralCountdownInterval =
         setInterval(
@@ -3141,21 +3135,20 @@ function abrirPainelCentral(){
                         fim - Date.now()
                     );
 
-
                 const s =
                     Math.ceil(
                         restante / 1000
                     );
 
-
                 $('centralCountdown').textContent =
                     '00:' +
-                    String(s)
+                    String(
+                        s
+                    )
                     .padStart(
                         2,
                         '0'
                     );
-
 
                 if(
                     restante <= 0
@@ -3164,7 +3157,6 @@ function abrirPainelCentral(){
                     clearInterval(
                         centralCountdownInterval
                     );
-
 
                     encerrarPainelCentral();
 
@@ -3184,42 +3176,38 @@ function encerrarPainelCentral(){
         false
     );
 
-
     mostrar(
         'resultado',
         true
     );
 
-
     $('resultado').className =
         'box fail';
-
 
     $('resultadoTitulo').textContent =
         '✕ ACESSO ENCERRADO';
 
-
     $('resultadoTexto').textContent =
         'O período administrativo da Central terminou.';
-
 
     $('resultadoBtn').textContent =
         'VOLTAR AO TERMINAL';
 
-
     $('resultadoBtn').onclick =
         voltarTerminal;
 
-
     centralAtiva =
         null;
-
 
     centralSelecionada =
         null;
 
 }
 
+
+/* =====================================================
+   AÇÕES DA CENTRAL
+===================================================== */
 
 function centralAcao(acao){
 
@@ -3235,7 +3223,6 @@ function centralAcao(acao){
             'MÓDULO DE REGISTROS ABERTO.'
 
     };
-
 
     $('centralResultado').innerHTML =
 
@@ -3253,6 +3240,10 @@ function centralAcao(acao){
 
 }
 
+
+/* =====================================================
+   ESCAPE DE HTML
+===================================================== */
 
 function esc(v){
 
@@ -3273,6 +3264,10 @@ function esc(v){
 }
 
 
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
+
 window.addEventListener(
     'load',
     verificarLoginSalvo
@@ -3282,3 +3277,4 @@ window.addEventListener(
 
 </body>
 </html>
+```
