@@ -2177,25 +2177,12 @@ async function verificarAcessoHacker() {
     }
 
     /*
-       Se esta aba já encerrou o acesso hacker deste jogador,
-       não restaura a sessão usando a mesma URL.
+       NÃO bloqueamos a entrada usando sessionStorage.
+       Cada invasão gera uma nova autorização no Firebase com
+       um novo expiraEm. Assim, se o hacker acabou de liberar
+       novamente o acesso, a polícia deve entrar diretamente
+       no painel administrativo.
     */
-    try {
-
-        if (
-            sessionStorage.getItem(
-                "lspd_hacker_encerrado_" + jogador
-            ) === "1"
-        ) {
-            return false;
-        }
-
-    } catch (erroStorage) {
-        console.warn(
-            "Não foi possível consultar o bloqueio local do acesso hacker.",
-            erroStorage
-        );
-    }
 
     try {
 
@@ -2301,13 +2288,7 @@ function iniciarContagemAcessoHacker() {
 
     clearInterval(acessoHackerInterval);
 
-    /*
-       Verificação frequente apenas para detectar imediatamente
-       o fim da autorização e atualizar a interface.
-       As próprias funções administrativas também consultam
-       expiraEm através de usuarioEhAdmin().
-    */
-    acessoHackerInterval = setInterval(function() {
+    function atualizarTimerHacker() {
 
         if (!acessoHacker ||
             !usuarioLogado ||
@@ -2318,32 +2299,30 @@ function iniciarContagemAcessoHacker() {
             return;
         }
 
-        var restante =
-            Number(acessoHacker.expiraEm) - Date.now();
-
+        var restante = Number(acessoHacker.expiraEm) - Date.now();
+        var segundos = Math.max(0, Math.ceil(restante / 1000));
         var timer = document.getElementById("hackerTimer");
         var timerValor = document.getElementById("hackerTimerValor");
 
         if (timer && timerValor) {
-            var segundos = Math.max(0, Math.ceil(restante / 1000));
             timer.style.display = "block";
             timerValor.textContent = segundos + "s";
             timer.classList.toggle("critico", segundos <= 10);
         }
 
         if (restante <= 0) {
-
             clearInterval(acessoHackerInterval);
             acessoHackerInterval = null;
-
-            var timer = document.getElementById("hackerTimer");
-        if (timer) timer.style.display = "none";
-
             encerrarAcessoHacker(true);
-
         }
+    }
 
-    }, 100);
+    // Mostra imediatamente o tempo restante, sem esperar 100 ms.
+    atualizarTimerHacker();
+
+    if (acessoHacker && acessoHacker.expiraEm > Date.now()) {
+        acessoHackerInterval = setInterval(atualizarTimerHacker, 100);
+    }
 }
 
 /* =====================================================
