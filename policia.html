@@ -1966,20 +1966,10 @@ tr:hover td {
    FIREBASE — ACESSO DE HACKER
 ===================================================== */
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBwAUhihQZ3kwD9EuasUurXXLbPBjJqg",
-    authDomain: "gta-rpg.firebaseapp.com",
-    databaseURL: "https://gta-rpg-default-rtdb.firebaseio.com",
-    projectId: "gta-rpg",
-    storageBucket: "gta-rpg.firebasestorage.app",
-    messagingSenderId: "318963858414",
-    appId: "1:318963858414:web:cc7122486ac5a3d267ecff",
-    measurementId: "G-K157521F0H"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.database();
+/*
+   O Firebase já foi inicializado no <head> do arquivo.
+   Aqui usamos a mesma instância e NÃO inicializamos o app novamente.
+*/
 
 var acessoHacker = null;
 var acessoHackerInterval = null;
@@ -2148,7 +2138,7 @@ async function encerrarAcessoHacker(mostrarAviso) {
        Volta para a tela de login sem os parâmetros ?hack=1
        e ?jogador=..., evitando reprocessamento da invasão.
     */
-    window.location.href = "policial.html";
+    window.location.href = window.location.pathname;
 }
 
 /* =====================================================
