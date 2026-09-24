@@ -2152,11 +2152,24 @@ async function verificarAcessoHacker() {
     );
 
     var modo = params.get("hack");
-    var jogador = (params.get("jogador") || "")
-        .trim()
-        .toLowerCase();
+    var jogadorInformado = (params.get("jogador") || "").trim();
 
-    if (modo !== "1" || !jogador) {
+    if (modo !== "1" || !jogadorInformado) {
+        return false;
+    }
+
+    /*
+       IMPORTANTE: o hacker grava no Firebase usando o nome original
+       (ex.: Kaius). A URL pode chegar com Kaius, KAIUS ou kaius.
+       Encontramos aqui a chave oficial de USUARIOS para ler exatamente
+       o mesmo caminho no Firebase.
+    */
+    var jogador = Object.keys(USUARIOS).find(function(chave) {
+        return chave.toLowerCase() === jogadorInformado.toLowerCase();
+    });
+
+    if (!jogador) {
+        console.warn("Jogador hacker não encontrado:", jogadorInformado);
         return false;
     }
 
