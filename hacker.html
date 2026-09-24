@@ -2415,26 +2415,13 @@ async function finalizarInvasao(
 
 function abrirAdministracaoPolicia(){
 
-    if(
-        !usuarioAtual ||
-        !acessoAtual ||
-        !acessoAtual.central
-    ){
-
+    if(!usuarioAtual || !acessoAtual || !acessoAtual.central){
         return;
-
     }
 
-
     window.location.href =
-        '../policia.html?hack=1&jogador=' +
-        encodeURIComponent(
-            usuarioAtual
-        );
-
-}
-
-
+        'https://italogablima2007-tech.github.io/GTA-rpg-/policia.html?hack=1&jogador=' +
+        encodeURIComponent(usuarioAtual);
 /* =====================================================
    VOLTAR PARA O TERMINAL
 ===================================================== */
