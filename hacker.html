@@ -4,179 +4,1964 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HACKER // TERMINAL</title>
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=4GWjVihm-2fqvLfbYuOjxCti2QxXU4ohT-jAhXlm-TAepwhWg308nBNCdOTUo6t6h2A9Lepz6ehS9cQmjS-exlgwFri3OsXVHUsbb9bUKRpAPRrRF2nF-mzkgujOvpu-RnKuLpMJ8RUtJtoky31YmcSpQHFK2Pc_zin_Os2gelEVQv8h6-pfSDDrjmp-HXXynYy6GSmeAeqA8VBHZWILm6WHylTvZdKe8AFeTPfcVS6_64sz_uZO3zuSU6oplEa8A-qPNPpDK6d-S-KUZY5pdLSg6qoorj-0xkv5SkMvyb3QOgtp886doXBmViv8e_CsoiFYY-cqRSgGzi5Vx43MiQ" charset="UTF-8"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
 <style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at center,rgba(0,255,136,.06),transparent 50%),#020403;color:#00ff88;font-family:"Courier New",monospace}button,input,select{font:inherit}.page{max-width:1000px;margin:auto;padding:20px}.box{background:#050807;border:1px solid #123d27;box-shadow:0 0 20px rgba(0,255,136,.08);padding:22px;margin-bottom:18px}.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.login-box{width:100%;max-width:430px;padding:35px;background:#050807;border:1px solid #00ff88;box-shadow:0 0 20px rgba(0,255,136,.18)}h1,h2,h3{margin-top:0;text-shadow:0 0 8px rgba(0,255,136,.4)}.logo{text-align:center;font-size:32px;letter-spacing:6px}.muted{color:#477d61;font-size:12px}.campo{margin:0 0 15px}.campo label{display:block;color:#70ffb1;font-size:12px;margin-bottom:7px}.campo input,.campo select{width:100%;padding:12px;background:#010401;color:#00ff88;border:1px solid #164d31;outline:none}.campo input:focus,.campo select:focus{border-color:#00ff88;box-shadow:0 0 8px rgba(0,255,136,.2)}.btn{width:100%;padding:13px;margin-top:8px;background:#03140b;border:1px solid #00ff88;color:#00ff88;cursor:pointer;font-weight:bold}.btn:hover{background:#00ff88;color:#000}.btn-small{width:auto;padding:8px 12px;margin:4px}.danger{border-color:#ff4444;color:#ff4444;background:#160303}.danger:hover{background:#ff3333;color:#000}.topo{display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:1px solid #123d27;padding-bottom:15px;margin-bottom:18px}.badge{padding:5px 9px;border:1px solid #00ff88;font-size:11px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.option{border:1px solid #164d31;background:#020803;padding:20px;cursor:pointer}.option:hover{border-color:#00ff88;background:#03140b}.option h3{margin-bottom:8px}.admin-lista{margin-top:15px}.item{border:1px solid #123d27;background:#020803;padding:14px;margin-bottom:10px}.item strong{color:#00ff88}.item p{margin:6px 0;color:#477d61;font-size:12px}.hidden{display:none!important}.status{padding:12px;border:1px solid #164d31;background:#010401;margin:12px 0}.success{border-color:#00ff88}.fail{border-color:#ff3333;color:#ff5555}.game-head{display:flex;justify-content:space-between;gap:15px;align-items:center}.timer{font-size:24px;font-weight:bold}.timer.alerta{color:#ffff55}.timer.perigo{color:#ff3333}.progress{height:8px;background:#06100a;border:1px solid #123d27;margin:15px 0}.progress-in{height:100%;background:#00ff88;width:0}.game-area{min-height:300px}.game-card{text-align:center;border:1px solid #123d27;background:#020803;padding:25px}.codigo{font-size:30px;letter-spacing:8px;margin:25px 0}.input-game{width:100%;max-width:420px;padding:13px;background:#010401;color:#00ff88;border:1px solid #164d31;text-align:center}.seq{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px 0}.seq button{width:70px;height:60px;background:#03140b;color:#00ff88;border:1px solid #164d31;cursor:pointer;font-size:22px}.seq button:hover{border-color:#00ff88}.firewall{display:grid;gap:7px;max-width:520px;margin:20px auto}.cell{aspect-ratio:1;background:#06100a;border:1px solid #164d31;color:#00ff88;cursor:pointer}.cell.on{background:#00ff88;color:#000}.terminal-lines{font-size:12px;line-height:1.8;text-align:left;background:#010401;border:1px solid #123d27;padding:15px;min-height:120px}.central-access{border-color:#00ff88}.central-id{font-size:20px;letter-spacing:3px}.admin-panel{border-color:#00ff88}.countdown{font-size:42px;text-align:center;margin:20px 0}.notice{padding:12px;border-left:3px solid #00ff88;background:#03140b;color:#70ffb1}.small{font-size:11px}.table-like{width:100%;border-collapse:collapse;font-size:12px}.table-like th,.table-like td{border:1px solid #123d27;padding:9px;text-align:left}.table-like th{color:#70ffb1}@media(max-width:700px){.grid,.grid3{grid-template-columns:1fr}.topo{flex-direction:column;align-items:flex-start}.page{padding:10px}}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    min-height:100vh;
+    background:radial-gradient(circle at center,rgba(0,255,136,.06),transparent 50%),#020403;
+    color:#00ff88;
+    font-family:"Courier New",monospace
+}
+button,input,select{font:inherit}
+.page{max-width:1000px;margin:auto;padding:20px}
+.box{
+    background:#050807;
+    border:1px solid #123d27;
+    box-shadow:0 0 20px rgba(0,255,136,.08);
+    padding:22px;
+    margin-bottom:18px
+}
+.login-wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px
+}
+.login-box{
+    width:100%;
+    max-width:430px;
+    padding:35px;
+    background:#050807;
+    border:1px solid #00ff88;
+    box-shadow:0 0 20px rgba(0,255,136,.18)
+}
+h1,h2,h3{
+    margin-top:0;
+    text-shadow:0 0 8px rgba(0,255,136,.4)
+}
+.logo{
+    text-align:center;
+    font-size:32px;
+    letter-spacing:6px
+}
+.muted{
+    color:#477d61;
+    font-size:12px
+}
+.campo{margin:0 0 15px}
+.campo label{
+    display:block;
+    color:#70ffb1;
+    font-size:12px;
+    margin-bottom:7px
+}
+.campo input,.campo select{
+    width:100%;
+    padding:12px;
+    background:#010401;
+    color:#00ff88;
+    border:1px solid #164d31;
+    outline:none
+}
+.campo input:focus,.campo select:focus{
+    border-color:#00ff88;
+    box-shadow:0 0 8px rgba(0,255,136,.2)
+}
+.btn{
+    width:100%;
+    padding:13px;
+    margin-top:8px;
+    background:#03140b;
+    border:1px solid #00ff88;
+    color:#00ff88;
+    cursor:pointer;
+    font-weight:bold
+}
+.btn:hover{
+    background:#00ff88;
+    color:#000
+}
+.btn-small{
+    width:auto;
+    padding:8px 12px;
+    margin:4px
+}
+.danger{
+    border-color:#ff4444;
+    color:#ff4444;
+    background:#160303
+}
+.danger:hover{
+    background:#ff3333;
+    color:#000
+}
+.topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    border-bottom:1px solid #123d27;
+    padding-bottom:15px;
+    margin-bottom:18px
+}
+.badge{
+    padding:5px 9px;
+    border:1px solid #00ff88;
+    font-size:11px
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px
+}
+.grid3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px
+}
+.option{
+    border:1px solid #164d31;
+    background:#020803;
+    padding:20px;
+    cursor:pointer
+}
+.option:hover{
+    border-color:#00ff88;
+    background:#03140b
+}
+.option h3{margin-bottom:8px}
+.admin-lista{margin-top:15px}
+.item{
+    border:1px solid #123d27;
+    background:#020803;
+    padding:14px;
+    margin-bottom:10px
+}
+.item strong{color:#00ff88}
+.item p{
+    margin:6px 0;
+    color:#477d61;
+    font-size:12px
+}
+.hidden{display:none!important}
+.status{
+    padding:12px;
+    border:1px solid #164d31;
+    background:#010401;
+    margin:12px 0
+}
+.success{border-color:#00ff88}
+.fail{
+    border-color:#ff3333;
+    color:#ff5555
+}
+.game-head{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    align-items:center
+}
+.timer{
+    font-size:24px;
+    font-weight:bold
+}
+.timer.alerta{color:#ffff55}
+.timer.perigo{color:#ff3333}
+.progress{
+    height:8px;
+    background:#06100a;
+    border:1px solid #123d27;
+    margin:15px 0
+}
+.progress-in{
+    height:100%;
+    background:#00ff88;
+    width:0
+}
+.game-area{min-height:300px}
+.game-card{
+    text-align:center;
+    border:1px solid #123d27;
+    background:#020803;
+    padding:25px
+}
+.codigo{
+    font-size:30px;
+    letter-spacing:8px;
+    margin:25px 0
+}
+.input-game{
+    width:100%;
+    max-width:420px;
+    padding:13px;
+    background:#010401;
+    color:#00ff88;
+    border:1px solid #164d31;
+    text-align:center
+}
+.seq{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:20px 0
+}
+.seq button{
+    width:70px;
+    height:60px;
+    background:#03140b;
+    color:#00ff88;
+    border:1px solid #164d31;
+    cursor:pointer;
+    font-size:22px
+}
+.seq button:hover{border-color:#00ff88}
+.firewall{
+    display:grid;
+    gap:7px;
+    max-width:520px;
+    margin:20px auto
+}
+.cell{
+    aspect-ratio:1;
+    background:#06100a;
+    border:1px solid #164d31;
+    color:#00ff88;
+    cursor:pointer
+}
+.cell.on{
+    background:#00ff88;
+    color:#000
+}
+.terminal-lines{
+    font-size:12px;
+    line-height:1.8;
+    text-align:left;
+    background:#010401;
+    border:1px solid #123d27;
+    padding:15px;
+    min-height:120px
+}
+.central-access{border-color:#00ff88}
+.central-id{
+    font-size:20px;
+    letter-spacing:3px
+}
+.admin-panel{border-color:#00ff88}
+.countdown{
+    font-size:42px;
+    text-align:center;
+    margin:20px 0
+}
+.notice{
+    padding:12px;
+    border-left:3px solid #00ff88;
+    background:#03140b;
+    color:#70ffb1
+}
+.small{font-size:11px}
+.table-like{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px
+}
+.table-like th,.table-like td{
+    border:1px solid #123d27;
+    padding:9px;
+    text-align:left
+}
+.table-like th{color:#70ffb1}
+
+@media(max-width:700px){
+    .grid,.grid3{grid-template-columns:1fr}
+    .topo{
+        flex-direction:column;
+        align-items:flex-start
+    }
+    .page{padding:10px}
+}
 </style>
 </head>
+
 <body>
+
 <section id="loginTela" class="login-wrap">
-  <div class="login-box">
-    <div class="logo">◉ HACKER</div>
-    <p class="muted" style="text-align:center">TERMINAL DE ACESSO RESTRITO</p>
-    <div class="status">USUÁRIO: <b>identificação local</b><br>CÓDIGO: <b>autorização necessária</b></div>
-    <div class="campo"><label>USUÁRIO</label><input id="loginUsuario" autocomplete="off"></div>
-    <div class="campo"><label>CÓDIGO DE ACESSO</label><input id="loginCodigo" type="password" autocomplete="off"></div>
-    <button class="btn" onclick="entrar()">CONECTAR</button>
-    <p id="loginErro" class="small" style="color:#ff4444"></p>
-  </div>
+    <div class="login-box">
+
+        <div class="logo">◉ HACKER</div>
+
+        <p class="muted" style="text-align:center">
+            TERMINAL DE ACESSO RESTRITO
+        </p>
+
+        <div class="status">
+            USUÁRIO: <b>identificação local</b><br>
+            CÓDIGO: <b>autorização necessária</b>
+        </div>
+
+        <div class="campo">
+            <label>USUÁRIO</label>
+            <input id="loginUsuario" autocomplete="off">
+        </div>
+
+        <div class="campo">
+            <label>CÓDIGO DE ACESSO</label>
+            <input id="loginCodigo" type="password" autocomplete="off">
+        </div>
+
+        <button class="btn" onclick="entrar()">
+            CONECTAR
+        </button>
+
+        <p id="loginErro" class="small" style="color:#ff4444"></p>
+
+    </div>
 </section>
 
+
 <main id="sistema" class="page hidden">
-  <div class="topo">
-    <div><h1>HACKER // TERMINAL</h1><div class="muted">OPERADOR: <span id="usuarioNome"></span></div></div>
-    <button class="btn btn-small danger" onclick="sair()">DESCONECTAR</button>
-  </div>
 
-  <section id="semAcesso" class="box hidden">
-    <h2>SEM ACESSO</h2>
-    <p class="muted">Nenhuma autorização de invasão foi liberada para este usuário.</p>
-  </section>
+    <div class="topo">
 
-  <section id="acessoLiberado" class="box hidden">
-    <h2>ACESSO LIBERADO</h2>
-    <div class="grid">
-      <div class="status">RECURSO<br><b id="acessoRecurso">---</b></div>
-      <div class="status">DIFICULDADE<br><b id="acessoDificuldade">---</b></div>
+        <div>
+            <h1>HACKER // TERMINAL</h1>
+            <div class="muted">
+                OPERADOR:
+                <span id="usuarioNome"></span>
+            </div>
+        </div>
+
+        <button class="btn btn-small danger" onclick="sair()">
+            DESCONECTAR
+        </button>
+
     </div>
-    <button class="btn" onclick="iniciarInvasao()">INICIAR INVASÃO</button>
-  </section>
 
-  <section id="centralEscolha" class="box hidden">
-    <h2>CENTRAIS</h2>
-    <p class="muted">Selecione uma central autorizada para iniciar a invasão.</p>
-    <div id="listaCentraisJogador" class="grid"></div>
-  </section>
 
-  <section id="centralLogin" class="box hidden">
-    <h2 id="centralLoginTitulo">CENTRAL</h2>
-    <p class="muted">IDENTIFICAÇÃO DA CENTRAL NECESSÁRIA.</p>
-    <div class="campo"><label>ID DA CENTRAL</label><input id="centralIdInput" autocomplete="off" placeholder="DIGITE O ID"></div>
-    <button class="btn" onclick="validarCentral()">AUTENTICAR CENTRAL</button>
-    <button class="btn btn-small" onclick="voltarCentrais()">VOLTAR</button>
-    <p id="centralErro" class="small" style="color:#ff4444"></p>
-  </section>
+    <section id="semAcesso" class="box hidden">
 
-  <section id="minigame" class="box hidden">
-    <div class="game-head"><div><h2 id="minigameTitulo">INVASÃO</h2><div id="minigameSubtitulo" class="muted"></div></div><div id="timer" class="timer">00:00</div></div>
-    <div class="progress"><div id="barraInterna" class="progress-in"></div></div>
-    <div class="muted">PROTOCOLO <span id="progressoTexto">0/0</span></div>
-    <div id="conteudoMinigame" class="game-area"></div>
-  </section>
+        <h2>SEM ACESSO</h2>
 
-  <section id="resultado" class="box hidden">
-    <h2 id="resultadoTitulo"></h2>
-    <p id="resultadoTexto" class="muted"></p>
-    <button id="resultadoBtn" class="btn" onclick="voltarTerminal()">VOLTAR AO TERMINAL</button>
-  </section>
+        <p class="muted">
+            Nenhuma autorização de invasão foi liberada para este usuário.
+        </p>
 
-  <section id="admin" class="box hidden">
-    <h2>ADMINISTRADOR — ÍTALO</h2>
-    <p class="muted">Controle das autorizações normais e das Centrais.</p>
-    <div class="admin-separador"></div>
-    <h3>LIBERAR INVASÃO NORMAL</h3>
-    <div class="grid">
-      <div class="campo"><label>JOGADOR</label><select id="adminJogador"><option>Kaius</option><option>Gaby</option><option>Duda</option></select></div>
-      <div class="campo"><label>TEMPO (SEGUNDOS)</label><input id="adminTempo" type="number" value="60" min="10"></div>
-      <div class="campo"><label>DIFICULDADE</label><select id="adminDificuldade"><option>Fácil</option><option>Normal</option><option>Difícil</option><option>Extremo</option></select></div>
-      <div class="campo"><label>RECURSO</label><input id="adminRecurso" value="Acesso ao sistema"></div>
-    </div>
-    <button class="btn" onclick="liberarAcesso()">LIBERAR ACESSO</button>
-    <div id="listaAcessos" class="admin-lista"></div>
+    </section>
 
-    <div class="admin-separador"></div>
-    <h3>GERENCIAR CENTRAIS</h3>
-    <div class="notice small">Uma Central sempre executa os 4 minigames no modo EXTREMO. O acesso administrativo da Central permanece disponível dentro desta página por 45 segundos.</div>
-    <div class="grid">
-      <div class="campo"><label>NOME DA CENTRAL</label><input id="centralNomeAdmin" placeholder="Ex.: LSPD"></div>
-      <div class="campo"><label>ID DA CENTRAL</label><input id="centralIdAdmin" placeholder="Ex.: LSPD-4821"></div>
-    </div>
-    <button class="btn" onclick="salvarCentral()">CADASTRAR CENTRAL</button>
-    <div id="listaCentraisAdmin" class="admin-lista"></div>
-  </section>
 
-  <section id="painelCentral" class="box admin-panel hidden">
-    <div class="topo"><div><h2 id="painelCentralNome">CENTRAL</h2><div class="muted">MODO ADMINISTRATIVO TEMPORÁRIO</div></div><div class="badge">ACESSO CONCEDIDO</div></div>
-    <div class="countdown" id="centralCountdown">00:45</div>
-    <div class="notice">Você está dentro da Central. Este painel é uma simulação interna do sistema Hacker e não altera outro arquivo.</div>
-    <div class="grid3" style="margin-top:15px">
-      <div class="option" onclick="centralAcao('ocorrencias')"><h3>OCORRÊNCIAS</h3><p class="muted">Acessar registros.</p></div>
-      <div class="option" onclick="centralAcao('consultar')"><h3>CONSULTAR ID</h3><p class="muted">Pesquisar operador.</p></div>
-      <div class="option" onclick="centralAcao('registros')"><h3>REGISTROS</h3><p class="muted">Modificar dados.</p></div>
-    </div>
-    <div id="centralResultado" class="terminal-lines" style="margin-top:15px">&gt; SISTEMA ADMINISTRATIVO ONLINE</div>
-  </section>
+    <section id="acessoLiberado" class="box hidden">
+
+        <h2>ACESSO LIBERADO</h2>
+
+        <div class="grid">
+
+            <div class="status">
+                RECURSO<br>
+                <b id="acessoRecurso">---</b>
+            </div>
+
+            <div class="status">
+                DIFICULDADE<br>
+                <b id="acessoDificuldade">---</b>
+            </div>
+
+        </div>
+
+        <button class="btn" onclick="iniciarInvasao()">
+            INICIAR INVASÃO
+        </button>
+
+    </section>
+
+
+    <section id="centralEscolha" class="box hidden">
+
+        <h2>CENTRAIS</h2>
+
+        <p class="muted">
+            Selecione uma central autorizada para iniciar a invasão.
+        </p>
+
+        <div id="listaCentraisJogador" class="grid"></div>
+
+    </section>
+
+
+    <section id="centralLogin" class="box hidden">
+
+        <h2 id="centralLoginTitulo">CENTRAL</h2>
+
+        <p class="muted">
+            IDENTIFICAÇÃO DA CENTRAL NECESSÁRIA.
+        </p>
+
+        <div class="campo">
+
+            <label>ID DA CENTRAL</label>
+
+            <input
+                id="centralIdInput"
+                autocomplete="off"
+                placeholder="DIGITE O ID"
+            >
+
+        </div>
+
+        <button class="btn" onclick="validarCentral()">
+            AUTENTICAR CENTRAL
+        </button>
+
+        <button class="btn btn-small" onclick="voltarCentrais()">
+            VOLTAR
+        </button>
+
+        <p id="centralErro" class="small" style="color:#ff4444"></p>
+
+    </section>
+
+
+    <section id="minigame" class="box hidden">
+
+        <div class="game-head">
+
+            <div>
+
+                <h2 id="minigameTitulo">
+                    INVASÃO
+                </h2>
+
+                <div id="minigameSubtitulo" class="muted"></div>
+
+            </div>
+
+            <div id="timer" class="timer">
+                00:00
+            </div>
+
+        </div>
+
+        <div class="progress">
+
+            <div
+                id="barraInterna"
+                class="progress-in"
+            ></div>
+
+        </div>
+
+        <div class="muted">
+
+            PROTOCOLO
+            <span id="progressoTexto">
+                0/0
+            </span>
+
+        </div>
+
+        <div
+            id="conteudoMinigame"
+            class="game-area"
+        ></div>
+
+    </section>
+
+
+    <section id="resultado" class="box hidden">
+
+        <h2 id="resultadoTitulo"></h2>
+
+        <p
+            id="resultadoTexto"
+            class="muted"
+        ></p>
+
+        <button
+            id="resultadoBtn"
+            class="btn"
+            onclick="voltarTerminal()"
+        >
+            VOLTAR AO TERMINAL
+        </button>
+
+    </section>
+
+
+    <section id="admin" class="box hidden">
+
+        <h2>
+            ADMINISTRADOR — ÍTALO
+        </h2>
+
+        <p class="muted">
+            Controle das autorizações normais e das Centrais.
+        </p>
+
+        <div class="admin-separador"></div>
+
+        <h3>
+            LIBERAR INVASÃO NORMAL
+        </h3>
+
+        <div class="grid">
+
+            <div class="campo">
+
+                <label>JOGADOR</label>
+
+                <select id="adminJogador">
+                    <option>Kaius</option>
+                    <option>Gaby</option>
+                    <option>Duda</option>
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>TEMPO (SEGUNDOS)</label>
+
+                <input
+                    id="adminTempo"
+                    type="number"
+                    value="60"
+                    min="10"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>DIFICULDADE</label>
+
+                <select id="adminDificuldade">
+
+                    <option>Fácil</option>
+                    <option>Normal</option>
+                    <option>Difícil</option>
+                    <option>Extremo</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>RECURSO</label>
+
+                <input
+                    id="adminRecurso"
+                    value="Acesso ao sistema"
+                >
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="liberarAcesso()"
+        >
+            LIBERAR ACESSO
+        </button>
+
+
+        <div
+            id="listaAcessos"
+            class="admin-lista"
+        ></div>
+
+
+        <div class="admin-separador"></div>
+
+
+        <h3>
+            GERENCIAR CENTRAIS
+        </h3>
+
+
+        <div class="notice small">
+
+            Uma Central sempre executa os 4 minigames
+            no modo EXTREMO. O acesso administrativo
+            da Central permanece disponível dentro desta
+            página por 45 segundos.
+
+        </div>
+
+
+        <div class="grid">
+
+            <div class="campo">
+
+                <label>NOME DA CENTRAL</label>
+
+                <input
+                    id="centralNomeAdmin"
+                    placeholder="Ex.: LSPD"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>ID DA CENTRAL</label>
+
+                <input
+                    id="centralIdAdmin"
+                    placeholder="Ex.: LSPD-4821"
+                >
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="salvarCentral()"
+        >
+            CADASTRAR CENTRAL
+        </button>
+
+
+        <div
+            id="listaCentraisAdmin"
+            class="admin-lista"
+        ></div>
+
+    </section>
+
+
+    <section
+        id="painelCentral"
+        class="box admin-panel hidden"
+    >
+
+        <div class="topo">
+
+            <div>
+
+                <h2 id="painelCentralNome">
+                    CENTRAL
+                </h2>
+
+                <div class="muted">
+                    MODO ADMINISTRATIVO TEMPORÁRIO
+                </div>
+
+            </div>
+
+            <div class="badge">
+                ACESSO CONCEDIDO
+            </div>
+
+        </div>
+
+
+        <div
+            class="countdown"
+            id="centralCountdown"
+        >
+            00:45
+        </div>
+
+
+        <div class="notice">
+
+            Você está dentro da Central.
+            Este painel é uma simulação interna
+            do sistema Hacker e não altera outro arquivo.
+
+        </div>
+
+
+        <div
+            class="grid3"
+            style="margin-top:15px"
+        >
+
+            <div
+                class="option"
+                onclick="centralAcao('ocorrencias')"
+            >
+
+                <h3>OCORRÊNCIAS</h3>
+
+                <p class="muted">
+                    Acessar registros.
+                </p>
+
+            </div>
+
+
+            <div
+                class="option"
+                onclick="centralAcao('consultar')"
+            >
+
+                <h3>CONSULTAR ID</h3>
+
+                <p class="muted">
+                    Pesquisar operador.
+                </p>
+
+            </div>
+
+
+            <div
+                class="option"
+                onclick="centralAcao('registros')"
+            >
+
+                <h3>REGISTROS</h3>
+
+                <p class="muted">
+                    Modificar dados.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="centralResultado"
+            class="terminal-lines"
+            style="margin-top:15px"
+        >
+
+            &gt; SISTEMA ADMINISTRATIVO ONLINE
+
+        </div>
+
+    </section>
+
 </main>
 
+
 <script>
-const firebaseConfig={apiKey:"AIzaSyBwAUhihQZ3kwD9EuasUurXXLbPBjJqg",authDomain:"gta-rpg.firebaseapp.com",databaseURL:"https://gta-rpg-default-rtdb.firebaseio.com",projectId:"gta-rpg",storageBucket:"gta-rpg.firebasestorage.app",messagingSenderId:"318963858414",appId:"1:318963858414:web:cc7122486ac5a3d267ecff",measurementId:"G-K157521F0H"};
-firebase.initializeApp(firebaseConfig);const db=firebase.database();
-const usuarios={Kaius:"28/09",Gaby:"22/09",Duda:"13/09",Italo:"1822"};
-let usuarioAtual=null,acessoAtual=null,acessoListener=null,centralListener=null,centralSelecionada=null,centralAtiva=null;
-let jogoAtivo=false,jogoAtual="",indiceJogo=0,sequenciaJogos=[],tempoRestante=0,intervalo=null,codigoAtual="",memoriaSequencia=[],memoriaIndice=0,firewallGrade=[],firewallTamanho=4;
-let centralCountdownInterval=null;
 
-function $(id){return document.getElementById(id)}
-function mostrar(id,show=true){$(id).classList.toggle('hidden',!show)}
-function entrar(){const u=$('loginUsuario').value.trim(),c=$('loginCodigo').value;if(!usuarios[u]||usuarios[u]!==c){$('loginErro').textContent='USUÁRIO OU CÓDIGO INVÁLIDO.';return}usuarioAtual=u;localStorage.setItem('hacker_usuario',u);abrirSistema()}
-function verificarLoginSalvo(){const u=localStorage.getItem('hacker_usuario');if(u&&usuarios[u]){usuarioAtual=u;abrirSistema()}}
-function abrirSistema(){mostrar('loginTela',false);mostrar('sistema',true);$('usuarioNome').textContent=usuarioAtual;mostrar('admin',usuarioAtual==='Italo');mostrar('semAcesso',usuarioAtual!=='Italo');mostrar('centralEscolha',false);mostrar('centralLogin',false);mostrar('minigame',false);mostrar('resultado',false);mostrar('painelCentral',false);ouvirAcesso();observarCentrais();if(usuarioAtual==='Italo')observarAcessos()}
-function sair(){if(acessoListener){db.ref('hackerAcessos/'+usuarioAtual).off('value',acessoListener);acessoListener=null}if(centralListener){db.ref('hackerCentrais').off('value',centralListener);centralListener=null}localStorage.removeItem('hacker_usuario');location.reload()}
-function ouvirAcesso(){if(usuarioAtual==='Italo')return;const ref=db.ref('hackerAcessos/'+usuarioAtual);acessoListener=s=>{acessoAtual=s.val();if(acessoAtual&&acessoAtual.ativo){mostrar('semAcesso',false);mostrar('acessoLiberado',true);$('acessoRecurso').textContent=acessoAtual.recurso||'---';$('acessoDificuldade').textContent=acessoAtual.dificuldade||'---'}else{mostrar('acessoLiberado',false);mostrar('semAcesso',true)}};ref.on('value',acessoListener)}
-async function liberarAcesso(){if(usuarioAtual!=='Italo')return;const jogador=$('adminJogador').value,tempo=Math.max(10,Number($('adminTempo').value)||60),dificuldade=$('adminDificuldade').value,recurso=$('adminRecurso').value.trim()||'Acesso ao sistema';await db.ref('hackerAcessos/'+jogador).set({ativo:true,jogador,tempo,dificuldade,recurso,criadoEm:Date.now(),criadoPor:'Italo'});alert('Acesso liberado para '+jogador+'.')}
-function observarAcessos(){db.ref('hackerAcessos').on('value',snap=>{const lista=$('listaAcessos');lista.innerHTML='';const dados=snap.val()||{};Object.keys(dados).forEach(j=>{const a=dados[j],div=document.createElement('div');div.className='item';div.innerHTML='<strong>'+esc(j)+'</strong><p>STATUS: '+(a.ativo?'ACESSO ATIVO':'ENCERRADO')+'</p><p>TEMPO: '+esc(a.tempo)+'s</p><p>DIFICULDADE: '+esc(a.dificuldade)+'</p><p>RECURSO: '+esc(a.recurso)+'</p>';if(a.ativo){const b=document.createElement('button');b.className='btn btn-small danger';b.textContent='REVOGAR ACESSO';b.onclick=()=>revogarAcesso(j);div.appendChild(b)}lista.appendChild(div)})})}
-async function revogarAcesso(j){if(usuarioAtual!=='Italo')return;if(!confirm('Revogar acesso de '+j+'?'))return;await db.ref('hackerAcessos/'+j).update({ativo:false,revogadoEm:Date.now()})}
+const firebaseConfig = {
 
-function observarCentrais(){const ref=db.ref('hackerCentrais');centralListener=s=>{const dados=s.val()||{};renderCentraisAdmin(dados);renderCentraisJogador(dados)};ref.on('value',centralListener)}
-async function salvarCentral(){if(usuarioAtual!=='Italo')return;const nome=$('centralNomeAdmin').value.trim(),id=$('centralIdAdmin').value.trim();if(!nome||!id){alert('Preencha o nome e o ID da Central.');return}const snap=await db.ref('hackerCentrais').once('value');const dados=snap.val()||{};for(const k in dados){if(dados[k].idAcesso&&dados[k].idAcesso.toLowerCase()===id.toLowerCase()){alert('Esse ID já está cadastrado.');return}}await db.ref('hackerCentrais').push({ativo:true,nome,idAcesso:id,dificuldade:'Extremo',tempoAdmin:45,criadoEm:Date.now(),criadoPor:'Italo'});$('centralNomeAdmin').value='';$('centralIdAdmin').value='';alert('Central cadastrada.')}
-function renderCentraisAdmin(dados){if(usuarioAtual!=='Italo')return;const lista=$('listaCentraisAdmin');lista.innerHTML='';const keys=Object.keys(dados);if(!keys.length){lista.innerHTML='<p class="muted">Nenhuma Central cadastrada.</p>';return}keys.forEach(k=>{const c=dados[k],div=document.createElement('div');div.className='item';div.innerHTML='<strong>'+esc(c.nome)+'</strong><p>ID: '+esc(c.idAcesso)+'</p><p>STATUS: '+(c.ativo?'ATIVA':'DESATIVADA')+'</p><p>DIFICULDADE: EXTREMO | ADMIN: 45s</p>';const b=document.createElement('button');b.className='btn btn-small '+(c.ativo?'danger':'');b.textContent=c.ativo?'DESATIVAR':'ATIVAR';b.onclick=()=>alternarCentral(k,c.ativo);div.appendChild(b);const d=document.createElement('button');d.className='btn btn-small danger';d.textContent='EXCLUIR';d.onclick=()=>excluirCentral(k,c.nome);div.appendChild(d);lista.appendChild(div)})}
-async function alternarCentral(k,ativo){await db.ref('hackerCentrais/'+k).update({ativo:!ativo})}
-async function excluirCentral(k,nome){if(confirm('Excluir a Central '+nome+'?'))await db.ref('hackerCentrais/'+k).remove()}
-function renderCentraisJogador(dados){if(usuarioAtual==='Italo')return;const lista=$('listaCentraisJogador');lista.innerHTML='';let count=0;Object.keys(dados).forEach(k=>{const c=dados[k];if(!c.ativo)return;count++;const div=document.createElement('div');div.className='option';div.innerHTML='<h3>'+esc(c.nome)+'</h3><p class="muted">PROTOCOLO: EXTREMO</p><p class="small">IDENTIFICAÇÃO NECESSÁRIA</p>';div.onclick=()=>abrirCentral(k,c);lista.appendChild(div)});if(count){mostrar('centralEscolha',true);mostrar('semAcesso',false)}else mostrar('centralEscolha',false)}
-function abrirCentral(k,c){centralSelecionada=k;centralAtiva=c;mostrar('centralEscolha',false);mostrar('centralLogin',true);$('centralLoginTitulo').textContent='CENTRAL // '+c.nome;$('centralIdInput').value='';$('centralErro').textContent='';$('centralIdInput').focus()}
-function voltarCentrais(){mostrar('centralLogin',false);mostrar('centralEscolha',true)}
-async function validarCentral(){if(!centralSelecionada||!centralAtiva)return;const digitado=$('centralIdInput').value.trim();if(digitado!==String(centralAtiva.idAcesso)){ $('centralErro').textContent='ACESSO NEGADO — ID DA CENTRAL INVÁLIDO.';return}const snap=await db.ref('hackerCentrais/'+centralSelecionada).once('value');const c=snap.val();if(!c||!c.ativo){$('centralErro').textContent='CENTRAL INDISPONÍVEL.';return}centralAtiva=c;acessoAtual={ativo:true,jogador:usuarioAtual,tempo:90,dificuldade:'Extremo',recurso:'Acesso administrativo — '+c.nome,central:true,centralKey:centralSelecionada,centralNome:c.nome};mostrar('centralLogin',false);iniciarInvasao(true)}
+    apiKey:
+        "AIzaSyBwAUhihQZ3kwD9EuasUurXXLbPBjJqg",
 
-function iniciarInvasao(isCentral=false){
+    authDomain:
+        "gta-rpg.firebaseapp.com",
 
-    if(!acessoAtual || acessoAtual.ativo!==true) return;
+    databaseURL:
+        "https://gta-rpg-default-rtdb.firebaseio.com",
 
-    jogoAtivo=true;
-    indiceJogo=0;
+    projectId:
+        "gta-rpg",
 
-    const todos=[
+    storageBucket:
+        "gta-rpg.firebasestorage.app",
+
+    messagingSenderId:
+        "318963858414",
+
+    appId:
+        "1:318963858414:web:cc7122486ac5a3d267ecff",
+
+    measurementId:
+        "G-K157521F0H"
+
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const db =
+    firebase.database();
+
+
+const usuarios = {
+
+    Kaius:"28/09",
+    Gaby:"22/09",
+    Duda:"13/09",
+    Italo:"1822"
+
+};
+
+
+let usuarioAtual = null;
+
+let acessoAtual = null;
+
+let acessoListener = null;
+
+let centralListener = null;
+
+let centralSelecionada = null;
+
+let centralAtiva = null;
+
+let jogoAtivo = false;
+
+let jogoAtual = "";
+
+let indiceJogo = 0;
+
+let sequenciaJogos = [];
+
+let tempoRestante = 0;
+
+let intervalo = null;
+
+let codigoAtual = "";
+
+let memoriaSequencia = [];
+
+let memoriaIndice = 0;
+
+let firewallGrade = [];
+
+let firewallTamanho = 4;
+
+let centralCountdownInterval = null;
+
+
+function $(id){
+
+    return document.getElementById(id);
+
+}
+
+
+function mostrar(id,show=true){
+
+    $(id).classList.toggle(
+        'hidden',
+        !show
+    );
+
+}
+
+
+function entrar(){
+
+    const u =
+        $('loginUsuario').value.trim();
+
+    const c =
+        $('loginCodigo').value;
+
+
+    if(
+        !usuarios[u] ||
+        usuarios[u] !== c
+    ){
+
+        $('loginErro').textContent =
+            'USUÁRIO OU CÓDIGO INVÁLIDO.';
+
+        return;
+
+    }
+
+
+    usuarioAtual = u;
+
+    localStorage.setItem(
+        'hacker_usuario',
+        u
+    );
+
+    abrirSistema();
+
+}
+
+
+function verificarLoginSalvo(){
+
+    const u =
+        localStorage.getItem(
+            'hacker_usuario'
+        );
+
+
+    if(
+        u &&
+        usuarios[u]
+    ){
+
+        usuarioAtual = u;
+
+        abrirSistema();
+
+    }
+
+}
+
+
+function abrirSistema(){
+
+    mostrar(
+        'loginTela',
+        false
+    );
+
+    mostrar(
+        'sistema',
+        true
+    );
+
+
+    $('usuarioNome').textContent =
+        usuarioAtual;
+
+
+    mostrar(
+        'admin',
+        usuarioAtual === 'Italo'
+    );
+
+
+    mostrar(
+        'semAcesso',
+        usuarioAtual !== 'Italo'
+    );
+
+
+    mostrar(
+        'centralEscolha',
+        false
+    );
+
+    mostrar(
+        'centralLogin',
+        false
+    );
+
+    mostrar(
+        'minigame',
+        false
+    );
+
+    mostrar(
+        'resultado',
+        false
+    );
+
+    mostrar(
+        'painelCentral',
+        false
+    );
+
+
+    ouvirAcesso();
+
+    observarCentrais();
+
+
+    if(
+        usuarioAtual === 'Italo'
+    ){
+
+        observarAcessos();
+
+    }
+
+}
+
+
+function sair(){
+
+    if(acessoListener){
+
+        db.ref(
+            'hackerAcessos/' +
+            usuarioAtual
+        ).off(
+            'value',
+            acessoListener
+        );
+
+        acessoListener = null;
+
+    }
+
+
+    if(centralListener){
+
+        db.ref(
+            'hackerCentrais'
+        ).off(
+            'value',
+            centralListener
+        );
+
+        centralListener = null;
+
+    }
+
+
+    localStorage.removeItem(
+        'hacker_usuario'
+    );
+
+
+    location.reload();
+
+}
+
+
+function ouvirAcesso(){
+
+    if(
+        usuarioAtual === 'Italo'
+    ){
+
+        return;
+
+    }
+
+
+    const ref =
+        db.ref(
+            'hackerAcessos/' +
+            usuarioAtual
+        );
+
+
+    acessoListener = s => {
+
+        acessoAtual =
+            s.val();
+
+
+        if(
+            acessoAtual &&
+            acessoAtual.ativo
+        ){
+
+            mostrar(
+                'semAcesso',
+                false
+            );
+
+            mostrar(
+                'acessoLiberado',
+                true
+            );
+
+
+            $('acessoRecurso').textContent =
+                acessoAtual.recurso ||
+                '---';
+
+
+            $('acessoDificuldade').textContent =
+                acessoAtual.dificuldade ||
+                '---';
+
+        }
+
+        else{
+
+            mostrar(
+                'acessoLiberado',
+                false
+            );
+
+            mostrar(
+                'semAcesso',
+                true
+            );
+
+        }
+
+    };
+
+
+    ref.on(
+        'value',
+        acessoListener
+    );
+
+}
+
+
+async function liberarAcesso(){
+
+    if(
+        usuarioAtual !== 'Italo'
+    ){
+
+        return;
+
+    }
+
+
+    const jogador =
+        $('adminJogador').value;
+
+
+    const tempo =
+        Math.max(
+            10,
+            Number(
+                $('adminTempo').value
+            ) || 60
+        );
+
+
+    const dificuldade =
+        $('adminDificuldade').value;
+
+
+    const recurso =
+        $('adminRecurso').value.trim() ||
+        'Acesso ao sistema';
+
+
+    await db.ref(
+        'hackerAcessos/' +
+        jogador
+    ).set({
+
+        ativo:true,
+
+        jogador,
+
+        tempo,
+
+        dificuldade,
+
+        recurso,
+
+        criadoEm:
+            Date.now(),
+
+        criadoPor:
+            'Italo'
+
+    });
+
+
+    alert(
+        'Acesso liberado para ' +
+        jogador +
+        '.'
+    );
+
+}
+
+
+function observarAcessos(){
+
+    db.ref(
+        'hackerAcessos'
+    ).on(
+        'value',
+        snap => {
+
+            const lista =
+                $('listaAcessos');
+
+
+            lista.innerHTML = '';
+
+
+            const dados =
+                snap.val() || {};
+
+
+            Object.keys(dados)
+            .forEach(j => {
+
+                const a =
+                    dados[j];
+
+
+                const div =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                div.className =
+                    'item';
+
+
+                div.innerHTML =
+                    '<strong>' +
+                    esc(j) +
+                    '</strong>' +
+
+                    '<p>STATUS: ' +
+                    (
+                        a.ativo
+                        ? 'ACESSO ATIVO'
+                        : 'ENCERRADO'
+                    ) +
+                    '</p>' +
+
+                    '<p>TEMPO: ' +
+                    esc(a.tempo) +
+                    's</p>' +
+
+                    '<p>DIFICULDADE: ' +
+                    esc(a.dificuldade) +
+                    '</p>' +
+
+                    '<p>RECURSO: ' +
+                    esc(a.recurso) +
+                    '</p>';
+
+
+                if(a.ativo){
+
+                    const b =
+                        document.createElement(
+                            'button'
+                        );
+
+
+                    b.className =
+                        'btn btn-small danger';
+
+
+                    b.textContent =
+                        'REVOGAR ACESSO';
+
+
+                    b.onclick =
+                        () =>
+                            revogarAcesso(j);
+
+
+                    div.appendChild(b);
+
+                }
+
+
+                lista.appendChild(div);
+
+            });
+
+        }
+    );
+
+}
+
+
+async function revogarAcesso(j){
+
+    if(
+        usuarioAtual !== 'Italo'
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            'Revogar acesso de ' +
+            j +
+            '?'
+        )
+    ){
+
+        return;
+
+    }
+
+
+    await db.ref(
+        'hackerAcessos/' +
+        j
+    ).update({
+
+        ativo:false,
+
+        revogadoEm:
+            Date.now()
+
+    });
+
+}
+
+
+function observarCentrais(){
+
+    const ref =
+        db.ref(
+            'hackerCentrais'
+        );
+
+
+    centralListener =
+        s => {
+
+            const dados =
+                s.val() || {};
+
+
+            renderCentraisAdmin(
+                dados
+            );
+
+
+            renderCentraisJogador(
+                dados
+            );
+
+        };
+
+
+    ref.on(
+        'value',
+        centralListener
+    );
+
+}
+
+
+async function salvarCentral(){
+
+    if(
+        usuarioAtual !== 'Italo'
+    ){
+
+        return;
+
+    }
+
+
+    const nome =
+        $('centralNomeAdmin')
+        .value
+        .trim();
+
+
+    const id =
+        $('centralIdAdmin')
+        .value
+        .trim();
+
+
+    if(
+        !nome ||
+        !id
+    ){
+
+        alert(
+            'Preencha o nome e o ID da Central.'
+        );
+
+        return;
+
+    }
+
+
+    const snap =
+        await db.ref(
+            'hackerCentrais'
+        ).once(
+            'value'
+        );
+
+
+    const dados =
+        snap.val() || {};
+
+
+    for(
+        const k in dados
+    ){
+
+        if(
+            dados[k].idAcesso &&
+            dados[k].idAcesso
+                .toLowerCase() ===
+            id.toLowerCase()
+        ){
+
+            alert(
+                'Esse ID já está cadastrado.'
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    await db.ref(
+        'hackerCentrais'
+    ).push({
+
+        ativo:true,
+
+        nome,
+
+        idAcesso:id,
+
+        dificuldade:
+            'Extremo',
+
+        tempoAdmin:
+            45,
+
+        criadoEm:
+            Date.now(),
+
+        criadoPor:
+            'Italo'
+
+    });
+
+
+    $('centralNomeAdmin').value =
+        '';
+
+    $('centralIdAdmin').value =
+        '';
+
+
+    alert(
+        'Central cadastrada.'
+    );
+
+}
+
+
+function renderCentraisAdmin(dados){
+
+    if(
+        usuarioAtual !== 'Italo'
+    ){
+
+        return;
+
+    }
+
+
+    const lista =
+        $('listaCentraisAdmin');
+
+
+    lista.innerHTML =
+        '';
+
+
+    const keys =
+        Object.keys(dados);
+
+
+    if(
+        !keys.length
+    ){
+
+        lista.innerHTML =
+            '<p class="muted">' +
+            'Nenhuma Central cadastrada.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    keys.forEach(k => {
+
+        const c =
+            dados[k];
+
+
+        const div =
+            document.createElement(
+                'div'
+            );
+
+
+        div.className =
+            'item';
+
+
+        div.innerHTML =
+            '<strong>' +
+            esc(c.nome) +
+            '</strong>' +
+
+            '<p>ID: ' +
+            esc(c.idAcesso) +
+            '</p>' +
+
+            '<p>STATUS: ' +
+            (
+                c.ativo
+                ? 'ATIVA'
+                : 'DESATIVADA'
+            ) +
+            '</p>' +
+
+            '<p>DIFICULDADE: EXTREMO | ADMIN: 45s</p>';
+
+
+        const b =
+            document.createElement(
+                'button'
+            );
+
+
+        b.className =
+            'btn btn-small ' +
+            (
+                c.ativo
+                ? 'danger'
+                : ''
+            );
+
+
+        b.textContent =
+            c.ativo
+            ? 'DESATIVAR'
+            : 'ATIVAR';
+
+
+        b.onclick =
+            () =>
+                alternarCentral(
+                    k,
+                    c.ativo
+                );
+
+
+        div.appendChild(b);
+
+
+        const d =
+            document.createElement(
+                'button'
+            );
+
+
+        d.className =
+            'btn btn-small danger';
+
+
+        d.textContent =
+            'EXCLUIR';
+
+
+        d.onclick =
+            () =>
+                excluirCentral(
+                    k,
+                    c.nome
+                );
+
+
+        div.appendChild(d);
+
+
+        lista.appendChild(div);
+
+    });
+
+}
+
+
+async function alternarCentral(
+    k,
+    ativo
+){
+
+    await db.ref(
+        'hackerCentrais/' +
+        k
+    ).update({
+
+        ativo:
+            !ativo
+
+    });
+
+}
+
+
+async function excluirCentral(
+    k,
+    nome
+){
+
+    if(
+        confirm(
+            'Excluir a Central ' +
+            nome +
+            '?'
+        )
+    ){
+
+        await db.ref(
+            'hackerCentrais/' +
+            k
+        ).remove();
+
+    }
+
+}
+
+
+function renderCentraisJogador(dados){
+
+    if(
+        usuarioAtual === 'Italo'
+    ){
+
+        return;
+
+    }
+
+
+    const lista =
+        $('listaCentraisJogador');
+
+
+    lista.innerHTML =
+        '';
+
+
+    let count = 0;
+
+
+    Object.keys(dados)
+    .forEach(k => {
+
+        const c =
+            dados[k];
+
+
+        if(
+            !c.ativo
+        ){
+
+            return;
+
+        }
+
+
+        count++;
+
+
+        const div =
+            document.createElement(
+                'div'
+            );
+
+
+        div.className =
+            'option';
+
+
+        div.innerHTML =
+            '<h3>' +
+            esc(c.nome) +
+            '</h3>' +
+
+            '<p class="muted">' +
+            'PROTOCOLO: EXTREMO' +
+            '</p>' +
+
+            '<p class="small">' +
+            'IDENTIFICAÇÃO NECESSÁRIA' +
+            '</p>';
+
+
+        div.onclick =
+            () =>
+                abrirCentral(
+                    k,
+                    c
+                );
+
+
+        lista.appendChild(div);
+
+    });
+
+
+    if(count){
+
+        mostrar(
+            'centralEscolha',
+            true
+        );
+
+        mostrar(
+            'semAcesso',
+            false
+        );
+
+    }
+
+    else{
+
+        mostrar(
+            'centralEscolha',
+            false
+        );
+
+    }
+
+}
+
+
+function abrirCentral(
+    k,
+    c
+){
+
+    centralSelecionada =
+        k;
+
+
+    centralAtiva =
+        c;
+
+
+    mostrar(
+        'centralEscolha',
+        false
+    );
+
+
+    mostrar(
+        'centralLogin',
+        true
+    );
+
+
+    $('centralLoginTitulo').textContent =
+        'CENTRAL // ' +
+        c.nome;
+
+
+    $('centralIdInput').value =
+        '';
+
+
+    $('centralErro').textContent =
+        '';
+
+
+    $('centralIdInput').focus();
+
+}
+
+
+function voltarCentrais(){
+
+    mostrar(
+        'centralLogin',
+        false
+    );
+
+    mostrar(
+        'centralEscolha',
+        true
+    );
+
+}
+
+
+async function validarCentral(){
+
+    if(
+        !centralSelecionada ||
+        !centralAtiva
+    ){
+
+        return;
+
+    }
+
+
+    const digitado =
+        $('centralIdInput')
+        .value
+        .trim();
+
+
+    if(
+        digitado !==
+        String(
+            centralAtiva.idAcesso
+        )
+    ){
+
+        $('centralErro').textContent =
+            'ACESSO NEGADO — ID DA CENTRAL INVÁLIDO.';
+
+        return;
+
+    }
+
+
+    const snap =
+        await db.ref(
+            'hackerCentrais/' +
+            centralSelecionada
+        ).once(
+            'value'
+        );
+
+
+    const c =
+        snap.val();
+
+
+    if(
+        !c ||
+        !c.ativo
+    ){
+
+        $('centralErro').textContent =
+            'CENTRAL INDISPONÍVEL.';
+
+        return;
+
+    }
+
+
+    centralAtiva =
+        c;
+
+
+    acessoAtual = {
+
+        ativo:true,
+
+        jogador:
+            usuarioAtual,
+
+        tempo:90,
+
+        dificuldade:
+            'Extremo',
+
+        recurso:
+            'Acesso administrativo — ' +
+            c.nome,
+
+        central:true,
+
+        centralKey:
+            centralSelecionada,
+
+        centralNome:
+            c.nome
+
+    };
+
+
+    mostrar(
+        'centralLogin',
+        false
+    );
+
+
+    iniciarInvasao(
+        true
+    );
+
+}
+
+
+function iniciarInvasao(
+    isCentral = false
+){
+
+    if(
+        !acessoAtual ||
+        acessoAtual.ativo !== true
+    ){
+
+        return;
+
+    }
+
+
+    jogoAtivo = true;
+
+    indiceJogo = 0;
+
+
+    const todos = [
+
         'codigo',
         'memoria',
         'terminal',
         'firewall'
+
     ];
 
-    sequenciaJogos=embaralhar(todos);
 
-    mostrar('acessoLiberado',false);
-    mostrar('centralEscolha',false);
-    mostrar('minigame',true);
-    mostrar('resultado',false);
+    sequenciaJogos =
+        embaralhar(
+            todos
+        );
 
-    /*
-        Central = sempre 90 segundos
-        Invasão normal = tempo definido pelo administrador
-    */
-    tempoRestante=
+
+    mostrar(
+        'acessoLiberado',
+        false
+    );
+
+    mostrar(
+        'centralEscolha',
+        false
+    );
+
+    mostrar(
+        'minigame',
+        true
+    );
+
+    mostrar(
+        'resultado',
+        false
+    );
+
+
+    tempoRestante =
         isCentral
         ? 90
-        : Number(acessoAtual.tempo)||90;
+        : Number(
+            acessoAtual.tempo
+        ) || 90;
+
 
     iniciarCronometro();
 
     iniciarProximoMinigame();
+
 }
 
 
 function obterQuantidadeJogos(){
 
-    switch(acessoAtual.dificuldade){
+    switch(
+        acessoAtual.dificuldade
+    ){
 
         case 'Fácil':
             return 1;
@@ -192,23 +1977,39 @@ function obterQuantidadeJogos(){
 
         default:
             return 1;
+
     }
+
 }
 
 
 function embaralhar(a){
 
-    return [...a].sort(
-        ()=>Math.random()-.5
+    return [
+        ...a
+    ].sort(
+        () =>
+            Math.random() - .5
     );
+
 }
 
 
 function iniciarProximoMinigame(){
 
-    if(!jogoAtivo) return;
+    if(
+        !jogoAtivo
+    ){
 
-    if(indiceJogo>=sequenciaJogos.length){
+        return;
+
+    }
+
+
+    if(
+        indiceJogo >=
+        sequenciaJogos.length
+    ){
 
         finalizarInvasao(
             true,
@@ -216,174 +2017,292 @@ function iniciarProximoMinigame(){
         );
 
         return;
+
     }
 
-    jogoAtual=
-        sequenciaJogos[indiceJogo];
+
+    jogoAtual =
+        sequenciaJogos[
+            indiceJogo
+        ];
+
 
     atualizarProgresso();
 
 
-    if(jogoAtual==='codigo'){
+    if(
+        jogoAtual ===
+        'codigo'
+    ){
 
         iniciarCodigo();
 
-    }else if(jogoAtual==='memoria'){
+    }
+
+    else if(
+        jogoAtual ===
+        'memoria'
+    ){
 
         iniciarMemoria();
 
-    }else if(jogoAtual==='terminal'){
+    }
+
+    else if(
+        jogoAtual ===
+        'terminal'
+    ){
 
         iniciarTerminal();
 
-    }else{
+    }
+
+    else{
 
         iniciarFirewall();
 
     }
+
 }
 
 
 function atualizarProgresso(){
 
-    const total=
+    const total =
         sequenciaJogos.length;
 
-    $('progressoTexto').textContent=
-        (indiceJogo+1)+'/'+total;
 
-    $('barraInterna').style.width=
-        (indiceJogo/total*100)+'%';
+    $('progressoTexto').textContent =
+        (
+            indiceJogo + 1
+        ) +
+        '/' +
+        total;
+
+
+    $('barraInterna').style.width =
+        (
+            indiceJogo /
+            total *
+            100
+        ) +
+        '%';
+
 }
 
 
 function iniciarCronometro(){
 
-    clearInterval(intervalo);
-
-    intervalo=setInterval(()=>{
-
-        if(!jogoAtivo) return;
-
-        tempoRestante--;
-
-        atualizarTimer();
+    clearInterval(
+        intervalo
+    );
 
 
-        if(tempoRestante<=0){
+    intervalo =
+        setInterval(
+            () => {
 
-            clearInterval(intervalo);
+                if(
+                    !jogoAtivo
+                ){
 
-            jogoAtivo=false;
+                    return;
 
-            finalizarInvasao(
-                false,
-                'TEMPO ESGOTADO.'
-            );
-        }
+                }
 
-    },1000);
+
+                tempoRestante--;
+
+
+                atualizarTimer();
+
+
+                if(
+                    tempoRestante <= 0
+                ){
+
+                    clearInterval(
+                        intervalo
+                    );
+
+
+                    jogoAtivo =
+                        false;
+
+
+                    finalizarInvasao(
+                        false,
+                        'TEMPO ESGOTADO.'
+                    );
+
+                }
+
+            },
+            1000
+        );
+
 
     atualizarTimer();
+
 }
 
 
 function atualizarTimer(){
 
-    const t=$('timer');
+    const t =
+        $('timer');
 
-    if(!t) return;
 
-    const m=
+    if(!t){
+
+        return;
+
+    }
+
+
+    const m =
         Math.floor(
-            Math.max(0,tempoRestante)/60
+            Math.max(
+                0,
+                tempoRestante
+            ) / 60
         );
 
-    const s=
-        Math.max(0,tempoRestante)%60;
+
+    const s =
+        Math.max(
+            0,
+            tempoRestante
+        ) % 60;
 
 
-    t.textContent=
-        String(m).padStart(2,'0')+
-        ':'+
-        String(s).padStart(2,'0');
+    t.textContent =
+        String(m)
+        .padStart(2,'0') +
+        ':' +
+        String(s)
+        .padStart(2,'0');
 
 
-    t.className='timer';
+    t.className =
+        'timer';
 
 
-    if(tempoRestante<=15){
+    if(
+        tempoRestante <= 15
+    ){
 
-        t.classList.add('perigo');
+        t.classList.add(
+            'perigo'
+        );
 
-    }else if(tempoRestante<=30){
-
-        t.classList.add('alerta');
     }
+
+    else if(
+        tempoRestante <= 30
+    ){
+
+        t.classList.add(
+            'alerta'
+        );
+
+    }
+
 }
 
 
 function concluirMinigame(){
 
-    if(!jogoAtivo) return;
+    if(
+        !jogoAtivo
+    ){
+
+        return;
+
+    }
+
 
     indiceJogo++;
+
 
     setTimeout(
         iniciarProximoMinigame,
         350
     );
+
 }
 
 
 function falhar(
-    m='PROTOCOLO REJEITADO.'
+    m = 'PROTOCOLO REJEITADO.'
 ){
 
-    if(!jogoAtivo) return;
+    if(
+        !jogoAtivo
+    ){
 
-    jogoAtivo=false;
+        return;
 
-    clearInterval(intervalo);
+    }
+
+
+    jogoAtivo =
+        false;
+
+
+    clearInterval(
+        intervalo
+    );
+
 
     finalizarInvasao(
         false,
         m
     );
+
 }
 
-
-/* =====================================================
-   FINALIZAÇÃO DA INVASÃO
-===================================================== */
 
 async function finalizarInvasao(
     sucesso,
     motivo
 ){
 
-    clearInterval(intervalo);
-
-    jogoAtivo=false;
-
-    mostrar('minigame',false);
-    mostrar('resultado',true);
+    clearInterval(
+        intervalo
+    );
 
 
-    $('resultado').className=
-        'box '+
-        (sucesso ? 'success' : 'fail');
+    jogoAtivo =
+        false;
 
 
-    $('resultadoTitulo').textContent=
+    mostrar(
+        'minigame',
+        false
+    );
+
+
+    mostrar(
+        'resultado',
+        true
+    );
+
+
+    $('resultado').className =
+        'box ' +
+        (
+            sucesso
+            ? 'success'
+            : 'fail'
+        );
+
+
+    $('resultadoTitulo').textContent =
         sucesso
         ? '✓ INVASÃO CONCLUÍDA'
         : '✕ INVASÃO FALHOU';
 
-
-    /* =================================================
-       INVASÃO DE UMA CENTRAL
-    ================================================= */
 
     if(
         sucesso &&
@@ -393,17 +2312,13 @@ async function finalizarInvasao(
 
         try{
 
-            /*
-                O acesso administrativo da polícia
-                ficará válido por 45 segundos.
-            */
-
-            const expiraEm=
-                Date.now()+45000;
+            const expiraEm =
+                Date.now() +
+                45000;
 
 
             await db.ref(
-                'hackerPoliceAcesso/'+
+                'hackerPoliceAcesso/' +
                 usuarioAtual
             ).set({
 
@@ -413,10 +2328,12 @@ async function finalizarInvasao(
                     usuarioAtual,
 
                 centralKey:
-                    acessoAtual.centralKey || '',
+                    acessoAtual.centralKey ||
+                    '',
 
                 centralNome:
-                    acessoAtual.centralNome || '',
+                    acessoAtual.centralNome ||
+                    '',
 
                 autorizadoEm:
                     Date.now(),
@@ -430,23 +2347,25 @@ async function finalizarInvasao(
             });
 
 
-            $('resultadoTexto').textContent=
-                'CENTRAL '+
-                acessoAtual.centralNome+
-                ' INVADIDA. '+
-                'ACESSO ADMINISTRATIVO DA POLÍCIA '+
+            $('resultadoTexto').textContent =
+                'CENTRAL ' +
+                acessoAtual.centralNome +
+                ' INVADIDA. ' +
+                'ACESSO ADMINISTRATIVO DA POLÍCIA ' +
                 'CONCEDIDO POR 45 SEGUNDOS.';
 
 
-            $('resultadoBtn').textContent=
+            $('resultadoBtn').textContent =
                 'ABRIR ADMINISTRAÇÃO DA POLÍCIA';
 
 
-            $('resultadoBtn').onclick=
+            $('resultadoBtn').onclick =
                 abrirAdministracaoPolicia;
 
 
-        }catch(erro){
+        }
+
+        catch(erro){
 
             console.error(
                 'Erro ao liberar acesso administrativo:',
@@ -454,44 +2373,44 @@ async function finalizarInvasao(
             );
 
 
-            $('resultadoTexto').textContent=
-                'A invasão foi concluída, '+
-                'mas ocorreu um erro ao liberar '+
+            $('resultadoTexto').textContent =
+                'A invasão foi concluída, ' +
+                'mas ocorreu um erro ao liberar ' +
                 'o acesso administrativo.';
 
 
-            $('resultadoBtn').textContent=
+            $('resultadoBtn').textContent =
                 'VOLTAR AO TERMINAL';
 
 
-            $('resultadoBtn').onclick=
+            $('resultadoBtn').onclick =
                 voltarTerminal;
+
         }
 
 
         return;
+
     }
 
 
-    /* =================================================
-       RESULTADO DE UMA INVASÃO NORMAL
-    ================================================= */
-
-    $('resultadoTexto').textContent=
+    $('resultadoTexto').textContent =
         motivo;
 
 
-    $('resultadoBtn').textContent=
+    $('resultadoBtn').textContent =
         'VOLTAR AO TERMINAL';
 
 
-    $('resultadoBtn').onclick=
+    $('resultadoBtn').onclick =
         voltarTerminal;
+
 }
 
 
 /* =====================================================
    ABRIR ADMINISTRAÇÃO DA POLÍCIA
+   CORREÇÃO DO CAMINHO
 ===================================================== */
 
 function abrirAdministracaoPolicia(){
@@ -501,14 +2420,21 @@ function abrirAdministracaoPolicia(){
         !acessoAtual ||
         !acessoAtual.central
     ){
+
         return;
+
     }
+
 
     window.location.href =
         '../policia.html?hack=1&jogador=' +
-        encodeURIComponent(usuarioAtual);
+        encodeURIComponent(
+            usuarioAtual
+        );
+
 }
-  
+
+
 /* =====================================================
    VOLTAR PARA O TERMINAL
 ===================================================== */
@@ -520,10 +2446,12 @@ function voltarTerminal(){
         false
     );
 
+
     mostrar(
         'minigame',
         false
     );
+
 
     mostrar(
         'painelCentral',
@@ -531,7 +2459,9 @@ function voltarTerminal(){
     );
 
 
-    if(usuarioAtual==='Italo'){
+    if(
+        usuarioAtual === 'Italo'
+    ){
 
         mostrar(
             'admin',
@@ -539,6 +2469,7 @@ function voltarTerminal(){
         );
 
         return;
+
     }
 
 
@@ -553,40 +2484,814 @@ function voltarTerminal(){
             true
         );
 
-    }else if(centralSelecionada){
+    }
+
+    else if(
+        centralSelecionada
+    ){
 
         mostrar(
             'centralEscolha',
             true
         );
 
-    }else{
+    }
+
+    else{
 
         mostrar(
             'semAcesso',
             true
         );
+
     }
+
 }
-function iniciarCodigo(){setTitulo('CRACK','QUEBRE O CÓDIGO DE SEGURANÇA');const tamanho={Fácil:4,Normal:6,Difícil:8,Extremo:10}[acessoAtual.dificuldade]||10;codigoAtual='';for(let i=0;i<tamanho;i++)codigoAtual+=Math.floor(Math.random()*10);$('conteudoMinigame').innerHTML='<div class="game-card"><p>CÓDIGO DE SEGURANÇA DETECTADO.</p><div class="codigo">'+codigoAtual+'</div><input id="inputCodigo" class="input-game" inputmode="numeric" autocomplete="off" placeholder="DIGITE O CÓDIGO"><button id="btnCodigo" class="btn">CONFIRMAR</button></div>';$('btnCodigo').onclick=verificarCodigo;$('inputCodigo').onkeydown=e=>{if(e.key==='Enter')verificarCodigo()};$('inputCodigo').focus()}
-function verificarCodigo(){if($('inputCodigo').value.trim()===codigoAtual)concluirMinigame();else falhar('CÓDIGO INCORRETO.')}
 
-function iniciarMemoria(){setTitulo('MEMÓRIA','REPITA A SEQUÊNCIA CORRETA');const n={Fácil:3,Normal:4,Difícil:6,Extremo:8}[acessoAtual.dificuldade]||8;const simbolos=['◆','▲','●','■','★','✦'];const tempoMemoria={Fácil:3500,Normal:5000,Difícil:6500,Extremo:8000}[acessoAtual.dificuldade]||8000;memoriaSequencia=Array.from({length:n},()=>simbolos[Math.floor(Math.random()*simbolos.length)]);memoriaIndice=0;$('conteudoMinigame').innerHTML='<div class="game-card"><p id="memoriaMensagem">MEMORIZE A SEQUÊNCIA...</p><div id="sequenciaVisual" style="font-size:30px;letter-spacing:10px;margin:25px 0">'+memoriaSequencia.join(' ')+'</div><div id="botoesMemoria" class="seq"></div><p id="memoriaTempo" class="muted">TEMPO PARA DECORAR: '+(tempoMemoria/1000)+' SEGUNDOS</p></div>';setTimeout(()=>{if(!jogoAtivo)return;$('sequenciaVisual').textContent='? ? ? ? ? ? ? ?'.split(' ').slice(0,n).join(' ');$('memoriaMensagem').textContent='REPRODUZA A SEQUÊNCIA';$('memoriaTempo').textContent='SEQUÊNCIA OCULTA — REPRODUZA AGORA';const b=$('botoesMemoria');simbolos.forEach(s=>{const x=document.createElement('button');x.textContent=s;x.onclick=()=>clicarMemoria(s);b.appendChild(x)})},tempoMemoria)}
-function clicarMemoria(s){if(!jogoAtivo)return;if(s!==memoriaSequencia[memoriaIndice]){falhar('SEQUÊNCIA DE MEMÓRIA INCORRETA.');return}memoriaIndice++;if(memoriaIndice>=memoriaSequencia.length)concluirMinigame()}
 
-function iniciarTerminal(){setTitulo('TERMINAL','ANALISE A PISTA E ESCOLHA O COMANDO CORRETO');const desafios=[{pista:'O comando correto começa com A e possui exatamente 6 caracteres.',correto:'ACCESS'},{pista:'O comando correto começa com B, termina com S e possui 6 caracteres.',correto:'BYPASS'},{pista:'O comando correto começa com O e possui exatamente 8 caracteres.',correto:'OVERRIDE'},{pista:'O comando correto começa com I, termina com T e possui 6 caracteres.',correto:'INJECT'},{pista:'O comando correto possui exatamente 4 caracteres e termina com T.',correto:'ROOT'}];const desafio=desafios[Math.floor(Math.random()*desafios.length)];window.terminalCorreto=desafio.correto;const comandos=['ACCESS','BYPASS','OVERRIDE','INJECT','ROOT'];$('conteudoMinigame').innerHTML='<div class="game-card"><p>TERMINAL REMOTO DETECTADO.</p><div class="terminal-lines">> AUTH REQUIRED<br>> SECURITY LAYER: ACTIVE<br>> COMMAND CHANNEL OPEN<br>> ANALISANDO PROTOCOLO...<br>> PISTA DESBLOQUEADA</div><div class="notice" style="margin-top:15px"><strong>PISTA:</strong><br>'+desafio.pista+'</div><div class="seq">'+comandos.map(c=>'<button onclick="verificarTerminal(\''+c+'\')">'+c+'</button>').join('')+'</div></div>'}
-function verificarTerminal(c){if(c===window.terminalCorreto)concluirMinigame();else falhar('COMANDO REJEITADO PELO TERMINAL.')}
+function iniciarCodigo(){
 
-function iniciarFirewall(){setTitulo('FIREWALL','DESATIVE TODOS OS NÓS');const total=50;firewallTamanho=10;firewallGrade=Array.from({length:total},()=>false);$('conteudoMinigame').innerHTML='<div class="game-card"><p>ATIVE TODOS OS 50 NÓS DO FIREWALL.</p><div id="firewallGrade" class="firewall" style="grid-template-columns:repeat(10,1fr)"></div><p id="firewallContador" class="muted"></p></div>';const g=$('firewallGrade');firewallGrade.forEach((_,i)=>{const b=document.createElement('button');b.className='cell';b.onclick=()=>clicarFirewall(i);g.appendChild(b)});atualizarFirewall()}
-function clicarFirewall(i){if(!jogoAtivo)return;if(firewallGrade[i])return;firewallGrade[i]=true;$('firewallGrade').children[i].classList.add('on');atualizarFirewall();if(firewallGrade.every(Boolean))concluirMinigame()}
-function atualizarFirewall(){$('firewallContador').textContent=firewallGrade.filter(Boolean).length+'/'+firewallGrade.length+' NÓS ATIVADOS'}
-function setTitulo(a,b){$('minigameTitulo').textContent=a;$('minigameSubtitulo').textContent=b}
+    setTitulo(
+        'CRACK',
+        'QUEBRE O CÓDIGO DE SEGURANÇA'
+    );
 
-function abrirPainelCentral(){if(!acessoAtual.central)return;mostrar('resultado',false);mostrar('painelCentral',true);$('painelCentralNome').textContent=acessoAtual.centralNome;$('centralCountdown').textContent='00:45';let fim=Date.now()+45000;clearInterval(centralCountdownInterval);centralCountdownInterval=setInterval(()=>{const restante=Math.max(0,fim-Date.now());const s=Math.ceil(restante/1000);$('centralCountdown').textContent='00:'+String(s).padStart(2,'0');if(restante<=0){clearInterval(centralCountdownInterval);encerrarPainelCentral()}},250)}
-function encerrarPainelCentral(){mostrar('painelCentral',false);mostrar('resultado',true);$('resultado').className='box fail';$('resultadoTitulo').textContent='✕ ACESSO ENCERRADO';$('resultadoTexto').textContent='O período administrativo da Central terminou.';$('resultadoBtn').textContent='VOLTAR AO TERMINAL';$('resultadoBtn').onclick=voltarTerminal;centralAtiva=null;centralSelecionada=null}
-function centralAcao(acao){const nomes={ocorrencias:'MÓDULO DE OCORRÊNCIAS ABERTO.',consultar:'MÓDULO DE CONSULTA DE ID ABERTO.',registros:'MÓDULO DE REGISTROS ABERTO.'};$('centralResultado').innerHTML='> '+nomes[acao]+'<br>> ACESSO TEMPORÁRIO AUTORIZADO<br>> TEMPO RESTANTE: '+$('centralCountdown').textContent}
-function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-window.addEventListener('load',verificarLoginSalvo);
+
+    const tamanho = {
+
+        Fácil:4,
+        Normal:6,
+        Difícil:8,
+        Extremo:10
+
+    }[
+        acessoAtual.dificuldade
+    ] || 10;
+
+
+    codigoAtual = '';
+
+
+    for(
+        let i = 0;
+        i < tamanho;
+        i++
+    ){
+
+        codigoAtual +=
+            Math.floor(
+                Math.random() * 10
+            );
+
+    }
+
+
+    $('conteudoMinigame').innerHTML =
+
+        '<div class="game-card">' +
+
+        '<p>' +
+        'CÓDIGO DE SEGURANÇA DETECTADO.' +
+        '</p>' +
+
+        '<div class="codigo">' +
+        codigoAtual +
+        '</div>' +
+
+        '<input id="inputCodigo" ' +
+        'class="input-game" ' +
+        'inputmode="numeric" ' +
+        'autocomplete="off" ' +
+        'placeholder="DIGITE O CÓDIGO">' +
+
+        '<button id="btnCodigo" class="btn">' +
+        'CONFIRMAR' +
+        '</button>' +
+
+        '</div>';
+
+
+    $('btnCodigo').onclick =
+        verificarCodigo;
+
+
+    $('inputCodigo').onkeydown =
+        e => {
+
+            if(
+                e.key === 'Enter'
+            ){
+
+                verificarCodigo();
+
+            }
+
+        };
+
+
+    $('inputCodigo').focus();
+
+}
+
+
+function verificarCodigo(){
+
+    if(
+        $('inputCodigo').value.trim() ===
+        codigoAtual
+    ){
+
+        concluirMinigame();
+
+    }
+
+    else{
+
+        falhar(
+            'CÓDIGO INCORRETO.'
+        );
+
+    }
+
+}
+
+
+function iniciarMemoria(){
+
+    setTitulo(
+        'MEMÓRIA',
+        'REPITA A SEQUÊNCIA CORRETA'
+    );
+
+
+    const n = {
+
+        Fácil:3,
+        Normal:4,
+        Difícil:6,
+        Extremo:8
+
+    }[
+        acessoAtual.dificuldade
+    ] || 8;
+
+
+    const simbolos = [
+        '◆',
+        '▲',
+        '●',
+        '■',
+        '★',
+        '✦'
+    ];
+
+
+    const tempoMemoria = {
+
+        Fácil:3500,
+        Normal:5000,
+        Difícil:6500,
+        Extremo:8000
+
+    }[
+        acessoAtual.dificuldade
+    ] || 8000;
+
+
+    memoriaSequencia =
+        Array.from(
+            {
+                length:n
+            },
+            () =>
+                simbolos[
+                    Math.floor(
+                        Math.random() *
+                        simbolos.length
+                    )
+                ]
+        );
+
+
+    memoriaIndice =
+        0;
+
+
+    $('conteudoMinigame').innerHTML =
+
+        '<div class="game-card">' +
+
+        '<p id="memoriaMensagem">' +
+        'MEMORIZE A SEQUÊNCIA...' +
+        '</p>' +
+
+        '<div id="sequenciaVisual" ' +
+        'style="font-size:30px;letter-spacing:10px;margin:25px 0">' +
+
+        memoriaSequencia.join(' ') +
+
+        '</div>' +
+
+        '<div id="botoesMemoria" class="seq"></div>' +
+
+        '<p id="memoriaTempo" class="muted">' +
+
+        'TEMPO PARA DECORAR: ' +
+        (tempoMemoria / 1000) +
+        ' SEGUNDOS' +
+
+        '</p>' +
+
+        '</div>';
+
+
+    setTimeout(
+        () => {
+
+            if(
+                !jogoAtivo
+            ){
+
+                return;
+
+            }
+
+
+            $('sequenciaVisual').textContent =
+                '? ? ? ? ? ? ? ?'
+                .split(' ')
+                .slice(
+                    0,
+                    n
+                )
+                .join(' ');
+
+
+            $('memoriaMensagem').textContent =
+                'REPRODUZA A SEQUÊNCIA';
+
+
+            $('memoriaTempo').textContent =
+                'SEQUÊNCIA OCULTA — REPRODUZA AGORA';
+
+
+            const b =
+                $('botoesMemoria');
+
+
+            simbolos.forEach(
+                s => {
+
+                    const x =
+                        document.createElement(
+                            'button'
+                        );
+
+
+                    x.textContent =
+                        s;
+
+
+                    x.onclick =
+                        () =>
+                            clicarMemoria(s);
+
+
+                    b.appendChild(x);
+
+                }
+            );
+
+        },
+        tempoMemoria
+    );
+
+}
+
+
+function clicarMemoria(s){
+
+    if(
+        !jogoAtivo
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        s !==
+        memoriaSequencia[
+            memoriaIndice
+        ]
+    ){
+
+        falhar(
+            'SEQUÊNCIA DE MEMÓRIA INCORRETA.'
+        );
+
+        return;
+
+    }
+
+
+    memoriaIndice++;
+
+
+    if(
+        memoriaIndice >=
+        memoriaSequencia.length
+    ){
+
+        concluirMinigame();
+
+    }
+
+}
+
+
+function iniciarTerminal(){
+
+    setTitulo(
+        'TERMINAL',
+        'ANALISE A PISTA E ESCOLHA O COMANDO CORRETO'
+    );
+
+
+    const desafios = [
+
+        {
+            pista:
+                'O comando correto começa com A e possui exatamente 6 caracteres.',
+            correto:
+                'ACCESS'
+        },
+
+        {
+            pista:
+                'O comando correto começa com B, termina com S e possui 6 caracteres.',
+            correto:
+                'BYPASS'
+        },
+
+        {
+            pista:
+                'O comando correto começa com O e possui exatamente 8 caracteres.',
+            correto:
+                'OVERRIDE'
+        },
+
+        {
+            pista:
+                'O comando correto começa com I, termina com T e possui 6 caracteres.',
+            correto:
+                'INJECT'
+        },
+
+        {
+            pista:
+                'O comando correto possui exatamente 4 caracteres e termina com T.',
+            correto:
+                'ROOT'
+        }
+
+    ];
+
+
+    const desafio =
+        desafios[
+            Math.floor(
+                Math.random() *
+                desafios.length
+            )
+        ];
+
+
+    window.terminalCorreto =
+        desafio.correto;
+
+
+    const comandos = [
+
+        'ACCESS',
+        'BYPASS',
+        'OVERRIDE',
+        'INJECT',
+        'ROOT'
+
+    ];
+
+
+    $('conteudoMinigame').innerHTML =
+
+        '<div class="game-card">' +
+
+        '<p>TERMINAL REMOTO DETECTADO.</p>' +
+
+        '<div class="terminal-lines">' +
+
+        '> AUTH REQUIRED<br>' +
+        '> SECURITY LAYER: ACTIVE<br>' +
+        '> COMMAND CHANNEL OPEN<br>' +
+        '> ANALISANDO PROTOCOLO...<br>' +
+        '> PISTA DESBLOQUEADA' +
+
+        '</div>' +
+
+        '<div class="notice" style="margin-top:15px">' +
+
+        '<strong>PISTA:</strong><br>' +
+        desafio.pista +
+
+        '</div>' +
+
+        '<div class="seq">' +
+
+        comandos
+        .map(
+            c =>
+                '<button onclick="verificarTerminal(\'' +
+                c +
+                '\')">' +
+                c +
+                '</button>'
+        )
+        .join('') +
+
+        '</div>' +
+
+        '</div>';
+
+}
+
+
+function verificarTerminal(c){
+
+    if(
+        c ===
+        window.terminalCorreto
+    ){
+
+        concluirMinigame();
+
+    }
+
+    else{
+
+        falhar(
+            'COMANDO REJEITADO PELO TERMINAL.'
+        );
+
+    }
+
+}
+
+
+function iniciarFirewall(){
+
+    setTitulo(
+        'FIREWALL',
+        'DESATIVE TODOS OS NÓS'
+    );
+
+
+    const total =
+        50;
+
+
+    firewallTamanho =
+        10;
+
+
+    firewallGrade =
+        Array.from(
+            {
+                length:total
+            },
+            () => false
+        );
+
+
+    $('conteudoMinigame').innerHTML =
+
+        '<div class="game-card">' +
+
+        '<p>' +
+        'ATIVE TODOS OS 50 NÓS DO FIREWALL.' +
+        '</p>' +
+
+        '<div id="firewallGrade" ' +
+        'class="firewall" ' +
+        'style="grid-template-columns:repeat(10,1fr)">' +
+
+        '</div>' +
+
+        '<p id="firewallContador" class="muted"></p>' +
+
+        '</div>';
+
+
+    const g =
+        $('firewallGrade');
+
+
+    firewallGrade.forEach(
+        (_,i) => {
+
+            const b =
+                document.createElement(
+                    'button'
+                );
+
+
+            b.className =
+                'cell';
+
+
+            b.onclick =
+                () =>
+                    clicarFirewall(i);
+
+
+            g.appendChild(b);
+
+        }
+    );
+
+
+    atualizarFirewall();
+
+}
+
+
+function clicarFirewall(i){
+
+    if(
+        !jogoAtivo
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        firewallGrade[i]
+    ){
+
+        return;
+
+    }
+
+
+    firewallGrade[i] =
+        true;
+
+
+    $('firewallGrade')
+        .children[i]
+        .classList
+        .add('on');
+
+
+    atualizarFirewall();
+
+
+    if(
+        firewallGrade.every(
+            Boolean
+        )
+    ){
+
+        concluirMinigame();
+
+    }
+
+}
+
+
+function atualizarFirewall(){
+
+    $('firewallContador').textContent =
+
+        firewallGrade.filter(
+            Boolean
+        ).length +
+
+        '/' +
+
+        firewallGrade.length +
+
+        ' NÓS ATIVADOS';
+
+}
+
+
+function setTitulo(
+    a,
+    b
+){
+
+    $('minigameTitulo').textContent =
+        a;
+
+
+    $('minigameSubtitulo').textContent =
+        b;
+
+}
+
+
+function abrirPainelCentral(){
+
+    if(
+        !acessoAtual.central
+    ){
+
+        return;
+
+    }
+
+
+    mostrar(
+        'resultado',
+        false
+    );
+
+
+    mostrar(
+        'painelCentral',
+        true
+    );
+
+
+    $('painelCentralNome').textContent =
+        acessoAtual.centralNome;
+
+
+    $('centralCountdown').textContent =
+        '00:45';
+
+
+    let fim =
+        Date.now() +
+        45000;
+
+
+    clearInterval(
+        centralCountdownInterval
+    );
+
+
+    centralCountdownInterval =
+        setInterval(
+            () => {
+
+                const restante =
+                    Math.max(
+                        0,
+                        fim - Date.now()
+                    );
+
+
+                const s =
+                    Math.ceil(
+                        restante / 1000
+                    );
+
+
+                $('centralCountdown').textContent =
+                    '00:' +
+                    String(s)
+                    .padStart(
+                        2,
+                        '0'
+                    );
+
+
+                if(
+                    restante <= 0
+                ){
+
+                    clearInterval(
+                        centralCountdownInterval
+                    );
+
+
+                    encerrarPainelCentral();
+
+                }
+
+            },
+            250
+        );
+
+}
+
+
+function encerrarPainelCentral(){
+
+    mostrar(
+        'painelCentral',
+        false
+    );
+
+
+    mostrar(
+        'resultado',
+        true
+    );
+
+
+    $('resultado').className =
+        'box fail';
+
+
+    $('resultadoTitulo').textContent =
+        '✕ ACESSO ENCERRADO';
+
+
+    $('resultadoTexto').textContent =
+        'O período administrativo da Central terminou.';
+
+
+    $('resultadoBtn').textContent =
+        'VOLTAR AO TERMINAL';
+
+
+    $('resultadoBtn').onclick =
+        voltarTerminal;
+
+
+    centralAtiva =
+        null;
+
+
+    centralSelecionada =
+        null;
+
+}
+
+
+function centralAcao(acao){
+
+    const nomes = {
+
+        ocorrencias:
+            'MÓDULO DE OCORRÊNCIAS ABERTO.',
+
+        consultar:
+            'MÓDULO DE CONSULTA DE ID ABERTO.',
+
+        registros:
+            'MÓDULO DE REGISTROS ABERTO.'
+
+    };
+
+
+    $('centralResultado').innerHTML =
+
+        '> ' +
+        nomes[acao] +
+
+        '<br>' +
+
+        '> ACESSO TEMPORÁRIO AUTORIZADO' +
+
+        '<br>' +
+
+        '> TEMPO RESTANTE: ' +
+        $('centralCountdown').textContent;
+
+}
+
+
+function esc(v){
+
+    return String(
+        v ?? ''
+    ).replace(
+        /[&<>'"]/g,
+        c =>
+            ({
+                '&':'&amp;',
+                '<':'&lt;',
+                '>':'&gt;',
+                "'":'&#39;',
+                '"':'&quot;'
+            })[c]
+    );
+
+}
+
+
+window.addEventListener(
+    'load',
+    verificarLoginSalvo
+);
+
 </script>
+
 </body>
 </html>
