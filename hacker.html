@@ -501,17 +501,14 @@ function abrirAdministracaoPolicia(){
         !acessoAtual ||
         !acessoAtual.central
     ){
-
         return;
     }
 
-
-    window.location.href=
-        'policia.html?hack=1&jogador='+
-        encodeURIComponent(usuarioAtual);
+window.location.href =
+    './paginas/policia.html?hack=1&jogador=' +
+    encodeURIComponent(usuarioAtual);
 }
-
-
+  
 /* =====================================================
    VOLTAR PARA O TERMINAL
 ===================================================== */
