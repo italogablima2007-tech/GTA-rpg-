@@ -1034,6 +1034,14 @@ tr:hover td {
 
             </button>
 
+            <button
+                class="menu-btn admin-only"
+                onclick="abrirPagina('arquivos', this)">
+
+                Arquivos
+
+            </button>
+
         </aside>
 
 
@@ -1518,6 +1526,85 @@ tr:hover td {
             </section>
 
 
+            <!-- ARQUIVOS CRIMINAIS -->
+
+            <section
+                id="arquivos"
+                class="page">
+
+                <div class="titulo-pagina">
+
+                    <h2>
+                        Arquivos
+                    </h2>
+
+                    <p>
+                        Arquivos criminais dos indivíduos cadastrados.
+                    </p>
+
+                </div>
+
+                <div class="caixa">
+
+                    <div class="caixa-titulo">
+                        Consultar arquivo
+                    </div>
+
+                    <div style="padding:18px">
+
+                        <div style="display:flex;gap:8px;flex-wrap:wrap">
+
+                            <input
+                                id="buscaArquivoId"
+                                style="flex:1;min-width:220px;background:#0b1015;border:1px solid #2b3947;color:white;padding:11px;border-radius:5px;outline:none"
+                                placeholder="Digite o ID do criminoso — ex: LS-001"
+                                autocomplete="off"
+                                onkeydown="if(event.key==='Enter') pesquisarArquivo()"
+                            >
+
+                            <button
+                                class="btn"
+                                onclick="pesquisarArquivo()">
+
+                                PESQUISAR
+
+                            </button>
+
+                            <button
+                                class="btn btn-secondary"
+                                onclick="limparBuscaArquivo()">
+
+                                LIMPAR
+
+                            </button>
+
+                            <button
+                                class="btn btn-green"
+                                onclick="abrirNovoArquivo()">
+
+                                + CRIAR ARQUIVO
+
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="arquivoBuscaStatus"
+                            style="margin-top:10px;color:#71808d;font-size:11px">
+
+                            Digite o ID para consultar um arquivo.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div id="resultadoArquivo"></div>
+
+            </section>
+
+
             <!-- MAPA -->
 
             <section
@@ -1868,6 +1955,150 @@ tr:hover td {
                 onclick="criarFicha()">
 
                 CRIAR FICHA
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL ARQUIVO CRIMINAL
+===================================================== -->
+
+<div
+    id="modalArquivo"
+    class="modal">
+
+    <div class="modal-box">
+
+        <h3 id="tituloModalArquivo">
+            Novo Arquivo Criminal
+        </h3>
+
+        <div class="form-grid" style="padding:0">
+
+            <div class="campo">
+
+                <label>
+                    ID DO CRIMINOSO
+                </label>
+
+                <input
+                    id="arquivoId"
+                    placeholder="Ex: LS-001"
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    NOME
+                </label>
+
+                <input
+                    id="arquivoNome"
+                    placeholder="Nome do indivíduo"
+                >
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    APELIDO
+                </label>
+
+                <input
+                    id="arquivoApelido"
+                    placeholder="Apelido ou vulgo"
+                >
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    SITUAÇÃO
+                </label>
+
+                <select id="arquivoSituacao">
+
+                    <option value="ATIVO">
+                        ATIVO
+                    </option>
+
+                    <option value="ENCERRADO">
+                        ENCERRADO
+                    </option>
+
+                    <option value="FORAGIDO">
+                        FORAGIDO
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="campo campo-full">
+
+                <label>
+                    ANTECEDENTES / CRIMES
+                </label>
+
+                <textarea
+                    id="arquivoAntecedentes"
+                    placeholder="Registre os crimes, antecedentes e informações relevantes..."
+                ></textarea>
+
+            </div>
+
+            <div class="campo campo-full">
+
+                <label>
+                    DOCUMENTO / ARQUIVO
+                </label>
+                <input id="arquivoAnexo" type="file" style="width:100%;padding:10px;background:#0b1015;border:1px solid #2b3947;color:white;border-radius:5px" onchange="mostrarNomeAnexoSelecionado()">
+                <div id="arquivoAnexoInfo" style="margin-top:8px;color:#71808d;font-size:12px">Nenhum arquivo selecionado.</div>
+
+            </div>
+
+            <div class="campo campo-full">
+
+                <label>
+                    OBSERVAÇÕES
+                </label>
+
+                <textarea
+                    id="arquivoObservacoes"
+                    placeholder="Outras informações sobre o indivíduo..."
+                ></textarea>
+
+            </div>
+
+        </div>
+
+        <div class="modal-acoes">
+
+            <button
+                class="btn btn-secondary"
+                onclick="fecharArquivo()">
+
+                CANCELAR
+
+            </button>
+
+            <button
+                id="btnSalvarArquivo"
+                class="btn"
+                onclick="salvarArquivo()">
+
+                CRIAR ARQUIVO
 
             </button>
 
@@ -2311,6 +2542,25 @@ var ocorrencias = JSON.parse(
 ) || [];
 
 
+var arquivos = JSON.parse(
+    localStorage.getItem("lspd_arquivos")
+) || [];
+
+
+var arquivoAtual = null;
+var bancoArquivosDB = null;
+var nomeBancoArquivosDB = "lspd_arquivos_db";
+var nomeStoreArquivosDB = "anexos";
+
+function abrirBancoArquivos(){return new Promise(function(resolve,reject){if(!window.indexedDB){reject(new Error("IndexedDB não suportado."));return;}if(bancoArquivosDB){resolve(bancoArquivosDB);return;}var r=indexedDB.open(nomeBancoArquivosDB,1);r.onupgradeneeded=function(e){var db=e.target.result;if(!db.objectStoreNames.contains(nomeStoreArquivosDB))db.createObjectStore(nomeStoreArquivosDB,{keyPath:"id"});};r.onsuccess=function(e){bancoArquivosDB=e.target.result;resolve(bancoArquivosDB);};r.onerror=function(){reject(r.error);};});}
+function salvarAnexoArquivo(id,arquivo){return abrirBancoArquivos().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction([nomeStoreArquivosDB],"readwrite");tx.objectStore(nomeStoreArquivosDB).put({id:id,nome:arquivo.name,tipo:arquivo.type||"application/octet-stream",tamanho:arquivo.size,blob:arquivo});tx.oncomplete=resolve;tx.onerror=function(){reject(tx.error);};});});}
+function obterAnexoArquivo(id){return abrirBancoArquivos().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction([nomeStoreArquivosDB],"readonly"),r=tx.objectStore(nomeStoreArquivosDB).get(id);r.onsuccess=function(){resolve(r.result||null);};r.onerror=function(){reject(r.error);};});});}
+function excluirAnexoArquivo(id){return abrirBancoArquivos().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction([nomeStoreArquivosDB],"readwrite");tx.objectStore(nomeStoreArquivosDB).delete(id);tx.oncomplete=resolve;tx.onerror=function(){reject(tx.error);};});});}
+function formatarTamanhoArquivo(b){if(!b)return "0 KB";var u=["B","KB","MB","GB"],i=0,n=b;while(n>=1024&&i<3){n/=1024;i++;}return n.toFixed(i?1:0)+" "+u[i];}
+function mostrarNomeAnexoSelecionado(){var i=document.getElementById("arquivoAnexo"),x=document.getElementById("arquivoAnexoInfo");if(!i||!x)return;if(!i.files||!i.files[0]){x.textContent="Nenhum arquivo selecionado.";return;}var f=i.files[0];x.textContent="Selecionado: "+f.name+" ("+formatarTamanhoArquivo(f.size)+")";}
+
+
+
 var suspeitoAtual = null;
 
 
@@ -2594,7 +2844,8 @@ function abrirPagina(id, botao) {
         (
             id === "suspeitos" ||
             id === "ocorrencias" ||
-            id === "procurados"
+            id === "procurados" ||
+            id === "arquivos"
         )
     ) {
 
@@ -2644,6 +2895,12 @@ function salvarDados() {
     localStorage.setItem(
         "lspd_ocorrencias",
         JSON.stringify(ocorrencias)
+    );
+
+
+    localStorage.setItem(
+        "lspd_arquivos",
+        JSON.stringify(arquivos)
     );
 
 }
@@ -3521,8 +3778,322 @@ function excluirFicha() {
 
 
 /* =====================================================
-   FILTRO
+   ARQUIVOS CRIMINAIS
 ===================================================== */
+
+function encontrarArquivo(id) {
+
+    id = String(id || "").trim().toUpperCase();
+
+    for (var i = 0; i < arquivos.length; i++) {
+
+        if (String(arquivos[i].id).toUpperCase() === id) {
+            return arquivos[i];
+        }
+
+    }
+
+    return null;
+}
+
+
+function abrirNovoArquivo() {
+
+    if (!usuarioLogado || !usuarioEhAdmin()) {
+        alert("Apenas o administrador pode criar arquivos.");
+        return;
+    }
+
+    arquivoAtual = null;
+
+    document.getElementById("tituloModalArquivo").textContent =
+        "Novo Arquivo Criminal";
+
+    document.getElementById("btnSalvarArquivo").textContent =
+        "CRIAR ARQUIVO";
+
+    document.getElementById("arquivoId").disabled = false;
+
+    document.getElementById("arquivoId").value = "";
+    document.getElementById("arquivoNome").value = "";
+    document.getElementById("arquivoApelido").value = "";
+    document.getElementById("arquivoSituacao").value = "ATIVO";
+    document.getElementById("arquivoAntecedentes").value = "";
+    document.getElementById("arquivoObservacoes").value = "";
+
+    var input=document.getElementById("arquivoAnexo");
+    if(input) input.value="";
+    var info=document.getElementById("arquivoAnexoInfo");
+    if(info) info.textContent="Nenhum arquivo selecionado.";
+
+    document.getElementById("modalArquivo").classList.add("aberto");
+}
+
+
+function fecharArquivo() {
+
+    document.getElementById("modalArquivo")
+        .classList.remove("aberto");
+
+    arquivoAtual = null;
+}
+
+
+function salvarArquivo(){
+ if(!usuarioLogado||!usuarioEhAdmin()){alert("Apenas o administrador pode alterar arquivos.");return;}
+ var id=document.getElementById("arquivoId").value.trim().toUpperCase(),nome=document.getElementById("arquivoNome").value.trim(),input=document.getElementById("arquivoAnexo"),anexo=input&&input.files&&input.files[0]?input.files[0]:null;
+ if(!id||!nome){alert("Preencha o ID e o nome do criminoso.");return;}
+ if(!arquivoAtual&&encontrarArquivo(id)){alert("Já existe um arquivo para o ID "+id+".");return;}
+ var r=arquivoAtual||{id:id,criadoEm:new Date().toLocaleString("pt-BR")};
+ r.nome=nome;r.apelido=document.getElementById("arquivoApelido").value.trim();r.situacao=document.getElementById("arquivoSituacao").value;r.antecedentes=document.getElementById("arquivoAntecedentes").value.trim();r.observacoes=document.getElementById("arquivoObservacoes").value.trim();r.atualizadoEm=new Date().toLocaleString("pt-BR");
+ if(!arquivoAtual)arquivos.push(r);salvarDados();var editando=!!arquivoAtual;
+ (anexo?salvarAnexoArquivo(id,anexo):Promise.resolve()).then(function(){fecharArquivo();pesquisarArquivo(id);alert("Arquivo "+id+(editando?" atualizado":" criado")+" com sucesso.");}).catch(function(e){console.error(e);fecharArquivo();pesquisarArquivo(id);alert("O cadastro foi salvo, mas o documento não pôde ser salvo.");});
+}
+
+
+function pesquisarArquivo() {
+
+    if (!usuarioLogado || !usuarioEhAdmin()) {
+        return;
+    }
+
+    var id = document.getElementById("buscaArquivoId")
+        .value.trim().toUpperCase();
+
+    var resultado = document.getElementById("resultadoArquivo");
+    var status = document.getElementById("arquivoBuscaStatus");
+
+    if (!id) {
+
+        resultado.innerHTML = "";
+
+        status.textContent =
+            "Digite o ID para consultar um arquivo.";
+
+        return;
+    }
+
+    var arquivo = encontrarArquivo(id);
+
+    if (!arquivo) {
+
+        resultado.innerHTML =
+            "<div class='caixa'>" +
+                "<div style='padding:25px;text-align:center;color:#71808d'>" +
+                    "Nenhum arquivo encontrado para o ID <strong style='color:white'>" +
+                    escapeHtml(id) +
+                    "</strong>." +
+                "</div>" +
+            "</div>";
+
+        status.textContent =
+            "Nenhum arquivo encontrado.";
+
+        return;
+    }
+
+    status.textContent =
+        "Arquivo encontrado para o ID " + arquivo.id + ".";
+
+    resultado.innerHTML =
+
+        "<div class='caixa'>" +
+
+            "<div class='caixa-titulo' style='display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap'>" +
+
+                "<span>Arquivo Criminal — " +
+                    escapeHtml(arquivo.id) +
+                "</span>" +
+
+                "<div style='display:flex;gap:7px'>" +
+
+                    "<button class='btn' onclick=\"editarArquivoPorId('" +
+                        escapeHtml(arquivo.id) +
+                    "')\">" +
+                        "EDITAR" +
+                    "</button>" +
+
+                    "<button class='btn btn-danger' onclick=\"excluirArquivoPorId('" +
+                        escapeHtml(arquivo.id) +
+                    "')\">" +
+                        "EXCLUIR" +
+                    "</button>" +
+
+                "</div>" +
+
+            "</div>" +
+
+            "<div style='padding:18px'>" +
+
+                "<div class='perfil-grid'>" +
+
+                    "<div class='info-box'>" +
+                        "<span>ID</span>" +
+                        escapeHtml(arquivo.id) +
+                    "</div>" +
+
+                    "<div class='info-box'>" +
+                        "<span>NOME</span>" +
+                        escapeHtml(arquivo.nome) +
+                    "</div>" +
+
+                    "<div class='info-box'>" +
+                        "<span>APELIDO</span>" +
+                        escapeHtml(arquivo.apelido || "Não informado") +
+                    "</div>" +
+
+                    "<div class='info-box'>" +
+                        "<span>SITUAÇÃO</span>" +
+                        escapeHtml(arquivo.situacao || "ATIVO") +
+                    "</div>" +
+
+                "</div>" +
+
+                "<div class='caixa' style='margin-top:18px;margin-bottom:0'>" +
+
+                    "<div class='caixa-titulo'>Antecedentes / Crimes</div>" +
+
+                    "<div style='padding:18px;white-space:pre-wrap;line-height:1.6;color:#d7dde3'>" +
+                        escapeHtml(arquivo.antecedentes || "Nenhum registro informado.") +
+                    "</div>" +
+
+                "</div>" +
+
+                "<div class='caixa' style='margin-top:18px;margin-bottom:0'>" +
+
+                    "<div class='caixa-titulo'>Observações</div>" +
+
+                    "<div style='padding:18px;white-space:pre-wrap;line-height:1.6;color:#d7dde3'>" +
+                        escapeHtml(arquivo.observacoes || "Nenhuma observação.") +
+                    "</div>" +
+
+                "</div>" +
+
+                "<div id='anexoArquivoResultado' class='caixa' style='margin-top:18px;margin-bottom:0'>" +
+                    "<div class='caixa-titulo'>Documento anexado</div>" +
+                    "<div id='anexoArquivoConteudo' style='padding:18px;color:#71808d'>Verificando anexo...</div>" +
+                "</div>" +
+
+                "<div style='margin-top:12px;color:#65727e;font-size:10px'>" +
+                    "Criado em: " + escapeHtml(arquivo.criadoEm || "-") +
+                    " &nbsp;|&nbsp; Atualizado em: " +
+                    escapeHtml(arquivo.atualizadoEm || "-") +
+                "</div>" +
+
+            "</div>" +
+
+        "</div>";
+
+    obterAnexoArquivo(arquivo.id).then(function(a){var area=document.getElementById("anexoArquivoConteudo");if(!area)return;if(!a||!a.blob){area.innerHTML="Nenhum documento foi anexado a este arquivo criminal.";return;}area.innerHTML="<div style='display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap'><div><strong style='color:white'>"+escapeHtml(a.nome||"Documento")+"</strong><div style='color:#71808d;font-size:11px;margin-top:5px'>"+escapeHtml(a.tipo||"Arquivo")+" • "+formatarTamanhoArquivo(a.tamanho||0)+"</div></div><div style='display:flex;gap:7px'><button class='btn' onclick=\"abrirAnexoArquivo('"+escapeHtml(arquivo.id)+"')\">ABRIR</button><button class='btn' onclick=\"baixarAnexoArquivo('"+escapeHtml(arquivo.id)+"')\">BAIXAR</button></div></div>";});
+}
+
+
+function abrirAnexoArquivo(id){obterAnexoArquivo(id).then(function(a){if(!a||!a.blob){alert("Nenhum arquivo anexado a este registro.");return;}var u=URL.createObjectURL(a.blob),w=window.open(u,"_blank");if(!w)alert("O navegador bloqueou a abertura do arquivo. Permita pop-ups.");setTimeout(function(){URL.revokeObjectURL(u);},60000);}).catch(function(){alert("Não foi possível abrir o arquivo.");});}
+function baixarAnexoArquivo(id){obterAnexoArquivo(id).then(function(a){if(!a||!a.blob){alert("Nenhum arquivo anexado a este registro.");return;}var u=URL.createObjectURL(a.blob),l=document.createElement("a");l.href=u;l.download=a.nome||("arquivo_"+id);document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);}).catch(function(){alert("Não foi possível baixar o arquivo.");});}
+
+function editarArquivoPorId(id) {
+
+    if (!usuarioLogado || !usuarioEhAdmin()) {
+        alert("Apenas o administrador pode editar arquivos.");
+        return;
+    }
+
+    var arquivo = encontrarArquivo(id);
+
+    if (!arquivo) {
+        alert("Arquivo não encontrado.");
+        return;
+    }
+
+    arquivoAtual = arquivo;
+
+    document.getElementById("tituloModalArquivo").textContent =
+        "Editar Arquivo Criminal";
+
+    document.getElementById("btnSalvarArquivo").textContent =
+        "SALVAR ALTERAÇÕES";
+
+    document.getElementById("arquivoId").value =
+        arquivo.id;
+
+    document.getElementById("arquivoId").disabled = true;
+
+    document.getElementById("arquivoNome").value =
+        arquivo.nome || "";
+
+    document.getElementById("arquivoApelido").value =
+        arquivo.apelido || "";
+
+    document.getElementById("arquivoSituacao").value =
+        arquivo.situacao || "ATIVO";
+
+    document.getElementById("arquivoAntecedentes").value =
+        arquivo.antecedentes || "";
+
+    document.getElementById("arquivoObservacoes").value =
+        arquivo.observacoes || "";
+
+    var input=document.getElementById("arquivoAnexo");
+    if(input) input.value="";
+    var info=document.getElementById("arquivoAnexoInfo");
+    if(info){info.textContent="Verificando documento atual...";obterAnexoArquivo(arquivo.id).then(function(a){info.textContent=a?"Documento atual: "+a.nome+" ("+formatarTamanhoArquivo(a.tamanho||0)+"). Selecione outro para substituir.":"Nenhum documento anexado. Selecione um arquivo.";}).catch(function(){info.textContent="Não foi possível verificar o documento atual.";});}
+
+    document.getElementById("modalArquivo").classList.add("aberto");
+}
+
+
+function excluirArquivoPorId(id) {
+
+    if (!usuarioLogado || !usuarioEhAdmin()) {
+        alert("Apenas o administrador pode excluir arquivos.");
+        return;
+    }
+
+    var arquivo = encontrarArquivo(id);
+
+    if (!arquivo) {
+        alert("Arquivo não encontrado.");
+        return;
+    }
+
+    if (!confirm(
+        "Tem certeza que deseja excluir o arquivo " +
+        arquivo.id + " — " + arquivo.nome + "?"
+    )) {
+        return;
+    }
+
+    arquivos = arquivos.filter(function(item) {
+        return String(item.id).toUpperCase() !==
+            String(id).toUpperCase();
+    });
+
+    salvarDados();
+    excluirAnexoArquivo(id).catch(function(erro){ console.warn("Falha ao excluir anexo:", erro); });
+
+    document.getElementById("resultadoArquivo").innerHTML = "";
+
+    document.getElementById("arquivoBuscaStatus").textContent =
+        "Arquivo excluído com sucesso.";
+
+    document.getElementById("buscaArquivoId").value = "";
+}
+
+
+function limparBuscaArquivo() {
+
+    document.getElementById("buscaArquivoId").value = "";
+
+    document.getElementById("resultadoArquivo").innerHTML = "";
+
+    document.getElementById("arquivoBuscaStatus").textContent =
+        "Digite o ID para consultar um arquivo.";
+}
+
+
+/* =====================================================
+   FILTRO
+=====================================================
 
 function filtrarSuspeitos() {
 
