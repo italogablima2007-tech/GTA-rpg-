@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LSPD Database</title>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=CaAEof3xXNZ4oS8BX2OEyq147iVG4sSV_CyYIoJR6uwso7tgknDvIl8KtyBUGaBm_9E85_N2uwzlnv_bVsHkYcUGBve6qA-s7PO_w6D6dRfzNKG8y99YF7-gof6MNGuObpyQVa1ltqebU_347zpc9yvuS9lueBCQTDgSV6DPWtmTCXE57F5IZQ_ksJ-qu_o7ELbAV3oGXpf-e4TIbZ3O0nxbzUAsjmeKSCGFqhpE-fn9ykoFPr87EbIcOiJ7qxW0KPvO8nliUn6a2Np4reebHoSS46f-KgdATVQmHK7zHd9BADYQptgeietyZcPuGErL" charset="UTF-8"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
@@ -2351,9 +2351,35 @@ async function encerrarAcessoHacker(mostrarAviso) {
 
     }
 
+    /*
+       IMPORTANTE: encerrar o acesso hacker NÃO apaga os dados da
+       central policial. Os dados cadastrados durante a sessão são
+       persistidos antes de qualquer limpeza da sessão.
+
+       O acesso administrativo é temporário; os registros não são.
+    */
+    try {
+        if (typeof salvarDados === "function") {
+            salvarDados();
+        }
+    } catch (erroSalvar) {
+        console.error("Erro ao persistir os dados antes de encerrar o acesso hacker:", erroSalvar);
+    }
+
+    /* Esconde somente o contador visual da sessão temporária. */
+    var timerHacker = document.getElementById("hackerTimer");
+    if (timerHacker) {
+        timerHacker.style.display = "none";
+    }
+
     acessoHacker = null;
     usuarioLogado = null;
 
+    /*
+       Remove SOMENTE a identificação da sessão logada.
+       Nunca use localStorage.clear() ou remova as chaves
+       lspd_suspeitos, lspd_ocorrencias ou lspd_arquivos aqui.
+    */
     localStorage.removeItem("lspd_usuario_logado");
 
     if (mostrarAviso) {
@@ -2532,19 +2558,31 @@ function iniciarContagemAcessoHacker() {
    Não existem fichas de exemplo.
 */
 
-var suspeitos = JSON.parse(
-    localStorage.getItem("lspd_suspeitos")
-) || [];
+function carregarDadosPersistidos() {
+    /*
+       Estes dados são permanentes. A duração do acesso hacker
+       controla apenas permissões, nunca a existência dos registros.
+    */
+    var dadosSuspeitos = localStorage.getItem("lspd_suspeitos");
+    var dadosOcorrencias = localStorage.getItem("lspd_ocorrencias");
+    var dadosArquivos = localStorage.getItem("lspd_arquivos");
 
+    try {
+        return {
+            suspeitos: dadosSuspeitos ? JSON.parse(dadosSuspeitos) : [],
+            ocorrencias: dadosOcorrencias ? JSON.parse(dadosOcorrencias) : [],
+            arquivos: dadosArquivos ? JSON.parse(dadosArquivos) : []
+        };
+    } catch (erro) {
+        console.error("Erro ao carregar os dados persistidos:", erro);
+        return { suspeitos: [], ocorrencias: [], arquivos: [] };
+    }
+}
 
-var ocorrencias = JSON.parse(
-    localStorage.getItem("lspd_ocorrencias")
-) || [];
-
-
-var arquivos = JSON.parse(
-    localStorage.getItem("lspd_arquivos")
-) || [];
+var dadosPersistidos = carregarDadosPersistidos();
+var suspeitos = Array.isArray(dadosPersistidos.suspeitos) ? dadosPersistidos.suspeitos : [];
+var ocorrencias = Array.isArray(dadosPersistidos.ocorrencias) ? dadosPersistidos.ocorrencias : [];
+var arquivos = Array.isArray(dadosPersistidos.arquivos) ? dadosPersistidos.arquivos : [];
 
 
 var arquivoAtual = null;
