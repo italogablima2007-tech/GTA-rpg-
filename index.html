@@ -2276,43 +2276,4 @@ function voltarCentral(){
 </html>
 ```
 
-### Estrutura da pasta
-
-Deixe assim:
-
-```text
-📁 CENTRAL DO RPG
-│
-├── index.html
-├── policia.html
-├── hacker.html
-├── alvos.html
-├── imoveis.html
-│
-├── policia.jpg
-├── hacker.jpg
-├── alvos.jpg
-├── imoveis.jpg
-└── lester.jpg
-```
-
-A parte nova é esta:
-
-```html
-<div
-    class="aba aba-policia"
-    onclick="abrirPolicia()"
->
-    <h2>POLÍCIA</h2>
-</div>
-```
-
-E ao clicar nela:
-
-```javascript
-function abrirPolicia(){
-    window.location.href = "./policia.html";
-}
-```
-
 **Importante:** se você não tiver `policia.jpg` ainda, a aba continuará existindo, mas ficará sem a imagem de fundo. O arquivo `policia.html` precisa estar na mesma pasta do `index.html`.
