@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LSPD Database</title>
 
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=CaAEof3xXNZ4oS8BX2OEyq147iVG4sSV_CyYIoJR6uwso7tgknDvIl8KtyBUGaBm_9E85_N2uwzlnv_bVsHkYcUGBve6qA-s7PO_w6D6dRfzNKG8y99YF7-gof6MNGuObpyQVa1ltqebU_347zpc9yvuS9lueBCQTDgSV6DPWtmTCXE57F5IZQ_ksJ-qu_o7ELbAV3oGXpf-e4TIbZ3O0nxbzUAsjmeKSCGFqhpE-fn9ykoFPr87EbIcOiJ7qxW0KPvO8nliUn6a2Np4reebHoSS46f-KgdATVQmHK7zHd9BADYQptgeietyZcPuGErL" charset="UTF-8"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=D-U8-eyJ0G4dqehtSly47x1auYBL5uA6Qxy7LGoQBynOwT-aLvrbXlliM4sv7hdKwl2MjwCvBDFY0pSUYjMUE1RU6OS6YaLCWFi3jF5_Q6chejvwUZGHEa50MTH8yrDH4___EI_OUpjKUkw2G3lqvm-JeVfUDjj5FkB9VRGQhzkxqK-U33FL-mrthUQXCsySuX-HrwfPXHLWzi27Bc_D634MDoV7dDve3oaZk8S08Pmz-5iP8FsLgCUA1lLMkjV0Zukmtc0-2oVMRH08oQ_joYjBqhhsJwLmTVPGT-tvlYmREHwuvqbz64-UqyCEbsAJ" charset="UTF-8"></script><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=CaAEof3xXNZ4oS8BX2OEyq147iVG4sSV_CyYIoJR6uwso7tgknDvIl8KtyBUGaBm_9E85_N2uwzlnv_bVsHkYcUGBve6qA-s7PO_w6D6dRfzNKG8y99YF7-gof6MNGuObpyQVa1ltqebU_347zpc9yvuS9lueBCQTDgSV6DPWtmTCXE57F5IZQ_ksJ-qu_o7ELbAV3oGXpf-e4TIbZ3O0nxbzUAsjmeKSCGFqhpE-fn9ykoFPr87EbIcOiJ7qxW0KPvO8nliUn6a2Np4reebHoSS46f-KgdATVQmHK7zHd9BADYQptgeietyZcPuGErL" charset="UTF-8"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 <script>
 const firebaseConfig = {
@@ -23,6 +24,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.database();
+const storage = firebase.storage();
 </script>
     
 <style>
@@ -2589,14 +2591,284 @@ var arquivoAtual = null;
 var bancoArquivosDB = null;
 var nomeBancoArquivosDB = "lspd_arquivos_db";
 var nomeStoreArquivosDB = "anexos";
+var arquivosFirebaseIniciado = false;
+var arquivosFirebaseListenerAtivo = false;
 
-function abrirBancoArquivos(){return new Promise(function(resolve,reject){if(!window.indexedDB){reject(new Error("IndexedDB não suportado."));return;}if(bancoArquivosDB){resolve(bancoArquivosDB);return;}var r=indexedDB.open(nomeBancoArquivosDB,1);r.onupgradeneeded=function(e){var db=e.target.result;if(!db.objectStoreNames.contains(nomeStoreArquivosDB))db.createObjectStore(nomeStoreArquivosDB,{keyPath:"id"});};r.onsuccess=function(e){bancoArquivosDB=e.target.result;resolve(bancoArquivosDB);};r.onerror=function(){reject(r.error);};});}
-function salvarAnexoArquivo(id,arquivo){return abrirBancoArquivos().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction([nomeStoreArquivosDB],"readwrite");tx.objectStore(nomeStoreArquivosDB).put({id:id,nome:arquivo.name,tipo:arquivo.type||"application/octet-stream",tamanho:arquivo.size,blob:arquivo});tx.oncomplete=resolve;tx.onerror=function(){reject(tx.error);};});});}
-function obterAnexoArquivo(id){return abrirBancoArquivos().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction([nomeStoreArquivosDB],"readonly"),r=tx.objectStore(nomeStoreArquivosDB).get(id);r.onsuccess=function(){resolve(r.result||null);};r.onerror=function(){reject(r.error);};});});}
-function excluirAnexoArquivo(id){return abrirBancoArquivos().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction([nomeStoreArquivosDB],"readwrite");tx.objectStore(nomeStoreArquivosDB).delete(id);tx.oncomplete=resolve;tx.onerror=function(){reject(tx.error);};});});}
-function formatarTamanhoArquivo(b){if(!b)return "0 KB";var u=["B","KB","MB","GB"],i=0,n=b;while(n>=1024&&i<3){n/=1024;i++;}return n.toFixed(i?1:0)+" "+u[i];}
-function mostrarNomeAnexoSelecionado(){var i=document.getElementById("arquivoAnexo"),x=document.getElementById("arquivoAnexoInfo");if(!i||!x)return;if(!i.files||!i.files[0]){x.textContent="Nenhum arquivo selecionado.";return;}var f=i.files[0];x.textContent="Selecionado: "+f.name+" ("+formatarTamanhoArquivo(f.size)+")";}
+/*
+   ARQUIVOS:
+   - O cadastro do arquivo criminal fica no Firebase Realtime Database.
+   - O documento/anexo fica no Firebase Storage.
+   - IndexedDB continua sendo usado somente como fallback para anexos antigos
+     que já estavam salvos neste computador antes desta correção.
+*/
 
+function abrirBancoArquivos(){
+    return new Promise(function(resolve,reject){
+        if(!window.indexedDB){
+            reject(new Error("IndexedDB não suportado."));
+            return;
+        }
+        if(bancoArquivosDB){
+            resolve(bancoArquivosDB);
+            return;
+        }
+        var r=indexedDB.open(nomeBancoArquivosDB,1);
+        r.onupgradeneeded=function(e){
+            var dbLocal=e.target.result;
+            if(!dbLocal.objectStoreNames.contains(nomeStoreArquivosDB)){
+                dbLocal.createObjectStore(nomeStoreArquivosDB,{keyPath:"id"});
+            }
+        };
+        r.onsuccess=function(e){
+            bancoArquivosDB=e.target.result;
+            resolve(bancoArquivosDB);
+        };
+        r.onerror=function(){reject(r.error);};
+    });
+}
+
+function salvarAnexoLocalLegado(id,arquivo){
+    return abrirBancoArquivos().then(function(dbLocal){
+        return new Promise(function(resolve,reject){
+            var tx=dbLocal.transaction([nomeStoreArquivosDB],"readwrite");
+            tx.objectStore(nomeStoreArquivosDB).put({
+                id:id,
+                nome:arquivo.name,
+                tipo:arquivo.type||"application/octet-stream",
+                tamanho:arquivo.size,
+                blob:arquivo
+            });
+            tx.oncomplete=resolve;
+            tx.onerror=function(){reject(tx.error);};
+        });
+    });
+}
+
+function obterAnexoLocalLegado(id){
+    return abrirBancoArquivos().then(function(dbLocal){
+        return new Promise(function(resolve,reject){
+            var tx=dbLocal.transaction([nomeStoreArquivosDB],"readonly");
+            var r=tx.objectStore(nomeStoreArquivosDB).get(id);
+            r.onsuccess=function(){resolve(r.result||null);};
+            r.onerror=function(){reject(r.error);};
+        });
+    });
+}
+
+function excluirAnexoLocalLegado(id){
+    return abrirBancoArquivos().then(function(dbLocal){
+        return new Promise(function(resolve,reject){
+            var tx=dbLocal.transaction([nomeStoreArquivosDB],"readwrite");
+            tx.objectStore(nomeStoreArquivosDB).delete(id);
+            tx.oncomplete=resolve;
+            tx.onerror=function(){reject(tx.error);};
+        });
+    });
+}
+
+function chaveArquivoFirebase(id){
+    /*
+       IDs normais como LS-001 já são válidos como chave.
+       A codificação evita problemas se alguém usar caracteres reservados.
+    */
+    return encodeURIComponent(String(id).trim().toUpperCase());
+}
+
+function caminhoAnexoFirebase(id){
+    return "policia/arquivos/" + chaveArquivoFirebase(id);
+}
+
+function salvarAnexoArquivo(id,arquivo){
+    if(!arquivo){
+        return Promise.resolve(null);
+    }
+
+    var ref = storage.ref().child(caminhoAnexoFirebase(id));
+
+    return ref.put(arquivo, {
+        contentType: arquivo.type || "application/octet-stream",
+        customMetadata: {
+            nomeOriginal: arquivo.name,
+            arquivoId: String(id).toUpperCase()
+        }
+    }).then(function(snapshot){
+        return snapshot.ref.getDownloadURL().then(function(url){
+            return {
+                nome: arquivo.name,
+                tipo: arquivo.type || "application/octet-stream",
+                tamanho: arquivo.size,
+                url: url
+            };
+        });
+    }).catch(function(erro){
+        console.error("Erro ao salvar anexo no Firebase Storage:", erro);
+
+        /*
+           Mantém o comportamento antigo como fallback local.
+           O cadastro remoto continua funcionando mesmo se o Storage
+           estiver bloqueado pelas regras do Firebase.
+        */
+        return salvarAnexoLocalLegado(id,arquivo).then(function(){
+            return {
+                nome: arquivo.name,
+                tipo: arquivo.type || "application/octet-stream",
+                tamanho: arquivo.size,
+                localFallback: true
+            };
+        });
+    });
+}
+
+function obterAnexoArquivo(id){
+    var ref = storage.ref().child(caminhoAnexoFirebase(id));
+
+    return ref.getMetadata().then(function(meta){
+        return ref.getDownloadURL().then(function(url){
+            return fetch(url).then(function(resp){
+                if(!resp.ok){
+                    throw new Error("Não foi possível baixar o documento.");
+                }
+                return resp.blob();
+            }).then(function(blob){
+                return {
+                    id: id,
+                    nome: (meta.customMetadata && meta.customMetadata.nomeOriginal) || meta.name || ("arquivo_"+id),
+                    tipo: meta.contentType || blob.type || "application/octet-stream",
+                    tamanho: meta.size || blob.size,
+                    blob: blob,
+                    url: url
+                };
+            });
+        });
+    }).catch(function(){
+        /*
+           Compatibilidade com anexos antigos que existiam somente neste PC.
+        */
+        return obterAnexoLocalLegado(id).catch(function(){
+            return null;
+        });
+    });
+}
+
+function excluirAnexoArquivo(id){
+    var ref = storage.ref().child(caminhoAnexoFirebase(id));
+
+    return ref.delete().catch(function(){
+        /*
+           O arquivo pode não existir no Storage porque era um anexo legado.
+        */
+        return null;
+    }).then(function(){
+        return excluirAnexoLocalLegado(id).catch(function(){
+            return null;
+        });
+    });
+}
+
+function formatarTamanhoArquivo(b){
+    if(!b)return "0 KB";
+    var u=["B","KB","MB","GB"],i=0,n=b;
+    while(n>=1024&&i<3){n/=1024;i++;}
+    return n.toFixed(i?1:0)+" "+u[i];
+}
+
+function mostrarNomeAnexoSelecionado(){
+    var i=document.getElementById("arquivoAnexo"),
+        x=document.getElementById("arquivoAnexoInfo");
+    if(!i||!x)return;
+    if(!i.files||!i.files[0]){
+        x.textContent="Nenhum arquivo selecionado.";
+        return;
+    }
+    var f=i.files[0];
+    x.textContent="Selecionado: "+f.name+" ("+formatarTamanhoArquivo(f.size)+")";
+}
+
+/* =====================================================
+   SINCRONIZAÇÃO DOS ARQUIVOS CRIMINAIS
+===================================================== */
+
+function iniciarSincronizacaoArquivosFirebase(){
+    if(arquivosFirebaseListenerAtivo){
+        return Promise.resolve();
+    }
+
+    arquivosFirebaseListenerAtivo = true;
+
+    return db.ref("policia/arquivos").once("value").then(function(snapshot){
+        var remoto = snapshot.val() || {};
+        var remotoIds = Object.keys(remoto);
+
+        /*
+           Migra os registros que já estavam no localStorage deste PC
+           somente quando eles ainda não existem no Firebase.
+        */
+        var promessasMigracao = [];
+
+        for(var i=0;i<arquivos.length;i++){
+            var local = arquivos[i];
+            if(!local || !local.id) continue;
+
+            var chave = chaveArquivoFirebase(local.id);
+
+            if(!Object.prototype.hasOwnProperty.call(remoto,chave)){
+                promessasMigracao.push(
+                    db.ref("policia/arquivos/" + chave).set(local)
+                );
+            }
+        }
+
+        return Promise.all(promessasMigracao).then(function(){
+            db.ref("policia/arquivos").on("value", function(snap){
+                var dados = snap.val() || {};
+
+                arquivos = Object.keys(dados).map(function(chave){
+                    return dados[chave];
+                }).filter(function(item){
+                    return item && item.id;
+                });
+
+                /*
+                   Cache local apenas como cópia. A fonte oficial agora é o Firebase.
+                */
+                try{
+                    localStorage.setItem(
+                        "lspd_arquivos",
+                        JSON.stringify(arquivos)
+                    );
+                }catch(e){
+                    console.warn("Não foi possível atualizar o cache local dos arquivos.",e);
+                }
+
+                if(typeof atualizarTudo === "function"){
+                    atualizarTudo();
+                }
+            });
+
+            arquivosFirebaseIniciado = true;
+        });
+    }).catch(function(erro){
+        arquivosFirebaseIniciado = false;
+        arquivosFirebaseListenerAtivo = false;
+        console.error("Não foi possível iniciar a sincronização dos arquivos:",erro);
+    });
+}
+
+function salvarArquivoFirebase(arquivo){
+    if(!arquivo || !arquivo.id){
+        return Promise.reject(new Error("Arquivo inválido."));
+    }
+
+    return db.ref(
+        "policia/arquivos/" + chaveArquivoFirebase(arquivo.id)
+    ).set(arquivo);
+}
+
+function excluirArquivoFirebase(id){
+    return db.ref(
+        "policia/arquivos/" + chaveArquivoFirebase(id)
+    ).remove();
+}
 
 
 var suspeitoAtual = null;
@@ -3877,15 +4149,109 @@ function fecharArquivo() {
 }
 
 
-function salvarArquivo(){
- if(!usuarioLogado||!usuarioEhAdmin()){alert("Apenas o administrador pode alterar arquivos.");return;}
- var id=document.getElementById("arquivoId").value.trim().toUpperCase(),nome=document.getElementById("arquivoNome").value.trim(),input=document.getElementById("arquivoAnexo"),anexo=input&&input.files&&input.files[0]?input.files[0]:null;
- if(!id||!nome){alert("Preencha o ID e o nome do criminoso.");return;}
- if(!arquivoAtual&&encontrarArquivo(id)){alert("Já existe um arquivo para o ID "+id+".");return;}
- var r=arquivoAtual||{id:id,criadoEm:new Date().toLocaleString("pt-BR")};
- r.nome=nome;r.apelido=document.getElementById("arquivoApelido").value.trim();r.situacao=document.getElementById("arquivoSituacao").value;r.antecedentes=document.getElementById("arquivoAntecedentes").value.trim();r.observacoes=document.getElementById("arquivoObservacoes").value.trim();r.atualizadoEm=new Date().toLocaleString("pt-BR");
- if(!arquivoAtual)arquivos.push(r);salvarDados();var editando=!!arquivoAtual;
- (anexo?salvarAnexoArquivo(id,anexo):Promise.resolve()).then(function(){fecharArquivo();pesquisarArquivo(id);alert("Arquivo "+id+(editando?" atualizado":" criado")+" com sucesso.");}).catch(function(e){console.error(e);fecharArquivo();pesquisarArquivo(id);alert("O cadastro foi salvo, mas o documento não pôde ser salvo.");});
+async function salvarArquivo(){
+    if(!usuarioLogado||!usuarioEhAdmin()){
+        alert("Apenas o administrador pode alterar arquivos.");
+        return;
+    }
+
+    var id=document.getElementById("arquivoId").value.trim().toUpperCase();
+    var nome=document.getElementById("arquivoNome").value.trim();
+    var input=document.getElementById("arquivoAnexo");
+    var anexo=input&&input.files&&input.files[0]?input.files[0]:null;
+
+    if(!id||!nome){
+        alert("Preencha o ID e o nome do criminoso.");
+        return;
+    }
+
+    if(!arquivoAtual&&encontrarArquivo(id)){
+        alert("Já existe um arquivo para o ID "+id+".");
+        return;
+    }
+
+    var r=arquivoAtual||{
+        id:id,
+        criadoEm:new Date().toLocaleString("pt-BR")
+    };
+
+    r.nome=nome;
+    r.apelido=document.getElementById("arquivoApelido").value.trim();
+    r.situacao=document.getElementById("arquivoSituacao").value;
+    r.antecedentes=document.getElementById("arquivoAntecedentes").value.trim();
+    r.observacoes=document.getElementById("arquivoObservacoes").value.trim();
+    r.atualizadoEm=new Date().toLocaleString("pt-BR");
+
+    var editando=!!arquivoAtual;
+    var btn=document.getElementById("btnSalvarArquivo");
+
+    if(btn){
+        btn.disabled=true;
+        btn.textContent="SALVANDO...";
+    }
+
+    try{
+        /*
+           Primeiro salva o cadastro no Firebase.
+        */
+        await salvarArquivoFirebase(r);
+
+        /*
+           Se houver documento novo, salva também no Firebase Storage.
+        */
+        if(anexo){
+            var infoAnexo=await salvarAnexoArquivo(id,anexo);
+
+            /*
+               Guarda somente metadados do anexo no registro remoto.
+               O conteúdo do documento continua no Storage.
+            */
+            r.anexoNome=infoAnexo.nome;
+            r.anexoTipo=infoAnexo.tipo;
+            r.anexoTamanho=infoAnexo.tamanho;
+
+            await salvarArquivoFirebase(r);
+        }
+
+        /*
+           Atualiza o cache local.
+        */
+        var idx=-1;
+        for(var i=0;i<arquivos.length;i++){
+            if(String(arquivos[i].id).toUpperCase()===id){
+                idx=i;
+                break;
+            }
+        }
+
+        if(idx>=0){
+            arquivos[idx]=r;
+        }else{
+            arquivos.push(r);
+        }
+
+        salvarDados();
+
+        fecharArquivo();
+        pesquisarArquivo(id);
+
+        alert(
+            "Arquivo "+id+
+            (editando?" atualizado":" criado")+
+            " e sincronizado com o servidor."
+        );
+    }catch(e){
+        console.error("Erro ao salvar arquivo:",e);
+        alert(
+            "Não foi possível salvar o arquivo no servidor.\n\n"+
+            "Verifique sua conexão e as regras do Firebase."
+        );
+    }finally{
+        if(btn){
+            btn.disabled=false;
+            btn.textContent=editando?"SALVAR ALTERAÇÕES":"CRIAR ARQUIVO";
+        }
+    }
 }
 
 
@@ -4080,7 +4446,7 @@ function editarArquivoPorId(id) {
 }
 
 
-function excluirArquivoPorId(id) {
+async function excluirArquivoPorId(id) {
 
     if (!usuarioLogado || !usuarioEhAdmin()) {
         alert("Apenas o administrador pode excluir arquivos.");
@@ -4101,20 +4467,27 @@ function excluirArquivoPorId(id) {
         return;
     }
 
-    arquivos = arquivos.filter(function(item) {
-        return String(item.id).toUpperCase() !==
-            String(id).toUpperCase();
-    });
+    try{
+        await excluirArquivoFirebase(id);
+        await excluirAnexoArquivo(id);
 
-    salvarDados();
-    excluirAnexoArquivo(id).catch(function(erro){ console.warn("Falha ao excluir anexo:", erro); });
+        arquivos = arquivos.filter(function(item) {
+            return String(item.id).toUpperCase() !==
+                String(id).toUpperCase();
+        });
 
-    document.getElementById("resultadoArquivo").innerHTML = "";
+        salvarDados();
 
-    document.getElementById("arquivoBuscaStatus").textContent =
-        "Arquivo excluído com sucesso.";
+        document.getElementById("resultadoArquivo").innerHTML = "";
 
-    document.getElementById("buscaArquivoId").value = "";
+        document.getElementById("arquivoBuscaStatus").textContent =
+            "Arquivo excluído com sucesso em todos os computadores.";
+
+        document.getElementById("buscaArquivoId").value = "";
+    }catch(erro){
+        console.error("Falha ao excluir arquivo:",erro);
+        alert("Não foi possível excluir o arquivo do servidor.");
+    }
 }
 
 
@@ -5164,6 +5537,8 @@ document
 ===================================================== */
 
     window.addEventListener("load", async function() {
+
+    await iniciarSincronizacaoArquivosFirebase();
 
     /*
        Primeiro verifica se veio de uma invasão Hacker.
